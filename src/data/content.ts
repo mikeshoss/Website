@@ -14,31 +14,33 @@ export const site = {
 export const hero = {
   headline: "Founder. Product Executive. AI Builder.",
   subheadline:
-    "I design and ship AI-native systems that move from idea to deployment fast — across autonomous agents, workflow orchestration, and enterprise AI products.",
+    "I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. 15+ years turning strategy into products that scale.",
+  credibility:
+    "Currently leading AI & Ecosystem strategy at Caseware while running Epilogue, an AI consulting and product studio. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 10 patents. 3 companies founded.",
   philosophy: [
-    "Useful over performative",
-    "Deployed over theoretical",
-    "Systems over gimmicks",
-    "Product outcomes over hype",
+    "Strategy without execution is a hobby",
+    "Ship products, not slide decks",
+    "AI should solve real problems",
+    "Build for outcomes, not applause",
   ],
 };
 
 export const skills = [
-  "AI Agents & Orchestration",
   "Product Strategy & Execution",
-  "Venture Building",
-  "Local-First AI Infrastructure",
+  "AI Strategy & Governance",
+  "Venture Building & Scaling",
   "Enterprise AI Systems",
-  "Rapid Prototyping",
-  "Workflow Automation",
-  "Multi-Agent Systems",
+  "Team Building & Leadership",
+  "AI Agents & Orchestration",
+  "Go-to-Market & Growth",
+  "Rapid Prototyping & Delivery",
 ];
 
 export const highlights = [
   { value: "15+", label: "Years in Product & Software" },
-  { value: "10", label: "Patents" },
-  { value: "$150M+", label: "Fundraising Supported" },
   { value: "3", label: "Companies Founded" },
+  { value: "$150M+", label: "Fundraising Supported" },
+  { value: "10", label: "Patents in AI & Video Commerce" },
 ];
 
 export interface Company {
