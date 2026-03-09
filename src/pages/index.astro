@@ -1,54 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { site, hero, skills, highlights } from '../data/content';
+import { site, hero, skills, highlights, experience, companies } from '../data/content';
+
+// Pull a few key roles for the "Track Record" section
+const featuredRoles = experience.filter(r =>
+  r.company === 'Caseware' || r.company === 'Firework' || r.company === 'FacilityOS (formerly iLobby)' || r.company === 'VerticalScope Inc.'
+);
+// Dedupe by company, keep latest role
+const seenCompanies = new Set<string>();
+const keyRoles = featuredRoles.filter(r => {
+  if (seenCompanies.has(r.company)) return false;
+  seenCompanies.add(r.company);
+  return true;
+});
 ---
 
 <Layout>
   <!-- Hero -->
-  <section class="section-container pt-28 pb-16">
+  <section class="section-container pt-28 pb-12">
     <p class="text-accent font-mono text-sm mb-4 tracking-wide">Hi, I'm {site.name}</p>
     <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6 gradient-text">
       {hero.headline}
     </h1>
-    <p class="text-xl text-gray-400 max-w-2xl leading-relaxed mb-8">
+    <p class="text-xl text-gray-300 max-w-2xl leading-relaxed mb-6">
       {hero.subheadline}
+    </p>
+    <p class="text-base text-gray-500 max-w-2xl leading-relaxed mb-10">
+      {hero.credibility}
     </p>
     <div class="flex flex-wrap gap-3">
       <a href="/contact" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-white font-medium px-6 py-3 rounded-lg transition-colors">
         Get in touch
       </a>
-      <a href="/companies" class="inline-flex items-center gap-2 border border-surface-200 hover:border-accent/40 text-gray-300 hover:text-white font-medium px-6 py-3 rounded-lg transition-colors">
-        See what I'm building
+      <a href="/experience" class="inline-flex items-center gap-2 border border-surface-200 hover:border-accent/40 text-gray-300 hover:text-white font-medium px-6 py-3 rounded-lg transition-colors">
+        View full experience
       </a>
     </div>
   </section>
 
-  <!-- Philosophy -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">What I believe</h2>
-    <p class="section-subtitle">AI that actually works in the real world.</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl stagger-children">
-      {hero.philosophy.map(item => (
-        <div class="flex items-center gap-3 animate-on-scroll">
-          <span class="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"></span>
-          <span class="text-gray-300">{item}</span>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Skills / Focus Areas -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">What I work on</h2>
-    <p class="section-subtitle">Focus areas across AI, product, and infrastructure.</p>
-    <div class="flex flex-wrap gap-3">
-      {skills.map(skill => (
-        <span class="pill">{skill}</span>
-      ))}
-    </div>
-  </section>
-
-  <!-- Highlights bar -->
+  <!-- Numbers -->
   <section class="border-t border-surface-200 animate-on-scroll">
     <div class="max-w-5xl mx-auto px-6 py-16">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -62,21 +52,102 @@ import { site, hero, skills, highlights } from '../data/content';
     </div>
   </section>
 
-  <!-- Quick links -->
+  <!-- Track Record -->
+  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
+    <h2 class="section-title">Track Record</h2>
+    <p class="section-subtitle">Leadership roles where I've driven measurable impact.</p>
+    <div class="space-y-6 stagger-children">
+      {keyRoles.map(role => (
+        <div class="card animate-on-scroll">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-3">
+            <div>
+              <h3 class="font-semibold text-white text-lg">{role.title}</h3>
+              <p class="text-sm text-accent">{role.company}</p>
+            </div>
+            <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+          </div>
+          {role.highlights.length > 0 && (
+            <ul class="space-y-1.5">
+              {role.highlights.slice(0, 3).map(h => (
+                <li class="text-sm text-gray-400 flex items-start gap-2">
+                  <span class="w-1 h-1 rounded-full bg-accent flex-shrink-0 mt-2"></span>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+    <div class="mt-8">
+      <a href="/experience" class="text-sm text-accent hover:text-accent-dim transition-colors font-medium">
+        View full career history, patents & volunteering →
+      </a>
+    </div>
+  </section>
+
+  <!-- What I Believe -->
+  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
+    <h2 class="section-title">How I operate</h2>
+    <p class="section-subtitle">Principles that guide how I build and lead.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl stagger-children">
+      {hero.philosophy.map(item => (
+        <div class="flex items-center gap-3 animate-on-scroll">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"></span>
+          <span class="text-gray-300">{item}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Focus Areas -->
+  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
+    <h2 class="section-title">What I do</h2>
+    <p class="section-subtitle">Where leadership meets building.</p>
+    <div class="flex flex-wrap gap-3">
+      {skills.map(skill => (
+        <span class="pill">{skill}</span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Currently -->
+  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
+    <h2 class="section-title">Currently</h2>
+    <p class="section-subtitle">Where I'm focused right now.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
+      {companies.map(company => (
+        <div class="card animate-on-scroll">
+          <div class="mb-3">
+            <h3 class="text-lg font-semibold text-white">{company.name}</h3>
+            <p class="text-sm text-accent">{company.role}</p>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed">{company.description}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-8">
+      <a href="/companies" class="text-sm text-accent hover:text-accent-dim transition-colors font-medium">
+        See companies & products →
+      </a>
+    </div>
+  </section>
+
+  <!-- Explore -->
   <section class="section-container py-16 border-t border-surface-200">
     <h2 class="section-title mb-8">Explore</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
+      <a href="/experience" class="card group animate-on-scroll">
+        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Experience</h3>
+        <p class="text-sm text-muted">Full career history, 10 patents, and community involvement.</p>
+      </a>
       <a href="/companies" class="card group animate-on-scroll">
         <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Companies</h3>
-        <p class="text-sm text-muted">The companies I've founded and the products we're building.</p>
+        <p class="text-sm text-muted">The companies I've founded and the products we're shipping.</p>
       </a>
       <a href="/projects" class="card group animate-on-scroll">
         <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Projects</h3>
-        <p class="text-sm text-muted">Side projects, experiments, and systems I'm building.</p>
-      </a>
-      <a href="/experience" class="card group animate-on-scroll">
-        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Experience</h3>
-        <p class="text-sm text-muted">Career history, patents, and volunteering.</p>
+        <p class="text-sm text-muted">AI systems, infrastructure, and experiments I'm building.</p>
       </a>
     </div>
   </section>

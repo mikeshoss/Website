@@ -20,19 +20,38 @@ const pastProjects = projects.filter(p => p.status !== 'Active');
         <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-6">Active</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {activeProjects.map(project => (
-            <article class="card">
-              <div class="flex items-start justify-between mb-2">
-                <h3 class="text-lg font-semibold">{project.name}</h3>
-                <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full whitespace-nowrap">
-                  Active
-                </span>
-              </div>
-              <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-              {project.association && (
-                <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
-              )}
-              <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-            </article>
+            project.url ? (
+              <a href={project.url} target="_blank" rel="noopener noreferrer" class="card block group">
+                <div class="flex items-start justify-between mb-2">
+                  <h3 class="text-lg font-semibold group-hover:text-accent transition-colors">{project.name}</h3>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full whitespace-nowrap">Active</span>
+                    <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </div>
+                </div>
+                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+                {project.association && (
+                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                )}
+                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
+              </a>
+            ) : (
+              <article class="card">
+                <div class="flex items-start justify-between mb-2">
+                  <h3 class="text-lg font-semibold">{project.name}</h3>
+                  <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full whitespace-nowrap">
+                    Active
+                  </span>
+                </div>
+                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+                {project.association && (
+                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                )}
+                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
+              </article>
+            )
           ))}
         </div>
       </div>
@@ -44,19 +63,38 @@ const pastProjects = projects.filter(p => p.status !== 'Active');
         <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-6">Past Projects</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pastProjects.map(project => (
-            <article class="card opacity-80">
-              <div class="flex items-start justify-between mb-2">
-                <h3 class="text-lg font-semibold">{project.name}</h3>
-                <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full whitespace-nowrap">
-                  {project.status}
-                </span>
-              </div>
-              <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-              {project.association && (
-                <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
-              )}
-              <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-            </article>
+            project.url ? (
+              <a href={project.url} target="_blank" rel="noopener noreferrer" class="card block group opacity-80">
+                <div class="flex items-start justify-between mb-2">
+                  <h3 class="text-lg font-semibold group-hover:text-accent transition-colors">{project.name}</h3>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full whitespace-nowrap">{project.status}</span>
+                    <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </div>
+                </div>
+                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+                {project.association && (
+                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                )}
+                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
+              </a>
+            ) : (
+              <article class="card opacity-80">
+                <div class="flex items-start justify-between mb-2">
+                  <h3 class="text-lg font-semibold">{project.name}</h3>
+                  <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full whitespace-nowrap">
+                    {project.status}
+                  </span>
+                </div>
+                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+                {project.association && (
+                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                )}
+                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
+              </article>
+            )
           ))}
         </div>
       </div>

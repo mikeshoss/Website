@@ -65,7 +65,7 @@ const currentPath = Astro.url.pathname;
         </a>
       ))}
     </div>
-  </div>
+  </nav>
 </header>
 
 <script>
@@ -74,5 +74,12 @@ const currentPath = Astro.url.pathname;
   btn?.addEventListener('click', () => {
     const isOpen = menu?.classList.toggle('hidden') === false;
     btn.setAttribute('aria-expanded', String(isOpen));
+  });
+  // Close mobile menu when a link is clicked
+  menu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+    });
   });
 </script>
