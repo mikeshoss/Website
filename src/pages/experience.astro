@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { experience, patents, volunteering } from '../data/content';
+
+const mentoringRoles = volunteering.filter(v => v.category === 'mentoring');
+const advisoryRoles = volunteering.filter(v => v.category === 'advisory');
+const communityRoles = volunteering.filter(v => v.category === 'community');
+const governanceRoles = volunteering.filter(v => v.category === 'governance');
+---
+
+<Layout
+  title="Experience — Mike Shoss"
+  description="Career history, 8 AI patents, and volunteering work by Mike Shoss."
+>
+  <section class="section-container pt-28">
+    <h1 class="section-title">Experience</h1>
+    <p class="section-subtitle">Career, patents, and community involvement.</p>
+
+    <!-- Career Timeline -->
+    <div class="mb-20">
+      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Career</h2>
+      <div class="space-y-1">
+        {experience.map((role, i) => (
+          <div class="relative pl-8 pb-8 border-l border-surface-200 last:border-l-transparent last:pb-0">
+            <div class="absolute left-0 top-1 w-2 h-2 rounded-full bg-accent -translate-x-[4.5px]"></div>
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
+              <div>
+                <h3 class="font-semibold text-white">{role.title}</h3>
+                <p class="text-sm text-accent">{role.company}</p>
+              </div>
+              <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+            </div>
+            {role.location && (
+              <p class="text-xs text-muted mb-2">{role.location}</p>
+            )}
+            {role.highlights.length > 0 && (
+              <ul class="space-y-1 mt-2">
+                {role.highlights.map(h => (
+                  <li class="text-sm text-gray-400 flex items-start gap-2">
+                    <span class="text-muted mt-1.5 flex-shrink-0">&#8226;</span>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Patents -->
+    <div class="mb-20">
+      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Patents ({patents.length})</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {patents.map(patent => (
+          <div class="card">
+            <h3 class="font-medium text-white text-sm leading-snug mb-2">{patent.title}</h3>
+            <div class="flex items-center gap-4 text-xs text-muted font-mono">
+              <span>{patent.number}</span>
+              <span>Filed {patent.filed}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Volunteering -->
+    <div>
+      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Volunteering & Community</h2>
+
+      <!-- Mentoring -->
+      {mentoringRoles.length > 0 && (
+        <div class="mb-10">
+          <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Mentoring</h3>
+          <div class="space-y-4">
+            {mentoringRoles.map(role => (
+              <div class="card">
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
+                  <div>
+                    <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                    <p class="text-sm text-accent">{role.organization}</p>
+                  </div>
+                  <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+                </div>
+                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Governance -->
+      {governanceRoles.length > 0 && (
+        <div class="mb-10">
+          <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Board & Governance</h3>
+          <div class="space-y-4">
+            {governanceRoles.map(role => (
+              <div class="card">
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
+                  <div>
+                    <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                    <p class="text-sm text-accent">{role.organization}</p>
+                  </div>
+                  <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+                </div>
+                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Advisory -->
+      {advisoryRoles.length > 0 && (
+        <div class="mb-10">
+          <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Advisory & Expert Networks</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {advisoryRoles.map(role => (
+              <div class="card">
+                <div class="flex flex-col sm:flex-start gap-1 mb-1">
+                  <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                  <p class="text-sm text-accent">{role.organization}</p>
+                  <span class="text-xs text-muted font-mono">{role.period}</span>
+                </div>
+                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Community -->
+      {communityRoles.length > 0 && (
+        <div class="mb-10">
+          <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Community</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {communityRoles.map(role => (
+              <div class="card">
+                <div class="flex flex-col sm:flex-start gap-1 mb-1">
+                  <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                  <p class="text-sm text-accent">{role.organization}</p>
+                  <span class="text-xs text-muted font-mono">{role.period}</span>
+                </div>
+                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

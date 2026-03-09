@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site, hero, skills, highlights } from '../data/content';
+---
+
+<Layout>
+  <!-- Hero -->
+  <section class="section-container pt-28 pb-16">
+    <p class="text-accent font-mono text-sm mb-4 tracking-wide">Hi, I'm {site.name}</p>
+    <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+      {hero.headline}
+    </h1>
+    <p class="text-xl text-gray-400 max-w-2xl leading-relaxed mb-8">
+      {hero.subheadline}
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/contact" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-white font-medium px-6 py-3 rounded-lg transition-colors">
+        Get in touch
+      </a>
+      <a href="/companies" class="inline-flex items-center gap-2 border border-surface-200 hover:border-accent/40 text-gray-300 hover:text-white font-medium px-6 py-3 rounded-lg transition-colors">
+        See what I'm building
+      </a>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="section-container py-16 border-t border-surface-200">
+    <h2 class="section-title">What I believe</h2>
+    <p class="section-subtitle">AI that actually works in the real world.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+      {hero.philosophy.map(item => (
+        <div class="flex items-center gap-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"></span>
+          <span class="text-gray-300">{item}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Skills / Focus Areas -->
+  <section class="section-container py-16 border-t border-surface-200">
+    <h2 class="section-title">What I work on</h2>
+    <p class="section-subtitle">Focus areas across AI, product, and infrastructure.</p>
+    <div class="flex flex-wrap gap-3">
+      {skills.map(skill => (
+        <span class="pill">{skill}</span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Highlights bar -->
+  <section class="border-t border-surface-200">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {highlights.map(stat => (
+          <div class="text-center">
+            <div class="text-4xl font-bold text-accent mb-1">{stat.value}</div>
+            <div class="text-sm text-muted">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick links -->
+  <section class="section-container py-16 border-t border-surface-200">
+    <h2 class="section-title mb-8">Explore</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a href="/companies" class="card group">
+        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Companies</h3>
+        <p class="text-sm text-muted">The companies I've founded and the products we're building.</p>
+      </a>
+      <a href="/projects" class="card group">
+        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Projects</h3>
+        <p class="text-sm text-muted">Side projects, experiments, and systems I'm building.</p>
+      </a>
+      <a href="/experience" class="card group">
+        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Experience</h3>
+        <p class="text-sm text-muted">Career history, patents, and volunteering.</p>
+      </a>
+    </div>
+  </section>
+</Layout>

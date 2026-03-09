@@ -1,0 +1,465 @@
+export const site = {
+  name: "Mike Shoss",
+  title: "Founder. Product Executive. AI Builder.",
+  description:
+    "Mike Shoss is a founder, product executive, and builder of AI-native systems. 15+ years in product and software, 8 patents in AI, and hands-on experience building systems that ship.",
+  url: "https://mikeshoss.com",
+  linkedin: "https://www.linkedin.com/in/mikeshoss",
+  github: "https://github.com/mikeshoss",
+  email: "mike@epiloguelabs.com",
+  location: "Toronto, Ontario, Canada",
+  blogUrl: "#", // placeholder — update when blog platform is chosen
+};
+
+export const hero = {
+  headline: "Founder. Product Executive. AI Builder.",
+  subheadline:
+    "I design and ship AI-native systems that move from idea to deployment fast — across autonomous agents, workflow orchestration, and enterprise AI products.",
+  philosophy: [
+    "Useful over performative",
+    "Deployed over theoretical",
+    "Systems over gimmicks",
+    "Product outcomes over hype",
+  ],
+};
+
+export const skills = [
+  "AI Agents & Orchestration",
+  "Product Strategy & Execution",
+  "Venture Building",
+  "Local-First AI Infrastructure",
+  "Enterprise AI Systems",
+  "Rapid Prototyping",
+  "Workflow Automation",
+  "Multi-Agent Systems",
+];
+
+export const highlights = [
+  { value: "15+", label: "Years in Product & Software" },
+  { value: "8", label: "AI Patents" },
+  { value: "$150M+", label: "Fundraising Supported" },
+  { value: "3", label: "Companies Founded" },
+];
+
+export interface Company {
+  name: string;
+  role: string;
+  description: string;
+  period: string;
+  url?: string;
+  products?: {
+    name: string;
+    tagline: string;
+    description: string;
+    status: string;
+  }[];
+}
+
+export const companies: Company[] = [
+  {
+    name: "Epilogue",
+    role: "Founder & Principal — AI Consulting & Product Studio",
+    description:
+      "An AI company focused on turning complex business problems into practical, high-impact AI solutions. We build, advise, and ship — from strategy through deployment.",
+    period: "Nov 2023 – Present",
+    url: "https://epiloguelabs.com",
+    products: [
+      {
+        name: "Parleh",
+        tagline: "Meetings that do the work.",
+        description:
+          "An AI meeting companion built through a structured human + autonomous agent collaboration model. Turns notes into live action, workflows, and agent-triggered execution.",
+        status: "Active",
+      },
+      {
+        name: "Fractal",
+        tagline: "One source of truth for product.",
+        description:
+          "An AI-agent-driven product-truth platform that unifies code, design, and product artefacts into a single living source of truth, generating role-specific views and reducing documentation drift.",
+        status: "Active — Closed Beta",
+      },
+      {
+        name: "TrustFlow",
+        tagline: "Automate admin, embed compliance.",
+        description:
+          "An AI-powered platform that automates administrative workflows for professional services teams, streamlining approvals, documentation, and record-keeping while embedding safeguards to reduce errors and support audit readiness.",
+        status: "Active — Invite Only",
+      },
+    ],
+  },
+  {
+    name: "ShossX",
+    role: "Founder & President",
+    description:
+      "A product-centric holding company focused on building and scaling ventures that deliver real-world value through AI, product strategy, and execution.",
+    period: "Nov 2023 – Present",
+  },
+  {
+    name: "Milton Innovation",
+    role: "Founder",
+    description:
+      "Placeholder — description coming soon.",
+    period: "Present",
+  },
+];
+
+export interface Project {
+  name: string;
+  description: string;
+  period: string;
+  status: string;
+  association?: string;
+}
+
+export const projects: Project[] = [
+  {
+    name: "Ultron | AI Chief of Staff",
+    description:
+      "A fully autonomous AI agent team running on a single Mac Mini. One orchestrator (Claude Opus), five specialist agents coordinating across Telegram, Slack, Gmail, and a custom kanban board — all self-hosted, no cloud infrastructure. The agents research, write, code, and ship while the human sleeps.",
+    period: "Jan 2026 – Present",
+    status: "Active",
+    association: "Epilogue",
+  },
+  {
+    name: "MilTastic | Milton's Community Mesh Network",
+    description:
+      "A decentralized, off-grid wireless mesh network to support community communication and resilience during outages and emergency scenarios. Led system architecture, RF planning, and node deployment across multiple neighbourhoods.",
+    period: "Dec 2025 – Present",
+    status: "Active",
+  },
+  {
+    name: "Self-Hosted AI & Infrastructure Lab",
+    description:
+      "Built and operated a self-hosted lab environment to assess AI tools, automation workflows, and infrastructure patterns. Deployed containerised services across multiple machines using Docker and Portainer, evaluating local-first AI workflows and dedicated compute setups.",
+    period: "Jan 2020 – Present",
+    status: "Active",
+  },
+  {
+    name: "ChatPTT",
+    description:
+      "Built a system that lets any basic handheld radio speak to an AI assistant and get a spoken reply over the air. Users key up on a single simplex channel; the system captures the audio, runs STT→LLM→TTS, then transmits the answer back — no apps or special radio features required.",
+    period: "Jul 2025 – Jan 2026",
+    status: "Archived",
+    association: "Epilogue",
+  },
+  {
+    name: "Disciples | Family AI Agent",
+    description:
+      "A modular, multi-user AI agent platform enabling task execution and workflow coordination through text-based interactions. Evolved into Ultron (AI Chief of Staff) — its multi-agent routing, role-based delegation, and orchestration framework became the architectural foundation.",
+    period: "Mar 2025 – Jan 2026",
+    status: "Archived — evolved into Ultron",
+    association: "Epilogue",
+  },
+  {
+    name: "Travel With RX",
+    description:
+      "Your Global Prescription Guide. Included MCP Server implementation and SaaS implementation.",
+    period: "Aug 2024 – Dec 2025",
+    status: "Exited",
+    association: "Epilogue",
+  },
+  {
+    name: "Project Cria",
+    description:
+      "A platform where self-hosted high-powered AI machines — scattered across the globe — unite to tackle demanding workloads in real time. Distributed intelligence with on-demand access to powerful models and a seamless matchmaking system.",
+    period: "Feb 2025 – May 2025",
+    status: "Archived",
+    association: "Epilogue",
+  },
+  {
+    name: "Liteworker",
+    description:
+      "A discovery platform that aggregates and curates AI tools, helping users explore new capabilities and stay current with emerging technologies.",
+    period: "2023 – 2025",
+    status: "No Longer Maintained",
+    association: "Epilogue",
+  },
+];
+
+export interface ExperienceRole {
+  title: string;
+  company: string;
+  period: string;
+  location?: string;
+  highlights: string[];
+}
+
+export const experience: ExperienceRole[] = [
+  {
+    title: "Head of Studio & Principal Product Manager, AI & Ecosystem",
+    company: "Caseware",
+    period: "Nov 2025 – Present",
+    location: "Toronto, Ontario, Canada · Hybrid",
+    highlights: [
+      "Promoted to lead both Caseware Studio and the enterprise AI & Ecosystem mandate.",
+    ],
+  },
+  {
+    title: "Head of Studio & Principal Product Manager, AI & Automation",
+    company: "Caseware",
+    period: "Jun 2025 – Nov 2025",
+    location: "Toronto, Ontario, Canada · Hybrid",
+    highlights: [
+      "Partnered with CPO and CTO to define and operationalize the company-wide AI strategy and governance.",
+    ],
+  },
+  {
+    title: "Senior Product Manager, New Ventures",
+    company: "FacilityOS (formerly iLobby)",
+    period: "Apr 2024 – May 2025",
+    location: "Toronto, Ontario, Canada · Hybrid",
+    highlights: [
+      "Led 0-to-1 launch of ContractorOS, expanding FacilityOS into a multi-sided compliance marketplace.",
+      "Established beta-testing, Customer Advisory Board, and validated market through 100+ interviews.",
+      "Accelerated time-to-market by 50%; achieved beta in 6 months using Agile and Design Sprints.",
+      "Delivered 37% faster compliance, 23% task reduction, +20 NPS, and 90% retention.",
+      "Projected to surpass $1M ARR in the first year, driving strategic growth.",
+      "Defined AI features for FacilityOS, cutting support tickets 15% and lifting user satisfaction 20%.",
+    ],
+  },
+  {
+    title: "Advisor (AI & Business Strategy)",
+    company: "OneChart",
+    period: "Jan 2024 – Present",
+    location: "Remote",
+    highlights: [
+      "AI-Powered clinical solutions advisor.",
+    ],
+  },
+  {
+    title: "Advisor (AI & Business Strategy)",
+    company: "Monark",
+    period: "Feb 2025 – Present",
+    highlights: [],
+  },
+  {
+    title: "Advisor (Exited via Acquisition)",
+    company: "SalesBop",
+    period: "Jan 2024 – Feb 2025",
+    highlights: [
+      "Advised SalesBop on AI product strategy and scaling initiatives leading up to acquisition.",
+      "SalesBop was acquired by FliteHouse.com in 2025.",
+    ],
+  },
+  {
+    title: "Director of Product Management, Experience Platform & AI",
+    company: "Firework",
+    period: "Feb 2022 – Sep 2023",
+    location: "Toronto / San Francisco · Remote",
+    highlights: [
+      "Drove product strategy and investment instrumental in securing $150M Series B funding round led by Softbank.",
+      "Led AI integration initiatives, increasing user engagement 400% and doubling conversions.",
+      "Built and scaled 60-member global team across five product lines.",
+      "Increased informed purchase decisions by 108% and user engagement by 167% via OKRs.",
+    ],
+  },
+  {
+    title: "Senior Product Manager, Consumer Player & Content Creation",
+    company: "Firework",
+    period: "Aug 2021 – Jan 2022",
+    highlights: [
+      "Scaled content initiatives, growing DAUs 500x; expanded Fortune 500 partnerships.",
+      "Pioneered live-shopping experience, boosting conversions 21% and setting the industry standard.",
+    ],
+  },
+  {
+    title: "Senior Product Manager, Web Player & Business Portal",
+    company: "Firework",
+    period: "Feb 2021 – Jul 2021",
+    highlights: [
+      "Transitioned platform to self-serve SaaS, growing ARR 10x and enhancing customer acquisition.",
+      "Implemented AI playlist optimization, reducing churn 11.4%, enhancing accessibility by 275%.",
+    ],
+  },
+  {
+    title: "Senior Product Manager, Platform & Machine Learning",
+    company: "VerticalScope Inc.",
+    period: "Dec 2019 – Feb 2021",
+    location: "Toronto, Ontario",
+    highlights: [
+      "Transformed platform from ad-based to SaaS, unifying 1500+ sites; achieved 17% MoM growth.",
+      "Launched ML-driven recommendation engine, increasing user engagement by 50% CTR.",
+    ],
+  },
+  {
+    title: "Founder & CEO [Rebranded]",
+    company: "Epilogue Labs",
+    period: "Nov 2018 – Jan 2020",
+    location: "Toronto, Ontario",
+    highlights: [],
+  },
+];
+
+export interface Patent {
+  title: string;
+  number: string;
+  filed: string;
+}
+
+export const patents: Patent[] = [
+  {
+    title: "Multi-hosted livestream in an open web ecommerce environment",
+    number: "US20240152994A1",
+    filed: "Nov 2, 2023",
+  },
+  {
+    title: "Livestream With Large Language Model (LLM) Assist",
+    number: "US20240422399A1",
+    filed: "Aug 7, 2023",
+  },
+  {
+    title: "Short-form video usage within a frame widget environment",
+    number: "US20230377029A1",
+    filed: "May 19, 2023",
+  },
+  {
+    title: "Immediate livestreams in a short-form video ecommerce environment",
+    number: "US20240289841A1",
+    filed: "May 5, 2023",
+  },
+  {
+    title: "Connected television livestream-to-mobile device handoff in an ecommerce environment",
+    number: "US20240236434A1",
+    filed: "Jan 6, 2023",
+  },
+  {
+    title: "Multi-hosted livestream in an open web ecommerce environment",
+    number: "US20240152994A1",
+    filed: "Nov 7, 2022",
+  },
+  {
+    title: "Dynamic population of contextually relevant videos in an ecommerce environment",
+    number: "US20240119486A1",
+    filed: "Oct 10, 2022",
+  },
+  {
+    title: "Object highlighting in an ecommerce short-form video",
+    number: "US20240119509A1",
+    filed: "Oct 5, 2022",
+  },
+  {
+    title: "Manipulating video livestream background images",
+    number: "US20230403440A1",
+    filed: "Jun 10, 2022",
+  },
+  {
+    title: "Tokenizing a manipulated short-form video",
+    number: "US20230343368A1",
+    filed: "Apr 20, 2022",
+  },
+];
+
+export interface VolunteerRole {
+  title: string;
+  organization: string;
+  period: string;
+  description: string;
+  category: "mentoring" | "community" | "advisory" | "governance";
+}
+
+export const volunteering: VolunteerRole[] = [
+  {
+    title: "Expert-in-Residence — AI & Product Management",
+    organization: "DMZ",
+    period: "Jan 2025 – Present",
+    description:
+      "Providing AI product strategy guidance to high-growth startups at one of Canada's top incubators.",
+    category: "mentoring",
+  },
+  {
+    title: "Board Member",
+    organization: "Milton Community Resource Centre (MCRC)",
+    period: "Nov 2024 – Present",
+    description:
+      "Board member of a not-for-profit, multi-service and multi-site community organization focused on children and families.",
+    category: "governance",
+  },
+  {
+    title: "Lead Mentor — AI & Product Management",
+    organization: "The Forge McMaster",
+    period: "Apr 2024 – Present",
+    description:
+      "Mentoring founders at McMaster University's business incubator on AI strategy and product management.",
+    category: "mentoring",
+  },
+  {
+    title: "Advisor — Various Startups",
+    organization: "Independent",
+    period: "Jul 2018 – Present",
+    description:
+      "Specializing in AI, Product Management, Community Building, and startup strategy.",
+    category: "advisory",
+  },
+  {
+    title: "Mentor — AI & Product Management",
+    organization: "Platform Calgary",
+    period: "Mar 2024 – Dec 2025",
+    description:
+      "Mentoring founders and startups on AI adoption, product strategy, and execution.",
+    category: "mentoring",
+  },
+  {
+    title: "Independent Subject Matter Expert",
+    organization: "Tegus",
+    period: "Jan 2023 – Present",
+    description:
+      "Advising CEOs, investors, and senior leaders on AI, SaaS, and video commerce.",
+    category: "advisory",
+  },
+  {
+    title: "Independent Subject Matter Expert",
+    organization: "GLG",
+    period: "Jan 2023 – Present",
+    description:
+      "Advising CEOs, investors, and senior leaders on AI, SaaS, and video commerce.",
+    category: "advisory",
+  },
+  {
+    title: "Angel Investor",
+    organization: "Independent",
+    period: "Feb 2021 – Present",
+    description:
+      "Angel investor with a focus on science and technology companies.",
+    category: "advisory",
+  },
+  {
+    title: "Member",
+    organization: "Angel One Investor Network",
+    period: "Oct 2023 – Mar 2025",
+    description:
+      "Empowering Canadian startups by linking founders with funders.",
+    category: "advisory",
+  },
+  {
+    title: "Consultant — AI Compute",
+    organization: "Government of Canada",
+    period: "Jun 2024 – Sep 2024",
+    description:
+      "Contributed to the Canadian AI Sovereign Compute Strategy to guide Canada's efforts to develop AI infrastructure.",
+    category: "advisory",
+  },
+  {
+    title: "Organizer",
+    organization: "ProductTank Toronto",
+    period: "Mar 2024 – Jun 2025",
+    description:
+      "Led and scaled Toronto's largest product leadership community.",
+    category: "community",
+  },
+  {
+    title: "Mentor",
+    organization: "Treefrog Accelerator",
+    period: "May 2024 – Jun 2024",
+    description:
+      "Mentoring startups on scaling through product and AI strategy.",
+    category: "mentoring",
+  },
+  {
+    title: "Donor",
+    organization: "Folding@home",
+    period: "Apr 2020 – Present",
+    description:
+      "Contributing compute to distributed protein dynamics simulations for disease research.",
+    category: "community",
+  },
+];
