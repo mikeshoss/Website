@@ -26,7 +26,11 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
               <div>
                 <h3 class="font-semibold text-white">{role.title}</h3>
-                <p class="text-sm text-accent">{role.company}</p>
+                {role.url ? (
+                  <a href={role.url} target="_blank" rel="noopener noreferrer" class="text-sm text-accent hover:text-accent/70 transition-colors">{role.company} ↗</a>
+                ) : (
+                  <p class="text-sm text-accent">{role.company}</p>
+                )}
               </div>
               <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
             </div>
@@ -50,13 +54,28 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
       <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Patents ({patents.length})</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {patents.map(patent => (
-          <div class="card">
-            <h3 class="font-medium text-white text-sm leading-snug mb-2">{patent.title}</h3>
-            <div class="flex items-center gap-4 text-xs text-muted font-mono">
-              <span>{patent.number}</span>
-              <span>Filed {patent.filed}</span>
+          patent.url ? (
+            <a href={patent.url} target="_blank" rel="noopener noreferrer" class="card block group">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h3 class="font-medium text-white text-sm leading-snug">{patent.title}</h3>
+                <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent flex-shrink-0 mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </div>
+              <div class="flex items-center gap-4 text-xs text-muted font-mono">
+                <span>{patent.number}</span>
+                <span>Filed {patent.filed}</span>
+              </div>
+            </a>
+          ) : (
+            <div class="card">
+              <h3 class="font-medium text-white text-sm leading-snug mb-2">{patent.title}</h3>
+              <div class="flex items-center gap-4 text-xs text-muted font-mono">
+                <span>{patent.number}</span>
+                <span>Filed {patent.filed}</span>
+              </div>
             </div>
-          </div>
+          )
         ))}
       </div>
     </div>
@@ -71,16 +90,34 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
           <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Mentoring</h3>
           <div class="space-y-4">
             {mentoringRoles.map(role => (
-              <div class="card">
-                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
-                  <div>
-                    <h4 class="font-medium text-white text-sm">{role.title}</h4>
-                    <p class="text-sm text-accent">{role.organization}</p>
+              role.url ? (
+                <a href={role.url} target="_blank" rel="noopener noreferrer" class="card block group">
+                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
+                        <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </div>
+                      <p class="text-sm text-accent">{role.organization}</p>
+                    </div>
+                    <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
                   </div>
-                  <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                </a>
+              ) : (
+                <div class="card">
+                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
+                    <div>
+                      <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                      <p class="text-sm text-accent">{role.organization}</p>
+                    </div>
+                    <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+                  </div>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
                 </div>
-                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
-              </div>
+              )
             ))}
           </div>
         </div>
@@ -92,16 +129,34 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
           <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Board & Governance</h3>
           <div class="space-y-4">
             {governanceRoles.map(role => (
-              <div class="card">
-                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
-                  <div>
-                    <h4 class="font-medium text-white text-sm">{role.title}</h4>
-                    <p class="text-sm text-accent">{role.organization}</p>
+              role.url ? (
+                <a href={role.url} target="_blank" rel="noopener noreferrer" class="card block group">
+                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
+                        <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </div>
+                      <p class="text-sm text-accent">{role.organization}</p>
+                    </div>
+                    <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
                   </div>
-                  <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                </a>
+              ) : (
+                <div class="card">
+                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
+                    <div>
+                      <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                      <p class="text-sm text-accent">{role.organization}</p>
+                    </div>
+                    <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
+                  </div>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
                 </div>
-                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
-              </div>
+              )
             ))}
           </div>
         </div>
@@ -113,14 +168,30 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
           <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Advisory & Expert Networks</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {advisoryRoles.map(role => (
-              <div class="card">
-                <div class="flex flex-col sm:flex-start gap-1 mb-1">
-                  <h4 class="font-medium text-white text-sm">{role.title}</h4>
-                  <p class="text-sm text-accent">{role.organization}</p>
-                  <span class="text-xs text-muted font-mono">{role.period}</span>
+              role.url ? (
+                <a href={role.url} target="_blank" rel="noopener noreferrer" class="card block group">
+                  <div class="flex flex-col sm:flex-start gap-1 mb-1">
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
+                      <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </div>
+                    <p class="text-sm text-accent">{role.organization}</p>
+                    <span class="text-xs text-muted font-mono">{role.period}</span>
+                  </div>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                </a>
+              ) : (
+                <div class="card">
+                  <div class="flex flex-col sm:flex-start gap-1 mb-1">
+                    <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                    <p class="text-sm text-accent">{role.organization}</p>
+                    <span class="text-xs text-muted font-mono">{role.period}</span>
+                  </div>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
                 </div>
-                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
-              </div>
+              )
             ))}
           </div>
         </div>
@@ -132,14 +203,30 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
           <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Community</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {communityRoles.map(role => (
-              <div class="card">
-                <div class="flex flex-col sm:flex-start gap-1 mb-1">
-                  <h4 class="font-medium text-white text-sm">{role.title}</h4>
-                  <p class="text-sm text-accent">{role.organization}</p>
-                  <span class="text-xs text-muted font-mono">{role.period}</span>
+              role.url ? (
+                <a href={role.url} target="_blank" rel="noopener noreferrer" class="card block group">
+                  <div class="flex flex-col sm:flex-start gap-1 mb-1">
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
+                      <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </div>
+                    <p class="text-sm text-accent">{role.organization}</p>
+                    <span class="text-xs text-muted font-mono">{role.period}</span>
+                  </div>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                </a>
+              ) : (
+                <div class="card">
+                  <div class="flex flex-col sm:flex-start gap-1 mb-1">
+                    <h4 class="font-medium text-white text-sm">{role.title}</h4>
+                    <p class="text-sm text-accent">{role.organization}</p>
+                    <span class="text-xs text-muted font-mono">{role.period}</span>
+                  </div>
+                  <p class="text-sm text-gray-400 mt-2">{role.description}</p>
                 </div>
-                <p class="text-sm text-gray-400 mt-2">{role.description}</p>
-              </div>
+              )
             ))}
           </div>
         </div>
