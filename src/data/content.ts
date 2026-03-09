@@ -2,13 +2,13 @@ export const site = {
   name: "Mike Shoss",
   title: "Founder. Product Executive. AI Builder.",
   description:
-    "Mike Shoss is a founder, product executive, and builder of AI-native systems. 15+ years in product and software, 8 patents in AI, and hands-on experience building systems that ship.",
+    "Mike Shoss is a founder, product executive, and builder of AI-native systems. 15+ years in product and software, 10 patents in AI and video commerce, and hands-on experience building systems that ship.",
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
   email: "mike@epiloguelabs.com",
   location: "Toronto, Ontario, Canada",
-  blogUrl: "#", // placeholder — update when blog platform is chosen
+  blogUrl: "/blog",
 };
 
 export const hero = {
@@ -36,7 +36,7 @@ export const skills = [
 
 export const highlights = [
   { value: "15+", label: "Years in Product & Software" },
-  { value: "8", label: "AI Patents" },
+  { value: "10", label: "Patents" },
   { value: "$150M+", label: "Fundraising Supported" },
   { value: "3", label: "Companies Founded" },
 ];

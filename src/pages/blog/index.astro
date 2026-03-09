@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout
+  title="Blog — Mike Shoss"
+  description="Writing about AI systems, product strategy, and building things that ship."
+>
+  <section class="section-container pt-28">
+    <h1 class="section-title">Blog</h1>
+    <p class="section-subtitle">Thoughts on AI, product, and building systems that work.</p>
+
+    {posts.length === 0 ? (
+      <p class="text-muted">No posts yet. Check back soon.</p>
+    ) : (
+      <div class="space-y-6">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="card block group">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
+              <h2 class="text-xl font-semibold group-hover:text-accent transition-colors">
+                {post.data.title}
+              </h2>
+              <time class="text-sm text-muted font-mono whitespace-nowrap">
+                {post.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </time>
+            </div>
+            <p class="text-gray-400 text-sm leading-relaxed">{post.data.description}</p>
+            {post.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2 mt-3">
+                {post.data.tags.map(tag => (
+                  <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>
