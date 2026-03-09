@@ -111,9 +111,7 @@ import { site } from '../data/content';
         },
       };
 
-      const AIRTABLE_ENDPOINT = 'REPLACE_WITH_AIRTABLE_ENDPOINT';
-
-      const res = await fetch(AIRTABLE_ENDPOINT, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

@@ -2,7 +2,7 @@ export const site = {
   name: "Mike Shoss",
   title: "Founder. Product Executive. AI Builder.",
   description:
-    "Mike Shoss is a founder, product executive, and builder of AI-native systems. 15+ years in product and software, 9 patents in AI and video commerce, and hands-on experience building systems that ship.",
+    "Mike Shoss is a founder, product executive, and builder of AI-native systems. 15+ years in product and software, 10 patents in AI and video commerce, and hands-on experience building systems that ship.",
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -16,7 +16,7 @@ export const hero = {
   subheadline:
     "I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. 15+ years turning strategy into products that scale.",
   credibility:
-    "Currently leading AI & Ecosystem strategy at Caseware while running Epilogue, an AI consulting and product studio. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 9 patents. 3 companies founded.",
+    "Currently leading AI & Ecosystem strategy at Caseware while running Epilogue, an AI consulting and product studio. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 10 patents. 3 companies founded.",
   philosophy: [
     "Strategy without execution is a hobby",
     "Ship products, not slide decks",
@@ -40,7 +40,7 @@ export const highlights = [
   { value: "15+", label: "Years in Product & Software" },
   { value: "3", label: "Companies Founded" },
   { value: "$150M+", label: "Fundraising Supported" },
-  { value: "9", label: "Patents in AI & Video Commerce" },
+  { value: "10", label: "Patents in AI & Video Commerce" },
 ];
 
 export interface Company {
@@ -374,6 +374,12 @@ export const patents: Patent[] = [
     number: "US20240236434A1",
     filed: "Jan 6, 2023",
     url: "https://patents.google.com/patent/US20240236434A1",
+  },
+  {
+    title: "Multi-hosted livestream in an open web ecommerce environment",
+    number: "US20240152994A1",
+    filed: "Nov 7, 2022",
+    url: "https://patents.google.com/patent/US20240152994A1",
   },
   {
     title: "Dynamic population of contextually relevant videos in an ecommerce environment",
