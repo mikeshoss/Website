@@ -34,12 +34,9 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
               <p class="text-xs text-muted mb-2">{role.location}</p>
             )}
             {role.highlights.length > 0 && (
-              <ul class="space-y-1 mt-2">
+              <ul class="list-disc list-outside pl-5 space-y-1 mt-2 marker:text-muted">
                 {role.highlights.map(h => (
-                  <li class="text-sm text-gray-400 flex items-start gap-2">
-                    <span class="text-muted mt-1.5 flex-shrink-0">&#8226;</span>
-                    <span>{h}</span>
-                  </li>
+                  <li class="text-sm text-gray-400">{h}</li>
                 ))}
               </ul>
             )}
