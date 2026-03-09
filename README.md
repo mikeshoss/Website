@@ -6,7 +6,7 @@ A lightweight, modern personal website built with [Astro](https://astro.build) a
 
 - **Framework:** Astro (static site generator)
 - **Styling:** Tailwind CSS
-- **Deployment:** Docker (nginx)
+- **Hosting:** Cloudflare Pages
 
 ## Development
 
@@ -22,14 +22,17 @@ npm run build
 npm run preview
 ```
 
-## Docker
+## Deployment
 
-```bash
-docker build -t mikeshoss-site .
-docker run -p 8080:80 mikeshoss-site
-```
+Hosted on **Cloudflare Pages** with automatic deployments:
 
-Then visit `http://localhost:8080`.
+1. Push to `main` → site rebuilds and deploys automatically
+2. Push to any other branch → preview deployment at a unique URL
+
+**Cloudflare Pages settings:**
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node.js version: `20`
 
 ## Structure
 
