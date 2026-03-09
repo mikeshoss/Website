@@ -48,6 +48,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const airtableUrl = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(env.AIRTABLE_TABLE_NAME)}`;
 
+    const url = new URL(request.url);
+    const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+
     const airtableRes = await fetch(airtableUrl, {
       method: 'POST',
       headers: {
@@ -55,10 +58,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        typecast: true,
         fields: {
           Name: name,
           Email: email,
           Message: message,
+          Env: isLocal ? 'local' : 'production',
         },
       }),
     });
