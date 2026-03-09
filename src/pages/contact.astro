@@ -49,7 +49,7 @@ import { site } from '../data/content';
         </div>
         <button
           type="submit"
-          class="bg-accent hover:bg-accent-dim text-white font-medium px-6 py-3 rounded-lg transition-colors"
+          class="bg-accent hover:bg-accent-dim text-white font-medium px-6 py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Send message
         </button>
@@ -103,15 +103,28 @@ import { site } from '../data/content';
 
     try {
       const formData = new FormData(form);
-      const res = await fetch('/api/contact', { method: 'POST', body: formData });
-      const data = await res.json();
+      const payload = {
+        fields: {
+          Name: formData.get('name'),
+          Email: formData.get('email'),
+          Message: formData.get('message'),
+        },
+      };
+
+      const AIRTABLE_ENDPOINT = 'REPLACE_WITH_AIRTABLE_ENDPOINT';
+
+      const res = await fetch(AIRTABLE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
       if (res.ok) {
         status.textContent = "Message sent! I'll get back to you soon.";
         status.className = 'text-sm mt-2 text-green-400';
         form.reset();
       } else {
-        status.textContent = data.error || 'Something went wrong.';
+        status.textContent = 'Something went wrong. Please try emailing me directly.';
         status.className = 'text-sm mt-2 text-red-400';
       }
     } catch {
