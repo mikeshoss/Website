@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   site: 'https://mikeshoss.com',
+  server: { port: 4321 },
   integrations: [
     tailwind(),
     sitemap(),
