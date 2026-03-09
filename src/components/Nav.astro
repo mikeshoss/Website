@@ -14,7 +14,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="sticky top-0 z-50 bg-surface/80 backdrop-blur-lg border-b border-surface-200">
-  <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+  <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between" aria-label="Main navigation">
     <a href="/" class="text-lg font-semibold tracking-tight hover:text-accent transition-colors">
       {site.name}
     </a>
@@ -41,15 +41,17 @@ const currentPath = Astro.url.pathname;
       id="mobile-menu-btn"
       class="md:hidden text-muted hover:text-white p-2"
       aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
   </nav>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-surface-200 bg-surface/95 backdrop-blur-lg">
+  <nav id="mobile-menu" class="hidden md:hidden border-t border-surface-200 bg-surface/95 backdrop-blur-lg" aria-label="Mobile navigation">
     <div class="px-6 py-4 flex flex-col gap-4">
       {links.map(link => (
         <a
@@ -70,6 +72,7 @@ const currentPath = Astro.url.pathname;
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
   btn?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+    const isOpen = menu?.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', String(isOpen));
   });
 </script>
