@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { projects } from '../data/content';
+
+const activeProjects = projects.filter(p => p.status === 'Active');
+const pastProjects = projects.filter(p => p.status !== 'Active');
+---
+
+<Layout
+  title="Projects — Mike Shoss"
+  description="Side projects, experiments, and AI systems built by Mike Shoss."
+>
+  <section class="section-container pt-28">
+    <h1 class="section-title">Projects</h1>
+    <p class="section-subtitle">Things I'm building, experimenting with, and have shipped.</p>
+
+    <!-- Active -->
+    {activeProjects.length > 0 && (
+      <div class="mb-16">
+        <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-6">Active</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {activeProjects.map(project => (
+            <article class="card">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-lg font-semibold">{project.name}</h3>
+                <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  Active
+                </span>
+              </div>
+              <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+              {project.association && (
+                <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+              )}
+              <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Past -->
+    {pastProjects.length > 0 && (
+      <div>
+        <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-6">Past Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {pastProjects.map(project => (
+            <article class="card opacity-80">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-lg font-semibold">{project.name}</h3>
+                <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {project.status}
+                </span>
+              </div>
+              <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+              {project.association && (
+                <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+              )}
+              <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+</Layout>

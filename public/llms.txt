@@ -1,0 +1,66 @@
+# Mike Shoss — Personal Website
+
+## About
+Mike Shoss is a founder, product executive, and builder of AI-native systems based in Toronto, Ontario, Canada. He has 15+ years of experience in product and software, 8 AI patents, and has supported over $150M in fundraising outcomes.
+
+## Current Roles
+- Head of Studio & Principal Product Manager, AI & Ecosystem at Caseware
+- Founder & Principal at Epilogue (AI Consulting & Product Studio)
+- Founder & President at ShossX
+- Founder at Milton Innovation
+
+## Companies
+
+### Epilogue
+AI company focused on turning complex business problems into practical, high-impact AI solutions. Products include:
+- Parleh: AI meeting companion that turns notes into live action and agent-triggered execution
+- Fractal: AI-agent-driven product-truth platform (Closed Beta)
+- TrustFlow: AI-powered administrative workflow automation (Invite Only)
+
+### ShossX
+Product-centric holding company focused on building and scaling ventures through AI, product strategy, and execution.
+
+### Milton Innovation
+Coming soon.
+
+## Expertise
+- AI Agents & Orchestration
+- Product Strategy & Execution
+- Venture Building
+- Local-First AI Infrastructure
+- Enterprise AI Systems
+- Rapid Prototyping
+- Workflow Automation
+- Multi-Agent Systems
+
+## Notable Projects
+- Ultron: Autonomous AI agent team (AI Chief of Staff)
+- MilTastic: Decentralized community mesh network
+- Self-Hosted AI & Infrastructure Lab
+- ChatPTT: Radio-to-AI voice system
+- Project Cria: Distributed AI compute platform
+
+## Patents
+8 patents in AI, video commerce, and livestream technology (filed through Firework)
+
+## Volunteering & Mentoring
+- Expert-in-Residence at DMZ
+- Board Member at Milton Community Resource Centre
+- Lead Mentor at The Forge McMaster
+- Mentor at Platform Calgary
+- Organizer at ProductTank Toronto
+- Consultant to the Government of Canada on AI Compute Strategy
+- Angel Investor
+
+## Contact
+- Website: https://mikeshoss.com
+- LinkedIn: https://www.linkedin.com/in/mikeshoss
+- GitHub: https://github.com/mikeshoss
+- Epilogue: https://epiloguelabs.com
+- Email: mike@epiloguelabs.com
+
+## Philosophy
+- Useful over performative
+- Deployed over theoretical
+- Systems over gimmicks
+- Product outcomes over hype
