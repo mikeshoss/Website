@@ -48,9 +48,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const airtableUrl = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(env.AIRTABLE_TABLE_NAME)}`;
 
-    const url = new URL(request.url);
-    const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
-
     const airtableRes = await fetch(airtableUrl, {
       method: 'POST',
       headers: {
@@ -62,7 +59,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           Name: name,
           Email: email,
           Message: message,
-          Env: isLocal ? 'local' : 'production',
         },
       }),
     });
@@ -70,10 +66,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!airtableRes.ok) {
       const airtableError = await airtableRes.text();
       console.error('Airtable error:', airtableRes.status, airtableError);
-      console.error('Airtable URL used:', airtableUrl);
-      console.error('Base ID:', env.AIRTABLE_BASE_ID);
-      console.error('Table Name:', env.AIRTABLE_TABLE_NAME);
-      console.error('Token prefix:', env.AIRTABLE_TOKEN?.substring(0, 10) + '...');
       return new Response(
         JSON.stringify({ error: 'Failed to send message. Please try again.' }),
         { status: 500, headers: corsHeaders }
