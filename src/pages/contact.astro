@@ -13,11 +13,7 @@ import { site } from '../data/content';
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
       <!-- Contact Form -->
-      <form
-        action="https://formspree.io/f/placeholder"
-        method="POST"
-        class="space-y-6"
-      >
+      <form id="contact-form" class="space-y-6">
         <div>
           <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
           <input
@@ -57,6 +53,7 @@ import { site } from '../data/content';
         >
           Send message
         </button>
+        <div id="form-status" class="text-sm mt-2 hidden"></div>
       </form>
 
       <!-- Contact Info -->
@@ -91,3 +88,38 @@ import { site } from '../data/content';
     </div>
   </section>
 </Layout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const status = document.getElementById('form-status') as HTMLDivElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    status.classList.add('hidden');
+
+    try {
+      const formData = new FormData(form);
+      const res = await fetch('/api/contact', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      if (res.ok) {
+        status.textContent = "Message sent! I'll get back to you soon.";
+        status.className = 'text-sm mt-2 text-green-400';
+        form.reset();
+      } else {
+        status.textContent = data.error || 'Something went wrong.';
+        status.className = 'text-sm mt-2 text-red-400';
+      }
+    } catch {
+      status.textContent = 'Failed to send. Please try emailing me directly.';
+      status.className = 'text-sm mt-2 text-red-400';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send message';
+    }
+  });
+</script>
