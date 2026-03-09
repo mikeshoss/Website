@@ -4,12 +4,19 @@ interface Env {
   AIRTABLE_TOKEN: string;
 }
 
+function getCorsOrigin(request: Request): string {
+  const origin = request.headers.get('Origin') || '';
+  const allowed = ['https://mikeshoss.com', 'http://localhost:8788', 'http://localhost:4321'];
+  return allowed.includes(origin) ? origin : 'https://mikeshoss.com';
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
+  const corsOrigin = getCorsOrigin(request);
   const corsHeaders = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://mikeshoss.com',
+    'Access-Control-Allow-Origin': corsOrigin,
   };
 
   try {
@@ -34,7 +41,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     if (!env.AIRTABLE_BASE_ID || !env.AIRTABLE_TABLE_NAME || !env.AIRTABLE_TOKEN) {
       return new Response(
-        JSON.stringify({ error: 'Server configuration error.' }),
+        JSON.stringify({ error: 'Server configuration error. Check environment variables.' }),
         { status: 500, headers: corsHeaders }
       );
     }
@@ -61,6 +68,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
 
     if (!airtableRes.ok) {
+      const airtableError = await airtableRes.text();
+      console.error('Airtable error:', airtableRes.status, airtableError);
       return new Response(
         JSON.stringify({ error: 'Failed to send message. Please try again.' }),
         { status: 500, headers: corsHeaders }
@@ -71,7 +80,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       JSON.stringify({ success: true }),
       { status: 200, headers: corsHeaders }
     );
-  } catch {
+  } catch (err) {
+    console.error('Contact function error:', err);
     return new Response(
       JSON.stringify({ error: 'Something went wrong. Please try again.' }),
       { status: 500, headers: corsHeaders }
@@ -79,10 +89,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 };
 
-export const onRequestOptions: PagesFunction = async () => {
+export const onRequestOptions: PagesFunction = async (context) => {
+  const corsOrigin = getCorsOrigin(context.request);
   return new Response(null, {
     headers: {
-      'Access-Control-Allow-Origin': 'https://mikeshoss.com',
+      'Access-Control-Allow-Origin': corsOrigin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     },
