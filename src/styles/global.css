@@ -16,12 +16,36 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply bg-surface text-white font-sans;
   }
 
   ::selection {
     @apply bg-accent/30 text-white;
+  }
+
+  /* Focus-visible for keyboard navigation */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+    outline-style: solid;
+  }
+
+  /* Skip link */
+  .skip-link {
+    @apply absolute bg-accent text-white font-medium px-4 py-2 rounded-md z-[100];
+    left: 0.5rem;
+    top: -3rem;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
   }
 }
 
@@ -83,4 +107,17 @@
   .stagger-children > .animate-on-scroll:nth-child(4) { transition-delay: 240ms; }
   .stagger-children > .animate-on-scroll:nth-child(5) { transition-delay: 320ms; }
   .stagger-children > .animate-on-scroll:nth-child(6) { transition-delay: 400ms; }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-on-scroll {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .card:hover {
+      transform: none;
+    }
+  }
 }
