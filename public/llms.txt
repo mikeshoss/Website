@@ -1,7 +1,7 @@
 # Mike Shoss — Personal Website
 
 ## About
-Mike Shoss is a founder, product executive, and builder of AI-native systems based in Milton, Ontario, Canada. He has 15+ years of experience in product and software, 10 patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
+Mike Shoss is a founder, product executive, and builder of AI-native systems based in Milton, Ontario, Canada. He has 15+ years of experience in product and software, 9 patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
 
 ## Current Roles
 - Staff Product Manager, Vincent Enterprise at Clio
