@@ -1,8 +1,7 @@
 import type { APIRoute } from "astro";
 import { experience } from "../../data/content";
+import { collection } from "../../lib/api";
 
-export const GET: APIRoute = () => {
-  return new Response(JSON.stringify({ data: experience, count: experience.length }), {
-    headers: { "Content-Type": "application/json" },
-  });
-};
+export const prerender = true;
+
+export const GET: APIRoute = () => collection(experience);

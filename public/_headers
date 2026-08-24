@@ -4,6 +4,16 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
+# The /api/* routes are prerendered, so Cloudflare serves them as static assets
+# and the headers set in the Astro route handlers never reach production —
+# Astro writes only the response body to disk. These rules are what actually
+# ships. (src/lib/api.ts sets the same values, which is what `astro dev` uses.)
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Access-Control-Allow-Headers: Content-Type
+  Cache-Control: public, max-age=300, s-maxage=3600
+
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 

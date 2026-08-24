@@ -4,6 +4,11 @@ import { projects } from '../data/content';
 
 const activeProjects = projects.filter(p => p.status === 'Active');
 const pastProjects = projects.filter(p => p.status !== 'Active');
+
+// "Associated with Epilogue" reads correctly for a venture; for a personal
+// project it does not, so the label is derived rather than interpolated raw.
+const associationLabel = (association: string) =>
+  association === 'Personal' ? 'Personal project' : `Associated with ${association}`;
 ---
 
 <Layout
@@ -33,7 +38,7 @@ const pastProjects = projects.filter(p => p.status !== 'Active');
                 </div>
                 <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
                 {project.association && (
-                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
                 )}
                 <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
               </a>
@@ -47,7 +52,7 @@ const pastProjects = projects.filter(p => p.status !== 'Active');
                 </div>
                 <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
                 {project.association && (
-                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
                 )}
                 <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
               </article>
@@ -76,7 +81,7 @@ const pastProjects = projects.filter(p => p.status !== 'Active');
                 </div>
                 <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
                 {project.association && (
-                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
                 )}
                 <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
               </a>
@@ -90,7 +95,7 @@ const pastProjects = projects.filter(p => p.status !== 'Active');
                 </div>
                 <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
                 {project.association && (
-                  <p class="text-xs text-accent mb-3">Associated with {project.association}</p>
+                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
                 )}
                 <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
               </article>
