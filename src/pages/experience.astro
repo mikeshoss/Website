@@ -62,17 +62,23 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                   <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </div>
-              <div class="flex items-center gap-4 text-xs text-muted font-mono">
+              <div class="flex items-center flex-wrap gap-x-4 gap-y-1 text-xs text-muted font-mono">
                 <span>{patent.number}</span>
                 <span>Filed {patent.filed}</span>
+                {patent.status === 'Granted' && (
+                  <span class="text-accent">Granted {patent.granted}</span>
+                )}
               </div>
             </a>
           ) : (
             <div class="card">
               <h3 class="font-medium text-white text-sm leading-snug mb-2">{patent.title}</h3>
-              <div class="flex items-center gap-4 text-xs text-muted font-mono">
+              <div class="flex items-center flex-wrap gap-x-4 gap-y-1 text-xs text-muted font-mono">
                 <span>{patent.number}</span>
                 <span>Filed {patent.filed}</span>
+                {patent.status === 'Granted' && (
+                  <span class="text-accent">Granted {patent.granted}</span>
+                )}
               </div>
             </div>
           )

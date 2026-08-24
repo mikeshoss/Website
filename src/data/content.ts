@@ -2,7 +2,7 @@ export const site = {
   name: "Mike Shoss",
   title: "Founder. Product Executive. AI Builder.",
   description:
-    "Mike Shoss is a founder, product executive, and builder of AI-native systems. Staff Product Manager at Clio, founder of Epilogue, 15+ years in product and software, and 10 patents in AI and video commerce.",
+    "Mike Shoss is a founder, product executive, and builder of AI-native systems. Staff Product Manager at Clio, founder of Epilogue, 15+ years in product and software, and 9 patents in AI and video commerce.",
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -16,7 +16,7 @@ export const hero = {
   subheadline:
     "I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. 15+ years turning strategy into products that scale.",
   credibility:
-    "Currently a Staff Product Manager at Clio building AI for enterprise legal, while running Epilogue, an AI consulting and product studio. Previously built and launched Verity Docs at Caseware, and scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 10 patents. 3 companies founded.",
+    "Currently a Staff Product Manager at Clio building AI for enterprise legal, while running Epilogue, an AI consulting and product studio. Previously built and launched Verity Docs at Caseware, and scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 9 patents (2 granted). 3 companies founded.",
   philosophy: [
     "Strategy without execution is a hobby",
     "Ship products, not slide decks",
@@ -40,7 +40,7 @@ export const highlights = [
   { value: "15+", label: "Years in Product & Software" },
   { value: "3", label: "Companies Founded" },
   { value: "$150M+", label: "Fundraising Supported" },
-  { value: "10", label: "Patents in AI & Video Commerce" },
+  { value: "9", label: "Patents in AI & Video Commerce" },
 ];
 
 export interface Company {
@@ -385,68 +385,78 @@ export interface Patent {
   title: string;
   number: string;
   filed: string;
+  status: "Granted" | "Published";
+  granted?: string;
   url?: string;
 }
 
+// All filed with Loop Now Technologies, Inc. (Firework). Dates are filing
+// dates, not priority dates. Numbers ending in B2 are granted; A1 are
+// pre-grant publications.
 export const patents: Patent[] = [
   {
-    title: "Multi-hosted livestream in an open web ecommerce environment",
-    number: "US20240152994A1",
-    filed: "Nov 2, 2023",
-    url: "https://patents.google.com/patent/US20240152994A1",
-  },
-  {
-    title: "Livestream With Large Language Model (LLM) Assist",
+    title: "Livestream with large language model assist",
     number: "US20240422399A1",
-    filed: "Aug 7, 2023",
+    filed: "Aug 30, 2024",
+    status: "Published",
     url: "https://patents.google.com/patent/US20240422399A1",
-  },
-  {
-    title: "Short-form video usage within a frame widget environment",
-    number: "US20230377029A1",
-    filed: "May 19, 2023",
-    url: "https://patents.google.com/patent/US20230377029A1",
   },
   {
     title: "Immediate livestreams in a short-form video ecommerce environment",
     number: "US20240289841A1",
-    filed: "May 5, 2023",
+    filed: "May 3, 2024",
+    status: "Published",
     url: "https://patents.google.com/patent/US20240289841A1",
   },
   {
     title: "Connected television livestream-to-mobile device handoff in an ecommerce environment",
     number: "US20240236434A1",
-    filed: "Jan 6, 2023",
+    filed: "Jan 5, 2024",
+    status: "Published",
     url: "https://patents.google.com/patent/US20240236434A1",
   },
   {
     title: "Multi-hosted livestream in an open web ecommerce environment",
-    number: "US20240152994A1",
-    filed: "Nov 7, 2022",
-    url: "https://patents.google.com/patent/US20240152994A1",
+    number: "US12393975B2",
+    filed: "Nov 2, 2023",
+    status: "Granted",
+    granted: "Aug 19, 2025",
+    url: "https://patents.google.com/patent/US12393975B2",
   },
   {
     title: "Dynamic population of contextually relevant videos in an ecommerce environment",
     number: "US20240119486A1",
-    filed: "Oct 10, 2022",
+    filed: "Oct 9, 2023",
+    status: "Published",
     url: "https://patents.google.com/patent/US20240119486A1",
   },
   {
     title: "Object highlighting in an ecommerce short-form video",
     number: "US20240119509A1",
-    filed: "Oct 5, 2022",
+    filed: "Oct 4, 2023",
+    status: "Published",
     url: "https://patents.google.com/patent/US20240119509A1",
   },
   {
     title: "Manipulating video livestream background images",
-    number: "US20230403440A1",
-    filed: "Jun 10, 2022",
-    url: "https://patents.google.com/patent/US20230403440A1",
+    number: "US12184947B2",
+    filed: "Jun 9, 2023",
+    status: "Granted",
+    granted: "Dec 31, 2024",
+    url: "https://patents.google.com/patent/US12184947B2",
+  },
+  {
+    title: "Short-form video usage within a frame widget environment",
+    number: "US20230377029A1",
+    filed: "May 19, 2023",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20230377029A1",
   },
   {
     title: "Tokenizing a manipulated short-form video",
     number: "US20230343368A1",
-    filed: "Apr 20, 2022",
+    filed: "Apr 14, 2023",
+    status: "Published",
     url: "https://patents.google.com/patent/US20230343368A1",
   },
 ];

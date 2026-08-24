@@ -41,7 +41,7 @@ A community hub where tech enthusiasts, innovators, and creators converge to sha
 - Project Cria: Distributed AI compute platform
 
 ## Patents
-10 patents in AI, video commerce, and livestream technology (filed through Firework)
+9 patents in AI, video commerce, and livestream technology (2 granted), filed through Loop Now Technologies (Firework)
 
 ## Education
 - Sheridan College — Ontario College Advanced Diploma, Computer Systems Technology (Software Development and Network Engineering Co-op, Mobile Stream)
