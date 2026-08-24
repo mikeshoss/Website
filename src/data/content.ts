@@ -251,6 +251,15 @@ export interface Project {
 
 const projectsData: Project[] = [
   {
+    name: "The Milton Record",
+    description:
+      "A public record of what Milton is proposing, building, spending and deciding, assembled entirely from the Town's own published documents — public notices, ward development applications, council agendas and minutes, ArcGIS open data, and capital financial statements. It watches those sources for changes, says in plain English what changed, and keeps the older version so a proposal's history stays visible. Built on one rule: an unanswered question is visibly unanswered, a wrong answer is invisible — figures that do not reconcile against their source document are withheld rather than published.",
+    start: "2026",
+    status: "Active",
+    association: "Epilogue",
+    url: "https://miltonrecord.ca",
+  },
+  {
     name: "Ultron | AI Chief of Staff",
     description:
       "A fully autonomous AI agent team running on a single Mac Mini. One orchestrator (Claude Opus), five specialist agents coordinating across Telegram, Slack, Gmail, and a custom kanban board — all self-hosted, no cloud infrastructure. The agents research, write, code, and ship while the human sleeps.",
