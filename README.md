@@ -9,7 +9,7 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 - **Fonts:** Self-hosted [Inter](https://fontsource.org/fonts/inter) and [JetBrains Mono](https://fontsource.org/fonts/jetbrains-mono) via `@fontsource` (no external font requests)
 - **Content:** Markdown blog posts through Astro content collections (`astro:content`)
 - **SEO:** `@astrojs/sitemap` for automatic sitemap generation, plus per-page meta tags and JSON-LD structured data in the base layout
-- **Hosting:** Cloudflare Pages
+- **Hosting:** Cloudflare Workers (Workers Builds + static assets)
 
 ## Project Structure
 
@@ -22,8 +22,8 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 │   ├── og-image.svg
 │   ├── robots.txt
 │   ├── llms.txt
-│   ├── _headers            # Cloudflare Pages security & cache headers
-│   └── _redirects          # Cloudflare Pages redirects
+│   ├── _headers            # Cloudflare security & cache headers
+│   └── _redirects          # Cloudflare redirects
 └── src/
     ├── data/content.ts     # All site content (edit here to update text)
     ├── layouts/
@@ -75,24 +75,29 @@ npm run build     # build the static site to dist/
 npm run preview   # preview the production build locally
 ```
 
-To preview the build through the Cloudflare Pages runtime locally (requires `wrangler`):
+To preview the build through the Cloudflare Workers runtime locally (requires `wrangler`):
 
 ```bash
-npm run dev:full  # astro build && wrangler pages dev dist
+npm run dev:full  # astro build && wrangler dev
 ```
 
 ## Deployment
 
-Hosted on **Cloudflare Pages** with automatic deployments:
+Hosted on **Cloudflare Workers** with automatic deployments:
 
 1. Push to `main` → site rebuilds and deploys to production.
 2. Push to any other branch → preview deployment at a unique URL.
 
-**Cloudflare Pages settings:**
+**Cloudflare Workers Builds settings:**
 
 - Build command: `npm run build`
 - Build output directory: `dist`
 - Node.js version: `20`
+
+The dashboard build settings apply only to the production branch, so `wrangler.jsonc`
+is committed at the repo root for non-production branch builds to use. The site is
+built statically (no Astro adapter), so that config sets `assets.directory` and
+deliberately omits `main` — there is no `dist/_worker.js` entrypoint.
 
 Security and caching headers are configured in `public/_headers`, and redirects in `public/_redirects` (the www-to-apex redirect is handled by Cloudflare Redirect Rules).
 

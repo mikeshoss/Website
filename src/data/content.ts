@@ -1,22 +1,122 @@
+// Career start: Shoplogix, Jan 2011 — the first full-time professional role.
+// Earlier work (MHMD, 2006–2010) predates this and is deliberately excluded.
+const CAREER_START = { year: 2011, month: 0 }; // month is 0-indexed: 0 = January
+
+function completedYearsSince({ year, month }: { year: number; month: number }) {
+  const now = new Date();
+  let years = now.getFullYear() - year;
+  if (now.getMonth() < month) years -= 1;
+  return years;
+}
+
+// Evaluated at build time, like the copyright year in src/components/Footer.astro.
+export const yearsExperience = completedYearsSince(CAREER_START);
+
+// Discriminated union: a "Granted" patent must carry its grant date, and a
+// "Published" one must not — the grant chip in experience.astro depends on it.
+export type Patent = {
+  title: string;
+  number: string;
+  filed: string;
+  url?: string;
+} & (
+  | { status: "Granted"; granted: string }
+  | { status: "Published"; granted?: never }
+);
+
+// All filed with Loop Now Technologies, Inc. (Firework). Dates are filing
+// dates, not priority dates. Numbers ending in B2 are granted; A1 are
+// pre-grant publications.
+export const patents: Patent[] = [
+  {
+    title: "Livestream with large language model assist",
+    number: "US20240422399A1",
+    filed: "Aug 30, 2024",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20240422399A1",
+  },
+  {
+    title: "Immediate livestreams in a short-form video ecommerce environment",
+    number: "US20240289841A1",
+    filed: "May 3, 2024",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20240289841A1",
+  },
+  {
+    title: "Connected television livestream-to-mobile device handoff in an ecommerce environment",
+    number: "US20240236434A1",
+    filed: "Jan 5, 2024",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20240236434A1",
+  },
+  {
+    title: "Multi-hosted livestream in an open web ecommerce environment",
+    number: "US12393975B2",
+    filed: "Nov 2, 2023",
+    status: "Granted",
+    granted: "Aug 19, 2025",
+    url: "https://patents.google.com/patent/US12393975B2",
+  },
+  {
+    title: "Dynamic population of contextually relevant videos in an ecommerce environment",
+    number: "US20240119486A1",
+    filed: "Oct 9, 2023",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20240119486A1",
+  },
+  {
+    title: "Object highlighting in an ecommerce short-form video",
+    number: "US20240119509A1",
+    filed: "Oct 4, 2023",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20240119509A1",
+  },
+  {
+    title: "Manipulating video livestream background images",
+    number: "US12184947B2",
+    filed: "Jun 9, 2023",
+    status: "Granted",
+    granted: "Dec 31, 2024",
+    url: "https://patents.google.com/patent/US12184947B2",
+  },
+  {
+    title: "Short-form video usage within a frame widget environment",
+    number: "US20230377029A1",
+    filed: "May 19, 2023",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20230377029A1",
+  },
+  {
+    title: "Tokenizing a manipulated short-form video",
+    number: "US20230343368A1",
+    filed: "Apr 14, 2023",
+    status: "Published",
+    url: "https://patents.google.com/patent/US20230343368A1",
+  },
+];
+
+export const patentCount = patents.length;
+export const grantedPatentCount = patents.filter((p) => p.status === "Granted").length;
+
 export const site = {
   name: "Mike Shoss",
   title: "Founder. Product Executive. AI Builder.",
   description:
-    "Mike Shoss is a founder, product executive, and builder of AI-native systems. 15+ years in product and software, 10 patents in AI and video commerce, and hands-on experience building systems that ship.",
+    `Mike Shoss is a founder, product executive, and builder of AI-native systems. Staff Product Manager at Clio, founder of Epilogue, ${yearsExperience}+ years in product and software, and ${patentCount} patents in AI and video commerce.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
   email: "mike@epiloguelabs.com",
-  location: "Toronto, Ontario, Canada",
+  location: "Milton, Ontario, Canada",
   blogUrl: "/blog",
 };
 
 export const hero = {
   headline: "Founder. Product Executive. AI Builder.",
   subheadline:
-    "I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. 15+ years turning strategy into products that scale.",
+    `I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. ${yearsExperience}+ years turning strategy into products that scale.`,
   credibility:
-    "Currently leading AI & Ecosystem strategy at Caseware while running Epilogue, an AI consulting and product studio. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 10 patents. 3 companies founded.",
+    `Currently a Staff Product Manager at Clio building AI for enterprise legal, while running Epilogue, an AI consulting and product studio. Previously built and launched Verity Docs at Caseware, and scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
   philosophy: [
     "Strategy without execution is a hobby",
     "Ship products, not slide decks",
@@ -37,10 +137,10 @@ export const skills = [
 ];
 
 export const highlights = [
-  { value: "15+", label: "Years in Product & Software" },
+  { value: `${yearsExperience}+`, label: "Years in Product & Software" },
   { value: "3", label: "Companies Founded" },
   { value: "$150M+", label: "Fundraising Supported" },
-  { value: "10", label: "Patents in AI & Video Commerce" },
+  { value: `${patentCount}`, label: "Patents in AI & Video Commerce" },
 ];
 
 export interface Company {
@@ -60,16 +160,16 @@ export interface Company {
 export const companies: Company[] = [
   {
     name: "ShossX",
-    role: "Founder & President",
+    role: "Angel Investor",
     description:
-      "A product-centric holding company focused on building and scaling ventures that deliver real-world value through AI, product strategy, and execution.",
-    period: "Nov 2023 – Present",
+      "Investing in early-stage Canadian science and technology companies, with a focus on AI. Canada builds world-class startups and then outsources their scale — the gap is in speed, risk appetite, and cheque size, not talent. Active through syndicates, angel networks, and funds: CedarPeak, Angel One, Sand Hill Angels, and N49P.",
+    period: "Feb 2021 – Present",
   },
   {
     name: "Epilogue",
     role: "Founder & Principal — AI Consulting & Product Studio",
     description:
-      "An AI company focused on turning complex business problems into practical, high-impact AI solutions. We build, advise, and ship — from strategy through deployment.",
+      "An AI company focused on turning complex business problems into practical, high-impact AI solutions. Epilogue operates across two tightly integrated arms: Consulting (AI strategy and roadmaps, AI-native product and platform design, pricing, monetization, and go-to-market) and Product Studio (building and validating AI-native products end to end, then spinning them out or integrating them into partner organizations). Client and partner work includes OneChart, Saucy Protein, TakeCare, CorLibra, SalesBop, ZheroTax, Protagonist Health, and UniversoleFit.",
     period: "Nov 2023 – Present",
     url: "https://epiloguelabs.com",
     products: [
@@ -96,7 +196,7 @@ export const companies: Company[] = [
       },
     ],
   },
-  
+
   {
     name: "Milton Innovation",
     role: "Founder",
@@ -191,37 +291,51 @@ export interface ExperienceRole {
 
 export const experience: ExperienceRole[] = [
   {
-    title: "Head of Studio & Principal Product Manager, AI & Ecosystem",
-    company: "Caseware",
-    period: "Nov 2025 – Present",
-    location: "Toronto, Ontario, Canada",
+    title: "Staff Product Manager, Vincent Enterprise",
+    company: "Clio",
+    period: "Aug 2026 – Present",
     highlights: [
-      "Promoted to lead both Caseware Studio and the enterprise AI & Ecosystem mandate.",
-      "Defining the company-wide ecosystem strategy across integrations, APIs, shared services, and marketplace readiness.",
-      "Leading platform foundations—SDKs, developer experience, and cross-product standards—to enable scalable AI and third-party innovation.",
-      "Partnering with Business Development, Engineering, and Product to evaluate and execute build/partner/co-develop opportunities tied to growth metrics.",
-      "Establishing unified frameworks that connect ecosystem initiatives to activation, retention, and long-term customer value.",
-      "Steering company-wide AI strategy and governance in partnership with the CPO and CTO.",
-      "Operating Caseware Studio as a rapid-delivery engine for validated AI prototypes (24 hours) and production-ready features (one week).",
-      "Scaling AI enablement and tooling across the organisation, materially reducing delivery cycle times and improving contributor efficiency.",
-      "Maintaining ISO/IEC 42001-aligned governance, ethical AI controls, and compliance processes embedded within release pipelines.",
-      "Driving AI quality and impact metrics used for portfolio prioritisation, customer outcomes, and strategic investment decisions.",
+      "Working on AI research and matter management for enterprise law firms.",
     ],
   },
   {
-    title: "Head of Studio & Principal Product Manager, AI & Automation",
+    title: "Principal Product Manager, Ecosystem AI",
+    company: "Caseware",
+    period: "Nov 2025 – Jul 2026",
+    location: "Toronto, ON",
+    highlights: [
+      "Head of Caseware Studio, leading the enterprise AI and ecosystem mandate — AI strategy, platform extensibility, and the developer ecosystem across products, partners, and the broader audit-tech landscape.",
+      "Built and launched the Document Intelligence Agent (shipped as Verity Docs): 75% time savings against a 50% target, 97% extraction accuracy, and 100% weekly active use.",
+      "Contributed to the Verity platform launch and the MNP Agentic Pioneer Program founding partnership.",
+      "Defined the company-wide ecosystem strategy across integrations, APIs, shared services, and marketplace readiness.",
+      "Led platform foundations — SDKs, developer experience, and cross-product standards — to enable third-party and AI innovation at scale.",
+      "Partnered with Business Development, Engineering, and Product on build/partner/co-develop decisions tied to growth metrics.",
+      "Scaled Studio's delivery model across the org: validated prototypes in 24 hours, production-ready features in one week.",
+      "Maintained the ISO/IEC 42001-aligned AI Management System as governance moved from rollout into steady-state release operations.",
+      "Owned AI quality and impact metrics used for portfolio prioritization and investment decisions.",
+    ],
+  },
+  {
+    title: "Principal Product Manager, AI & Automation",
     company: "Caseware",
     period: "Jun 2025 – Nov 2025",
-    location: "Toronto, Ontario, Canada",
+    location: "Toronto, ON",
     highlights: [
-      "Partnered with CPO and CTO to define and operationalize the company-wide AI strategy and governance model, securing multi-year funding and executive buy-in across all product lines.",
-      "Founded and scaled Caseware Studios, transforming R&D velocity by enabling a 43-person product org to ship validated prototypes within 24h and production-ready AI features within one week.",
+      "Hired to build Caseware's AI function from the ground up.",
+      "Partnered with the CPO and CTO to define and operationalize the company-wide AI strategy and governance model, securing multi-year funding and executive buy-in across all product lines.",
+      "Founded and scaled Caseware Studio, transforming R&D velocity by enabling a 43-person product org to ship validated prototypes within 24h and production-ready AI features within one week.",
       "Led rollout of a company-wide AI enablement stack (custom GPTs, Copilot, Replit) and internal training program; adoption reduced cycle times by 80% and freed 15+ hours per contributor weekly.",
       "Directed cross-platform product foundations—SDKs, design systems, and telemetry pipelines—to standardize delivery, experimentation, and measurable customer impact.",
       "Implemented ISO/IEC 42001-aligned AI Management System, integrating governance, risk assessment, and ethical AI practices into release pipelines; accelerated enterprise compliance and contract velocity.",
       "Instituted AI quality and impact metrics to guide prioritization, improve retention, and inform strategic investment decisions across the product portfolio.",
       "Sponsored cross-functional working groups to align Legal, Compliance, and Product under a unified AI governance framework.",
     ],
+  },
+  {
+    title: "Advisor (AI & Business Strategy)",
+    company: "Monark",
+    period: "Feb 2025 – Present",
+    highlights: [],
   },
   {
     title: "Senior Product Manager, New Ventures",
@@ -235,18 +349,13 @@ export const experience: ExperienceRole[] = [
       "Delivered 37% faster compliance, 23% task reduction, +20 NPS, and 90% retention.",
       "Projected to surpass $1M ARR in the first year, driving strategic growth.",
       "Defined AI features for FacilityOS, cutting support tickets 15% and lifting user satisfaction 20%.",
+      "Partnered with executives to launch 3 cross-product features, boosting retention 40% in 6 months.",
     ],
   },
   {
     title: "Advisor (AI & Business Strategy)",
     company: "OneChart",
     period: "Jan 2024 – Present",
-    highlights: [],
-  },
-  {
-    title: "Advisor (AI & Business Strategy)",
-    company: "Monark",
-    period: "Feb 2025 – Present",
     highlights: [],
   },
   {
@@ -259,12 +368,12 @@ export const experience: ExperienceRole[] = [
     ],
   },
   {
-    title: "Director of Product Management, Experience Platform & AI",
+    title: "Director of Product Management, Experience Platform & Artificial Intelligence",
     company: "Firework",
     period: "Feb 2022 – Sep 2023",
     location: "Toronto / San Francisco",
     highlights: [
-      "Drove product strategy and investment instrumental in securing $150M Series B funding round led by Softbank.",
+      "Drove product strategy and investment instrumental in securing $150M Series B funding round led by Softbank; regularly briefed executives and board.",
       "Led AI integration initiatives, increasing user engagement 400% and doubling conversions.",
       "Built and scaled 60-member global team across five product lines.",
       "Increased informed purchase decisions by 108% and user engagement by 167% via OKRs.",
@@ -322,10 +431,45 @@ export const experience: ExperienceRole[] = [
     highlights: [],
   },
   {
+    title: "Product Manager & Senior Web Developer",
+    company: "Classlete",
+    period: "Oct 2013 – Sep 2014",
+    location: "Toronto, Ontario, Canada",
+    highlights: [],
+  },
+  {
+    title: "Product Manager & Producer, Web",
+    company: "Rogers Communications",
+    period: "May 2013 – Sep 2017",
+    location: "Toronto, Ontario, Canada",
+    highlights: [],
+  },
+  {
     title: "Founder & Digital Marketer",
     company: "Form Follows Function",
     period: "Jan 2013 – Dec 2017",
     location: "Toronto, Ontario, Canada",
+    highlights: [],
+  },
+  {
+    title: "Web Developer",
+    company: "SOTI",
+    period: "Jan 2013 – May 2013",
+    location: "Mississauga, Ontario, Canada",
+    highlights: [],
+  },
+  {
+    title: "Web Developer",
+    company: "RBC Capital Markets",
+    period: "Apr 2012 – Aug 2012",
+    location: "Toronto, Ontario, Canada",
+    highlights: [],
+  },
+  {
+    title: "Senior Web Developer & Scrum Master",
+    company: "Shoplogix — A Constellation Software Inc. Company",
+    period: "Jan 2011 – Apr 2012",
+    location: "Mississauga, Ontario, Canada",
     highlights: [],
   },
   {
@@ -334,76 +478,6 @@ export const experience: ExperienceRole[] = [
     period: "Jan 2006 – Aug 2010",
     location: "Toronto, Ontario, Canada",
     highlights: [],
-  },
-];
-
-export interface Patent {
-  title: string;
-  number: string;
-  filed: string;
-  url?: string;
-}
-
-export const patents: Patent[] = [
-  {
-    title: "Multi-hosted livestream in an open web ecommerce environment",
-    number: "US20240152994A1",
-    filed: "Nov 2, 2023",
-    url: "https://patents.google.com/patent/US20240152994A1",
-  },
-  {
-    title: "Livestream With Large Language Model (LLM) Assist",
-    number: "US20240422399A1",
-    filed: "Aug 7, 2023",
-    url: "https://patents.google.com/patent/US20240422399A1",
-  },
-  {
-    title: "Short-form video usage within a frame widget environment",
-    number: "US20230377029A1",
-    filed: "May 19, 2023",
-    url: "https://patents.google.com/patent/US20230377029A1",
-  },
-  {
-    title: "Immediate livestreams in a short-form video ecommerce environment",
-    number: "US20240289841A1",
-    filed: "May 5, 2023",
-    url: "https://patents.google.com/patent/US20240289841A1",
-  },
-  {
-    title: "Connected television livestream-to-mobile device handoff in an ecommerce environment",
-    number: "US20240236434A1",
-    filed: "Jan 6, 2023",
-    url: "https://patents.google.com/patent/US20240236434A1",
-  },
-  {
-    title: "Multi-hosted livestream in an open web ecommerce environment",
-    number: "US20240152994A1",
-    filed: "Nov 7, 2022",
-    url: "https://patents.google.com/patent/US20240152994A1",
-  },
-  {
-    title: "Dynamic population of contextually relevant videos in an ecommerce environment",
-    number: "US20240119486A1",
-    filed: "Oct 10, 2022",
-    url: "https://patents.google.com/patent/US20240119486A1",
-  },
-  {
-    title: "Object highlighting in an ecommerce short-form video",
-    number: "US20240119509A1",
-    filed: "Oct 5, 2022",
-    url: "https://patents.google.com/patent/US20240119509A1",
-  },
-  {
-    title: "Manipulating video livestream background images",
-    number: "US20230403440A1",
-    filed: "Jun 10, 2022",
-    url: "https://patents.google.com/patent/US20230403440A1",
-  },
-  {
-    title: "Tokenizing a manipulated short-form video",
-    number: "US20230343368A1",
-    filed: "Apr 20, 2022",
-    url: "https://patents.google.com/patent/US20230343368A1",
   },
 ];
 
@@ -418,11 +492,11 @@ export interface VolunteerRole {
 
 export const volunteering: VolunteerRole[] = [
   {
-    title: "Expert-in-Residence — AI & Product Management",
+    title: "Expert-in-Residence — Artificial Intelligence & Product Management",
     organization: "DMZ",
     period: "Jan 2025 – Present",
     description:
-      "Providing AI product strategy guidance to high-growth startups at one of Canada's top incubators.",
+      "Providing AI product strategy guidance to high-growth startups at one of Canada's top incubators. Advised 10+ startups on AI strategy, product-market fit, and scaling operations, and hosted speaking engagements for 50+ entrepreneurs, students, and industry professionals.",
     category: "mentoring",
   },
   {
@@ -434,11 +508,11 @@ export const volunteering: VolunteerRole[] = [
     category: "governance",
   },
   {
-    title: "Lead Mentor — AI & Product Management",
+    title: "Lead Mentor — Artificial Intelligence & Product Management",
     organization: "The Forge McMaster",
-    period: "Apr 2024 – Present",
+    period: "Apr 2025 – Present",
     description:
-      "Mentoring founders at McMaster University's business incubator on AI strategy and product management.",
+      "Mentoring early-stage founders at McMaster University's business incubator in Hamilton, ON on AI productization, business model optimization, GTM execution, and fundraising strategy.",
     category: "mentoring",
   },
   {
@@ -471,14 +545,6 @@ export const volunteering: VolunteerRole[] = [
     period: "Jan 2023 – Present",
     description:
       "Advising CEOs, investors, and senior leaders on AI, SaaS, and video commerce.",
-    category: "advisory",
-  },
-  {
-    title: "Angel Investor",
-    organization: "Independent",
-    period: "Feb 2021 – Present",
-    description:
-      "Angel investor with a focus on science and technology companies.",
     category: "advisory",
   },
   {
@@ -521,4 +587,38 @@ export const volunteering: VolunteerRole[] = [
       "Contributing compute to distributed protein dynamics simulations for disease research.",
     category: "community",
   },
+];
+
+export interface Education {
+  institution: string;
+  credential: string;
+  detail?: string;
+  period?: string;
+}
+
+export const education: Education[] = [
+  {
+    institution: "Sheridan College",
+    credential: "Ontario College Advanced Diploma, Computer Systems Technology",
+    detail:
+      "Software Development and Network Engineering Co-op — Mobile Stream",
+  },
+  {
+    institution: "Product School",
+    credential: "Software Product Management (SPM)",
+    period: "2018",
+  },
+];
+
+export interface Certification {
+  name: string;
+  issuer?: string;
+}
+
+export const certifications: Certification[] = [
+  { name: "Certified ScrumMaster (CSM)" },
+  { name: "Segment University — Advanced Products [Protocols]" },
+  { name: "Advanced SEO" },
+  { name: "Social Marketing" },
+  { name: "Amateur Radio Operator Certificate" },
 ];

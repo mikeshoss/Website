@@ -1,0 +1,21 @@
+{
+  // Static-assets Worker for the Astro build output.
+  //
+  // Committed so that non-production branch builds work: Cloudflare applies the
+  // dashboard build settings only to the production branch, so preview builds on
+  // other branches need this config in the repo.
+  //
+  // Deliberately NOT set: "main". Astro builds this site statically (no adapter
+  // in astro.config.mjs), so no dist/_worker.js entrypoint is produced. The
+  // config Cloudflare auto-generated on the cloudflare/workers-autoconfig branch
+  // points main at dist/_worker.js/index.js, which this build never creates.
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "personalwebsite",
+  "compatibility_date": "2026-06-12",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "dist"
+  }
+}
