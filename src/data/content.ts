@@ -1,3 +1,33 @@
+import { formatDate, formatPeriod } from "../lib/dates";
+
+/**
+ * Content is authored with machine-readable ISO dates so the JSON API, the
+ * JSON Resume export and the MCP server can emit real dates. The display
+ * strings the pages render are derived here, so a date has one home.
+ *
+ * Education keeps its own hand-written `period` string: those entries have no
+ * reliable month-level dates, and one has no date at all.
+ */
+type Dated = { start: string; end?: string };
+
+function withPeriod<T extends Dated>(items: T[]): (T & { period: string })[] {
+  return items.map((item) => ({
+    ...item,
+    period: formatPeriod(item.start, item.end),
+  }));
+}
+
+/** Keeps the Patent discriminated union intact while adding display dates. */
+function withFiledLabel<T extends { filed: string; granted?: string }>(
+  items: T[],
+): (T & { filedLabel: string; grantedLabel?: string })[] {
+  return items.map((item) => ({
+    ...item,
+    filedLabel: formatDate(item.filed),
+    ...(item.granted ? { grantedLabel: formatDate(item.granted) } : {}),
+  }));
+}
+
 // Career start: Shoplogix, Jan 2011 — the first full-time professional role.
 // Earlier work (MHMD, 2006–2010) predates this and is deliberately excluded.
 const CAREER_START = { year: 2011, month: 0 }; // month is 0-indexed: 0 = January
@@ -27,73 +57,75 @@ export type Patent = {
 // All filed with Loop Now Technologies, Inc. (Firework). Dates are filing
 // dates, not priority dates. Numbers ending in B2 are granted; A1 are
 // pre-grant publications.
-export const patents: Patent[] = [
+const patentsData: Patent[] = [
   {
     title: "Livestream with large language model assist",
     number: "US20240422399A1",
-    filed: "Aug 30, 2024",
+    filed: "2024-08-30",
     status: "Published",
     url: "https://patents.google.com/patent/US20240422399A1",
   },
   {
     title: "Immediate livestreams in a short-form video ecommerce environment",
     number: "US20240289841A1",
-    filed: "May 3, 2024",
+    filed: "2024-05-03",
     status: "Published",
     url: "https://patents.google.com/patent/US20240289841A1",
   },
   {
     title: "Connected television livestream-to-mobile device handoff in an ecommerce environment",
     number: "US20240236434A1",
-    filed: "Jan 5, 2024",
+    filed: "2024-01-05",
     status: "Published",
     url: "https://patents.google.com/patent/US20240236434A1",
   },
   {
     title: "Multi-hosted livestream in an open web ecommerce environment",
     number: "US12393975B2",
-    filed: "Nov 2, 2023",
+    filed: "2023-11-02",
     status: "Granted",
-    granted: "Aug 19, 2025",
+    granted: "2025-08-19",
     url: "https://patents.google.com/patent/US12393975B2",
   },
   {
     title: "Dynamic population of contextually relevant videos in an ecommerce environment",
     number: "US20240119486A1",
-    filed: "Oct 9, 2023",
+    filed: "2023-10-09",
     status: "Published",
     url: "https://patents.google.com/patent/US20240119486A1",
   },
   {
     title: "Object highlighting in an ecommerce short-form video",
     number: "US20240119509A1",
-    filed: "Oct 4, 2023",
+    filed: "2023-10-04",
     status: "Published",
     url: "https://patents.google.com/patent/US20240119509A1",
   },
   {
     title: "Manipulating video livestream background images",
     number: "US12184947B2",
-    filed: "Jun 9, 2023",
+    filed: "2023-06-09",
     status: "Granted",
-    granted: "Dec 31, 2024",
+    granted: "2024-12-31",
     url: "https://patents.google.com/patent/US12184947B2",
   },
   {
     title: "Short-form video usage within a frame widget environment",
     number: "US20230377029A1",
-    filed: "May 19, 2023",
+    filed: "2023-05-19",
     status: "Published",
     url: "https://patents.google.com/patent/US20230377029A1",
   },
   {
     title: "Tokenizing a manipulated short-form video",
     number: "US20230343368A1",
-    filed: "Apr 14, 2023",
+    filed: "2023-04-14",
     status: "Published",
     url: "https://patents.google.com/patent/US20230343368A1",
   },
 ];
+
+export const patents = withFiledLabel(patentsData);
 
 export const patentCount = patents.length;
 export const grantedPatentCount = patents.filter((p) => p.status === "Granted").length;
@@ -147,7 +179,8 @@ export interface Company {
   name: string;
   role: string;
   description: string;
-  period: string;
+  start: string;
+  end?: string;
   url?: string;
   products?: {
     name: string;
@@ -157,20 +190,20 @@ export interface Company {
   }[];
 }
 
-export const companies: Company[] = [
+const companiesData: Company[] = [
   {
     name: "ShossX",
     role: "Angel Investor",
     description:
       "Investing in early-stage Canadian science and technology companies, with a focus on AI. Canada builds world-class startups and then outsources their scale — the gap is in speed, risk appetite, and cheque size, not talent. Active through syndicates, angel networks, and funds: CedarPeak, Angel One, Sand Hill Angels, and N49P.",
-    period: "Feb 2021 – Present",
+    start: "2021-02",
   },
   {
     name: "Epilogue",
     role: "Founder & Principal — AI Consulting & Product Studio",
     description:
       "An AI company focused on turning complex business problems into practical, high-impact AI solutions. Epilogue operates across two tightly integrated arms: Consulting (AI strategy and roadmaps, AI-native product and platform design, pricing, monetization, and go-to-market) and Product Studio (building and validating AI-native products end to end, then spinning them out or integrating them into partner organizations). Client and partner work includes OneChart, Saucy Protein, TakeCare, CorLibra, SalesBop, ZheroTax, Protagonist Health, and UniversoleFit.",
-    period: "Nov 2023 – Present",
+    start: "2023-11",
     url: "https://epiloguelabs.com",
     products: [
       {
@@ -202,25 +235,26 @@ export const companies: Company[] = [
     role: "Founder",
     description:
       "This is a thriving hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.",
-    period: "Nov 2023 – Present",
+    start: "2023-11",
   },
 ];
 
 export interface Project {
   name: string;
   description: string;
-  period: string;
+  start: string;
+  end?: string;
   status: string;
   association?: string;
   url?: string;
 }
 
-export const projects: Project[] = [
+const projectsData: Project[] = [
   {
     name: "Ultron | AI Chief of Staff",
     description:
       "A fully autonomous AI agent team running on a single Mac Mini. One orchestrator (Claude Opus), five specialist agents coordinating across Telegram, Slack, Gmail, and a custom kanban board — all self-hosted, no cloud infrastructure. The agents research, write, code, and ship while the human sleeps.",
-    period: "Jan 2026 – Present",
+    start: "2026-01",
     status: "Active",
     association: "Epilogue",
   },
@@ -228,21 +262,22 @@ export const projects: Project[] = [
     name: "MilTastic | Milton's Community Mesh Network",
     description:
       "A decentralized, off-grid wireless mesh network to support community communication and resilience during outages and emergency scenarios. Led system architecture, RF planning, and node deployment across multiple neighbourhoods.",
-    period: "Dec 2025 – Present",
+    start: "2025-12",
     status: "Active",
   },
   {
     name: "Self-Hosted AI & Infrastructure Lab",
     description:
       "Built and operated a self-hosted lab environment to assess AI tools, automation workflows, and infrastructure patterns. Deployed containerised services across multiple machines using Docker and Portainer, evaluating local-first AI workflows and dedicated compute setups.",
-    period: "Jan 2020 – Present",
+    start: "2020-01",
     status: "Active",
   },
   {
     name: "ChatPTT",
     description:
       "Built a system that lets any basic handheld radio speak to an AI assistant and get a spoken reply over the air. Users key up on a single simplex channel; the system captures the audio, runs STT→LLM→TTS, then transmits the answer back — no apps or special radio features required.",
-    period: "Jul 2025 – Jan 2026",
+    start: "2025-07",
+    end: "2026-01",
     status: "Archived",
     association: "Epilogue",
   },
@@ -250,7 +285,8 @@ export const projects: Project[] = [
     name: "Disciples | Family AI Agent",
     description:
       "A modular, multi-user AI agent platform enabling task execution and workflow coordination through text-based interactions. Evolved into Ultron (AI Chief of Staff) — its multi-agent routing, role-based delegation, and orchestration framework became the architectural foundation.",
-    period: "Mar 2025 – Jan 2026",
+    start: "2025-03",
+    end: "2026-01",
     status: "Archived — evolved into Ultron",
     association: "Epilogue",
   },
@@ -258,7 +294,8 @@ export const projects: Project[] = [
     name: "Travel With RX",
     description:
       "Your Global Prescription Guide. Included MCP Server implementation and SaaS implementation.",
-    period: "Aug 2024 – Dec 2025",
+    start: "2024-08",
+    end: "2025-12",
     status: "Exited",
     association: "Epilogue",
   },
@@ -266,7 +303,8 @@ export const projects: Project[] = [
     name: "Project Cria",
     description:
       "A platform where self-hosted high-powered AI machines — scattered across the globe — unite to tackle demanding workloads in real time. Distributed intelligence with on-demand access to powerful models and a seamless matchmaking system.",
-    period: "Feb 2025 – May 2025",
+    start: "2025-02",
+    end: "2025-05",
     status: "Archived",
     association: "Epilogue",
   },
@@ -274,7 +312,8 @@ export const projects: Project[] = [
     name: "Liteworker",
     description:
       "A discovery platform that aggregates and curates AI tools, helping users explore new capabilities and stay current with emerging technologies.",
-    period: "2023 – 2025",
+    start: "2023",
+    end: "2025",
     status: "No Longer Maintained",
     association: "Epilogue",
   },
@@ -283,17 +322,18 @@ export const projects: Project[] = [
 export interface ExperienceRole {
   title: string;
   company: string;
-  period: string;
+  start: string;
+  end?: string;
   location?: string;
   highlights: string[];
   url?: string;
 }
 
-export const experience: ExperienceRole[] = [
+const experienceData: ExperienceRole[] = [
   {
     title: "Staff Product Manager, Vincent Enterprise",
     company: "Clio",
-    period: "Aug 2026 – Present",
+    start: "2026-08",
     highlights: [
       "Working on AI research and matter management for enterprise law firms.",
     ],
@@ -301,7 +341,8 @@ export const experience: ExperienceRole[] = [
   {
     title: "Principal Product Manager, Ecosystem AI",
     company: "Caseware",
-    period: "Nov 2025 – Jul 2026",
+    start: "2025-11",
+    end: "2026-07",
     location: "Toronto, ON",
     highlights: [
       "Head of Caseware Studio, leading the enterprise AI and ecosystem mandate — AI strategy, platform extensibility, and the developer ecosystem across products, partners, and the broader audit-tech landscape.",
@@ -318,7 +359,8 @@ export const experience: ExperienceRole[] = [
   {
     title: "Principal Product Manager, AI & Automation",
     company: "Caseware",
-    period: "Jun 2025 – Nov 2025",
+    start: "2025-06",
+    end: "2025-11",
     location: "Toronto, ON",
     highlights: [
       "Hired to build Caseware's AI function from the ground up.",
@@ -334,13 +376,14 @@ export const experience: ExperienceRole[] = [
   {
     title: "Advisor (AI & Business Strategy)",
     company: "Monark",
-    period: "Feb 2025 – Present",
+    start: "2025-02",
     highlights: [],
   },
   {
     title: "Senior Product Manager, New Ventures",
     company: "FacilityOS (formerly iLobby)",
-    period: "Apr 2024 – May 2025",
+    start: "2024-04",
+    end: "2025-05",
     location: "Toronto, Ontario, Canada",
     highlights: [
       "Led 0-to-1 launch of ContractorOS, expanding FacilityOS into a multi-sided compliance marketplace.",
@@ -355,13 +398,14 @@ export const experience: ExperienceRole[] = [
   {
     title: "Advisor (AI & Business Strategy)",
     company: "OneChart",
-    period: "Jan 2024 – Present",
+    start: "2024-01",
     highlights: [],
   },
   {
     title: "Advisor (Exited via Acquisition)",
     company: "SalesBop",
-    period: "Jan 2024 – Feb 2025",
+    start: "2024-01",
+    end: "2025-02",
     highlights: [
       "Advised SalesBop on AI product strategy and scaling initiatives leading up to acquisition.",
       "SalesBop was acquired by FliteHouse.com in 2025.",
@@ -370,7 +414,8 @@ export const experience: ExperienceRole[] = [
   {
     title: "Director of Product Management, Experience Platform & Artificial Intelligence",
     company: "Firework",
-    period: "Feb 2022 – Sep 2023",
+    start: "2022-02",
+    end: "2023-09",
     location: "Toronto / San Francisco",
     highlights: [
       "Drove product strategy and investment instrumental in securing $150M Series B funding round led by Softbank; regularly briefed executives and board.",
@@ -382,7 +427,8 @@ export const experience: ExperienceRole[] = [
   {
     title: "Senior Product Manager, Consumer Player & Content Creation",
     company: "Firework",
-    period: "Aug 2021 – Jan 2022",
+    start: "2021-08",
+    end: "2022-01",
     location: "Toronto / San Francisco",
     highlights: [
       "Scaled content initiatives, growing DAUs 500x; expanded Fortune 500 partnerships.",
@@ -392,7 +438,8 @@ export const experience: ExperienceRole[] = [
   {
     title: "Senior Product Manager, Web Player & Business Portal",
     company: "Firework",
-    period: "Feb 2021 – Jul 2021",
+    start: "2021-02",
+    end: "2021-07",
     location: "Toronto / San Francisco",
     highlights: [
       "Transitioned platform to self-serve SaaS, growing ARR 10x and enhancing customer acquisition.",
@@ -402,7 +449,8 @@ export const experience: ExperienceRole[] = [
   {
     title: "Senior Product Manager, Platform & Machine Learning",
     company: "VerticalScope Inc.",
-    period: "Dec 2019 – Feb 2021",
+    start: "2019-12",
+    end: "2021-02",
     location: "Toronto, Ontario, Canada",
     highlights: [
       "Transformed platform from ad-based to SaaS, unifying 1500+ sites; achieved 17% MoM growth.",
@@ -412,70 +460,80 @@ export const experience: ExperienceRole[] = [
   {
     title: "Founder & CEO [Rebranded]",
     company: "Epilogue Labs",
-    period: "Nov 2018 – Jan 2020",
+    start: "2018-11",
+    end: "2020-01",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Product Manager, Web & Artificial Intelligence",
     company: "GryphTech",
-    period: "Sep 2018 – Nov 2019",
+    start: "2018-09",
+    end: "2019-11",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Business Mentor & Fractional Product Manager",
     company: "ShossX",
-    period: "Dec 2017 – Sep 2018",
+    start: "2017-12",
+    end: "2018-09",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Product Manager & Senior Web Developer",
     company: "Classlete",
-    period: "Oct 2013 – Sep 2014",
+    start: "2013-10",
+    end: "2014-09",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Product Manager & Producer, Web",
     company: "Rogers Communications",
-    period: "May 2013 – Sep 2017",
+    start: "2013-05",
+    end: "2017-09",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Founder & Digital Marketer",
     company: "Form Follows Function",
-    period: "Jan 2013 – Dec 2017",
+    start: "2013-01",
+    end: "2017-12",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Web Developer",
     company: "SOTI",
-    period: "Jan 2013 – May 2013",
+    start: "2013-01",
+    end: "2013-05",
     location: "Mississauga, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Web Developer",
     company: "RBC Capital Markets",
-    period: "Apr 2012 – Aug 2012",
+    start: "2012-04",
+    end: "2012-08",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Senior Web Developer & Scrum Master",
     company: "Shoplogix — A Constellation Software Inc. Company",
-    period: "Jan 2011 – Apr 2012",
+    start: "2011-01",
+    end: "2012-04",
     location: "Mississauga, Ontario, Canada",
     highlights: [],
   },
   {
     title: "Software Developer - iOS, Android and PSPOS",
     company: "MHMD",
-    period: "Jan 2006 – Aug 2010",
+    start: "2006-01",
+    end: "2010-08",
     location: "Toronto, Ontario, Canada",
     highlights: [],
   },
@@ -484,17 +542,18 @@ export const experience: ExperienceRole[] = [
 export interface VolunteerRole {
   title: string;
   organization: string;
-  period: string;
+  start: string;
+  end?: string;
   description: string;
   category: "mentoring" | "community" | "advisory" | "governance";
   url?: string;
 }
 
-export const volunteering: VolunteerRole[] = [
+const volunteeringData: VolunteerRole[] = [
   {
     title: "Expert-in-Residence — Artificial Intelligence & Product Management",
     organization: "DMZ",
-    period: "Jan 2025 – Present",
+    start: "2025-01",
     description:
       "Providing AI product strategy guidance to high-growth startups at one of Canada's top incubators. Advised 10+ startups on AI strategy, product-market fit, and scaling operations, and hosted speaking engagements for 50+ entrepreneurs, students, and industry professionals.",
     category: "mentoring",
@@ -502,7 +561,7 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Board Member",
     organization: "Milton Community Resource Centre (MCRC)",
-    period: "Nov 2024 – Present",
+    start: "2024-11",
     description:
       "Board member of a not-for-profit, multi-service and multi-site community organization focused on children and families.",
     category: "governance",
@@ -510,7 +569,7 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Lead Mentor — Artificial Intelligence & Product Management",
     organization: "The Forge McMaster",
-    period: "Apr 2025 – Present",
+    start: "2025-04",
     description:
       "Mentoring early-stage founders at McMaster University's business incubator in Hamilton, ON on AI productization, business model optimization, GTM execution, and fundraising strategy.",
     category: "mentoring",
@@ -518,7 +577,7 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Advisor — Various Startups",
     organization: "Independent",
-    period: "Jul 2018 – Present",
+    start: "2018-07",
     description:
       "Specializing in AI, Product Management, Community Building, and startup strategy.",
     category: "advisory",
@@ -526,7 +585,8 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Mentor — AI & Product Management",
     organization: "Platform Calgary",
-    period: "Mar 2024 – Dec 2025",
+    start: "2024-03",
+    end: "2025-12",
     description:
       "Mentoring founders and startups on AI adoption, product strategy, and execution.",
     category: "mentoring",
@@ -534,7 +594,7 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Independent Subject Matter Expert",
     organization: "Tegus",
-    period: "Jan 2023 – Present",
+    start: "2023-01",
     description:
       "Advising CEOs, investors, and senior leaders on AI, SaaS, and video commerce.",
     category: "advisory",
@@ -542,7 +602,7 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Independent Subject Matter Expert",
     organization: "GLG",
-    period: "Jan 2023 – Present",
+    start: "2023-01",
     description:
       "Advising CEOs, investors, and senior leaders on AI, SaaS, and video commerce.",
     category: "advisory",
@@ -550,7 +610,8 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Member",
     organization: "Angel One Investor Network",
-    period: "Oct 2023 – Mar 2025",
+    start: "2023-10",
+    end: "2025-03",
     description:
       "Empowering Canadian startups by linking founders with funders.",
     category: "advisory",
@@ -558,7 +619,8 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Consultant — AI Compute",
     organization: "Government of Canada",
-    period: "Jun 2024 – Sep 2024",
+    start: "2024-06",
+    end: "2024-09",
     description:
       "Contributed to the Canadian AI Sovereign Compute Strategy to guide Canada's efforts to develop AI infrastructure.",
     category: "advisory",
@@ -566,7 +628,8 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Organizer",
     organization: "ProductTank Toronto",
-    period: "Mar 2024 – Jun 2025",
+    start: "2024-03",
+    end: "2025-06",
     description:
       "Led and scaled Toronto's largest product leadership community.",
     category: "community",
@@ -574,7 +637,8 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Mentor",
     organization: "Treefrog Accelerator",
-    period: "May 2024 – Jun 2024",
+    start: "2024-05",
+    end: "2024-06",
     description:
       "Mentoring startups on scaling through product and AI strategy.",
     category: "mentoring",
@@ -582,7 +646,7 @@ export const volunteering: VolunteerRole[] = [
   {
     title: "Donor",
     organization: "Folding@home",
-    period: "Apr 2020 – Present",
+    start: "2020-04",
     description:
       "Contributing compute to distributed protein dynamics simulations for disease research.",
     category: "community",
@@ -622,3 +686,8 @@ export const certifications: Certification[] = [
   { name: "Social Marketing" },
   { name: "Amateur Radio Operator Certificate" },
 ];
+
+export const companies = withPeriod(companiesData);
+export const projects = withPeriod(projectsData);
+export const experience = withPeriod(experienceData);
+export const volunteering = withPeriod(volunteeringData);
