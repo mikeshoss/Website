@@ -3,19 +3,25 @@ import {
   site,
   hero,
   yearsExperience,
-  patents,
+  skills,
+  patentCount,
+  grantedPatentCount,
   education,
   certifications,
 } from "../data/content";
 
-// Generated from src/data/content.ts so it can never drift from the site itself.
+// Partly generated from src/data/content.ts. These sections derive from the data
+// and stay in sync automatically: About (location, years, patent count),
+// Expertise, Patents, Education, Certifications, Contact, Philosophy.
+//
+// These are prose maintained by hand in THIS file and will not follow
+// content.ts: Current Roles, Companies, Notable Projects, Volunteering.
+// Update them here when the corresponding data changes.
 export const GET: APIRoute = () => {
-  const grantedCount = patents.filter((p) => p.status === "Granted").length;
-
   const body = `# Mike Shoss — Personal Website
 
 ## About
-Mike Shoss is a founder, product executive, and builder of AI-native systems based in ${site.location}. He has ${yearsExperience}+ years of experience in product and software, ${patents.length} patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
+Mike Shoss is a founder, product executive, and builder of AI-native systems based in ${site.location}. He has ${yearsExperience}+ years of experience in product and software, ${patentCount} patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
 
 ## Current Roles
 - Staff Product Manager, Vincent Enterprise at Clio
@@ -38,14 +44,7 @@ Angel investing in early-stage Canadian science and technology companies, with a
 A community hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.
 
 ## Expertise
-- AI Agents & Orchestration
-- Product Strategy & Execution
-- Venture Building
-- Local-First AI Infrastructure
-- Enterprise AI Systems
-- Rapid Prototyping
-- Workflow Automation
-- Multi-Agent Systems
+${skills.map((s) => `- ${s}`).join("\n")}
 
 ## Notable Projects
 - Ultron: Autonomous AI agent team (AI Chief of Staff)
@@ -55,7 +54,7 @@ A community hub where tech enthusiasts, innovators, and creators converge to sha
 - Project Cria: Distributed AI compute platform
 
 ## Patents
-${patents.length} patents in AI, video commerce, and livestream technology (${grantedCount} granted), filed through Loop Now Technologies (Firework)
+${patentCount} patents in AI, video commerce, and livestream technology (${grantedPatentCount} granted), filed through Loop Now Technologies (Firework)
 
 ## Education
 ${education

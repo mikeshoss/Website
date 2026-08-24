@@ -9,7 +9,7 @@
   // in astro.config.mjs), so no dist/_worker.js entrypoint is produced. The
   // config Cloudflare auto-generated on the cloudflare/workers-autoconfig branch
   // points main at dist/_worker.js/index.js, which this build never creates.
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "personalwebsite",
   "compatibility_date": "2026-06-12",
   "observability": {
