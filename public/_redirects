@@ -1,1 +1,7 @@
 # www-to-apex redirect is handled by Cloudflare Redirect Rules
+
+# Blog temporarily removed from the site. The pages under src/pages/blog/ and the
+# post in src/content/blog/ are intentionally still in the repo — these two rules
+# are what make the blog unreachable. Delete them to bring the blog back.
+/blog      /  301
+/blog/*    /  301
