@@ -1,8 +1,22 @@
+// Career start: Shoplogix, Jan 2011 — the first full-time professional role.
+// Earlier work (MHMD, 2006–2010) predates this and is deliberately excluded.
+const CAREER_START = { year: 2011, month: 0 }; // month is 0-indexed: 0 = January
+
+function completedYearsSince({ year, month }: { year: number; month: number }) {
+  const now = new Date();
+  let years = now.getFullYear() - year;
+  if (now.getMonth() < month) years -= 1;
+  return years;
+}
+
+// Evaluated at build time, like the copyright year in src/components/Footer.astro.
+export const yearsExperience = completedYearsSince(CAREER_START);
+
 export const site = {
   name: "Mike Shoss",
   title: "Founder. Product Executive. AI Builder.",
   description:
-    "Mike Shoss is a founder, product executive, and builder of AI-native systems. Staff Product Manager at Clio, founder of Epilogue, 15+ years in product and software, and 9 patents in AI and video commerce.",
+    `Mike Shoss is a founder, product executive, and builder of AI-native systems. Staff Product Manager at Clio, founder of Epilogue, ${yearsExperience}+ years in product and software, and 9 patents in AI and video commerce.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -14,7 +28,7 @@ export const site = {
 export const hero = {
   headline: "Founder. Product Executive. AI Builder.",
   subheadline:
-    "I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. 15+ years turning strategy into products that scale.",
+    `I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. ${yearsExperience}+ years turning strategy into products that scale.`,
   credibility:
     "Currently a Staff Product Manager at Clio building AI for enterprise legal, while running Epilogue, an AI consulting and product studio. Previously built and launched Verity Docs at Caseware, and scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. 9 patents (2 granted). 3 companies founded.",
   philosophy: [
@@ -37,7 +51,7 @@ export const skills = [
 ];
 
 export const highlights = [
-  { value: "15+", label: "Years in Product & Software" },
+  { value: `${yearsExperience}+`, label: "Years in Product & Software" },
   { value: "3", label: "Companies Founded" },
   { value: "$150M+", label: "Fundraising Supported" },
   { value: "9", label: "Patents in AI & Video Commerce" },

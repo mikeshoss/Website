@@ -1,7 +1,21 @@
-# Mike Shoss — Personal Website
+import type { APIRoute } from "astro";
+import {
+  site,
+  hero,
+  yearsExperience,
+  patents,
+  education,
+  certifications,
+} from "../data/content";
+
+// Generated from src/data/content.ts so it can never drift from the site itself.
+export const GET: APIRoute = () => {
+  const grantedCount = patents.filter((p) => p.status === "Granted").length;
+
+  const body = `# Mike Shoss — Personal Website
 
 ## About
-Mike Shoss is a founder, product executive, and builder of AI-native systems based in Milton, Ontario, Canada. He has 15+ years of experience in product and software, 9 patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
+Mike Shoss is a founder, product executive, and builder of AI-native systems based in ${site.location}. He has ${yearsExperience}+ years of experience in product and software, ${patents.length} patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
 
 ## Current Roles
 - Staff Product Manager, Vincent Enterprise at Clio
@@ -41,18 +55,18 @@ A community hub where tech enthusiasts, innovators, and creators converge to sha
 - Project Cria: Distributed AI compute platform
 
 ## Patents
-9 patents in AI, video commerce, and livestream technology (2 granted), filed through Loop Now Technologies (Firework)
+${patents.length} patents in AI, video commerce, and livestream technology (${grantedCount} granted), filed through Loop Now Technologies (Firework)
 
 ## Education
-- Sheridan College — Ontario College Advanced Diploma, Computer Systems Technology (Software Development and Network Engineering Co-op, Mobile Stream)
-- Product School — Software Product Management (SPM), 2018
+${education
+  .map(
+    (e) =>
+      `- ${e.institution} — ${e.credential}${e.detail ? ` (${e.detail})` : ""}${e.period ? `, ${e.period}` : ""}`,
+  )
+  .join("\n")}
 
 ## Certifications
-- Certified ScrumMaster (CSM)
-- Segment University — Advanced Products [Protocols]
-- Advanced SEO
-- Social Marketing
-- Amateur Radio Operator Certificate
+${certifications.map((c) => `- ${c.name}`).join("\n")}
 
 ## Volunteering & Mentoring
 - Expert-in-Residence at DMZ
@@ -63,14 +77,17 @@ A community hub where tech enthusiasts, innovators, and creators converge to sha
 - Consultant to the Government of Canada on AI Compute Strategy
 
 ## Contact
-- Website: https://mikeshoss.com
-- LinkedIn: https://www.linkedin.com/in/mikeshoss
-- GitHub: https://github.com/mikeshoss
+- Website: ${site.url}
+- LinkedIn: ${site.linkedin}
+- GitHub: ${site.github}
 - Epilogue: https://epiloguelabs.com
-- Email: mike@epiloguelabs.com
+- Email: ${site.email}
 
 ## Philosophy
-- Strategy without execution is a hobby
-- Ship products, not slide decks
-- AI should solve real problems
-- Build for outcomes, not applause
+${hero.philosophy.map((p) => `- ${p}`).join("\n")}
+`;
+
+  return new Response(body, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+};
