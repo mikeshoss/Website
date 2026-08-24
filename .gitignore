@@ -4,6 +4,9 @@ node_modules/
 # Build output
 dist/
 
+# Wrangler local dev state (miniflare caches)
+.wrangler/
+
 # Environment
 .env
 .env.*

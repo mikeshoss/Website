@@ -7,6 +7,8 @@ export default defineConfig({
   server: { port: 4321 },
   integrations: [
     tailwind(),
-    sitemap(),
+    // Blog is temporarily removed from the site (see public/_redirects), so its
+    // pages must not be advertised in the sitemap while they redirect away.
+    sitemap({ filter: (page) => !page.includes('/blog') }),
   ],
 });
