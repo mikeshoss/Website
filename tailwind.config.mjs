@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  // Only the file types that actually emit markup. The .ts modules under src/
+  // hold content and API code, and Tailwind's scanner would otherwise pull
+  // stray utilities out of ordinary prose in them (e.g. the word "static").
+  content: ['./src/**/*.{astro,html,md,mdx}'],
   theme: {
     extend: {
       colors: {

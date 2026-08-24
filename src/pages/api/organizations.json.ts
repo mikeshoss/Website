@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
-import { patents } from "../../data/content";
+import { organizations } from "../../data/content";
 import { collection } from "../../lib/api";
 
 export const prerender = true;
 
-export const GET: APIRoute = () => collection(patents);
+export const GET: APIRoute = () => collection(organizations);

@@ -691,3 +691,82 @@ export const companies = withPeriod(companiesData);
 export const projects = withPeriod(projectsData);
 export const experience = withPeriod(experienceData);
 export const volunteering = withPeriod(volunteeringData);
+
+/* ------------------------------------------------------------------------- *
+ * Additional resume sections
+ *
+ * Typed and wired through to the JSON API, the JSON Resume export and the MCP
+ * server, but empty until filled in. Add entries and they appear across every
+ * consumer with no further changes.
+ * ------------------------------------------------------------------------- */
+
+export interface Award {
+  title: string;
+  awarder: string;
+  /** ISO date the award was received. */
+  date: string;
+  summary?: string;
+  url?: string;
+}
+
+export const awards: Award[] = [];
+
+export interface Publication {
+  title: string;
+  publisher: string;
+  /** ISO publication date. */
+  date: string;
+  summary?: string;
+  url?: string;
+}
+
+export const publications: Publication[] = [];
+
+export interface Recommendation {
+  /** Who wrote it. */
+  name: string;
+  title?: string;
+  organization?: string;
+  /** How they worked with Mike, e.g. "Reported directly". */
+  relationship?: string;
+  text: string;
+  url?: string;
+}
+
+export const recommendations: Recommendation[] = [];
+
+export interface Language {
+  language: string;
+  /** e.g. "Native speaker", "Professional working proficiency". */
+  fluency: string;
+}
+
+export const languages: Language[] = [];
+
+export interface Organization {
+  name: string;
+  role?: string;
+  start: string;
+  end?: string;
+  description?: string;
+  url?: string;
+}
+
+const organizationsData: Organization[] = [];
+
+export interface Interest {
+  name: string;
+  keywords?: string[];
+}
+
+export const interests: Interest[] = [];
+
+export interface Cause {
+  name: string;
+  description?: string;
+  url?: string;
+}
+
+export const causes: Cause[] = [];
+
+export const organizations = withPeriod(organizationsData);

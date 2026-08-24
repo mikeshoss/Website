@@ -1,8 +1,7 @@
 import type { APIRoute } from "astro";
-import { skills, highlights } from "../../data/content";
+import { skills } from "../../data/content";
+import { collection } from "../../lib/api";
 
-export const GET: APIRoute = () => {
-  return new Response(JSON.stringify({ skills, highlights }), {
-    headers: { "Content-Type": "application/json" },
-  });
-};
+export const prerender = true;
+
+export const GET: APIRoute = () => collection(skills);
