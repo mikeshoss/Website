@@ -256,7 +256,7 @@ const projectsData: Project[] = [
       "A public record of what Milton is proposing, building, spending and deciding, assembled entirely from the Town's own published documents — public notices, ward development applications, council agendas and minutes, ArcGIS open data, and capital financial statements. It watches those sources for changes, says in plain English what changed, and keeps the older version so a proposal's history stays visible. Built on one rule: an unanswered question is visibly unanswered, a wrong answer is invisible — figures that do not reconcile against their source document are withheld rather than published.",
     start: "2026",
     status: "Active",
-    association: "Epilogue",
+    association: "Personal",
     url: "https://miltonrecord.ca",
   },
   {

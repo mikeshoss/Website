@@ -145,7 +145,9 @@ export function buildJsonResume() {
       description: project.description,
       ...dates(project),
       url: project.url,
-      entity: project.association,
+      ...(project.association && project.association !== "Personal"
+        ? { entity: project.association }
+        : {}),
     })),
   };
 }
