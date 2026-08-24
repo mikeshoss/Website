@@ -20,10 +20,16 @@ const {
 // from what the pages actually say. jobTitle stays a deliberate label rather
 // than the current role's formal title.
 // Google Analytics. The site's only third-party request — everything else,
-// fonts included, is self-hosted. Rendered in production builds only, so
-// `astro dev` traffic is not counted. Held in one place because Google's
-// snippet repeats the measurement ID, which invites drift.
+// fonts included, is self-hosted. Held in one place because Google's snippet
+// repeats the measurement ID, which invites drift.
+//
+// Two guards, covering different things. `import.meta.env.PROD` keeps the code
+// out of dev output entirely. The hostname check keeps Cloudflare branch
+// previews out of the data — they are production builds, so the PROD gate does
+// not exclude them. www needs no entry: www-to-apex is handled by a Cloudflare
+// Redirect Rule (see public/_redirects), so visitors land on the apex.
 const GA_MEASUREMENT_ID = 'G-3KTD28G14B';
+const GA_HOSTNAME = 'mikeshoss.com';
 
 const [city, region] = site.location.split(',').map((part) => part.trim());
 
@@ -114,20 +120,20 @@ const jsonLd = {
 
     <!-- Google Analytics -->
     {import.meta.env.PROD && (
-      <Fragment>
-        <script
-          is:inline
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        />
-        <script
-          is:inline
-          set:html={`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_MEASUREMENT_ID}');`}
-        />
-      </Fragment>
+      <script
+        is:inline
+        set:html={`(function () {
+  if (location.hostname !== '${GA_HOSTNAME}') return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', '${GA_MEASUREMENT_ID}');
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
+  document.head.appendChild(s);
+})();`}
+      />
     )}
   </head>
   <body class="min-h-screen flex flex-col">
