@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/content';
+import { companies, education, experience, site, skills } from '../data/content';
 
 interface Props {
   title?: string;
@@ -16,6 +16,26 @@ const {
   canonical = Astro.url.href,
 } = Astro.props;
 
+// Derived from src/data/content.ts so the structured data cannot drift away
+// from what the pages actually say. jobTitle stays a deliberate label rather
+// than the current role's formal title.
+const [city, region] = site.location.split(',').map((part) => part.trim());
+
+// Ongoing employers plus the ventures, deduplicated by name. URLs come from
+// whichever record carries one.
+const orgUrls = new Map<string, string>();
+for (const entry of [...companies, ...experience]) {
+  const name = 'company' in entry ? entry.company : entry.name;
+  if (entry.url) orgUrls.set(name, entry.url);
+}
+
+const orgNames = [
+  ...new Set([
+    ...experience.filter((role) => !role.end).map((role) => role.company),
+    ...companies.map((company) => company.name),
+  ]),
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -23,46 +43,28 @@ const jsonLd = {
   url: site.url,
   jobTitle: "Founder & Product Executive",
   description: site.description,
+  email: `mailto:${site.email}`,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Milton",
-    addressRegion: "Ontario",
+    addressLocality: city,
+    addressRegion: region,
     addressCountry: "CA",
   },
   sameAs: [
     site.linkedin,
     site.github,
-    "https://epiloguelabs.com",
+    ...companies.flatMap((company) => (company.url ? [company.url] : [])),
   ],
-  knowsAbout: [
-    "Artificial Intelligence",
-    "Product Management",
-    "Multi-Agent Systems",
-    "AI Orchestration",
-    "Venture Building",
-    "Enterprise AI",
-    "Local-First Infrastructure",
-  ],
-  worksFor: [
-    {
-      "@type": "Organization",
-      name: "Clio",
-      url: "https://www.clio.com",
-    },
-    {
-      "@type": "Organization",
-      name: "Epilogue",
-      url: "https://epiloguelabs.com",
-    },
-    {
-      "@type": "Organization",
-      name: "ShossX",
-    },
-    {
-      "@type": "Organization",
-      name: "Milton Innovation",
-    },
-  ],
+  knowsAbout: skills,
+  worksFor: orgNames.map((name) => ({
+    "@type": "Organization",
+    name,
+    ...(orgUrls.has(name) ? { url: orgUrls.get(name) } : {}),
+  })),
+  alumniOf: education.map((entry) => ({
+    "@type": "EducationalOrganization",
+    name: entry.institution,
+  })),
 };
 ---
 

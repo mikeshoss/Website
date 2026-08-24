@@ -4,54 +4,62 @@ import {
   hero,
   yearsExperience,
   skills,
+  companies,
+  experience,
+  projects,
+  volunteering,
   patentCount,
   grantedPatentCount,
   education,
   certifications,
 } from "../data/content";
 
-// Partly generated from src/data/content.ts. These sections derive from the data
-// and stay in sync automatically: About (location, years, patent count),
-// Expertise, Patents, Education, Certifications, Contact, Philosophy.
-//
-// These are prose maintained by hand in THIS file and will not follow
-// content.ts: Current Roles, Companies, Notable Projects, Volunteering.
-// Update them here when the corresponding data changes.
+// Fully generated from src/data/content.ts — every section derives from the
+// data, so this file needs no edits when content changes. The four sections
+// that used to be hand-kept prose here (Current Roles, Companies, Notable
+// Projects, Volunteering) had already drifted from the data they described.
+const list = (lines: string[]) => lines.map((line) => `- ${line}`).join("\n");
+export const prerender = true;
+
 export const GET: APIRoute = () => {
-  const body = `# Mike Shoss — Personal Website
+  const current = experience.filter((role) => !role.end);
+  const activeProjects = projects.filter((p) => p.status.startsWith("Active"));
+
+  const body = `# ${site.name} — ${site.title}
 
 ## About
 Mike Shoss is a founder, product executive, and builder of AI-native systems based in ${site.location}. He has ${yearsExperience}+ years of experience in product and software, ${patentCount} patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
 
 ## Current Roles
-- Staff Product Manager, Vincent Enterprise at Clio
-- Founder & Principal at Epilogue (AI Consulting & Product Studio)
-- Angel Investor at ShossX
-- Founder at Milton Innovation
+${list([
+  ...current.map((role) => `${role.title} at ${role.company} (${role.period})`),
+  ...companies.map((company) => `${company.role} at ${company.name} (${company.period})`),
+])}
+
+## Structured data
+This site publishes its content as JSON and over MCP.
+- JSON API index: ${site.url}/api/index.json
+- Full resume: ${site.url}/api/resume.json
+- JSON Resume (jsonresume.org schema): ${site.url}/api/jsonresume.json
+- MCP server: ${site.url}/mcp
 
 ## Companies
-
-### Epilogue
-AI company focused on turning complex business problems into practical, high-impact AI solutions. Operates across two arms — Consulting (AI strategy and roadmaps, AI-native product and platform design, pricing and go-to-market) and Product Studio (building and validating AI-native products end to end). Products include:
-- Parleh: AI meeting companion that turns notes into live action and agent-triggered execution
-- Fractal: AI-agent-driven product-truth platform (Closed Beta)
-- TrustFlow: AI-powered administrative workflow automation (Invite Only)
-
-### ShossX
-Angel investing in early-stage Canadian science and technology companies, with a focus on AI. Active through syndicates, angel networks, and funds: CedarPeak, Angel One, Sand Hill Angels, and N49P.
-
-### Milton Innovation
-A community hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.
+${companies
+  .map((company) => {
+    const products = company.products?.length
+      ? `\nProducts:\n${list(
+          company.products.map((p) => `${p.name}: ${p.tagline} (${p.status})`),
+        )}`
+      : "";
+    return `### ${company.name}\n${company.role} — ${company.period}\n${company.description}${products}`;
+  })
+  .join("\n\n")}
 
 ## Expertise
 ${skills.map((s) => `- ${s}`).join("\n")}
 
 ## Notable Projects
-- Ultron: Autonomous AI agent team (AI Chief of Staff)
-- MilTastic: Decentralized community mesh network
-- Self-Hosted AI & Infrastructure Lab
-- ChatPTT: Radio-to-AI voice system
-- Project Cria: Distributed AI compute platform
+${list(activeProjects.map((p) => `${p.name}: ${p.description}`))}
 
 ## Patents
 ${patentCount} patents in AI, video commerce, and livestream technology (${grantedPatentCount} granted), filed through Loop Now Technologies (Firework)
@@ -68,12 +76,11 @@ ${education
 ${certifications.map((c) => `- ${c.name}`).join("\n")}
 
 ## Volunteering & Mentoring
-- Expert-in-Residence at DMZ
-- Board Member at Milton Community Resource Centre
-- Lead Mentor at The Forge McMaster
-- Mentor at Platform Calgary
-- Organizer at ProductTank Toronto
-- Consultant to the Government of Canada on AI Compute Strategy
+${list(
+  volunteering
+    .filter((role) => !role.end)
+    .map((role) => `${role.title} at ${role.organization} (${role.period})`),
+)}
 
 ## Contact
 - Website: ${site.url}
@@ -87,6 +94,9 @@ ${hero.philosophy.map((p) => `- ${p}`).join("\n")}
 `;
 
   return new Response(body, {
-    headers: { "Content-Type": "text/plain; charset=utf-8" },
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
   });
 };

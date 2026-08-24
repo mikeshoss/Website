@@ -333,6 +333,7 @@ const experienceData: ExperienceRole[] = [
   {
     title: "Staff Product Manager, Vincent Enterprise",
     company: "Clio",
+    url: "https://www.clio.com",
     start: "2026-08",
     highlights: [
       "Working on AI research and matter management for enterprise law firms.",
