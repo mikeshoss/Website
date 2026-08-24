@@ -25,7 +25,7 @@ const jsonLd = {
   description: site.description,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Toronto",
+    addressLocality: "Milton",
     addressRegion: "Ontario",
     addressCountry: "CA",
   },
@@ -46,6 +46,11 @@ const jsonLd = {
   worksFor: [
     {
       "@type": "Organization",
+      name: "Clio",
+      url: "https://www.clio.com",
+    },
+    {
+      "@type": "Organization",
       name: "Epilogue",
       url: "https://epiloguelabs.com",
     },
@@ -55,7 +60,7 @@ const jsonLd = {
     },
     {
       "@type": "Organization",
-      name: "Caseware",
+      name: "Milton Innovation",
     },
   ],
 };
@@ -73,7 +78,7 @@ const jsonLd = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
-    <meta name="keywords" content="Mike Shoss, AI, product executive, founder, Epilogue, ShossX, multi-agent systems, AI orchestration, venture building, Toronto" />
+    <meta name="keywords" content="Mike Shoss, AI, product executive, founder, Clio, Epilogue, ShossX, legal AI, angel investor, multi-agent systems, AI orchestration, venture building, Milton, Toronto" />
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->

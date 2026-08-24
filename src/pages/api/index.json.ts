@@ -16,6 +16,8 @@ export const GET: APIRoute = () => {
         patents: `${base}/api/patents.json`,
         volunteering: `${base}/api/volunteering.json`,
         skills: `${base}/api/skills.json`,
+        education: `${base}/api/education.json`,
+        certifications: `${base}/api/certifications.json`,
       },
     }),
     { headers: { "Content-Type": "application/json" } },

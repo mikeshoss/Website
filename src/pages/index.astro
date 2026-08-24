@@ -2,9 +2,17 @@
 import Layout from '../layouts/Layout.astro';
 import { site, hero, skills, highlights, experience, companies } from '../data/content';
 
-// Pull a few key roles for the "Track Record" section
-const featuredRoles = experience.filter(r =>
-  r.company === 'Caseware' || r.company === 'Firework' || r.company === 'FacilityOS (formerly iLobby)' || r.company === 'VerticalScope Inc.'
+// Pull a few key roles for the "Track Record" section.
+// Order here drives display order; a company missing from this list is not shown.
+const FEATURED_COMPANIES = [
+  'Clio',
+  'Caseware',
+  'FacilityOS (formerly iLobby)',
+  'Firework',
+  'VerticalScope Inc.',
+];
+const featuredRoles = FEATURED_COMPANIES.flatMap(name =>
+  experience.filter(r => r.company === name)
 );
 // Dedupe by company, keep latest role
 const seenCompanies = new Set<string>();
@@ -139,7 +147,7 @@ const keyRoles = featuredRoles.filter(r => {
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
       <a href="/experience" class="card group animate-on-scroll">
         <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Experience</h3>
-        <p class="text-sm text-muted">Full career history, 10 patents, and community involvement.</p>
+        <p class="text-sm text-muted">Full career history, patents, education, and community involvement.</p>
       </a>
       <a href="/companies" class="card group animate-on-scroll">
         <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Companies</h3>

@@ -1,27 +1,27 @@
 # Mike Shoss — Personal Website
 
 ## About
-Mike Shoss is a founder, product executive, and builder of AI-native systems based in Toronto, Ontario, Canada. He has 15+ years of experience in product and software, 10 patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
+Mike Shoss is a founder, product executive, and builder of AI-native systems based in Milton, Ontario, Canada. He has 15+ years of experience in product and software, 10 patents in AI and video commerce, and has supported over $150M in fundraising outcomes.
 
 ## Current Roles
-- Head of Studio & Principal Product Manager, AI & Ecosystem at Caseware
+- Staff Product Manager, Vincent Enterprise at Clio
 - Founder & Principal at Epilogue (AI Consulting & Product Studio)
-- Founder & President at ShossX
+- Angel Investor at ShossX
 - Founder at Milton Innovation
 
 ## Companies
 
 ### Epilogue
-AI company focused on turning complex business problems into practical, high-impact AI solutions. Products include:
+AI company focused on turning complex business problems into practical, high-impact AI solutions. Operates across two arms — Consulting (AI strategy and roadmaps, AI-native product and platform design, pricing and go-to-market) and Product Studio (building and validating AI-native products end to end). Products include:
 - Parleh: AI meeting companion that turns notes into live action and agent-triggered execution
 - Fractal: AI-agent-driven product-truth platform (Closed Beta)
 - TrustFlow: AI-powered administrative workflow automation (Invite Only)
 
 ### ShossX
-Product-centric holding company focused on building and scaling ventures through AI, product strategy, and execution.
+Angel investing in early-stage Canadian science and technology companies, with a focus on AI. Active through syndicates, angel networks, and funds: CedarPeak, Angel One, Sand Hill Angels, and N49P.
 
 ### Milton Innovation
-Coming soon.
+A community hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.
 
 ## Expertise
 - AI Agents & Orchestration
@@ -43,6 +43,17 @@ Coming soon.
 ## Patents
 10 patents in AI, video commerce, and livestream technology (filed through Firework)
 
+## Education
+- Sheridan College — Ontario College Advanced Diploma, Computer Systems Technology (Software Development and Network Engineering Co-op, Mobile Stream)
+- Product School — Software Product Management (SPM), 2018
+
+## Certifications
+- Certified ScrumMaster (CSM)
+- Segment University — Advanced Products [Protocols]
+- Advanced SEO
+- Social Marketing
+- Amateur Radio Operator Certificate
+
 ## Volunteering & Mentoring
 - Expert-in-Residence at DMZ
 - Board Member at Milton Community Resource Centre
@@ -50,7 +61,6 @@ Coming soon.
 - Mentor at Platform Calgary
 - Organizer at ProductTank Toronto
 - Consultant to the Government of Canada on AI Compute Strategy
-- Angel Investor
 
 ## Contact
 - Website: https://mikeshoss.com
@@ -60,7 +70,7 @@ Coming soon.
 - Email: mike@epiloguelabs.com
 
 ## Philosophy
-- Useful over performative
-- Deployed over theoretical
-- Systems over gimmicks
-- Product outcomes over hype
+- Strategy without execution is a hobby
+- Ship products, not slide decks
+- AI should solve real problems
+- Build for outcomes, not applause
