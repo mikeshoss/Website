@@ -18,10 +18,10 @@ const { company } = Astro.props;
 
 const organization = {
   '@type': 'Organization',
-  '@id': `${site.url}/companies/${company.slug}#organization`,
+  '@id': `${site.url}/companies/${company.slug}/#organization`,
   name: company.name,
   description: company.tagline,
-  url: company.url ?? `${site.url}/companies/${company.slug}`,
+  url: company.url ?? `${site.url}/companies/${company.slug}/`,
   ...(company.url ? { sameAs: [company.url] } : {}),
   founder: { '@id': `${site.url}/#person` },
   foundingDate: company.start,

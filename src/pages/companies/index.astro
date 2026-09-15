@@ -12,7 +12,7 @@ const names = companies.map((company) => company.name).join(', ');
   schema={[
     {
       '@type': 'ItemList',
-      '@id': `${site.url}/companies#ventures`,
+      '@id': `${site.url}/companies/#ventures`,
       name: 'Ventures founded by Mike Shoss',
       itemListOrder: 'https://schema.org/ItemListUnordered',
       numberOfItems: companies.length,
@@ -21,10 +21,10 @@ const names = companies.map((company) => company.name).join(', ');
         position: index + 1,
         item: {
           '@type': 'Organization',
-          '@id': `${site.url}/companies/${company.slug}#organization`,
+          '@id': `${site.url}/companies/${company.slug}/#organization`,
           name: company.name,
           description: company.tagline,
-          url: company.url ?? `${site.url}/companies/${company.slug}`,
+          url: company.url ?? `${site.url}/companies/${company.slug}/`,
         },
       })),
     },

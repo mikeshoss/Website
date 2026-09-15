@@ -57,7 +57,7 @@ This site publishes its content as JSON and over MCP.
 ${companies
   .map((company) => {
     const sections = [
-      `Page: ${site.url}/companies/${company.slug}`,
+      `Page: ${site.url}/companies/${company.slug}/`,
       ...(company.url ? [`Website: ${company.url}`] : []),
       company.description,
       ...(company.arms?.length

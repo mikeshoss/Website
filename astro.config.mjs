@@ -17,6 +17,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.includes('/blog'),
       serialize(item) {
+        // Slash-stripped only to classify the page; the emitted URL keeps its.
         const path = new URL(item.url).pathname.replace(/\/+$/, '') || '/';
         const priority =
           path === '/' ? 1.0
@@ -24,13 +25,10 @@ export default defineConfig({
           : path === '/experience' || path === '/projects' ? 0.8
           : 0.6;
 
-        // Emit the same URL the page declares as its canonical. Astro's
-        // directory build format would otherwise list /companies/ while the
-        // page canonicalises to /companies, which reads to a crawler as two
-        // URLs for one page.
+        // item.url is left as Astro emits it — the trailing-slash form, which
+        // is what Cloudflare serves and what each page declares as canonical.
         return {
           ...item,
-          url: path === '/' ? item.url : new URL(path, item.url).href,
           lastmod: new Date().toISOString(),
           changefreq: path === '/' ? 'weekly' : 'monthly',
           priority,

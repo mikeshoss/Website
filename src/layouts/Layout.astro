@@ -37,11 +37,16 @@ const {
  * `<preview>.workers.dev` as the canonical of every page and hand Google a
  * competing copy of the site.
  *
- * Trailing slashes are stripped so /companies and /companies/ cannot be indexed
- * as two distinct URLs.
+ * The trailing slash is kept, and normalised to exactly one. Astro builds in
+ * directory format, and Cloudflare's asset layer serves those pages at the
+ * trailing-slash URL and 307s the bare path to it — so /companies/ is the URL
+ * that answers 200, the URL already indexed, and therefore the canonical one.
+ * Dropping the slash would point every canonical at a redirect.
  */
-const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const canonicalUrl = canonical ?? new URL(pathname, site.url).href;
+const absolute = (path: string) =>
+  new URL(path.replace(/\/+$/, '') + '/', site.url).href;
+
+const canonicalUrl = canonical ?? absolute(Astro.url.pathname);
 
 const ogImage = `${site.url}/og-image.png`;
 const ogImageAlt = `${site.name} — ${site.title}`;
@@ -157,7 +162,7 @@ const breadcrumbList = breadcrumbs.length
             '@type': 'ListItem',
             position: index + 1,
             name: crumb.name,
-            item: new URL(crumb.href, site.url).href,
+            item: absolute(crumb.href),
           }),
         ),
       },
