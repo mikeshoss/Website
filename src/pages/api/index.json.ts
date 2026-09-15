@@ -18,6 +18,7 @@ const SECTIONS = [
   "projects",
   "patents",
   "certifications",
+  "glossary",
   "awards",
   "publications",
   "volunteering",

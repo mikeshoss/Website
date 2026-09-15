@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { glossary } from "../data/glossary";
 import {
   site,
   hero,
@@ -131,6 +132,15 @@ ${list(
     interest.keywords?.length
       ? `${interest.name}: ${interest.keywords.join(", ")}`
       : interest.name,
+  ),
+)}
+
+## Glossary
+Definitions of the vocabulary around AI products, each with what the term means
+and what it turns out to mean in practice. Full entry at the URL given.
+${list(
+  glossary.map(
+    (t) => `${t.term}: ${t.short} — ${site.url}/glossary/${t.slug}/`,
   ),
 )}
 

@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { site } from '../../data/content';
+import { glossary, GLOSSARY_CATEGORIES, type GlossaryCategory } from '../../data/glossary';
+
+const groups = (Object.keys(GLOSSARY_CATEGORIES) as GlossaryCategory[])
+  .map(key => ({
+    key,
+    label: GLOSSARY_CATEGORIES[key],
+    terms: glossary.filter(t => t.category === key),
+  }))
+  .filter(group => group.terms.length > 0);
+---
+
+<Layout
+  title="AI Glossary — Mike Shoss"
+  description="Plain definitions of the vocabulary around AI products — agent, harness, RAG, eval, guardrails — and what each one turns out to mean in practice."
+  breadcrumbs={[{ name: 'Glossary', href: '/glossary' }]}
+  schema={[
+    {
+      '@type': 'DefinedTermSet',
+      '@id': `${site.url}/glossary/#termset`,
+      name: 'AI Glossary',
+      description:
+        'Definitions of the vocabulary around AI products, with what each term means in practice.',
+      url: `${site.url}/glossary/`,
+      inLanguage: 'en-CA',
+      author: { '@id': `${site.url}/#person` },
+      hasDefinedTerm: glossary.map(term => ({
+        '@type': 'DefinedTerm',
+        '@id': `${site.url}/glossary/${term.slug}/#term`,
+        name: term.term,
+        description: term.short,
+        url: `${site.url}/glossary/${term.slug}/`,
+        ...(term.aliases?.length ? { alternateName: term.aliases } : {}),
+      })),
+    },
+  ]}
+>
+  <section class="section-container pt-28">
+    <h1 class="section-title">Glossary</h1>
+    <p class="section-subtitle max-w-2xl">
+      The vocabulary that surrounds AI products, for the person who just heard the word in
+      a meeting and would rather not ask. Each term gets two readings: what it means, and
+      what it turns out to mean once you have shipped one.
+    </p>
+
+    <div class="space-y-14">
+      {groups.map(group => (
+        <div>
+          <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-6">
+            {group.label}
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {group.terms.map(term => (
+              <a href={`/glossary/${term.slug}`} class="card block group flex flex-col">
+                <h3 class="text-lg font-semibold group-hover:text-accent transition-colors">
+                  {term.term}
+                </h3>
+                {term.aliases && term.aliases.length > 0 && (
+                  <p class="text-xs text-muted font-mono mt-1">
+                    also: {term.aliases.join(' · ')}
+                  </p>
+                )}
+                <p class="text-sm text-gray-400 leading-relaxed mt-3">{term.short}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
