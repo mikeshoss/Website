@@ -236,6 +236,18 @@ entry was added.
 
 Security, caching, and CORS headers are configured in `public/_headers`, and redirects in `public/_redirects` (the www-to-apex redirect is handled by Cloudflare Redirect Rules).
 
+`public/robots.txt` is **not** the whole robots.txt that mikeshoss.com serves.
+Cloudflare's AI Crawl Control prepends a managed block setting `Content-Signal`
+and disallowing the major AI crawlers, and this file is appended after it. That
+is why no per-crawler rules live here: a rule for a user-agent the managed block
+already names would be served as a second, contradictory group. Check the live
+file (`curl https://mikeshoss.com/robots.txt`) rather than the repo copy, and
+change crawler policy in the Cloudflare dashboard.
+
+Note also that the branch preview URLs are `*.workers.dev`, which Cloudflare
+serves with `X-Robots-Tag: noindex`, so preview deployments cannot be indexed
+even though the pages carry an `index, follow` robots meta.
+
 Note that `/api/*` responses are prerendered to static files, so their headers come from
 `public/_headers` — headers set inside an Astro route handler are not preserved for
 prerendered routes.

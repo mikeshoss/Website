@@ -133,8 +133,13 @@ export const grantedPatentCount = patents.filter((p) => p.status === "Granted").
 export const site = {
   name: "Mike Shoss",
   title: "Founder. Product Executive. AI Builder.",
+  /**
+   * Google truncates a search snippet at roughly 155-160 characters, and this
+   * string is the default for every page's meta description, og:description,
+   * twitter:description and the JSON-LD Person description. Keep it under 160.
+   */
   description:
-    `Mike Shoss is a founder, product executive, and builder of AI-native systems. Staff Product Manager at Clio, founder of Epilogue, ${yearsExperience}+ years in product and software, and ${patentCount} patents in AI and video commerce.`,
+    `Mike Shoss builds AI products for work where being wrong is expensive. Staff Product Manager at Clio, founder of Epilogue, ${patentCount} patents in AI.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
