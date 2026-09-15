@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 import { companies, education, experience, site, skills } from '../data/content';
 
 interface Props {
@@ -50,18 +51,6 @@ const canonicalUrl = canonical ?? absolute(Astro.url.pathname);
 
 const ogImage = `${site.url}/og-image.png`;
 const ogImageAlt = `${site.name} — ${site.title}`;
-
-// Google Analytics. The site's only third-party request — everything else,
-// fonts included, is self-hosted. Held in one place because Google's snippet
-// repeats the measurement ID, which invites drift.
-//
-// Two guards, covering different things. `import.meta.env.PROD` keeps the code
-// out of dev output entirely. The hostname check keeps Cloudflare branch
-// previews out of the data — they are production builds, so the PROD gate does
-// not exclude them. www needs no entry: www-to-apex is handled by a Cloudflare
-// Redirect Rule (see public/_redirects), so visitors land on the apex.
-const GA_MEASUREMENT_ID = 'G-3KTD28G14B';
-const GA_HOSTNAME = 'mikeshoss.com';
 
 const [city, region] = site.location.split(',').map((part) => part.trim());
 
@@ -241,23 +230,7 @@ const jsonLd = {
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
-    <!-- Google Analytics -->
-    {import.meta.env.PROD && (
-      <script
-        is:inline
-        set:html={`(function () {
-  if (location.hostname !== '${GA_HOSTNAME}') return;
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { window.dataLayer.push(arguments); };
-  gtag('js', new Date());
-  gtag('config', '${GA_MEASUREMENT_ID}');
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
-  document.head.appendChild(s);
-})();`}
-      />
-    )}
+    <Analytics />
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#main-content" class="skip-link">Skip to main content</a>

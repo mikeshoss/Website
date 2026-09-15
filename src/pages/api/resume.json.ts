@@ -19,6 +19,7 @@ import {
   skills,
   volunteering,
 } from "../../data/content";
+import { glossary } from "../../data/glossary";
 import { json } from "../../lib/api";
 
 export const prerender = true;
@@ -47,5 +48,6 @@ export const GET: APIRoute = () =>
       languages,
       interests,
       causes,
+      glossary,
     },
   });
