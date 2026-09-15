@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { companies, site } from '../../data/content';
+import { withCampaign } from '../../lib/links';
 
 /**
  * One page per venture, from the `slug` on each entry in src/data/content.ts.
@@ -68,7 +69,7 @@ const organization = {
 
     {company.url && (
       <a
-        href={company.url}
+        href={withCampaign(company.url, `venture-${company.slug}`)}
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm mb-14"

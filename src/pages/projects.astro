@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { projects, site } from '../data/content';
+import { placement, withCampaign } from '../lib/links';
 
 // Array order is display order within each group; content.ts keeps the newest
 // first. "Active" is an exact match — every other status reads as past, which
@@ -89,7 +90,7 @@ const associationLabel = (association: string) =>
                 <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-auto pt-4 border-t border-surface-200">
                   {project.url && (
                     <a
-                      href={project.url}
+                      href={withCampaign(project.url, placement('project', project.name))}
                       target="_blank"
                       rel="noopener noreferrer"
                       class="inline-flex items-center gap-1.5 text-sm font-medium link-hover"

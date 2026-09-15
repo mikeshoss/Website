@@ -161,6 +161,69 @@ Add or edit entries in `src/data/content.ts`. The JSON endpoints, the JSON Resum
 the MCP tools, `llms.txt`, and the page JSON-LD all derive from it, so a single edit
 propagates everywhere on the next deploy.
 
+## Analytics & campaign links
+
+Google Analytics is configured in `src/components/Analytics.astro`, which does
+two separate things behind two different guards.
+
+The **gtag loader** is gated on `import.meta.env.PROD` *and* the hostname, so it
+never runs in dev and never runs on a Cloudflare branch preview (previews are
+production builds, so the PROD gate alone would not exclude them).
+
+The **click listener** ships everywhere and no-ops when `gtag` is absent. One
+delegated handler covers every link and button on the site:
+
+| Event | Fires on | Notable params |
+| --- | --- | --- |
+| `click_internal` | in-site links | `link_url` (path) |
+| `click_outbound` | external links | `link_domain`, `outbound: true` |
+| `click_email` | `mailto:` links | `link_url` |
+| `click_button` | buttons | — |
+
+All four carry `link_text`, `link_location` and `page_path`. `link_location` is
+derived from the nearest section heading, so a click reports as "Currently" or
+"Selected results" and a new section needs no wiring.
+
+Because the listener is not hostname-gated, it can be tested on a preview
+rather than only observed in production: stub `window.gtag`, dispatch clicks,
+and read back what would have been sent.
+
+### Inbound campaign links
+
+Safe to tag freely. Canonical URLs and `og:url` are built from the path at
+build time, so `mikeshoss.com/?utm_source=linkedin` still canonicalises to
+`https://mikeshoss.com/` and cannot fragment the index. GA4 reads `utm_*`
+automatically — no configuration here.
+
+### Outbound campaign links
+
+`src/lib/links.ts` tags outbound links to domains whose analytics we own, so a
+click arrives as an attributable campaign rather than an anonymous referral.
+Referrers get dropped by privacy settings and stripped by some clients, and
+they never say *where on this site* the click came from.
+
+Only `OWNED_DOMAINS` are tagged; `withCampaign()` returns every other URL
+untouched, so it is safe to wrap any href. GitHub, LinkedIn, Clio and Google
+Patents expose no analytics to us, so parameters there would just be noise on
+someone else's URL.
+
+`utm_content` carries the placement, which is the part worth having — it
+separates the footer link that appears on all 23 pages from a deliberate click
+on the Epilogue venture page:
+
+```
+https://epiloguelabs.com/?utm_source=mikeshoss.com&utm_medium=referral
+  &utm_campaign=personal-site&utm_content=footer
+https://epiloguelabs.com/?utm_source=mikeshoss.com&utm_medium=referral
+  &utm_campaign=personal-site&utm_content=venture-epilogue
+```
+
+Add a domain to `OWNED_DOMAINS` and its links tag themselves.
+
+Tagging is applied only to rendered anchors — never to structured data, the
+JSON API or `llms.txt`. Those URLs are identifiers, and a tagged one is a
+different string for the same thing.
+
 ## Local Development
 
 Requires Node.js (Node 20 is used in production).
