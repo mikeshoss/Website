@@ -91,7 +91,15 @@ ${companies
 ${skills.map((s) => `- ${s}`).join("\n")}
 
 ## Notable Projects
-${list(activeProjects.map((p) => `${p.name}: ${p.description}`))}
+${list(
+  activeProjects.map((p) => {
+    const links = [
+      ...(p.url ? [`site: ${p.url}`] : []),
+      ...(p.repo ? [`source: ${p.repo}`] : []),
+    ];
+    return `${p.name}: ${p.description}${links.length ? ` (${links.join(", ")})` : ""}`;
+  }),
+)}
 
 ## Patents
 ${patentCount} patents in AI, video commerce, and livestream technology (${grantedPatentCount} granted), filed through Loop Now Technologies (Firework)

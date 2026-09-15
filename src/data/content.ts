@@ -368,10 +368,60 @@ export interface Project {
   end?: string;
   status: string;
   association?: string;
+  /** The project's own site, where it has one. */
   url?: string;
+  /**
+   * Public source. Only set this once the repository is actually public — a
+   * link to a private repo is a 404 for everyone but the author.
+   */
+  repo?: string;
 }
 
 const projectsData: Project[] = [
+  {
+    name: "Hangar",
+    description:
+      "Start Claude Code sessions on your own machines, from your phone. Pick a machine, pick a project, tap start — or just ask Claude to do it.",
+    start: "2026-09",
+    status: "Active",
+  },
+  {
+    name: "YTZ-Tracker",
+    description:
+      "ytzboard — a macOS menu-bar board for live movements at Billy Bishop Toronto City Airport (CYTZ/YTZ). The title shows the latest movement, holds it for two minutes, then goes quiet. Clicking gives the runway in use, the last ten movements with timestamps, and — behind Details — wind, visibility, ceiling and RVR. The dropdown is ordered by what changes a decision: the runway, and when it applies why nothing is moving, sit at the top; the instrumentation goes under Details, because knowing that the last poll was three seconds ago answers a question about the code, not about the airport.",
+    start: "2026-08",
+    status: "Active",
+  },
+  {
+    name: "Earshot",
+    description:
+      "An ADS-B display for one specific window, and for your ears. Most plane-spotting displays answer what is flying near me. Earshot answers two more useful questions. Can I actually see it from here — not \"is it within 2 km\", but is it above the roofline in the direction this window faces, and is there cloud in the way. And is that what I can hear — it estimates loudness at your ear, ranks by it, and tells you how many seconds behind the aircraft the sound is. It runs entirely against a local ADS-B receiver; routes and weather are the only things that ever touch the network, and both are optional.",
+    start: "2026-08",
+    status: "Active",
+  },
+  {
+    name: "Overlord MCP",
+    description:
+      "AI-controlled infrastructure: provision, command, destroy. An MCP server wrapping the Proxmox VE API, giving AI agents full control over virtual machine and container infrastructure — 83 tools covering the complete Proxmox surface across VMs, containers, networking, firewall, storage, backup, HA and monitoring, plus automated provisioning with 13 built-in recipes. Overlord is the orchestration layer that lets an agent provision its own infrastructure on demand, and it pairs with specialised servers like Reaper MCP: Overlord provisions the environment, Reaper operates inside it.",
+    start: "2026-06",
+    status: "Active",
+    repo: "https://github.com/mikeshoss/overlord-mcp",
+  },
+  {
+    name: "Reaper MCP",
+    description:
+      "Kali Linux security tools, summoned by AI. An MCP server that wraps Kali security testing tools so AI agents — Claude Desktop, Cursor, OpenClaw — can invoke them directly. Kali Linux, all 24 tools and the MCP server are packaged into a single Docker container, so there is no separate Kali install to maintain: docker build pulls the official kalilinux/kali-rolling image and installs everything automatically.",
+    start: "2026-05",
+    status: "Active",
+    repo: "https://github.com/mikeshoss/reaper-mcp",
+  },
+  {
+    name: "Open-Weatheradio | CAPCAST",
+    description:
+      "Weatheradio Canada's transmitters were shut down in the early hours of 31 March 2026. Around 230 VHF sites, reaching over 90 percent of the Canadian population, went off the air. The data that fed them did not go anywhere: every input Weatheradio consumed is still published, free, in machine-readable form — ECCC Datamart for weather products, NAADS for public alerting. What was cut was the last mile, a few hundred watts into an antenna. CAPCAST reassembles those streams into subscriber feeds, on amateur spectrum, for licensed operators.",
+    start: "2026-04",
+    status: "Active",
+  },
   {
     name: "The Milton Record",
     description:

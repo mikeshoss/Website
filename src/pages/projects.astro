@@ -1,9 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { projects } from '../data/content';
+import { projects, site } from '../data/content';
 
-const activeProjects = projects.filter(p => p.status === 'Active');
-const pastProjects = projects.filter(p => p.status !== 'Active');
+// Array order is display order within each group; content.ts keeps the newest
+// first. "Active" is an exact match — every other status reads as past, which
+// covers Archived, Exited and No Longer Maintained without listing them here.
+const groups = [
+  { label: 'Active', accent: true, items: projects.filter(p => p.status === 'Active') },
+  { label: 'Past Projects', accent: false, items: projects.filter(p => p.status !== 'Active') },
+];
 
 // "Associated with Epilogue" reads correctly for a venture; for a personal
 // project it does not, so the label is derived rather than interpolated raw.
@@ -13,96 +18,105 @@ const associationLabel = (association: string) =>
 
 <Layout
   title="Projects — Mike Shoss"
-  description="Side projects, experiments, and AI systems built by Mike Shoss."
+  description="AI systems, MCP servers, radio and infrastructure projects built by Mike Shoss."
+  breadcrumbs={[{ name: 'Projects', href: '/projects' }]}
+  schema={[
+    {
+      '@type': 'ItemList',
+      '@id': `${site.url}/projects#projects`,
+      name: 'Projects by Mike Shoss',
+      numberOfItems: projects.length,
+      itemListElement: projects.map((project, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'CreativeWork',
+          name: project.name,
+          description: project.description,
+          ...(project.url || project.repo ? { url: project.url ?? project.repo } : {}),
+          ...(project.repo ? { codeRepository: project.repo } : {}),
+        },
+      })),
+    },
+  ]}
 >
   <section class="section-container pt-28">
     <h1 class="section-title">Projects</h1>
     <p class="section-subtitle">Things I'm building, experimenting with, and have shipped.</p>
 
-    <!-- Active -->
-    {activeProjects.length > 0 && (
-      <div class="mb-16">
-        <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-6">Active</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {activeProjects.map(project => (
-            project.url ? (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" class="card block group">
-                <div class="flex items-start justify-between mb-2">
-                  <h3 class="text-lg font-semibold group-hover:text-accent transition-colors">{project.name}</h3>
-                  <div class="flex items-center gap-2 flex-shrink-0">
-                    <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full whitespace-nowrap">Active</span>
-                    <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </div>
-                </div>
-                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-                {project.association && (
-                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
-                )}
-                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-              </a>
-            ) : (
-              <article class="card">
-                <div class="flex items-start justify-between mb-2">
-                  <h3 class="text-lg font-semibold">{project.name}</h3>
-                  <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full whitespace-nowrap">
-                    Active
-                  </span>
-                </div>
-                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-                {project.association && (
-                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
-                )}
-                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-              </article>
-            )
-          ))}
-        </div>
-      </div>
-    )}
+    {groups.map(group => group.items.length > 0 && (
+      <div class="mb-16 last:mb-0">
+        <h2
+          class:list={[
+            'text-sm font-semibold uppercase tracking-wider mb-6',
+            group.accent ? 'text-accent' : 'text-muted',
+          ]}
+        >
+          {group.label}
+        </h2>
 
-    <!-- Past -->
-    {pastProjects.length > 0 && (
-      <div>
-        <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-6">Past Projects</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {pastProjects.map(project => (
-            project.url ? (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" class="card block group opacity-80">
-                <div class="flex items-start justify-between mb-2">
-                  <h3 class="text-lg font-semibold group-hover:text-accent transition-colors">{project.name}</h3>
-                  <div class="flex items-center gap-2 flex-shrink-0">
-                    <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full whitespace-nowrap">{project.status}</span>
-                    <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </div>
+          {group.items.map(project => (
+            <article class:list={['card flex flex-col', group.accent ? '' : 'opacity-80']}>
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <h3 class="text-lg font-semibold">{project.name}</h3>
+                <span
+                  class:list={[
+                    'text-xs font-mono px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0',
+                    group.accent
+                      ? 'text-green-400 bg-green-400/10'
+                      : 'text-muted bg-surface-200',
+                  ]}
+                >
+                  {project.status}
+                </span>
+              </div>
+
+              <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
+
+              {project.association && (
+                <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
+              )}
+
+              <p class="text-sm text-gray-400 leading-relaxed mb-5">{project.description}</p>
+
+              {/*
+                Links sit in a footer row rather than wrapping the whole card:
+                a project can have both a site and a repository, and an anchor
+                cannot contain another anchor.
+              */}
+              {(project.url || project.repo) && (
+                <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-auto pt-4 border-t border-surface-200">
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 text-sm font-medium link-hover"
+                    >
+                      Visit site
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  )}
+                  {project.repo && (
+                    <a
+                      href={project.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 text-sm font-medium link-hover"
+                    >
+                      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                      Source
+                    </a>
+                  )}
                 </div>
-                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-                {project.association && (
-                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
-                )}
-                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-              </a>
-            ) : (
-              <article class="card opacity-80">
-                <div class="flex items-start justify-between mb-2">
-                  <h3 class="text-lg font-semibold">{project.name}</h3>
-                  <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full whitespace-nowrap">
-                    {project.status}
-                  </span>
-                </div>
-                <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-                {project.association && (
-                  <p class="text-xs text-accent mb-3">{associationLabel(project.association)}</p>
-                )}
-                <p class="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-              </article>
-            )
+              )}
+            </article>
           ))}
         </div>
       </div>
-    )}
+    ))}
   </section>
 </Layout>
