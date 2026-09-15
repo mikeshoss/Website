@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { companies, site } from '../../data/content';
+
+const names = companies.map((company) => company.name).join(', ');
+---
+
+<Layout
+  title="Ventures — Mike Shoss"
+  description={`The ventures Mike Shoss founded and runs: ${names}.`}
+  breadcrumbs={[{ name: 'Ventures', href: '/companies' }]}
+  schema={[
+    {
+      '@type': 'ItemList',
+      '@id': `${site.url}/companies#ventures`,
+      name: 'Ventures founded by Mike Shoss',
+      itemListOrder: 'https://schema.org/ItemListUnordered',
+      numberOfItems: companies.length,
+      itemListElement: companies.map((company, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Organization',
+          '@id': `${site.url}/companies/${company.slug}#organization`,
+          name: company.name,
+          description: company.tagline,
+          url: company.url ?? `${site.url}/companies/${company.slug}`,
+        },
+      })),
+    },
+  ]}
+>
+  <section class="section-container pt-28">
+    <h1 class="section-title">Ventures</h1>
+    <p class="section-subtitle">The companies I've founded and the products we're building.</p>
+
+    <div class="space-y-6">
+      {companies.map(company => (
+        <a href={`/companies/${company.slug}`} class="card block group">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+            <div>
+              <h2 class="text-2xl font-bold group-hover:text-accent transition-colors">
+                {company.name}
+              </h2>
+              <p class="text-sm text-accent mt-1">{company.role}</p>
+            </div>
+            <span class="text-sm text-muted font-mono whitespace-nowrap">{company.period}</span>
+          </div>
+
+          <p class="text-gray-400 leading-relaxed mb-5">{company.description}</p>
+
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <span class="text-sm font-medium text-accent group-hover:text-accent-dim transition-colors">
+              View venture →
+            </span>
+            {company.products && company.products.length > 0 && (
+              <span class="text-xs text-muted font-mono">
+                {company.products.length} products
+              </span>
+            )}
+            {company.clients && company.clients.length > 0 && (
+              <span class="text-xs text-muted font-mono">
+                {company.clients.length} client & partner engagements
+              </span>
+            )}
+            {company.networks && company.networks.length > 0 && (
+              <span class="text-xs text-muted font-mono">
+                {company.networks.length} networks & funds
+              </span>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

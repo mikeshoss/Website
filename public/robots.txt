@@ -1,4 +1,27 @@
 User-agent: *
 Allow: /
 
+# Named explicitly so the intent is on the record rather than inferred from the
+# wildcard above: this site publishes a JSON API, an MCP server and an llms.txt
+# precisely so models can read it without scraping the markup.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Plain-text summary for language models: https://llmstxt.org
+# Structured equivalents: /api/index.json and the MCP server at /mcp
 Sitemap: https://mikeshoss.com/sitemap-index.xml

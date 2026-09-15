@@ -7,18 +7,45 @@ import { companies, education, experience, site, skills } from '../data/content'
 interface Props {
   title?: string;
   description?: string;
+  /** Overrides the derived canonical. Only needed when a page duplicates another. */
   canonical?: string;
+  /** Open Graph object type. The home page is a profile; everything else a website. */
+  ogType?: 'website' | 'profile' | 'article';
+  /**
+   * Trail from the site root to this page, excluding Home (added here). Emitted
+   * as a BreadcrumbList, which is what Google renders in place of the raw URL.
+   */
+  breadcrumbs?: { name: string; href: string }[];
+  /** Extra JSON-LD nodes merged into this page's @graph (e.g. an Organization). */
+  schema?: Record<string, unknown>[];
 }
 
 const {
   title = `${site.name} — ${site.title}`,
   description = site.description,
-  canonical = Astro.url.href,
+  canonical,
+  ogType = 'website',
+  breadcrumbs = [],
+  schema = [],
 } = Astro.props;
 
-// Derived from src/data/content.ts so the structured data cannot drift away
-// from what the pages actually say. jobTitle stays a deliberate label rather
-// than the current role's formal title.
+/**
+ * Canonical URLs are built from the configured site origin, not from Astro.url,
+ * which carries the host the page was built on. Every push to a non-production
+ * branch gets a Cloudflare preview deployment, and those are production builds
+ * — so deriving the canonical from the request would publish
+ * `<preview>.workers.dev` as the canonical of every page and hand Google a
+ * competing copy of the site.
+ *
+ * Trailing slashes are stripped so /companies and /companies/ cannot be indexed
+ * as two distinct URLs.
+ */
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonicalUrl = canonical ?? new URL(pathname, site.url).href;
+
+const ogImage = `${site.url}/og-image.png`;
+const ogImageAlt = `${site.name} — ${site.title}`;
+
 // Google Analytics. The site's only third-party request — everything else,
 // fonts included, is self-hosted. Held in one place because Google's snippet
 // repeats the measurement ID, which invites drift.
@@ -48,19 +75,34 @@ const orgNames = [
   ]),
 ];
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
+/**
+ * Structured data is emitted as one @graph of cross-referenced nodes rather
+ * than as loose objects: the Person is declared once, at a stable @id, and
+ * every page points at that node instead of restating it. Search engines then
+ * read the whole site as describing a single entity.
+ *
+ * Every node derives from src/data/content.ts, so the structured data cannot
+ * drift away from what the pages actually say.
+ */
+const personId = `${site.url}/#person`;
+const websiteId = `${site.url}/#website`;
+const pageId = `${canonicalUrl}#webpage`;
+
+const person = {
+  '@type': 'Person',
+  '@id': personId,
   name: site.name,
   url: site.url,
-  jobTitle: "Founder & Product Executive",
+  // A deliberate label, rather than the current role's formal title.
+  jobTitle: 'Founder & Product Executive',
   description: site.description,
+  image: ogImage,
   email: `mailto:${site.email}`,
   address: {
-    "@type": "PostalAddress",
+    '@type': 'PostalAddress',
     addressLocality: city,
     addressRegion: region,
-    addressCountry: "CA",
+    addressCountry: 'CA',
   },
   sameAs: [
     site.linkedin,
@@ -69,54 +111,130 @@ const jsonLd = {
   ],
   knowsAbout: skills,
   worksFor: orgNames.map((name) => ({
-    "@type": "Organization",
+    '@type': 'Organization',
     name,
     ...(orgUrls.has(name) ? { url: orgUrls.get(name) } : {}),
   })),
   alumniOf: education.map((entry) => ({
-    "@type": "EducationalOrganization",
+    '@type': 'EducationalOrganization',
     name: entry.institution,
   })),
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': websiteId,
+  url: site.url,
+  name: site.name,
+  description: site.description,
+  inLanguage: 'en-CA',
+  publisher: { '@id': personId },
+};
+
+// ProfilePage on the home page states that the page *is* the person, which is
+// what qualifies it for an entity panel. Subpages are ordinary WebPages about
+// that same person.
+const page = {
+  '@type': ogType === 'profile' ? 'ProfilePage' : 'WebPage',
+  '@id': pageId,
+  url: canonicalUrl,
+  name: title,
+  description,
+  inLanguage: 'en-CA',
+  isPartOf: { '@id': websiteId },
+  about: { '@id': personId },
+  ...(ogType === 'profile' ? { mainEntity: { '@id': personId } } : {}),
+  primaryImageOfPage: ogImage,
+};
+
+const breadcrumbList = breadcrumbs.length
+  ? [
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${canonicalUrl}#breadcrumbs`,
+        itemListElement: [{ name: 'Home', href: '/' }, ...breadcrumbs].map(
+          (crumb, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: crumb.name,
+            item: new URL(crumb.href, site.url).href,
+          }),
+        ),
+      },
+    ]
+  : [];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [person, website, page, ...breadcrumbList, ...schema],
 };
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-CA">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0a0a0a" />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
-    <meta name="keywords" content="Mike Shoss, AI, product executive, founder, Clio, Epilogue, ShossX, legal AI, angel investor, multi-agent systems, AI orchestration, venture building, Milton, Toronto" />
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+    <!--
+      max-image-preview:large is what lets Google use the full-size card in
+      results and in Discover; without it the thumbnail is capped to a postage
+      stamp.
+    -->
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+
+    <!--
+      Open Graph. og:image is a PNG deliberately: LinkedIn, X, Facebook, Slack
+      and iMessage all ignore an SVG here and fall back to a blank card. The
+      dimensions let a scraper lay the card out before the image finishes
+      downloading, and must match what scripts/generate-og-image.mjs renders.
+    -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${site.url}/og-image.svg`} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content="en_CA" />
+    {ogType === 'profile' && (
+      <>
+        <meta property="profile:first_name" content="Mike" />
+        <meta property="profile:last_name" content="Shoss" />
+        <meta property="profile:username" content="mikeshoss" />
+      </>
+    )}
 
-    <!-- Twitter -->
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${site.url}/og-image.svg`} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <!-- Favicon -->
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Fonts loaded via @fontsource (self-hosted, no external requests) -->
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
     <!-- Google Analytics -->
     {import.meta.env.PROD && (

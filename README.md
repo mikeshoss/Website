@@ -8,7 +8,7 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 - **Styling:** [Tailwind CSS](https://tailwindcss.com) 3 via `@astrojs/tailwind`, with the `@tailwindcss/typography` plugin
 - **Fonts:** Self-hosted [Inter](https://fontsource.org/fonts/inter) and [JetBrains Mono](https://fontsource.org/fonts/jetbrains-mono) via `@fontsource` (no external font requests)
 - **Content:** Markdown blog posts through Astro content collections (`astro:content`)
-- **SEO:** `@astrojs/sitemap` for automatic sitemap generation, plus per-page meta tags and JSON-LD structured data in the base layout
+- **SEO:** `@astrojs/sitemap` for automatic sitemap generation, plus per-page meta tags, Open Graph/Twitter cards and a JSON-LD `@graph` in the base layout
 - **Data:** Read-only JSON API and a remote MCP server, both derived from the same content module
 - **Hosting:** Cloudflare Workers (Workers Builds + static assets)
 
@@ -20,10 +20,15 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 ├── tailwind.config.mjs     # Theme tokens (colors, fonts) and Tailwind content globs
 ├── public/                 # Static assets served as-is
 │   ├── favicon.svg
-│   ├── og-image.svg
+│   ├── apple-touch-icon.png # Generated — see scripts/
+│   ├── og-image.png        # Generated — see scripts/
 │   ├── robots.txt
 │   ├── _headers            # Cloudflare security, cache & CORS headers
 │   └── _redirects          # Cloudflare redirects
+├── scripts/                # Image sources + their renderer (`npm run images`)
+│   ├── og-image.html
+│   ├── apple-touch-icon.html
+│   └── generate-images.mjs
 ├── wrangler.jsonc          # Worker config: entrypoint + static assets
 ├── worker/
 │   ├── index.ts            # Worker entry: /mcp, everything else to assets
@@ -38,7 +43,9 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
     │   └── Footer.astro
     ├── pages/              # Routed pages
     │   ├── index.astro      # Home
-    │   ├── companies.astro
+    │   ├── companies/
+    │   │   ├── index.astro  # Ventures index
+    │   │   └── [slug].astro # One page per venture, from `slug` in content.ts
     │   ├── projects.astro
     │   ├── experience.astro
     │   ├── contact.astro
@@ -55,7 +62,19 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 
 ### Content
 
-All copy (hero text, experience, companies, projects, patents, skills, volunteering) lives in `src/data/content.ts`. Edit that file to update the site's text.
+All copy (hero text, experience, ventures, projects, patents, skills, volunteering,
+interests) lives in `src/data/content.ts`. Edit that file to update the site's text.
+
+Each entry in `companies` carries a `slug`, which is its URL under `/companies/`.
+Adding a venture there is the whole job: it gets a page, a card on the ventures
+index and the home page, a JSON API entry, an `Organization` JSON-LD node, a
+sitemap URL and a section in `llms.txt`, with no other file touched. Slugs are
+indexed URLs, so renaming one costs that page its search ranking — treat them as
+permanent once deployed.
+
+A volunteering entry can carry a `timeline` of roles within the same
+organization (`title` stays the current one), which renders under the entry and
+is published through the API.
 
 Blog posts are Markdown files in `src/content/blog/`, validated against the schema in `src/content/config.ts` (`title`, `description`, `date`, `tags`, `draft`).
 
@@ -160,6 +179,26 @@ npm run check     # typecheck the project (astro check)
 npm run build     # build the static site to dist/
 npm run preview   # preview the production build locally
 ```
+
+### Social card and icons
+
+`public/og-image.png` and `public/apple-touch-icon.png` are generated, not
+hand-drawn. Their sources are the HTML files in `scripts/`; edit those and
+re-render:
+
+```bash
+npm run images
+```
+
+The renderer drives Playwright's Chromium over the DevTools Protocol and has no
+npm dependencies, but it needs Node 22+ (for the global `WebSocket`) and a
+Chromium on disk — set `CHROME_PATH` if it is not where Playwright puts it. The
+outputs are committed, so a deploy never runs it.
+
+The card is a PNG deliberately: LinkedIn, X, Facebook, Slack and iMessage all
+ignore an SVG `og:image` and render a blank preview. Its dimensions (1200x630)
+are declared in `src/layouts/Layout.astro` as `og:image:width`/`og:image:height`
+and are set in `scripts/generate-images.mjs` — change one and change the other.
 
 To preview the build through the Cloudflare Workers runtime locally (requires `wrangler`):
 

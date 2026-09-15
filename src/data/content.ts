@@ -144,11 +144,22 @@ export const site = {
 };
 
 export const hero = {
-  headline: "Founder. Product Executive. AI Builder.",
+  headline: "I ship AI products in industries where being wrong is expensive.",
   subheadline:
-    `I build companies, lead product organizations, and ship AI systems that drive real business outcomes — not demos. ${yearsExperience}+ years turning strategy into products that scale.`,
+    `Staff Product Manager at Clio, working on AI research and matter management for enterprise law firms, and founder of Epilogue, an AI consulting and product studio. ${yearsExperience}+ years turning strategy into products that scale.`,
   credibility:
-    `Currently a Staff Product Manager at Clio building AI for enterprise legal, while running Epilogue, an AI consulting and product studio. Previously built and launched Verity Docs at Caseware, and scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
+    `For the last year that meant audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it means legal. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
+  /** The argument behind the headline. Rendered as prose on the home page. */
+  thesis: [
+    "High-consequence work is document-dense, precedent-driven, and reviewed by people whose licence is on the line. You can't ship a confident guess into that. What you can ship is a system that knows what it knows, shows its work, and fails visibly instead of quietly — and that's a product problem long before it's a model problem.",
+    "I build the governance alongside the product rather than after it. At Caseware that meant standing up an ISO/IEC 42001-aligned AI management system inside the release pipeline, which turned compliance from a blocker into a sales accelerant.",
+  ],
+  whatIDo: [
+    "Take a persistent, expensive, document-heavy workflow and turn it into a product people use every week",
+    "Build the platform underneath it — SDKs, telemetry, developer experience — so it scales past the first customer",
+    "Put the governance in the pipeline, not in a policy document",
+    "Move fast in the open: validated prototypes in 24 hours, production features in a week",
+  ],
   philosophy: [
     "Strategy without execution is a hobby",
     "Ship products, not slide decks",
@@ -156,6 +167,39 @@ export const hero = {
     "Build for outcomes, not applause",
   ],
 };
+
+/**
+ * Outcomes with a number attached, newest work first. Deliberately separate
+ * from `highlights`: those are career totals, these are individual results.
+ */
+export const selectedResults = [
+  {
+    value: "75%",
+    label: "Less time on document work",
+    detail:
+      "Verity Docs at Caseware, against a 50% target — at 97% extraction accuracy and 100% weekly active use.",
+  },
+  {
+    value: "80%",
+    label: "Faster delivery cycles",
+    detail: "Across a 43-person product organization.",
+  },
+  {
+    value: "105%",
+    label: "QoQ revenue growth",
+    detail: "A new SaaS product, in its first quarter.",
+  },
+  {
+    value: "56%",
+    label: "Revenue growth at 2% churn",
+    detail: "Through pricing and packaging work.",
+  },
+  {
+    value: "50%",
+    label: "Conversion lift",
+    detail: "Alongside a 33% improvement in lifetime value.",
+  },
+];
 
 export const skills = [
   "Product Strategy & Execution",
@@ -175,36 +219,89 @@ export const highlights = [
   { value: `${patentCount}`, label: "Patents in AI & Video Commerce" },
 ];
 
+export interface CompanyProduct {
+  name: string;
+  tagline: string;
+  description: string;
+  status: string;
+  url?: string;
+}
+
+/**
+ * A distinct line of business inside a venture. Epilogue runs two, and the
+ * venture page renders them side by side.
+ */
+export interface CompanyArm {
+  name: string;
+  description: string;
+  services: string[];
+}
+
 export interface Company {
+  /**
+   * URL segment for /companies/<slug>. Unique, and stable once shipped — these
+   * are indexed pages, so renaming one costs its search ranking.
+   */
+  slug: string;
   name: string;
   role: string;
+  /** One line. Used on cards and as the venture page's meta description. */
+  tagline: string;
+  /** Card-length summary, one paragraph. */
   description: string;
+  /** Long-form paragraphs, shown only on the venture page. */
+  body?: string[];
   start: string;
   end?: string;
   url?: string;
-  products?: {
-    name: string;
-    tagline: string;
-    description: string;
-    status: string;
-  }[];
+  arms?: CompanyArm[];
+  products?: CompanyProduct[];
+  /** Named client and partner engagements. */
+  clients?: string[];
+  /** Syndicates, angel networks and funds invested through. */
+  networks?: string[];
 }
 
+// Display order, not chronology: the ventures index and the home page both read
+// this array top-down, so the flagship leads.
 const companiesData: Company[] = [
   {
-    name: "ShossX",
-    role: "Angel Investor",
-    description:
-      "Investing in early-stage Canadian science and technology companies, with a focus on AI. Canada builds world-class startups and then outsources their scale — the gap is in speed, risk appetite, and cheque size, not talent. Active through syndicates, angel networks, and funds: CedarPeak, Angel One, Sand Hill Angels, and N49P.",
-    start: "2021-02",
-  },
-  {
+    slug: "epilogue",
     name: "Epilogue",
     role: "Founder & Principal — AI Consulting & Product Studio",
+    tagline: "Turning complex business problems into practical AI systems.",
     description:
-      "An AI company focused on turning complex business problems into practical, high-impact AI solutions. Epilogue operates across two tightly integrated arms: Consulting (AI strategy and roadmaps, AI-native product and platform design, pricing, monetization, and go-to-market) and Product Studio (building and validating AI-native products end to end, then spinning them out or integrating them into partner organizations). Client and partner work includes OneChart, Saucy Protein, TakeCare, CorLibra, SalesBop, ZheroTax, Protagonist Health, and UniversoleFit.",
+      "An AI company that turns complex business problems into practical, high-impact solutions. Epilogue runs two tightly integrated arms: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
+    body: [
+      "Most AI work stalls in the gap between a promising demo and something a business will actually run on. Epilogue exists to close that gap. The consulting arm decides what is worth building, how it should be priced, and how it goes to market. The studio arm builds it, validates it with real users, and then either spins it out or hands it to the partner organization to operate.",
+      "The two arms feed each other. Client work surfaces problems common enough to productize, and the studio's products give the consulting practice working systems to point at instead of slideware.",
+    ],
     start: "2023-11",
     url: "https://epiloguelabs.com",
+    arms: [
+      {
+        name: "Consulting",
+        description:
+          "For teams that need to decide what to build, what to buy, and what to leave alone.",
+        services: [
+          "AI strategy and roadmaps",
+          "AI-native product and platform design",
+          "Pricing and monetization",
+          "Go-to-market",
+        ],
+      },
+      {
+        name: "Product Studio",
+        description:
+          "Building and validating AI-native products end to end, then spinning them out or integrating them into partner organizations.",
+        services: [
+          "0-to-1 product development",
+          "Multi-agent systems and orchestration",
+          "Rapid validation with real users",
+          "Spin-out and hand-off",
+        ],
+      },
+    ],
     products: [
       {
         name: "Parleh",
@@ -228,13 +325,38 @@ const companiesData: Company[] = [
         status: "Active — Invite Only",
       },
     ],
+    clients: [
+      "OneChart",
+      "Saucy Protein",
+      "TakeCare",
+      "CorLibra",
+      "SalesBop",
+      "ZheroTax",
+      "Protagonist Health",
+      "UniversoleFit",
+    ],
   },
-
   {
+    slug: "shossx",
+    name: "ShossX",
+    role: "Angel Investor",
+    tagline: "Backing early-stage Canadian AI, science and technology companies.",
+    description:
+      "Investing in early-stage Canadian science and technology companies, with a focus on AI. Canada builds world-class startups and then outsources their scale — the gap is in speed, risk appetite, and cheque size, not talent.",
+    body: [
+      "Canada builds world-class startups and then outsources their scale. I would like that to stop. The constraint has never been talent; it is speed, risk appetite, and cheque size at exactly the stage where those three decide whether a company stays here.",
+      "I invest through syndicates, angel networks and funds rather than alone. That gets more capital to a founder faster than any single cheque would, and it puts operators around the table alongside the money.",
+    ],
+    start: "2021-02",
+    networks: ["CedarPeak", "Angel One", "Sand Hill Angels", "N49P"],
+  },
+  {
+    slug: "milton-innovation",
     name: "Milton Innovation",
     role: "Founder",
+    tagline: "A community hub for technologists, innovators and creators in Milton.",
     description:
-      "This is a thriving hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.",
+      "A thriving hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.",
     start: "2023-11",
   },
 ];
@@ -557,6 +679,12 @@ export interface VolunteerRole {
   description: string;
   category: "mentoring" | "community" | "advisory" | "governance";
   url?: string;
+  /**
+   * Role progression inside the same organization, newest first. Present only
+   * where the title has changed; `title` above is always the current one, and
+   * `start` is always the first of these entries' start.
+   */
+  timeline?: { role: string; start: string; end?: string }[];
 }
 
 const volunteeringData: VolunteerRole[] = [
@@ -569,12 +697,28 @@ const volunteeringData: VolunteerRole[] = [
     category: "mentoring",
   },
   {
-    title: "Board Member",
+    title: "Board Member & Chair, Business Development Committee",
     organization: "Milton Community Resource Centre (MCRC)",
     start: "2024-11",
     description:
-      "Board member of a not-for-profit, multi-service and multi-site community organization focused on children and families.",
+      "MCRC is a not-for-profit, multi-service and multi-site organization serving children and families in Milton and the surrounding communities, alongside professionals working in Early Childhood Education. Advising on funding strategy, government partnerships, and operational improvements for a nonprofit serving 1,000+ families; supporting financial planning and grant applications for long-term sustainability; helping the organization navigate technology and AI adoption; and engaging policymakers and community leaders to expand impact across the Milton region.",
     category: "governance",
+    timeline: [
+      { role: "Chair, Business Development Committee", start: "2026-08" },
+      {
+        role: "Member, Business Development Committee",
+        start: "2024-11",
+        end: "2026-08",
+      },
+    ],
+  },
+  {
+    title: "Member & Lead, Meshtastic / LoRa Mesh Working Group",
+    organization: "Burlington Amateur Radio Club (BARC)",
+    start: "2025-09",
+    description:
+      "Licensed amateur radio operator and member of BARC, a club serving Burlington, Halton and Hamilton that runs the VE3RSB repeater system, weekly Hackspace sessions, licensing courses, the annual Ontario Hamfest, and emergency and special-event communications support for non-profit and emergency services organizations. Leading the club's Meshtastic / LoRa mesh working group, chartered to recommend to the BARC Executive whether and how to deploy off-grid mesh networking infrastructure — covering hardware evaluation, solar and battery power budgeting for year-round Ontario operation, tower siting and RF integration, ISED licence-exempt compliance, long-term maintenance ownership, and cost. Also runs APRS igate and digipeater infrastructure, and experiments across Meshtastic, MeshCore and LoRa mesh networking.",
+    category: "community",
   },
   {
     title: "Lead Mentor — Artificial Intelligence & Product Management",
@@ -636,12 +780,12 @@ const volunteeringData: VolunteerRole[] = [
     category: "advisory",
   },
   {
-    title: "Organizer",
+    title: "Co-Organizer",
     organization: "ProductTank Toronto",
     start: "2024-03",
     end: "2025-06",
     description:
-      "Led and scaled Toronto's largest product leadership community.",
+      "Led and scaled Toronto's largest product leadership community, engaging senior product leaders across the city. Previously Organizer.",
     category: "community",
   },
   {
@@ -697,10 +841,21 @@ export const certifications: Certification[] = [
   { name: "Amateur Radio Operator Certificate" },
 ];
 
+/** withPeriod(), extended to the nested role progression on a volunteer entry. */
+function withVolunteerPeriods(items: VolunteerRole[]) {
+  return withPeriod(items).map((item) => ({
+    ...item,
+    timeline: item.timeline?.map((entry) => ({
+      ...entry,
+      period: formatPeriod(entry.start, entry.end),
+    })),
+  }));
+}
+
 export const companies = withPeriod(companiesData);
 export const projects = withPeriod(projectsData);
 export const experience = withPeriod(experienceData);
-export const volunteering = withPeriod(volunteeringData);
+export const volunteering = withVolunteerPeriods(volunteeringData);
 
 /* ------------------------------------------------------------------------- *
  * Additional resume sections
@@ -769,7 +924,31 @@ export interface Interest {
   keywords?: string[];
 }
 
-export const interests: Interest[] = [];
+export const interests: Interest[] = [
+  {
+    name: "Vintage Canadian steel bicycles",
+    keywords: ["Restoration", "Framebuilding", "Cycling"],
+  },
+  {
+    name: "Amateur radio",
+    keywords: [
+      "Meshtastic",
+      "LoRa mesh",
+      "APRS",
+      "Digipeaters",
+      "Emergency communications",
+    ],
+  },
+  {
+    name: "Homelab",
+    keywords: [
+      "Self-hosted infrastructure",
+      "Local-first AI",
+      "Docker",
+      "Observability",
+    ],
+  },
+];
 
 export interface Cause {
   name: string;
