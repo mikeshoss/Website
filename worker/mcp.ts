@@ -85,6 +85,7 @@ const SECTION_NAMES = [
   "languages",
   "interests",
   "causes",
+  "glossary",
 ];
 
 /* -------------------------------------------------------------------------- *
@@ -226,6 +227,47 @@ const TOOLS: Record<string, Tool> = {
       return { name, title, email, website: url, linkedin, github, location };
     },
   },
+  lookup_term: {
+    description:
+      "Look up a term from Mike Shoss's AI glossary \u2014 harness, agent, agentic, orchestration, tool use, context engineering, RAG, MCP, grounding, hallucination, eval, guardrails, human-in-the-loop, ISO/IEC 42001. Each entry gives the straight definition, what the term means in practice, and a concrete test for telling the difference. Omit `term` to list every entry.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        term: {
+          type: "string",
+          description:
+            "Term, alias or keyword to look up. Matches the term name, its aliases and the definition text. Omit to list all terms.",
+        },
+      },
+      additionalProperties: false,
+    },
+    handler: ({ term }, resume) => {
+      const entries = (resume.glossary ?? []) as Record<string, any>[];
+      if (!term) {
+        return entries.map((entry) => ({
+          term: entry.term,
+          short: entry.short,
+          url: `https://mikeshoss.com/glossary/${entry.slug}/`,
+        }));
+      }
+
+      // Exact name and alias hits rank above a body-text match, so asking for
+      // "harness" returns the harness entry rather than every entry mentioning it.
+      const needle = String(term).toLowerCase();
+      const exact = entries.filter(
+        (entry) =>
+          String(entry.term).toLowerCase() === needle ||
+          (entry.aliases ?? []).some((a: string) => a.toLowerCase() === needle),
+      );
+      const found = exact.length ? exact : entries.filter((entry) => matches(entry, needle));
+
+      return found.map((entry) => ({
+        ...entry,
+        url: `https://mikeshoss.com/glossary/${entry.slug}/`,
+      }));
+    },
+  },
+
 };
 
 /* -------------------------------------------------------------------------- *

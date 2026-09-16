@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { site } from "../../data/content";
+import { companies, site } from "../../data/content";
 import { API_VERSION, json } from "../../lib/api";
 
 export const prerender = true;
@@ -18,6 +18,7 @@ const SECTIONS = [
   "projects",
   "patents",
   "certifications",
+  "glossary",
   "awards",
   "publications",
   "volunteering",
@@ -49,6 +50,18 @@ export const GET: APIRoute = () => {
           SECTIONS.map((name) => [name, `${base}/api/${name}.json`]),
         ),
       },
+      /**
+       * One feed per venture: the company record joined to the projects that
+       * belong to it and the founder block. Built so a venture's own site can
+       * render itself from this one, rather than holding a second copy of the
+       * same prose that then drifts.
+       */
+      syndication: Object.fromEntries(
+        companies.map((company) => [
+          company.slug,
+          `${base}/api/companies/${company.slug}.json`,
+        ]),
+      ),
     },
   });
 };
