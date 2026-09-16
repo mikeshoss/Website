@@ -405,10 +405,17 @@ const projectsData: Project[] = [
     status: "Active",
   },
   {
+    name: "Open-Weatheradio",
+    description:
+      "Weatheradio Canada's transmitters were shut down in the early hours of 31 March 2026. Around 230 VHF sites, reaching over 90 percent of the Canadian population, went off the air. The data that fed them did not go anywhere: every input Weatheradio consumed is still published, free, in machine-readable form — ECCC Datamart for weather products, NAADS for public alerting. What was cut was the last mile, a few hundred watts into an antenna. Open-Weatheradio reassembles those streams into subscriber feeds, on amateur spectrum, for licensed operators.",
+    start: "2026-04",
+    status: "Active",
+  },
+  {
     name: "Overlord MCP",
     description:
       "AI-controlled infrastructure: provision, command, destroy. An MCP server wrapping the Proxmox VE API, giving AI agents full control over virtual machine and container infrastructure — 83 tools covering the complete Proxmox surface across VMs, containers, networking, firewall, storage, backup, HA and monitoring, plus automated provisioning with 13 built-in recipes. Overlord is the orchestration layer that lets an agent provision its own infrastructure on demand, and it pairs with specialised servers like Reaper MCP: Overlord provisions the environment, Reaper operates inside it.",
-    start: "2026-06",
+    start: "2026-03",
     status: "Active",
     repo: "https://github.com/mikeshoss/overlord-mcp",
   },
@@ -416,16 +423,9 @@ const projectsData: Project[] = [
     name: "Reaper MCP",
     description:
       "Kali Linux security tools, summoned by AI. An MCP server that wraps Kali security testing tools so AI agents — Claude Desktop, Cursor, OpenClaw — can invoke them directly. Kali Linux, all 24 tools and the MCP server are packaged into a single Docker container, so there is no separate Kali install to maintain: docker build pulls the official kalilinux/kali-rolling image and installs everything automatically.",
-    start: "2026-05",
+    start: "2026-03",
     status: "Active",
     repo: "https://github.com/mikeshoss/reaper-mcp",
-  },
-  {
-    name: "Open-Weatheradio | CAPCAST",
-    description:
-      "Weatheradio Canada's transmitters were shut down in the early hours of 31 March 2026. Around 230 VHF sites, reaching over 90 percent of the Canadian population, went off the air. The data that fed them did not go anywhere: every input Weatheradio consumed is still published, free, in machine-readable form — ECCC Datamart for weather products, NAADS for public alerting. What was cut was the last mile, a few hundred watts into an antenna. CAPCAST reassembles those streams into subscriber feeds, on amateur spectrum, for licensed operators.",
-    start: "2026-04",
-    status: "Active",
   },
   {
     name: "The Milton Record",
