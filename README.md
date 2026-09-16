@@ -110,6 +110,7 @@ curl -s https://mikeshoss.com/api/index.json | python3 -m json.tool
 | `/api/profile.json` | Name, contact, headline, summary, philosophy |
 | `/api/experience.json` | Work history with dates and accomplishments |
 | `/api/companies.json` | Companies founded, including their products |
+| `/api/companies/<slug>.json` | One venture, joined to its projects and the founder block |
 | `/api/projects.json` | Projects, with status |
 | `/api/patents.json` | Patents with numbers, filing and grant dates, links |
 | `/api/volunteering.json` | Volunteering, mentoring, advisory, and board work |
@@ -132,6 +133,39 @@ the exception — those entries keep a hand-written `period` and have no machine
 
 There is no blog endpoint: the blog is currently redirected off the site, so publishing its
 posts here would be misleading.
+
+### Venture syndication
+
+`/api/companies/<slug>.json` is how a venture's own site stays in sync with this one.
+
+`/api/companies.json` returns the venture records alone. The per-venture feed returns the
+joined view a second site would otherwise have to assemble and then keep in step by hand:
+
+- `company` — the full record: role, tagline, description, long-form body, arms, products,
+  clients, networks
+- `projects` — `{ active, past, count }`, only the projects whose `association` matches that
+  venture's name
+- `founder` — name, title, headline, subheadline, thesis, location and contact links
+- `page` — the venture's canonical page here
+- `related` — the glossary, profile and discovery feeds
+
+```bash
+curl -s https://mikeshoss.com/api/companies/epilogue.json | python3 -m json.tool
+```
+
+The consuming site can read it either way. At build time it is a fetch in the build step,
+which costs a rebuild to pick up a change and adds no runtime dependency. At runtime it is a
+fetch in the browser, which is live but shows nothing until it resolves. The response is
+static, CORS-open and cached five minutes at the edge, so both are cheap.
+
+Either way the content is edited once, in `src/data/content.ts`, and both sites follow.
+
+Active vs past comes from `isActive()` in `src/lib/projects.ts`, which is the same test the
+`/projects` page and `llms.txt` use — a venture site and this one cannot disagree about
+whether a project is still running.
+
+URLs in these feeds are untagged, like the rest of the API. Campaign parameters mark a link
+a person clicked; a feed is a machine resolving an identifier.
 
 ### MCP server
 

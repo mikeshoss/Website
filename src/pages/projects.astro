@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { projects, site } from '../data/content';
 import { placement, withCampaign } from '../lib/links';
+import { isActive } from '../lib/projects';
 
 /**
  * Grouped by owner first, then Active vs past within each owner.
@@ -12,8 +13,8 @@ import { placement, withCampaign } from '../lib/links';
  * disappearing, which is what makes a missing `association` visible instead of
  * silent. Array order from content.ts is preserved inside each bucket.
  *
- * "Active" is an exact match; every other status reads as past, which covers
- * Archived, Exited and No Longer Maintained without naming them here.
+ * The Active vs past test is `isActive` from lib/projects, shared with llms.txt
+ * and the venture syndication feeds so the three cannot drift apart.
  */
 const OWNERS = [
   { key: 'Personal', label: 'Personal', blurb: 'Built for myself, in the open.' },
@@ -26,8 +27,8 @@ const owners = OWNERS
     return {
       ...owner,
       sections: [
-        { label: 'Active', accent: true, items: mine.filter(p => p.status === 'Active') },
-        { label: 'Past', accent: false, items: mine.filter(p => p.status !== 'Active') },
+        { label: 'Active', accent: true, items: mine.filter(isActive) },
+        { label: 'Past', accent: false, items: mine.filter(p => !isActive(p)) },
       ].filter(section => section.items.length > 0),
     };
   })

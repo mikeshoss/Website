@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { glossary } from "../data/glossary";
+import { isActive } from "../lib/projects";
 import {
   site,
   hero,
@@ -26,7 +27,7 @@ export const prerender = true;
 
 export const GET: APIRoute = () => {
   const current = experience.filter((role) => !role.end);
-  const activeProjects = projects.filter((p) => p.status.startsWith("Active"));
+  const activeProjects = projects.filter(isActive);
 
   const body = `# ${site.name} — ${site.title}
 

@@ -140,6 +140,11 @@ Change a file, and all of this follows with no extra work:
 - the sitemap
 - the structured data in the page `<head>`
 - the MCP server at `/mcp`
+- the venture syndication feeds at `/api/companies/<slug>.json`
+
+That last one is the two-site sync: a venture's own site reads its feed, so editing
+`content.ts` here updates both. Add a product to Epilogue and it appears on this
+site and on the Epilogue site, with no second edit.
 
 ## One thing to leave alone
 
