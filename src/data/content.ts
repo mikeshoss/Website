@@ -323,6 +323,14 @@ const companiesData: Company[] = [
         status: "Active — Closed Beta",
       },
       {
+        name: "Of Record Media",
+        tagline: "An independent civic record.",
+        description:
+          "Municipalities and police services publish constantly — agendas, minutes, budgets, development files — and almost none of it is read. Of Record turns those published sources into a standing public record that can be checked against the document it came from.",
+        status: "Active",
+        url: "https://ofrecord.ca",
+      },
+      {
         name: "TrustFlow",
         tagline: "Automate admin, embed compliance.",
         description:
@@ -382,13 +390,35 @@ export interface Project {
   repo?: string;
 }
 
+// Grouped on /projects by `association` first, then Active vs past, so every
+// entry needs an association. Within each group, array order is display order.
+//
+// Two optional links per project, both commented in on the entries that have
+// them and left as a commented placeholder on the ones that do not:
+//   url:  the project's own site
+//   repo: public source only — a link to a private repo is a 404 for everyone
+//         but the author
 const projectsData: Project[] = [
+  /* ---------------------------------------------------------------- Personal */
   {
     name: "Hangar",
     description:
       "Start Claude Code sessions on your own machines, from your phone. Pick a machine, pick a project, tap start — or just ask Claude to do it.",
     start: "2026-09",
     status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/",
+  },
+  {
+    name: "Readback",
+    description:
+      "Who's scanning your plate? Every dot is a mapped automated licence plate reader in Canada — 58 published by the operating force itself, 162 operator-tagged, 116 unverified — and most scanning is not dots at all, but police fleets, which get their own layer. Each camera carries how it is known, so a claim can be checked rather than taken.",
+    start: "2026-09",
+    status: "Active",
+    association: "Personal",
+    url: "https://readback.ofrecord.ca",
+    repo: "https://github.com/mikeshoss/Readback",
   },
   {
     name: "YTZ-Tracker",
@@ -396,6 +426,9 @@ const projectsData: Project[] = [
       "ytzboard — a macOS menu-bar board for live movements at Billy Bishop Toronto City Airport (CYTZ/YTZ). The title shows the latest movement, holds it for two minutes, then goes quiet. Clicking gives the runway in use, the last ten movements with timestamps, and — behind Details — wind, visibility, ceiling and RVR. The dropdown is ordered by what changes a decision: the runway, and when it applies why nothing is moving, sit at the top; the instrumentation goes under Details, because knowing that the last poll was three seconds ago answers a question about the code, not about the airport.",
     start: "2026-08",
     status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/YTZ-Tracker",
   },
   {
     name: "Earshot",
@@ -403,13 +436,29 @@ const projectsData: Project[] = [
       "An ADS-B display for one specific window, and for your ears. Most plane-spotting displays answer what is flying near me. Earshot answers two more useful questions. Can I actually see it from here — not \"is it within 2 km\", but is it above the roofline in the direction this window faces, and is there cloud in the way. And is that what I can hear — it estimates loudness at your ear, ranks by it, and tells you how many seconds behind the aircraft the sound is. It runs entirely against a local ADS-B receiver; routes and weather are the only things that ever touch the network, and both are optional.",
     start: "2026-08",
     status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Earshot",
+  },
+  {
+    name: "GoTransit",
+    description:
+      "A small FastAPI service over the GO Transit / Metrolinx Open Data API. It hides the upstream's rough edges and exposes a clean, cached JSON API: departure boards, service alerts, stops, and live vehicles. The quirks it absorbs are the point — errors arrive as HTTP 200 with the real status buried in Metadata.ErrorCode, so a bad key returns 200 OK with a body saying 401. It caches everything, because Metrolinx disables keys that generate excessive traffic.",
+    start: "2026-09",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Go-Transit",
   },
   {
     name: "Open-Weatheradio",
     description:
-      "Weatheradio Canada's transmitters were shut down in the early hours of 31 March 2026. Around 230 VHF sites, reaching over 90 percent of the Canadian population, went off the air. The data that fed them did not go anywhere: every input Weatheradio consumed is still published, free, in machine-readable form — ECCC Datamart for weather products, NAADS for public alerting. What was cut was the last mile, a few hundred watts into an antenna. Open-Weatheradio reassembles those streams into subscriber feeds, on amateur spectrum, for licensed operators.",
+      "Weatheradio Canada's transmitters were shut down in the early hours of 31 March 2026. Around 230 VHF sites, reaching over 90 percent of the Canadian population, went off the air. The data that fed them did not go anywhere: every input Weatheradio consumed is still published, free, in machine-readable form — ECCC Datamart for weather products, NAADS for public alerting. What was cut was the last mile, a few hundred watts into an antenna. CAPCAST reassembles those streams into subscriber feeds, on amateur spectrum, for licensed operators.",
     start: "2026-04",
     status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Open-Weatheradio",
   },
   {
     name: "Overlord MCP",
@@ -417,7 +466,9 @@ const projectsData: Project[] = [
       "AI-controlled infrastructure: provision, command, destroy. An MCP server wrapping the Proxmox VE API, giving AI agents full control over virtual machine and container infrastructure — 83 tools covering the complete Proxmox surface across VMs, containers, networking, firewall, storage, backup, HA and monitoring, plus automated provisioning with 13 built-in recipes. Overlord is the orchestration layer that lets an agent provision its own infrastructure on demand, and it pairs with specialised servers like Reaper MCP: Overlord provisions the environment, Reaper operates inside it.",
     start: "2026-03",
     status: "Active",
+    association: "Personal",
     repo: "https://github.com/mikeshoss/overlord-mcp",
+    // url: "https://",
   },
   {
     name: "Reaper MCP",
@@ -425,7 +476,9 @@ const projectsData: Project[] = [
       "Kali Linux security tools, summoned by AI. An MCP server that wraps Kali security testing tools so AI agents — Claude Desktop, Cursor, OpenClaw — can invoke them directly. Kali Linux, all 24 tools and the MCP server are packaged into a single Docker container, so there is no separate Kali install to maintain: docker build pulls the official kalilinux/kali-rolling image and installs everything automatically.",
     start: "2026-03",
     status: "Active",
+    association: "Personal",
     repo: "https://github.com/mikeshoss/reaper-mcp",
+    // url: "https://",
   },
   {
     name: "The Milton Record",
@@ -435,14 +488,7 @@ const projectsData: Project[] = [
     status: "Active",
     association: "Personal",
     url: "https://miltonrecord.ca",
-  },
-  {
-    name: "Ultron | AI Chief of Staff",
-    description:
-      "A fully autonomous AI agent team running on a single Mac Mini. One orchestrator (Claude Opus), five specialist agents coordinating across Telegram, Slack, Gmail, and a custom kanban board — all self-hosted, no cloud infrastructure. The agents research, write, code, and ship while the human sleeps.",
-    start: "2026-01",
-    status: "Active",
-    association: "Epilogue",
+    // repo: "https://github.com/mikeshoss/miltonrecord",
   },
   {
     name: "MilTastic | Milton's Community Mesh Network",
@@ -450,6 +496,19 @@ const projectsData: Project[] = [
       "A decentralized, off-grid wireless mesh network to support community communication and resilience during outages and emergency scenarios. Led system architecture, RF planning, and node deployment across multiple neighbourhoods.",
     start: "2025-12",
     status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/MilTastic",
+  },
+  {
+    name: "Personal AI Assistant",
+    description:
+      "The assistant I actually want, rebuilt each time the ceiling moved. Disciples came first: a modular, multi-user agent platform coordinating tasks and workflows over plain text. Ultron replaced it — a fully autonomous agent team on a single Mac Mini, one orchestrator and five specialists working across Telegram, Slack, Gmail and a custom kanban board, entirely self-hosted with no cloud infrastructure; its multi-agent routing, role-based delegation and orchestration framework came straight out of Disciples. Noesis is the third, and is being built as something larger than either.",
+    start: "2025-03",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Noesis",
   },
   {
     name: "Self-Hosted AI & Infrastructure Lab",
@@ -457,6 +516,41 @@ const projectsData: Project[] = [
       "Built and operated a self-hosted lab environment to assess AI tools, automation workflows, and infrastructure patterns. Deployed containerised services across multiple machines using Docker and Portainer, evaluating local-first AI workflows and dedicated compute setups.",
     start: "2020-01",
     status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/",
+  },
+
+  /* ---------------------------------------------------------------- Epilogue */
+  {
+    name: "AI Edge Briefing & The AI Edge Podcast",
+    description:
+      "A daily sweep that was already happening by hand — frontier labs, arXiv, threat-intelligence reports, defence — turned into a published briefing and a podcast.",
+    start: "2026-09",
+    status: "Active",
+    association: "Epilogue",
+    repo: "https://github.com/mikeshoss/ainews",
+    // url: "https://",
+  },
+  {
+    name: "MCP Manifest Scanner",
+    description:
+      "Connects to a Model Context Protocol server, reads everything it exposes to an AI agent, and flags advertising, promotional content, and instructions aimed at the model rather than descriptions of the tool. Agent output is not ad inventory; this measures who is treating it that way. An MCP server hands an agent two kinds of text the model tends to trust implicitly — tool definitions and tool results — and either can carry instructions the model reads as authoritative. Three detection layers, every readable MCP surface scanned, a token-gated review board in Docker, portable capture bundles for the authenticated surface, and a fleet sweep over a committed target list. 413 tests. The name is a working title.",
+    start: "2026-09",
+    status: "Active",
+    association: "Epilogue",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/MCP-Manifest-Scanner",
+  },
+  {
+    name: "Cria",
+    description:
+      "Share GPU compute, access any AI model. A distributed marketplace where providers share their local AI servers and developers reach models through an OpenAI-compatible API — Ollama, LM Studio, LocalAI, vLLM, llama.cpp, or any OpenAI-compatible server, with no code changes.",
+    start: "2026-06",
+    status: "Active",
+    association: "Epilogue",
+    url: "https://usecria.ai",
+    // repo: "https://github.com/EpilogueLabs/Cria",
   },
   {
     name: "ChatPTT",
@@ -466,15 +560,8 @@ const projectsData: Project[] = [
     end: "2026-01",
     status: "Archived",
     association: "Epilogue",
-  },
-  {
-    name: "Disciples | Family AI Agent",
-    description:
-      "A modular, multi-user AI agent platform enabling task execution and workflow coordination through text-based interactions. Evolved into Ultron (AI Chief of Staff) — its multi-agent routing, role-based delegation, and orchestration framework became the architectural foundation.",
-    start: "2025-03",
-    end: "2026-01",
-    status: "Archived — evolved into Ultron",
-    association: "Epilogue",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/",
   },
   {
     name: "Travel With RX",
@@ -484,15 +571,8 @@ const projectsData: Project[] = [
     end: "2025-12",
     status: "Exited",
     association: "Epilogue",
-  },
-  {
-    name: "Project Cria",
-    description:
-      "A platform where self-hosted high-powered AI machines — scattered across the globe — unite to tackle demanding workloads in real time. Distributed intelligence with on-demand access to powerful models and a seamless matchmaking system.",
-    start: "2025-02",
-    end: "2025-05",
-    status: "Archived",
-    association: "Epilogue",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/TravelWithRX",
   },
   {
     name: "Liteworker",
@@ -502,6 +582,8 @@ const projectsData: Project[] = [
     end: "2025",
     status: "No Longer Maintained",
     association: "Epilogue",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/",
   },
 ];
 
