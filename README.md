@@ -63,7 +63,15 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 ### Content
 
 All copy (hero text, experience, ventures, projects, patents, skills, volunteering,
-interests) lives in `src/data/content.ts`. Edit that file to update the site's text.
+interests) lives in `src/data/content.ts`; the glossary lives in
+`src/data/glossary.ts`. Edit those files to update the site's text.
+
+**Note that `/api/*.json` is generated output, not input** — it is rebuilt from
+these modules on every deploy, so edits made there are overwritten.
+
+For editing without a local checkout — the GitHub web flow, what each export
+controls, and what happens when a commit breaks the build — see
+[EDITING.md](./EDITING.md).
 
 Each entry in `companies` carries a `slug`, which is its URL under `/companies/`.
 Adding a venture there is the whole job: it gets a page, a card on the ventures
