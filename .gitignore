@@ -11,6 +11,7 @@ dist/
 .env
 .env.*
 .dev.vars
+.dev.vars.*
 
 # Editor
 .vscode/
