@@ -25,5 +25,23 @@
   "assets": {
     "directory": "dist",
     "binding": "ASSETS"
+  },
+
+  // Staging: deployed from the `staging` branch to staging.mikeshoss.com, as a
+  // separate Worker. `run_worker_first` sends every request through the Worker
+  // (instead of letting the asset layer short-circuit it) so worker/index.ts
+  // can demand a password before serving anything. The password itself is the
+  // STAGING_PASSWORD secret, set only on this Worker:
+  //   wrangler secret put STAGING_PASSWORD --env staging
+  "env": {
+    "staging": {
+      "name": "personalwebsite-staging",
+      "routes": [{ "pattern": "staging.mikeshoss.com", "custom_domain": true }],
+      "assets": {
+        "directory": "dist",
+        "binding": "ASSETS",
+        "run_worker_first": true
+      }
+    }
   }
 }
