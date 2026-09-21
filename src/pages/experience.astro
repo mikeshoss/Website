@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { experience, patents, volunteering, education, certifications } from '../data/content';
+import { experience, patents, volunteering, education, certifications, interests } from '../data/content';
 
 const mentoringRoles = volunteering.filter(v => v.category === 'mentoring');
 const advisoryRoles = volunteering.filter(v => v.category === 'advisory');
@@ -20,7 +20,7 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
     <div class="mb-20">
       <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Career</h2>
       <div class="space-y-1">
-        {experience.map((role, i) => (
+        {experience.map(role => (
           <div class="relative pl-8 pb-8 border-l border-surface-200 last:border-l-transparent last:pb-0">
             <div class="absolute left-0 top-1 w-2 h-2 rounded-full bg-accent -translate-x-[4.5px]"></div>
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
@@ -58,7 +58,7 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
             <a href={patent.url} target="_blank" rel="noopener noreferrer" class="card block group">
               <div class="flex items-start justify-between gap-2 mb-2">
                 <h3 class="font-medium text-white text-sm leading-snug">{patent.title}</h3>
-                <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent flex-shrink-0 mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg class="w-3.5 h-3.5 text-muted group-hover:text-accent flex-shrink-0 mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </div>
@@ -117,6 +117,27 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
       </div>
     </div>
 
+    <!-- Interests -->
+    {interests.length > 0 && (
+      <div class="mb-20">
+        <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Outside of work</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {interests.map(interest => (
+            <div class="card">
+              <h3 class="font-semibold text-white text-sm mb-3">{interest.name}</h3>
+              {interest.keywords && interest.keywords.length > 0 && (
+                <div class="flex flex-wrap gap-2">
+                  {interest.keywords.map(keyword => (
+                    <span class="text-xs text-muted font-mono">{keyword}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
     <!-- Volunteering -->
     <div>
       <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-8">Volunteering & Community</h2>
@@ -133,7 +154,7 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <div>
                       <div class="flex items-center gap-2">
                         <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
-                        <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </div>
@@ -142,6 +163,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </a>
               ) : (
                 <div class="card">
@@ -153,6 +184,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )
             ))}
@@ -172,7 +213,7 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <div>
                       <div class="flex items-center gap-2">
                         <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
-                        <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </div>
@@ -181,6 +222,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </a>
               ) : (
                 <div class="card">
@@ -192,6 +243,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )
             ))}
@@ -210,7 +271,7 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                   <div class="flex flex-col sm:flex-start gap-1 mb-1">
                     <div class="flex items-center gap-2">
                       <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
-                      <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </div>
@@ -218,6 +279,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </a>
               ) : (
                 <div class="card">
@@ -227,6 +298,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )
             ))}
@@ -245,7 +326,7 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                   <div class="flex flex-col sm:flex-start gap-1 mb-1">
                     <div class="flex items-center gap-2">
                       <h4 class="font-medium text-white text-sm group-hover:text-accent transition-colors">{role.title}</h4>
-                      <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <svg class="w-3 h-3 text-muted group-hover:text-accent flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </div>
@@ -253,6 +334,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </a>
               ) : (
                 <div class="card">
@@ -262,6 +353,16 @@ const governanceRoles = volunteering.filter(v => v.category === 'governance');
                     <span class="text-xs text-muted font-mono">{role.period}</span>
                   </div>
                   <p class="text-sm text-gray-400 mt-2">{role.description}</p>
+                  {role.timeline && role.timeline.length > 0 && (
+                    <ul class="mt-3 space-y-1 border-l border-surface-200 pl-3">
+                      {role.timeline.map(entry => (
+                        <li class="text-xs text-muted">
+                          <span class="text-gray-300">{entry.role}</span>
+                          <span class="font-mono"> · {entry.period}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )
             ))}

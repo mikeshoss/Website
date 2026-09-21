@@ -8,7 +8,8 @@
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview",
-    "dev:full": "astro build && wrangler dev"
+    "dev:full": "astro build && wrangler dev",
+    "images": "node scripts/generate-images.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",

@@ -1,0 +1,45 @@
+<!doctype html>
+<!--
+  Source for public/apple-touch-icon.png — the 180x180 icon iOS uses when the
+  site is saved to a home screen, and which several link unfurlers fall back to
+  when a page has no og:image. Matches public/favicon.svg.
+
+  Regenerate with `npm run images`.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Inter';
+        font-weight: 700;
+        font-display: block;
+        src: url('../node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2');
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body { width: 100%; height: 100%; overflow: hidden; }
+
+      body {
+        position: fixed;
+        inset: 0;
+        /* iOS applies its own corner radius, so this paints edge to edge. */
+        background: #0a0a0a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Inter', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      span {
+        font-size: 82px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: #3b82f6;
+      }
+    </style>
+  </head>
+  <body><span>MS</span></body>
+</html>
