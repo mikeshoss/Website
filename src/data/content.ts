@@ -441,6 +441,16 @@ const projectsData: Project[] = [
     // repo: "https://github.com/mikeshoss/Earshot",
   },
   {
+    name: "Skopos",
+    description:
+      "On-demand camera and microphone access to your own Macs, from your phone, over Tailscale. One menu bar agent per machine — no hub, no cloud, no app to install. A device is open if and only if someone is actively streaming from it: nothing polls, nothing pre-warms, and the camera light going out when you close the tab is the test the whole project is built around. Tailscale Serve authenticates every request, each machine keeps its own allowlist, and audio is a separate, independently counted stream, so listening never opens the camera.",
+    start: "2026-08",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Skopos",
+  },
+  {
     name: "GoTransit",
     description:
       "A small FastAPI service over the GO Transit / Metrolinx Open Data API. It hides the upstream's rough edges and exposes a clean, cached JSON API: departure boards, service alerts, stops, and live vehicles. The quirks it absorbs are the point — errors arrive as HTTP 200 with the real status buried in Metadata.ErrorCode, so a bad key returns 200 OK with a body saying 401. It caches everything, because Metrolinx disables keys that generate excessive traffic.",
@@ -481,24 +491,14 @@ const projectsData: Project[] = [
     // url: "https://",
   },
   {
-    name: "The Milton Record",
+    name: "ReelMind",
     description:
-      "A public record of what Milton is proposing, building, spending and deciding, assembled entirely from the Town's own published documents — public notices, ward development applications, council agendas and minutes, ArcGIS open data, and capital financial statements. It watches those sources for changes, says in plain English what changed, and keeps the older version so a proposal's history stays visible. Built on one rule: an unanswered question is visibly unanswered, a wrong answer is invisible — figures that do not reconcile against their source document are withheld rather than published.",
-    start: "2026",
+      "A self-hosted recommendation engine for Plex. It learns what you like, finds more of it, downloads it, organizes it, and adds it to your library — all while staying out of the way when you're watching something. Powered by a local model via Ollama: no cloud services, no subscriptions, no data leaving your network. Six recommendation sources, from \"more like what you love\" to news headlines mapped to culturally relevant media, each with an optional auto-download mode; filling franchise gaps stays manual, because a model can hallucinate a sequel that does not exist. A playback guard pauses the whole pipeline while anyone is streaming.",
+    start: "2026-03",
     status: "Active",
     association: "Personal",
-    url: "https://miltonrecord.ca",
-    // repo: "https://github.com/mikeshoss/miltonrecord",
-  },
-  {
-    name: "MilTastic | Milton's Community Mesh Network",
-    description:
-      "A decentralized, off-grid wireless mesh network to support community communication and resilience during outages and emergency scenarios. Led system architecture, RF planning, and node deployment across multiple neighbourhoods.",
-    start: "2025-12",
-    status: "Active",
-    association: "Personal",
+    repo: "https://github.com/mikeshoss/reelmind",
     // url: "https://",
-    // repo: "https://github.com/mikeshoss/MilTastic",
   },
   {
     name: "Personal AI Assistant",
