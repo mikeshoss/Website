@@ -177,7 +177,28 @@ interactively.
 Hosted on **Cloudflare Workers** with automatic deployments:
 
 1. Push to `main` → site rebuilds and deploys to production.
-2. Push to any other branch → preview deployment at a unique URL.
+2. Push to `staging` → deploys to [staging.mikeshoss.com](https://staging.mikeshoss.com), behind a password.
+3. Push to any other branch → preview deployment at a unique URL.
+
+### Staging
+
+Staging is a second Worker, `personalwebsite-staging`, defined as `env.staging` in
+`wrangler.jsonc` and built by its own Workers Builds project whose production branch is
+`staging` (deploy command `npx wrangler deploy --env staging`). It differs from production
+in two ways: `run_worker_first` routes every request through `worker/index.ts`, and that
+Worker holds a `STAGING_PASSWORD` secret. When the secret is present the Worker demands it
+via HTTP Basic Auth (any username) before serving anything, including `/mcp`. Production
+has no such secret, so the gate is inert there.
+
+```bash
+wrangler secret put STAGING_PASSWORD --env staging   # set or rotate the password
+npm run build && wrangler dev --env staging          # run staging locally
+```
+
+For local runs, put `STAGING_PASSWORD=...` in `.dev.vars.staging` (gitignored).
+
+To promote work, merge into `staging` first, check it there, then merge `staging` into
+`main`.
 
 **Cloudflare Workers Builds settings:**
 
