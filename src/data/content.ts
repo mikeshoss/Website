@@ -443,7 +443,7 @@ const projectsData: Project[] = [
   {
     name: "Skopos",
     description:
-      "On-demand camera and microphone access to your own Macs, from your phone, over Tailscale. One menu bar agent per machine — no hub, no cloud, no app to install. A device is open if and only if someone is actively streaming from it: nothing polls, nothing pre-warms, and the camera light going out when you close the tab is the test the whole project is built around. Tailscale Serve authenticates every request, each machine keeps its own allowlist, and audio is a separate, independently counted stream, so listening never opens the camera.",
+      "On-demand camera and microphone access to your own Macs, from your phone, over Tailscale. One menu bar agent per machine. No hub, no cloud, no app to install.",
     start: "2026-08",
     status: "Active",
     association: "Personal",
