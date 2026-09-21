@@ -1,4 +1,24 @@
 User-agent: *
 Allow: /
 
+# AI crawler policy is deliberately NOT set here.
+#
+# Cloudflare's AI Crawl Control injects a managed block ahead of this file on
+# mikeshoss.com — it sets Content-Signal (currently search=yes, ai-train=no,
+# use=reference) and disallows GPTBot, ClaudeBot, Google-Extended,
+# Applebot-Extended, CCBot, Bytespider, Amazonbot and meta-externalagent.
+# Those rules are served before these, in the same file.
+#
+# A per-crawler rule here therefore lands as a SECOND group for a user-agent
+# the managed block already covers, and "Allow: /" against its "Disallow: /"
+# is a direct contradiction that crawlers resolve inconsistently. So the policy
+# lives in exactly one place: change it in the Cloudflare dashboard, not here.
+#
+# Note the tension worth reviewing there: this site publishes /llms.txt, a JSON
+# API and an MCP server specifically so models can read it without scraping the
+# markup, while the managed block currently stops those same agents fetching any
+# of it.
+
+# Plain-text summary for language models: https://llmstxt.org
+# Structured equivalents: /api/index.json and the MCP server at /mcp
 Sitemap: https://mikeshoss.com/sitemap-index.xml

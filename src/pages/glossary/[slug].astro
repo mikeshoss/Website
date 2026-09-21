@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { site } from '../../data/content';
+import { glossary, glossaryBySlug, GLOSSARY_CATEGORIES } from '../../data/glossary';
+
+/**
+ * One page per term, from the `slug` on each entry in src/data/glossary.ts.
+ * The page title is the term's `question` rather than the term itself, so it
+ * matches how the thing is actually searched for.
+ */
+export function getStaticPaths() {
+  return glossary.map(term => ({ params: { slug: term.slug }, props: { term } }));
+}
+
+const { term } = Astro.props;
+const related = (term.related ?? [])
+  .map(slug => glossaryBySlug.get(slug))
+  .filter((entry): entry is NonNullable<typeof entry> => entry !== undefined);
+---
+
+<Layout
+  title={`${term.question} — Mike Shoss`}
+  description={term.short}
+  breadcrumbs={[
+    { name: 'Glossary', href: '/glossary' },
+    { name: term.term, href: `/glossary/${term.slug}` },
+  ]}
+  schema={[
+    {
+      '@type': 'DefinedTerm',
+      '@id': `${site.url}/glossary/${term.slug}/#term`,
+      name: term.term,
+      description: term.short,
+      url: `${site.url}/glossary/${term.slug}/`,
+      ...(term.aliases?.length ? { alternateName: term.aliases } : {}),
+      inDefinedTermSet: {
+        '@type': 'DefinedTermSet',
+        '@id': `${site.url}/glossary/#termset`,
+        name: 'AI Glossary',
+        url: `${site.url}/glossary/`,
+      },
+    },
+  ]}
+>
+  <section class="section-container pt-28">
+    <a href="/glossary" class="text-sm text-muted hover:text-accent transition-colors mb-8 inline-block">
+      ← Glossary
+    </a>
+
+    <p class="text-xs text-accent font-mono uppercase tracking-wider mb-3">
+      {GLOSSARY_CATEGORIES[term.category]}
+    </p>
+
+    <h1 class="text-4xl font-bold tracking-tight mb-4">{term.term}</h1>
+
+    <p class="text-xl text-gray-300 leading-relaxed max-w-3xl mb-5">{term.short}</p>
+
+    {term.aliases && term.aliases.length > 0 && (
+      <div class="flex flex-wrap items-center gap-2 mb-14">
+        <span class="text-xs text-muted uppercase tracking-wider mr-1">Also called</span>
+        {term.aliases.map(alias => <span class="pill text-xs">{alias}</span>)}
+      </div>
+    )}
+
+    <!-- What it means -->
+    <div class="max-w-3xl">
+      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-5">
+        What it means
+      </h2>
+      <div class="space-y-5">
+        {term.means.map(paragraph => (
+          <p class="text-gray-400 leading-relaxed">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+
+    <!--
+      The second reading is the point of the page, so it is the one element that
+      gets lifted off the ground rather than another card in a stack.
+    -->
+    <div class="max-w-3xl mt-14 border-l-2 border-accent pl-6 md:pl-8">
+      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-5">
+        What it really means
+      </h2>
+      <div class="space-y-5">
+        {term.reallyMeans.map(paragraph => (
+          <p class="text-gray-300 leading-relaxed">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+
+    {term.tell && (
+      <div class="max-w-3xl mt-14">
+        <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-4">
+          How to tell
+        </h2>
+        <div class="card">
+          <p class="text-gray-300 leading-relaxed">{term.tell}</p>
+        </div>
+      </div>
+    )}
+
+    {related.length > 0 && (
+      <div class="mt-16 pt-12 border-t border-surface-200">
+        <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-6">
+          Related
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {related.map(other => (
+            <a href={`/glossary/${other.slug}`} class="card block group">
+              <h3 class="font-semibold group-hover:text-accent transition-colors mb-2">
+                {other.term}
+              </h3>
+              <p class="text-sm text-gray-400 leading-relaxed">{other.short}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+</Layout>

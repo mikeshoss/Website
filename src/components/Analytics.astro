@@ -1,0 +1,134 @@
+---
+/**
+ * Google Analytics, plus click instrumentation for everything the site can be
+ * clicked on.
+ *
+ * Two separate concerns, deliberately gated differently:
+ *
+ * - The gtag loader is the site's only third-party request. It is gated on
+ *   both `import.meta.env.PROD` (keeps it out of dev output entirely) and the
+ *   hostname (keeps Cloudflare branch previews out of the data — previews are
+ *   production builds, so the PROD gate alone does not exclude them). www needs
+ *   no entry: www-to-apex is a Cloudflare Redirect Rule, so visitors land on
+ *   the apex.
+ *
+ * - The click listener ships everywhere and no-ops when gtag is absent. That
+ *   makes it testable on a preview deployment — stub window.gtag, click, and
+ *   read back what it would have sent — instead of only being observable in
+ *   production once it is too late to find a mistake.
+ */
+const GA_MEASUREMENT_ID = 'G-3KTD28G14B';
+const GA_HOSTNAME = 'mikeshoss.com';
+---
+
+{import.meta.env.PROD && (
+  <script
+    is:inline
+    set:html={`(function () {
+  if (location.hostname !== '${GA_HOSTNAME}') return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', '${GA_MEASUREMENT_ID}');
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
+  document.head.appendChild(s);
+})();`}
+  />
+)}
+
+<script>
+  // One delegated listener rather than per-element annotations: every link and
+  // button on the site is covered, including ones added later, and no markup
+  // has to remember to opt in.
+  interface Gtag {
+    (command: 'event', name: string, params: Record<string, unknown>): void;
+  }
+
+  function send(name: string, params: Record<string, unknown>) {
+    const gtag = (window as unknown as { gtag?: Gtag }).gtag;
+    if (typeof gtag !== 'function') return;
+    gtag('event', name, params);
+  }
+
+  function text(el: Element | null | undefined): string {
+    return (el?.textContent ?? '').replace(/\s+/g, ' ').trim();
+  }
+
+  /**
+   * Label for an element, in the order a reader would name it.
+   *
+   * Card-shaped links wrap a heading plus a paragraph or two, so their raw
+   * textContent is the whole card — useless as a GA dimension. The heading
+   * inside is what the thing is actually called.
+   */
+  function label(el: Element): string {
+    const aria = el.getAttribute('aria-label');
+    const heading = el.querySelector('h1, h2, h3, h4');
+    return (aria || text(heading) || text(el)).slice(0, 100);
+  }
+
+  /**
+   * Where on the page the click happened. Section headings are used rather than
+   * a hand-maintained map, so "Selected results" and "Currently" come through
+   * as themselves and a new section needs no wiring.
+   */
+  function location_(el: Element): string {
+    if (el.closest('header')) return 'nav';
+    if (el.closest('footer')) return 'footer';
+    const section = el.closest('section, article');
+    const heading = section?.querySelector('h1, h2, h3');
+    return heading ? text(heading).slice(0, 60) : 'main';
+  }
+
+  document.addEventListener(
+    'click',
+    (event) => {
+      const target = event.target as Element | null;
+      const el = target?.closest?.('a[href], button');
+      if (!el) return;
+
+      const base = {
+        link_text: label(el),
+        link_location: location_(el),
+        page_path: window.location.pathname,
+      };
+
+      if (el.tagName !== 'A') {
+        send('click_button', base);
+        return;
+      }
+
+      const href = el.getAttribute('href') ?? '';
+
+      // In-page anchors (the skip link) are navigation within one pageview.
+      if (href.startsWith('#')) return;
+
+      if (href.startsWith('mailto:')) {
+        send('click_email', { ...base, link_url: href });
+        return;
+      }
+
+      let url: URL;
+      try {
+        url = new URL(href, window.location.href);
+      } catch {
+        return;
+      }
+
+      if (url.origin !== window.location.origin) {
+        send('click_outbound', {
+          ...base,
+          link_url: url.href,
+          link_domain: url.hostname,
+          outbound: true,
+        });
+      } else {
+        send('click_internal', { ...base, link_url: url.pathname });
+      }
+    },
+    // Capture, so a handler that stops propagation cannot silently drop the event.
+    { capture: true },
+  );
+</script>

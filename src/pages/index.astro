@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { site, hero, skills, highlights, experience, companies } from '../data/content';
+import { site, hero, skills, highlights, selectedResults, experience, companies } from '../data/content';
 
 // Pull a few key roles for the "Track Record" section.
 // Order here drives display order; a company missing from this list is not shown.
@@ -23,11 +23,11 @@ const keyRoles = featuredRoles.filter(r => {
 });
 ---
 
-<Layout>
+<Layout ogType="profile">
   <!-- Hero -->
   <section class="section-container pt-28 pb-12">
     <p class="text-accent font-mono text-sm mb-4 tracking-wide">Hi, I'm {site.name}</p>
-    <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6 gradient-text">
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-6 max-w-4xl gradient-text">
       {hero.headline}
     </h1>
     <p class="text-xl text-gray-300 max-w-2xl leading-relaxed mb-6">
@@ -46,6 +46,16 @@ const keyRoles = featuredRoles.filter(r => {
     </div>
   </section>
 
+  <!-- Thesis -->
+  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
+    <h2 class="section-title">Why this is a product problem</h2>
+    <div class="max-w-3xl space-y-5 mt-6">
+      {hero.thesis.map(paragraph => (
+        <p class="text-gray-400 leading-relaxed">{paragraph}</p>
+      ))}
+    </div>
+  </section>
+
   <!-- Numbers -->
   <section class="border-t border-surface-200 animate-on-scroll">
     <div class="max-w-5xl mx-auto px-6 py-16">
@@ -57,6 +67,21 @@ const keyRoles = featuredRoles.filter(r => {
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Selected Results -->
+  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
+    <h2 class="section-title">Selected results</h2>
+    <p class="section-subtitle">Outcomes with a number attached.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
+      {selectedResults.map(result => (
+        <div class="card animate-on-scroll">
+          <div class="text-3xl font-bold text-accent mb-1">{result.value}</div>
+          <div class="text-sm font-medium text-white mb-2">{result.label}</div>
+          <p class="text-sm text-gray-400 leading-relaxed">{result.detail}</p>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -110,8 +135,16 @@ const keyRoles = featuredRoles.filter(r => {
 
   <!-- Focus Areas -->
   <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">What I do</h2>
+    <h2 class="section-title">What I actually do</h2>
     <p class="section-subtitle">Where leadership meets building.</p>
+    <ul class="space-y-3 max-w-3xl mb-10">
+      {hero.whatIDo.map(item => (
+        <li class="text-gray-300 leading-relaxed flex items-start gap-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0 mt-2.5"></span>
+          {item}
+        </li>
+      ))}
+    </ul>
     <div class="flex flex-wrap gap-3">
       {skills.map(skill => (
         <span class="pill">{skill}</span>
@@ -125,18 +158,20 @@ const keyRoles = featuredRoles.filter(r => {
     <p class="section-subtitle">Where I'm focused right now.</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
       {companies.map(company => (
-        <div class="card animate-on-scroll">
+        <a href={`/companies/${company.slug}`} class="card block group animate-on-scroll">
           <div class="mb-3">
-            <h3 class="text-lg font-semibold text-white">{company.name}</h3>
+            <h3 class="text-lg font-semibold text-white group-hover:text-accent transition-colors">
+              {company.name}
+            </h3>
             <p class="text-sm text-accent">{company.role}</p>
           </div>
-          <p class="text-sm text-gray-400 leading-relaxed">{company.description}</p>
-        </div>
+          <p class="text-sm text-gray-400 leading-relaxed">{company.tagline}</p>
+        </a>
       ))}
     </div>
     <div class="mt-8">
       <a href="/companies" class="text-sm text-accent hover:text-accent-dim transition-colors font-medium">
-        See companies & products →
+        See all ventures & products →
       </a>
     </div>
   </section>
@@ -144,18 +179,22 @@ const keyRoles = featuredRoles.filter(r => {
   <!-- Explore -->
   <section class="section-container py-16 border-t border-surface-200">
     <h2 class="section-title mb-8">Explore</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
       <a href="/experience" class="card group animate-on-scroll">
         <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Experience</h3>
         <p class="text-sm text-muted">Full career history, patents, education, and community involvement.</p>
       </a>
       <a href="/companies" class="card group animate-on-scroll">
-        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Companies</h3>
+        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Ventures</h3>
         <p class="text-sm text-muted">The companies I've founded and the products we're shipping.</p>
       </a>
       <a href="/projects" class="card group animate-on-scroll">
         <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Projects</h3>
         <p class="text-sm text-muted">AI systems, infrastructure, and experiments I'm building.</p>
+      </a>
+      <a href="/glossary" class="card group animate-on-scroll">
+        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Glossary</h3>
+        <p class="text-sm text-muted">What the vocabulary means, and what it really means.</p>
       </a>
     </div>
   </section>
