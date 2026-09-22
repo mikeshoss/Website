@@ -139,7 +139,7 @@ export const site = {
    * twitter:description and the JSON-LD Person description. Keep it under 160.
    */
   description:
-    `Mike Shoss builds AI products for work where being wrong is expensive. Staff Product Manager at Clio, founder of Epilogue, ${patentCount} patents in AI.`,
+    `Mike Shoss builds AI products for work where being wrong is expensive. Product executive, founder of Epilogue, ${patentCount} patents in AI. Currently at Clio.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -150,10 +150,46 @@ export const site = {
 
 export const hero = {
   headline: "I ship AI products in industries where being wrong is expensive.",
+  /**
+   * The one word the home page sets in italic amber. Must appear in the
+   * headline verbatim; every other consumer (llms.txt, the API) ignores it.
+   */
+  headlineEmphasis: "expensive",
+  /** Who, before what. The current employer is one clause, not the lead. */
   subheadline:
-    `Staff Product Manager at Clio, working on AI research and matter management for enterprise law firms, and founder of Epilogue, an AI consulting and product studio. ${yearsExperience}+ years turning strategy into products that scale.`,
+    `Product executive and founder, ${yearsExperience}+ years in. I've built and led product at Firework, VerticalScope and Caseware, hold ${patentCount} patents in AI, and run Epilogue, an AI consulting and product studio. Right now I'm Staff Product Manager at Clio.`,
   credibility:
-    `For the last year that meant audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it means legal. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
+    `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents, ${grantedPatentCount} granted.`,
+  /**
+   * The three things happening at once, in the order they should be read. The
+   * day job is one of them, deliberately not the first thing on the page.
+   */
+  now: [
+    {
+      label: "Building",
+      title: "Epilogue",
+      role: "Founder & Principal",
+      blurb:
+        "An AI consulting and product studio. The consulting arm decides what is worth building; the studio builds it and validates it with real users.",
+      href: "/companies/epilogue",
+    },
+    {
+      label: "Shipping",
+      title: "Clio",
+      role: "Staff Product Manager, Vincent Enterprise",
+      blurb:
+        "AI research and matter management for enterprise law firms — work that gets reviewed by people whose licence is on the line.",
+      href: "/experience",
+    },
+    {
+      label: "Backing",
+      title: "Angel investing",
+      role: "Angel Investor",
+      blurb:
+        "Early-stage Canadian AI, science and technology companies, through syndicates and funds so more capital reaches a founder faster.",
+      href: "/companies/investing",
+    },
+  ],
   /** The argument behind the headline. Rendered as prose on the home page. */
   thesis: [
     "High-consequence work is document-dense, precedent-driven, and reviewed by people whose licence is on the line. You can't ship a confident guess into that. What you can ship is a system that knows what it knows, shows its work, and fails visibly instead of quietly — and that's a product problem long before it's a model problem.",
@@ -217,12 +253,6 @@ export const skills = [
   "Rapid Prototyping & Delivery",
 ];
 
-export const highlights = [
-  { value: `${yearsExperience}+`, label: "Years in Product & Software" },
-  { value: "3", label: "Companies Founded" },
-  { value: "$150M+", label: "Fundraising Supported" },
-  { value: `${patentCount}`, label: "Patents in AI & Video Commerce" },
-];
 
 export interface CompanyProduct {
   name: string;
@@ -265,6 +295,11 @@ export interface Company {
   clients?: string[];
   /** Syndicates, angel networks and funds invested through. */
   networks?: string[];
+  /**
+   * For a holding company: the slugs of the ventures it owns. Each must be
+   * another entry in this list; the venture page links to them.
+   */
+  holdings?: string[];
 }
 
 // Display order, not chronology: the ventures index and the home page both read
@@ -350,8 +385,11 @@ const companiesData: Company[] = [
     ],
   },
   {
-    slug: "shossx",
-    name: "ShossX",
+    // Placeholder name. The investing is done through a numbered company that
+    // does not have a trading name yet. When it gets one, change `name` (and
+    // `role` if needed) but keep the slug: it is the indexed URL.
+    slug: "investing",
+    name: "Angel investing",
     role: "Angel Investor",
     tagline: "Backing early-stage Canadian AI, science and technology companies.",
     description:
@@ -362,6 +400,19 @@ const companiesData: Company[] = [
     ],
     start: "2021-02",
     networks: ["CedarPeak", "Angel One", "Sand Hill Angels", "N49P"],
+  },
+  {
+    slug: "shossx",
+    name: "ShossX",
+    role: "Founder",
+    tagline: "The holding company behind Epilogue, Milton Innovation and the angel investing.",
+    description:
+      "The holding company. ShossX owns Epilogue, Milton Innovation and the investment company through which the angel investing is done — one structure, so each can be run on its own terms.",
+    body: [
+      "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
+    ],
+    start: "2021-02",
+    holdings: ["epilogue", "milton-innovation", "investing"],
   },
   {
     slug: "milton-innovation",
@@ -441,6 +492,16 @@ const projectsData: Project[] = [
     // repo: "https://github.com/mikeshoss/Earshot",
   },
   {
+    name: "Skopos",
+    description:
+      "On-demand camera and microphone access to your own Macs, from your phone, over Tailscale. One menu bar agent per machine. No hub, no cloud, no app to install.",
+    start: "2026-08",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Skopos",
+  },
+  {
     name: "GoTransit",
     description:
       "A small FastAPI service over the GO Transit / Metrolinx Open Data API. It hides the upstream's rough edges and exposes a clean, cached JSON API: departure boards, service alerts, stops, and live vehicles. The quirks it absorbs are the point — errors arrive as HTTP 200 with the real status buried in Metadata.ErrorCode, so a bad key returns 200 OK with a body saying 401. It caches everything, because Metrolinx disables keys that generate excessive traffic.",
@@ -481,24 +542,14 @@ const projectsData: Project[] = [
     // url: "https://",
   },
   {
-    name: "The Milton Record",
+    name: "ReelMind",
     description:
-      "A public record of what Milton is proposing, building, spending and deciding, assembled entirely from the Town's own published documents — public notices, ward development applications, council agendas and minutes, ArcGIS open data, and capital financial statements. It watches those sources for changes, says in plain English what changed, and keeps the older version so a proposal's history stays visible. Built on one rule: an unanswered question is visibly unanswered, a wrong answer is invisible — figures that do not reconcile against their source document are withheld rather than published.",
-    start: "2026",
+      "A self-hosted recommendation engine for Plex. It learns what you like, finds more of it, downloads it, organizes it, and adds it to your library — all while staying out of the way when you're watching something. Powered by a local model via Ollama: no cloud services, no subscriptions, no data leaving your network. Six recommendation sources, from \"more like what you love\" to news headlines mapped to culturally relevant media, each with an optional auto-download mode; filling franchise gaps stays manual, because a model can hallucinate a sequel that does not exist. A playback guard pauses the whole pipeline while anyone is streaming.",
+    start: "2026-03",
     status: "Active",
     association: "Personal",
-    url: "https://miltonrecord.ca",
-    // repo: "https://github.com/mikeshoss/miltonrecord",
-  },
-  {
-    name: "MilTastic | Milton's Community Mesh Network",
-    description:
-      "A decentralized, off-grid wireless mesh network to support community communication and resilience during outages and emergency scenarios. Led system architecture, RF planning, and node deployment across multiple neighbourhoods.",
-    start: "2025-12",
-    status: "Active",
-    association: "Personal",
+    repo: "https://github.com/mikeshoss/reelmind",
     // url: "https://",
-    // repo: "https://github.com/mikeshoss/MilTastic",
   },
   {
     name: "Personal AI Assistant",
@@ -519,6 +570,90 @@ const projectsData: Project[] = [
     association: "Personal",
     // url: "https://",
     // repo: "https://github.com/mikeshoss/",
+  },
+
+  // Earlier work, newest first. Most predate the site and were sunsetted years
+  // ago; they are here because the record should be complete, not because any
+  // of them is still running.
+  {
+    name: "Shoss V1 | NFT Project",
+    description:
+      "A one-month experiment in shipping an NFT collection end to end.",
+    start: "2022-03",
+    end: "2022-03",
+    status: "Discontinued",
+    association: "Personal",
+  },
+  {
+    name: "COVID Numbers Canada | Alexa Skill & Google Action",
+    description:
+      "Daily Canadian COVID-19 numbers from a smart speaker, as both an Alexa skill and a Google Action.",
+    start: "2020-11",
+    end: "2021-01",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "CellarSunday",
+    description:
+      "A platform for enthusiasts to catalogue, review and showcase their collection: a digital inventory, tasting notes, and curated lists for sharing and in-person experiences.",
+    start: "2019-11",
+    end: "2020-10",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Techno Lingo | Alexa Skill",
+    description:
+      "An Alexa skill that explains technology jargon on request — a spoken glossary, years before the written one on this site.",
+    start: "2018-08",
+    end: "2020-02",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Beau's Brewery | Alexa Skill",
+    description: "An Alexa skill built for Beau's, the Ontario craft brewery.",
+    start: "2018-07",
+    end: "2020-02",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Fresh Pots | Notification System",
+    description: "A notification system that tells the office when a fresh pot of coffee is ready.",
+    start: "2018-06",
+    end: "2018-07",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Character Analysis & Insights — The Nearly Girl",
+    description:
+      "An exploration of the traits, personality and characteristics of the characters in The Nearly Girl, the novel by Lisa de Nikolits.",
+    start: "2016-06",
+    end: "2016-08",
+    status: "Completed",
+    association: "Personal",
+    url: "https://www.amazon.ca/Nearly-Girl-Lisa-Nikolits-ebook/dp/B01IFG44H0/",
+  },
+  {
+    name: "Capstone Project | 2D Platformer",
+    description:
+      "A 2D platformer built in Unity3D with two teammates as the Sheridan College capstone.",
+    start: "2012-09",
+    end: "2012-12",
+    status: "Completed",
+    association: "Personal",
+  },
+  {
+    name: "Custom Firmware | PSP, iOS & Android",
+    description:
+      "Custom system software for the PlayStation Portable from 2006, then for iOS and Android from 2009, built at MHMD.",
+    start: "2006-01",
+    end: "2010-09",
+    status: "Sunsetted",
+    association: "Personal",
   },
 
   /* ---------------------------------------------------------------- Epilogue */
@@ -608,6 +743,16 @@ const experienceData: ExperienceRole[] = [
     ],
   },
   {
+    title: "Founder & Principal — AI Consulting & Product Studio",
+    company: "Epilogue",
+    url: "https://epiloguelabs.com",
+    start: "2023-11",
+    location: "Toronto, Ontario, Canada",
+    highlights: [
+      "An AI company that turns complex business problems into practical, high-impact solutions: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
+    ],
+  },
+  {
     title: "Principal Product Manager, Ecosystem AI",
     company: "Caseware",
     start: "2025-11",
@@ -691,6 +836,7 @@ const experienceData: ExperienceRole[] = [
       "Led AI integration initiatives, increasing user engagement 400% and doubling conversions.",
       "Built and scaled 60-member global team across five product lines.",
       "Increased informed purchase decisions by 108% and user engagement by 167% via OKRs.",
+      "Additionally, served on the Social Committee.",
     ],
   },
   {
@@ -713,6 +859,17 @@ const experienceData: ExperienceRole[] = [
     highlights: [
       "Transitioned platform to self-serve SaaS, growing ARR 10x and enhancing customer acquisition.",
       "Implemented AI playlist optimization, reducing churn 11.4%, enhancing accessibility by 275%.",
+    ],
+  },
+  {
+    title: "Angel Investor",
+    // A numbered company with no trading name yet. Replace this with the
+    // name when it has one; see the `investing` venture entry.
+    company: "Private investment company",
+    start: "2021-02",
+    location: "Canada",
+    highlights: [
+      "Investing in early-stage Canadian science and technology companies, with a focus on AI, through syndicates, angel networks and funds.",
     ],
   },
   {
@@ -990,6 +1147,14 @@ function withVolunteerPeriods(items: VolunteerRole[]) {
 }
 
 export const companies = withPeriod(companiesData);
+
+// After companiesData, which it counts.
+export const highlights = [
+  { value: `${yearsExperience}+`, label: "Years in Product & Software" },
+  { value: `${companiesData.length}`, label: "Companies Founded" },
+  { value: "$150M+", label: "Fundraising Supported" },
+  { value: `${patentCount}`, label: "Patents in AI & Video Commerce" },
+];
 export const projects = withPeriod(projectsData);
 export const experience = withPeriod(experienceData);
 export const volunteering = withVolunteerPeriods(volunteeringData);

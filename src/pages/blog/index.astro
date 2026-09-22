@@ -28,11 +28,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
                 {post.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}
               </time>
             </div>
-            <p class="text-gray-400 text-sm leading-relaxed">{post.data.description}</p>
+            <p class="text-muted text-sm leading-relaxed">{post.data.description}</p>
             {post.data.tags.length > 0 && (
               <div class="flex flex-wrap gap-2 mt-3">
                 {post.data.tags.map(tag => (
-                  <span class="text-xs font-mono text-muted bg-surface-200 px-2 py-0.5 rounded-full">
+                  <span class="text-xs font-mono text-muted bg-ink-200 px-2 py-0.5">
                     {tag}
                   </span>
                 ))}

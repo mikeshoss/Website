@@ -47,10 +47,10 @@ const names = companies.map((company) => company.name).join(', ');
             <span class="text-sm text-muted font-mono whitespace-nowrap">{company.period}</span>
           </div>
 
-          <p class="text-gray-400 leading-relaxed mb-5">{company.description}</p>
+          <p class="text-muted leading-relaxed mb-5">{company.description}</p>
 
           <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <span class="text-sm font-medium text-accent group-hover:text-accent-dim transition-colors">
+            <span class="text-sm font-medium text-accent group-hover:text-accent-bright transition-colors">
               View venture →
             </span>
             {company.products && company.products.length > 0 && (

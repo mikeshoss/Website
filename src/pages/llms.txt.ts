@@ -78,6 +78,9 @@ ${companies
             )}`,
           ]
         : []),
+      ...(company.holdings?.length
+        ? [`Holds: ${company.holdings.map((slug) => companies.find((c) => c.slug === slug)?.name ?? slug).join(", ")}`]
+        : []),
       ...(company.networks?.length
         ? [`Investing through: ${company.networks.join(", ")}`]
         : []),

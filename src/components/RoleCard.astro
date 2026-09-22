@@ -1,0 +1,41 @@
+---
+/**
+ * One volunteering, advisory or governance role. Renders as a link when the
+ * organisation has a URL, and as a plain block otherwise — the same markup
+ * either way, which is what the experience page used to copy four times.
+ */
+import type { volunteering } from '../data/content';
+
+type Role = (typeof volunteering)[number];
+
+interface Props {
+  role: Role;
+}
+
+const { role } = Astro.props;
+const Tag = role.url ? 'a' : 'div';
+const linkProps = role.url ? { href: role.url, target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<Tag {...linkProps} class:list={['bg-ink p-6 md:p-7 flex flex-col transition-colors duration-300', role.url && 'group hover:bg-ink-50']}>
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <p class="font-medium text-bone leading-snug group-hover:text-accent transition-colors duration-300">
+        {role.title}{role.url && <span class="text-muted font-normal"> ↗</span>}
+      </p>
+      <p class="text-sm text-bone-dim mt-1">{role.organization}</p>
+    </div>
+    <span class="text-xs font-mono text-muted whitespace-nowrap pt-1">{role.period}</span>
+  </div>
+  <p class="text-sm text-muted leading-relaxed mt-4">{role.description}</p>
+  {role.timeline && role.timeline.length > 0 && (
+    <ul class="mt-4 ruled">
+      {role.timeline.map(entry => (
+        <li class="py-2 flex items-baseline justify-between gap-4 text-xs">
+          <span class="text-bone-dim">{entry.role}</span>
+          <span class="font-mono text-muted whitespace-nowrap">{entry.period}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+</Tag>

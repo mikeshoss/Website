@@ -1,201 +1,149 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { site, hero, skills, highlights, selectedResults, experience, companies } from '../data/content';
+import { site, hero, highlights, selectedResults, experience, projects } from '../data/content';
+import { byAssociation, isActive } from '../lib/projects';
+import { placement, withCampaign } from '../lib/links';
+import { formatPeriod } from '../lib/dates';
 
-// Pull a few key roles for the "Track Record" section.
-// Order here drives display order; a company missing from this list is not shown.
-const FEATURED_COMPANIES = [
-  'Clio',
-  'Caseware',
-  'FacilityOS (formerly iLobby)',
-  'Firework',
-  'VerticalScope Inc.',
-];
-const featuredRoles = FEATURED_COMPANIES.flatMap(name =>
-  experience.filter(r => r.company === name)
-);
-// Dedupe by company, keep latest role
-const seenCompanies = new Set<string>();
-const keyRoles = featuredRoles.filter(r => {
-  if (seenCompanies.has(r.company)) return false;
-  seenCompanies.add(r.company);
-  return true;
+/**
+ * The headline gets one word in italic amber. Split around it here so the
+ * content module stays plain text for every other consumer.
+ */
+const [beforeEm, afterEm] = hero.headline.split(hero.headlineEmphasis);
+
+// A short career strip: one row per company, showing the latest title but
+// the whole tenure — Firework was three roles over 2 years 8 months, and the
+// row should say so rather than show the last role's dates. Order is
+// deliberate: it is the story, not the chronology.
+const FEATURED_COMPANIES = ['Clio', 'Caseware', 'FacilityOS (formerly iLobby)', 'Firework', 'VerticalScope Inc.'];
+const keyRoles = FEATURED_COMPANIES.flatMap(name => {
+  const roles = experience.filter(r => r.company === name);
+  if (roles.length === 0) return [];
+  const latest = roles[0];
+  const first = roles[roles.length - 1];
+  const ongoing = roles.some(r => !r.end);
+  return [{ ...latest, tenure: formatPeriod(first.start, ongoing ? undefined : latest.end) }];
 });
+
+// What is being built right now, on my own time. First sentence only: a
+// list, not a wall of truncated prose.
+const building = byAssociation(projects, 'Personal').filter(isActive).slice(0, 4);
+const firstSentence = (text: string) => text.split(/(?<=[.!?])\s/)[0];
 ---
 
 <Layout ogType="profile">
-  <!-- Hero -->
-  <section class="section-container pt-28 pb-12">
-    <p class="text-accent font-mono text-sm mb-4 tracking-wide">Hi, I'm {site.name}</p>
-    <h1 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-6 max-w-4xl gradient-text">
-      {hero.headline}
+  <!-- Hero: the statement, who is making it, and one way to respond. -->
+  <section class="page pt-20 md:pt-28 pb-16 md:pb-20">
+    <h1 class="display text-display-xl max-w-[18ch]">
+      {beforeEm}<em>{hero.headlineEmphasis}</em>{afterEm}
     </h1>
-    <p class="text-xl text-gray-300 max-w-2xl leading-relaxed mb-6">
-      {hero.subheadline}
+    <p class="lede mt-8 md:mt-10 max-w-prose">{hero.subheadline}</p>
+    <p class="mt-6 font-mono text-xs text-muted">
+      {highlights.map((stat, i) => (
+        <>{i > 0 && <span class="mx-2">·</span>}<span class="text-bone">{stat.value}</span> {stat.label.toLowerCase()}</>
+      ))}
     </p>
-    <p class="text-base text-gray-500 max-w-2xl leading-relaxed mb-10">
-      {hero.credibility}
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a href="/contact" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-white font-medium px-6 py-3 rounded-lg transition-colors">
-        Get in touch
-      </a>
-      <a href="/experience" class="inline-flex items-center gap-2 border border-surface-200 hover:border-accent/40 text-gray-300 hover:text-white font-medium px-6 py-3 rounded-lg transition-colors">
-        View full experience
-      </a>
-    </div>
+    <a href="/contact" class="btn-primary mt-10">Get in touch</a>
   </section>
 
-  <!-- Thesis -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">Why this is a product problem</h2>
-    <div class="max-w-3xl space-y-5 mt-6">
-      {hero.thesis.map(paragraph => (
-        <p class="text-gray-400 leading-relaxed">{paragraph}</p>
+  <!-- Now: three things at once. The day job is one of them. -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Now</p>
+    <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line">
+      {hero.now.map(item => (
+        <a href={item.href} class="group bg-ink p-7 md:p-8 transition-colors duration-200 hover:bg-ink-50">
+          <p class="eyebrow">{item.label}</p>
+          <h2 class="display text-display-md mt-4 group-hover:text-accent transition-colors duration-200">{item.title}</h2>
+          <p class="text-sm text-bone-dim mt-1">{item.role}</p>
+          <p class="text-sm text-muted leading-relaxed mt-4">{item.blurb}</p>
+        </a>
       ))}
     </div>
   </section>
 
-  <!-- Numbers -->
-  <section class="border-t border-surface-200 animate-on-scroll">
-    <div class="max-w-5xl mx-auto px-6 py-16">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        {highlights.map(stat => (
-          <div class="text-center">
-            <div class="text-4xl font-bold text-accent mb-1">{stat.value}</div>
-            <div class="text-sm text-muted">{stat.label}</div>
-          </div>
-        ))}
+  <!-- Point of view -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Point of view</p>
+    <div class="mt-8 grid md:grid-cols-12 gap-8">
+      <h2 class="display text-display-lg md:col-span-5 max-w-[14ch]">Why this is a product problem.</h2>
+      <div class="md:col-span-6 md:col-start-7 space-y-5 prose-body">
+        {hero.thesis.map(paragraph => <p>{paragraph}</p>)}
+        <p class="text-muted">{hero.credibility}</p>
       </div>
     </div>
   </section>
 
-  <!-- Selected Results -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">Selected results</h2>
-    <p class="section-subtitle">Outcomes with a number attached.</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
+  <!-- Results -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Selected results</p>
+    <ol class="mt-8 ruled">
       {selectedResults.map(result => (
-        <div class="card animate-on-scroll">
-          <div class="text-3xl font-bold text-accent mb-1">{result.value}</div>
-          <div class="text-sm font-medium text-white mb-2">{result.label}</div>
-          <p class="text-sm text-gray-400 leading-relaxed">{result.detail}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Track Record -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">Track Record</h2>
-    <p class="section-subtitle">Leadership roles where I've driven measurable impact.</p>
-    <div class="space-y-6 stagger-children">
-      {keyRoles.map(role => (
-        <div class="card animate-on-scroll">
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-3">
-            <div>
-              <h3 class="font-semibold text-white text-lg">{role.title}</h3>
-              <p class="text-sm text-accent">{role.company}</p>
-            </div>
-            <span class="text-xs text-muted font-mono whitespace-nowrap">{role.period}</span>
-          </div>
-          {role.highlights.length > 0 && (
-            <ul class="space-y-1.5">
-              {role.highlights.slice(0, 3).map(h => (
-                <li class="text-sm text-gray-400 flex items-start gap-2">
-                  <span class="w-1 h-1 rounded-full bg-accent flex-shrink-0 mt-2"></span>
-                  {h}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      ))}
-    </div>
-    <div class="mt-8">
-      <a href="/experience" class="text-sm text-accent hover:text-accent-dim transition-colors font-medium">
-        View full career history, patents & volunteering →
-      </a>
-    </div>
-  </section>
-
-  <!-- What I Believe -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">How I operate</h2>
-    <p class="section-subtitle">Principles that guide how I build and lead.</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl stagger-children">
-      {hero.philosophy.map(item => (
-        <div class="flex items-center gap-3 animate-on-scroll">
-          <span class="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"></span>
-          <span class="text-gray-300">{item}</span>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Focus Areas -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">What I actually do</h2>
-    <p class="section-subtitle">Where leadership meets building.</p>
-    <ul class="space-y-3 max-w-3xl mb-10">
-      {hero.whatIDo.map(item => (
-        <li class="text-gray-300 leading-relaxed flex items-start gap-3">
-          <span class="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0 mt-2.5"></span>
-          {item}
+        <li class="grid grid-cols-[6rem_1fr] md:grid-cols-[8rem_2fr_3fr] gap-x-6 gap-y-1 py-5 items-baseline">
+          <p class="display text-3xl md:text-4xl text-accent leading-none">{result.value}</p>
+          <p class="text-bone">{result.label}</p>
+          <p class="text-sm text-muted leading-relaxed col-start-2 md:col-start-3">{result.detail}</p>
         </li>
       ))}
-    </ul>
-    <div class="flex flex-wrap gap-3">
-      {skills.map(skill => (
-        <span class="pill">{skill}</span>
-      ))}
-    </div>
+    </ol>
   </section>
 
-  <!-- Currently -->
-  <section class="section-container py-16 border-t border-surface-200 animate-on-scroll">
-    <h2 class="section-title">Currently</h2>
-    <p class="section-subtitle">Where I'm focused right now.</p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
-      {companies.map(company => (
-        <a href={`/companies/${company.slug}`} class="card block group animate-on-scroll">
-          <div class="mb-3">
-            <h3 class="text-lg font-semibold text-white group-hover:text-accent transition-colors">
-              {company.name}
-            </h3>
-            <p class="text-sm text-accent">{company.role}</p>
+  <!-- Track record -->
+  <section class="section pt-0 md:pt-0">
+    <div class="rule pt-6 flex items-baseline justify-between">
+      <p class="eyebrow">Track record</p>
+      <a href="/experience" class="arrow-link text-xs">Full history →</a>
+    </div>
+    <ol class="mt-8 ruled">
+      {keyRoles.map(role => (
+        <li class="py-5 grid md:grid-cols-12 gap-x-8 gap-y-1">
+          <div class="md:col-span-3">
+            <p class="display text-2xl leading-tight">{role.company.replace(/ \(.*\)$/, '')}</p>
+            <p class="text-xs font-mono text-muted mt-1">{role.tenure}</p>
           </div>
-          <p class="text-sm text-gray-400 leading-relaxed">{company.tagline}</p>
-        </a>
+          <div class="md:col-span-9">
+            <p class="text-bone">{role.title}</p>
+            {role.highlights[0] && <p class="text-sm text-muted leading-relaxed mt-1 max-w-prose">{role.highlights[0]}</p>}
+          </div>
+        </li>
       ))}
-    </div>
-    <div class="mt-8">
-      <a href="/companies" class="text-sm text-accent hover:text-accent-dim transition-colors font-medium">
-        See all ventures & products →
-      </a>
-    </div>
+    </ol>
   </section>
 
-  <!-- Explore -->
-  <section class="section-container py-16 border-t border-surface-200">
-    <h2 class="section-title mb-8">Explore</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-      <a href="/experience" class="card group animate-on-scroll">
-        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Experience</h3>
-        <p class="text-sm text-muted">Full career history, patents, education, and community involvement.</p>
-      </a>
-      <a href="/companies" class="card group animate-on-scroll">
-        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Ventures</h3>
-        <p class="text-sm text-muted">The companies I've founded and the products we're shipping.</p>
-      </a>
-      <a href="/projects" class="card group animate-on-scroll">
-        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Projects</h3>
-        <p class="text-sm text-muted">AI systems, infrastructure, and experiments I'm building.</p>
-      </a>
-      <a href="/glossary" class="card group animate-on-scroll">
-        <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">Glossary</h3>
-        <p class="text-sm text-muted">What the vocabulary means, and what it really means.</p>
-      </a>
+  <!-- Building -->
+  <section class="section pt-0 md:pt-0">
+    <div class="rule pt-6 flex items-baseline justify-between">
+      <p class="eyebrow">Building, on my own time</p>
+      <a href="/projects" class="arrow-link text-xs">All projects →</a>
+    </div>
+    <ol class="mt-8 ruled">
+      {building.map(project => {
+        const href = project.url ? withCampaign(project.url, placement('home', project.name)) : project.repo;
+        return (
+          <li class="py-4 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,3fr)_minmax(0,7fr)_auto] gap-x-8 gap-y-1 items-baseline">
+            <p class="display text-2xl leading-tight">
+              {href ? <a href={href} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{project.name}</a> : project.name}
+            </p>
+            <p class="text-sm text-muted hidden md:block truncate">{firstSentence(project.description)}</p>
+            <p class="text-xs font-mono text-muted">{project.start.slice(0, 4)}</p>
+          </li>
+        );
+      })}
+    </ol>
+    <p class="mt-6 text-sm text-muted">
+      Epilogue's products live at
+      <a href={withCampaign('https://epiloguelabs.com', 'home-building')} target="_blank" rel="noopener noreferrer" class="link">epiloguelabs.com</a>.
+    </p>
+  </section>
+
+  <!-- Contact -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Contact</p>
+    <div class="mt-8 flex flex-col md:flex-row md:items-baseline md:justify-between gap-6">
+      <h2 class="display text-display-md max-w-[24ch]">Working on something where being wrong is expensive?</h2>
+      <div class="flex flex-wrap items-center gap-6">
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="btn-primary">Message me on LinkedIn</a>
+        <a href={`mailto:${site.email}`} class="link text-sm">{site.email}</a>
+      </div>
     </div>
   </section>
 </Layout>

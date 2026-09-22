@@ -6,7 +6,7 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
 
 - **Framework:** [Astro](https://astro.build) 5 (static site generator)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com) 3 via `@astrojs/tailwind`, with the `@tailwindcss/typography` plugin
-- **Fonts:** Self-hosted [Inter](https://fontsource.org/fonts/inter) and [JetBrains Mono](https://fontsource.org/fonts/jetbrains-mono) via `@fontsource` (no external font requests)
+- **Fonts:** Self-hosted [Instrument Serif](https://fontsource.org/fonts/instrument-serif) (display), [Geist](https://fontsource.org/fonts/geist) (body) and [JetBrains Mono](https://fontsource.org/fonts/jetbrains-mono) (labels) via `@fontsource` (no external font requests)
 - **Content:** Markdown blog posts through Astro content collections (`astro:content`)
 - **SEO:** `@astrojs/sitemap` for automatic sitemap generation, plus per-page meta tags, Open Graph/Twitter cards and a JSON-LD `@graph` in the base layout
 - **Data:** Read-only JSON API and a remote MCP server, both derived from the same content module
@@ -40,7 +40,9 @@ The source for [mikeshoss.com](https://mikeshoss.com), a fast, statically genera
     │   └── Layout.astro     # Base HTML layout: SEO meta, Open Graph, JSON-LD
     ├── components/
     │   ├── Nav.astro
-    │   └── Footer.astro
+    │   ├── Footer.astro
+    │   ├── RoleCard.astro   # One volunteering / advisory / board role
+    │   └── Analytics.astro
     ├── pages/              # Routed pages
     │   ├── index.astro      # Home
     │   ├── companies/
