@@ -183,11 +183,11 @@ export const hero = {
     },
     {
       label: "Backing",
-      title: "ShossX",
+      title: "Angel investing",
       role: "Angel Investor",
       blurb:
         "Early-stage Canadian AI, science and technology companies, through syndicates and funds so more capital reaches a founder faster.",
-      href: "/companies/shossx",
+      href: "/companies/investing",
     },
   ],
   /** The argument behind the headline. Rendered as prose on the home page. */
@@ -253,12 +253,6 @@ export const skills = [
   "Rapid Prototyping & Delivery",
 ];
 
-export const highlights = [
-  { value: `${yearsExperience}+`, label: "Years in Product & Software" },
-  { value: "3", label: "Companies Founded" },
-  { value: "$150M+", label: "Fundraising Supported" },
-  { value: `${patentCount}`, label: "Patents in AI & Video Commerce" },
-];
 
 export interface CompanyProduct {
   name: string;
@@ -301,6 +295,11 @@ export interface Company {
   clients?: string[];
   /** Syndicates, angel networks and funds invested through. */
   networks?: string[];
+  /**
+   * For a holding company: the slugs of the ventures it owns. Each must be
+   * another entry in this list; the venture page links to them.
+   */
+  holdings?: string[];
 }
 
 // Display order, not chronology: the ventures index and the home page both read
@@ -386,8 +385,11 @@ const companiesData: Company[] = [
     ],
   },
   {
-    slug: "shossx",
-    name: "ShossX",
+    // Placeholder name. The investing is done through a numbered company that
+    // does not have a trading name yet. When it gets one, change `name` (and
+    // `role` if needed) but keep the slug: it is the indexed URL.
+    slug: "investing",
+    name: "Angel investing",
     role: "Angel Investor",
     tagline: "Backing early-stage Canadian AI, science and technology companies.",
     description:
@@ -398,6 +400,19 @@ const companiesData: Company[] = [
     ],
     start: "2021-02",
     networks: ["CedarPeak", "Angel One", "Sand Hill Angels", "N49P"],
+  },
+  {
+    slug: "shossx",
+    name: "ShossX",
+    role: "Founder",
+    tagline: "The holding company behind Epilogue, Milton Innovation and the angel investing.",
+    description:
+      "The holding company. ShossX owns Epilogue, Milton Innovation and the investment company through which the angel investing is done — one structure, so each can be run on its own terms.",
+    body: [
+      "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
+    ],
+    start: "2021-02",
+    holdings: ["epilogue", "milton-innovation", "investing"],
   },
   {
     slug: "milton-innovation",
@@ -845,11 +860,12 @@ const experienceData: ExperienceRole[] = [
   },
   {
     title: "Angel Investor",
+    // The investment company has no trading name yet; ShossX is its parent.
     company: "ShossX",
     start: "2021-02",
     location: "Canada",
     highlights: [
-      "Investing in early-stage Canadian science and technology companies, with a focus on AI, through syndicates, angel networks and funds.",
+      "Investing in early-stage Canadian science and technology companies, with a focus on AI, through syndicates, angel networks and funds — via an investment company held by ShossX.",
     ],
   },
   {
@@ -1127,6 +1143,14 @@ function withVolunteerPeriods(items: VolunteerRole[]) {
 }
 
 export const companies = withPeriod(companiesData);
+
+// After companiesData, which it counts.
+export const highlights = [
+  { value: `${yearsExperience}+`, label: "Years in Product & Software" },
+  { value: `${companiesData.length}`, label: "Companies Founded" },
+  { value: "$150M+", label: "Fundraising Supported" },
+  { value: `${patentCount}`, label: "Patents in AI & Video Commerce" },
+];
 export const projects = withPeriod(projectsData);
 export const experience = withPeriod(experienceData);
 export const volunteering = withVolunteerPeriods(volunteeringData);

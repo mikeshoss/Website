@@ -17,6 +17,12 @@ export function getStaticPaths() {
 
 const { company } = Astro.props;
 
+// Ventures this one holds, in the order `holdings` lists them. A slug that
+// matches nothing is dropped, and would be the sign of a typo in content.ts.
+const held = (company.holdings ?? [])
+  .map(slug => companies.find(c => c.slug === slug))
+  .filter((c): c is (typeof companies)[number] => c !== undefined);
+
 const organization = {
   '@type': 'Organization',
   '@id': `${site.url}/companies/${company.slug}/#organization`,
@@ -59,7 +65,7 @@ const organization = {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
       <div>
-        <h1 class="text-4xl font-bold tracking-tight mb-2">{company.name}</h1>
+        <h1 class="display text-display-lg mb-2">{company.name}</h1>
         <p class="text-accent">{company.role}</p>
       </div>
       <span class="text-sm text-muted font-mono whitespace-nowrap sm:mt-2">{company.period}</span>
@@ -141,6 +147,23 @@ const organization = {
               </div>
               <p class="text-sm text-muted leading-relaxed">{product.description}</p>
             </article>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Holdings (holding company) -->
+    {held.length > 0 && (
+      <div class="mt-16 pt-12 border-t border-line">
+        <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Holds</h2>
+        <p class="text-muted mb-8">The ventures under this company.</p>
+        <div class="grid md:grid-cols-3 gap-px bg-line border border-line">
+          {held.map(h => (
+            <a href={`/companies/${h.slug}`} class="group bg-ink p-6 transition-colors duration-300 hover:bg-ink-50">
+              <p class="display text-display-sm group-hover:text-accent transition-colors duration-300">{h.name}</p>
+              <p class="text-sm text-bone-dim mt-1">{h.role}</p>
+              <p class="text-sm text-muted leading-relaxed mt-3">{h.tagline}</p>
+            </a>
           ))}
         </div>
       </div>
