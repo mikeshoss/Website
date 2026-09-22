@@ -836,6 +836,7 @@ const experienceData: ExperienceRole[] = [
       "Led AI integration initiatives, increasing user engagement 400% and doubling conversions.",
       "Built and scaled 60-member global team across five product lines.",
       "Increased informed purchase decisions by 108% and user engagement by 167% via OKRs.",
+      "Additionally, served on the Social Committee.",
     ],
   },
   {

@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { site, hero, highlights, selectedResults, experience, projects } from '../data/content';
 import { byAssociation, isActive } from '../lib/projects';
 import { placement, withCampaign } from '../lib/links';
+import { formatPeriod } from '../lib/dates';
 
 /**
  * The headline gets one word in italic amber. Split around it here so the
@@ -10,14 +11,18 @@ import { placement, withCampaign } from '../lib/links';
  */
 const [beforeEm, afterEm] = hero.headline.split(hero.headlineEmphasis);
 
-// A short career strip: one row per company, latest role only. Order is
-// deliberate — it is the story, not the chronology.
+// A short career strip: one row per company, showing the latest title but
+// the whole tenure — Firework was three roles over 2 years 8 months, and the
+// row should say so rather than show the last role's dates. Order is
+// deliberate: it is the story, not the chronology.
 const FEATURED_COMPANIES = ['Clio', 'Caseware', 'FacilityOS (formerly iLobby)', 'Firework', 'VerticalScope Inc.'];
-const seen = new Set<string>();
-const keyRoles = FEATURED_COMPANIES.flatMap(name => experience.filter(r => r.company === name)).filter(r => {
-  if (seen.has(r.company)) return false;
-  seen.add(r.company);
-  return true;
+const keyRoles = FEATURED_COMPANIES.flatMap(name => {
+  const roles = experience.filter(r => r.company === name);
+  if (roles.length === 0) return [];
+  const latest = roles[0];
+  const first = roles[roles.length - 1];
+  const ongoing = roles.some(r => !r.end);
+  return [{ ...latest, tenure: formatPeriod(first.start, ongoing ? undefined : latest.end) }];
 });
 
 // What is being built right now, on my own time. First sentence only: a
@@ -93,7 +98,7 @@ const firstSentence = (text: string) => text.split(/(?<=[.!?])\s/)[0];
         <li class="py-5 grid md:grid-cols-12 gap-x-8 gap-y-1">
           <div class="md:col-span-3">
             <p class="display text-2xl leading-tight">{role.company.replace(/ \(.*\)$/, '')}</p>
-            <p class="text-xs font-mono text-muted mt-1">{role.period}</p>
+            <p class="text-xs font-mono text-muted mt-1">{role.tenure}</p>
           </div>
           <div class="md:col-span-9">
             <p class="text-bone">{role.title}</p>
