@@ -139,7 +139,7 @@ export const site = {
    * twitter:description and the JSON-LD Person description. Keep it under 160.
    */
   description:
-    `Mike Shoss builds AI products for work where being wrong is expensive. Staff Product Manager at Clio, founder of Epilogue, ${patentCount} patents in AI.`,
+    `Mike Shoss builds AI products for work where being wrong is expensive. Product executive, founder of Epilogue, ${patentCount} patents in AI. Currently at Clio.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -150,10 +150,46 @@ export const site = {
 
 export const hero = {
   headline: "I ship AI products in industries where being wrong is expensive.",
+  /**
+   * The one word the home page sets in italic amber. Must appear in the
+   * headline verbatim; every other consumer (llms.txt, the API) ignores it.
+   */
+  headlineEmphasis: "expensive",
+  /** Who, before what. The current employer is one clause, not the lead. */
   subheadline:
-    `Staff Product Manager at Clio, working on AI research and matter management for enterprise law firms, and founder of Epilogue, an AI consulting and product studio. ${yearsExperience}+ years turning strategy into products that scale.`,
+    `Product executive and founder, ${yearsExperience}+ years in. I've built and led product at Firework, VerticalScope and Caseware, hold ${patentCount} patents in AI, and run Epilogue, an AI consulting and product studio. Right now I'm Staff Product Manager at Clio.`,
   credibility:
-    `For the last year that meant audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it means legal. Previously scaled product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
+    `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
+  /**
+   * The three things happening at once, in the order they should be read. The
+   * day job is one of them, deliberately not the first thing on the page.
+   */
+  now: [
+    {
+      label: "Building",
+      title: "Epilogue",
+      role: "Founder & Principal",
+      blurb:
+        "An AI consulting and product studio. The consulting arm decides what is worth building; the studio builds it and validates it with real users.",
+      href: "/companies/epilogue",
+    },
+    {
+      label: "Shipping",
+      title: "Clio",
+      role: "Staff Product Manager, Vincent Enterprise",
+      blurb:
+        "AI research and matter management for enterprise law firms — work that gets reviewed by people whose licence is on the line.",
+      href: "/experience",
+    },
+    {
+      label: "Backing",
+      title: "ShossX",
+      role: "Angel Investor",
+      blurb:
+        "Early-stage Canadian AI, science and technology companies, through syndicates and funds so more capital reaches a founder faster.",
+      href: "/companies/shossx",
+    },
+  ],
   /** The argument behind the headline. Rendered as prose on the home page. */
   thesis: [
     "High-consequence work is document-dense, precedent-driven, and reviewed by people whose licence is on the line. You can't ship a confident guess into that. What you can ship is a system that knows what it knows, shows its work, and fails visibly instead of quietly — and that's a product problem long before it's a model problem.",

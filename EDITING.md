@@ -31,7 +31,7 @@ All in `src/data/content.ts` unless noted:
 
 | On the site | Edit this export |
 | --- | --- |
-| Headline, the paragraphs under it, "What I actually do" | `hero` |
+| Headline (and its one emphasised word), the paragraph under it, the three "Now" cards, "What I actually do" | `hero` |
 | The four big numbers on the home page | `highlights` |
 | "Selected results" cards | `selectedResults` |
 | Skill pills | `skills` |

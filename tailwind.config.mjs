@@ -6,22 +6,52 @@ export default {
   content: ['./src/**/*.{astro,html,md,mdx}'],
   theme: {
     extend: {
+      // Warm ink rather than pure black, bone rather than pure white, and one
+      // accent. Amber is a signal colour — fitting for a site whose thesis is
+      // "work where being wrong is expensive" — and it reads warm against the
+      // ink instead of the default blue-on-black of every developer portfolio.
       colors: {
-        surface: {
-          DEFAULT: '#0a0a0a',
-          50: '#111111',
-          100: '#1a1a1a',
-          200: '#222222',
+        ink: {
+          DEFAULT: '#0b0a09',
+          50: '#12100e',
+          100: '#181613',
+          200: '#221f1b',
         },
+        line: {
+          DEFAULT: '#28241f',
+          strong: '#3a352e',
+        },
+        bone: {
+          DEFAULT: '#f3efe6',
+          dim: '#c9c2b5',
+        },
+        muted: '#847d72',
         accent: {
-          DEFAULT: '#3b82f6',
-          dim: '#2563eb',
+          DEFAULT: '#f0b429',
+          bright: '#ffc94d',
+          dim: '#c08f1c',
+          ink: '#0b0a09',
         },
-        muted: '#888888',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['"Instrument Serif"', 'Georgia', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
+      fontSize: {
+        // Display sizes are fluid: the hero headline should fill a phone's
+        // width and a desktop's without a breakpoint jump between them.
+        'display-xl': ['clamp(2.75rem, 7.5vw, 6.5rem)', { lineHeight: '0.98', letterSpacing: '-0.015em' }],
+        'display-lg': ['clamp(2.25rem, 5vw, 4.25rem)', { lineHeight: '1.02', letterSpacing: '-0.01em' }],
+        'display-md': ['clamp(1.75rem, 3.2vw, 2.75rem)', { lineHeight: '1.08' }],
+        'display-sm': ['clamp(1.375rem, 2.2vw, 1.875rem)', { lineHeight: '1.15' }],
+      },
+      maxWidth: {
+        page: '72rem',
+        prose: '42rem',
+      },
+      transitionTimingFunction: {
+        out: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

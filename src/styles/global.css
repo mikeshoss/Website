@@ -1,7 +1,12 @@
-@import '@fontsource/inter/latin-400.css';
-@import '@fontsource/inter/latin-500.css';
-@import '@fontsource/inter/latin-600.css';
-@import '@fontsource/inter/latin-700.css';
+/* Self-hosted type. Three faces, each with one job:
+   - Instrument Serif for display: headlines, big numerals, the name.
+   - Geist for everything you read.
+   - JetBrains Mono for labels, dates and eyebrows. */
+@import '@fontsource/instrument-serif/latin-400.css';
+@import '@fontsource/instrument-serif/latin-400-italic.css';
+@import '@fontsource/geist/latin-400.css';
+@import '@fontsource/geist/latin-500.css';
+@import '@fontsource/geist/latin-600.css';
 @import '@fontsource/jetbrains-mono/latin-400.css';
 @import '@fontsource/jetbrains-mono/latin-500.css';
 
@@ -14,6 +19,7 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -23,22 +29,21 @@
   }
 
   body {
-    @apply bg-surface text-white font-sans;
+    @apply bg-ink text-bone font-sans;
+    font-feature-settings: 'ss01', 'cv11';
   }
 
   ::selection {
-    @apply bg-accent/30 text-white;
+    @apply bg-accent text-accent-ink;
   }
 
-  /* Focus-visible for keyboard navigation */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-accent;
+    @apply outline-2 outline-offset-4 outline-accent;
     outline-style: solid;
   }
 
-  /* Skip link */
   .skip-link {
-    @apply absolute bg-accent text-white font-medium px-4 py-2 rounded-md z-[100];
+    @apply absolute bg-accent text-accent-ink font-medium px-4 py-2 z-[100];
     left: 0.5rem;
     top: -3rem;
     transition: top 0.2s;
@@ -50,74 +55,243 @@
 }
 
 @layer components {
-  .section-container {
-    @apply max-w-5xl mx-auto px-6 py-20;
+  /* ------------------------------------------------------------ Layout */
+
+  .page {
+    @apply max-w-page mx-auto px-5 sm:px-8;
   }
 
-  .section-title {
-    @apply text-3xl font-bold tracking-tight mb-2;
+  .section {
+    @apply page py-16 md:py-24;
   }
 
-  .section-subtitle {
-    @apply text-muted text-lg mb-12;
+  /* ------------------------------------------------------------ Type */
+
+  .display {
+    @apply font-display font-normal text-bone;
   }
 
-  .card {
-    @apply bg-surface-100 border border-surface-200 rounded-xl p-6 transition-all duration-300;
+  /* The one emphasised word in a headline: italic, amber. */
+  .display em {
+    @apply text-accent;
+    font-style: italic;
   }
 
-  .card:hover {
-    @apply border-accent/30;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
+  /* Small uppercase mono label above a heading. Carries an optional index
+     number so sections read as chapters: "01 — Now". */
+  .eyebrow {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted;
   }
 
-  .pill {
-    @apply inline-block px-3 py-1 text-sm rounded-full bg-surface-100 border border-surface-200 text-gray-300;
+  .eyebrow b {
+    @apply font-medium text-accent;
   }
 
-  .link-hover {
-    @apply text-accent hover:text-accent-dim transition-colors;
+  .lede {
+    @apply text-lg md:text-xl text-bone-dim leading-relaxed;
   }
 
-  /* Gradient text utility */
-  .gradient-text {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .prose-body {
+    @apply text-bone-dim leading-relaxed;
   }
 
-  /* Scroll animations */
-  .animate-on-scroll {
+  /* ------------------------------------------------------------ Rules & lists */
+
+  /* Hairline rules do the work cards used to do. A ruled list is a column of
+     rows separated by a 1px line, with the first row also ruled on top. */
+  .ruled > * {
+    @apply border-t border-line;
+  }
+
+  .ruled > *:last-child {
+    @apply border-b border-line;
+  }
+
+  .rule {
+    @apply border-t border-line;
+  }
+
+  /* ------------------------------------------------------------ Surfaces */
+
+  .panel {
+    @apply bg-ink-50 border border-line;
+  }
+
+  .panel-hover {
+    @apply transition-colors duration-300 ease-out;
+  }
+
+  .panel-hover:hover {
+    @apply border-line-strong bg-ink-100;
+  }
+
+  /* Status chip: mono, bordered, no fill. */
+  .chip {
+    @apply inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-wider px-2 py-0.5 border border-line text-muted;
+  }
+
+  .chip-live {
+    @apply border-accent/40 text-accent;
+  }
+
+  .chip-live::before {
+    content: '';
+    @apply w-1.5 h-1.5 rounded-full bg-accent;
+  }
+
+  /* ------------------------------------------------------------ Links & buttons */
+
+  .link {
+    @apply text-bone underline decoration-line-strong underline-offset-[5px] transition-colors duration-200;
+  }
+
+  .link:hover {
+    @apply decoration-accent text-accent;
+  }
+
+  .link-quiet {
+    @apply text-muted transition-colors duration-200;
+  }
+
+  .link-quiet:hover {
+    @apply text-bone;
+  }
+
+  /* An arrow link — "All projects →" — where the arrow moves on hover. */
+  .arrow-link {
+    @apply inline-flex items-center gap-2 text-sm font-medium text-bone transition-colors duration-200;
+  }
+
+  .arrow-link .arrow {
+    @apply inline-block transition-transform duration-300 ease-out;
+  }
+
+  .arrow-link:hover {
+    @apply text-accent;
+  }
+
+  .arrow-link:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-accent-ink;
+  }
+
+  .btn-primary:hover {
+    @apply bg-accent-bright;
+  }
+
+  .btn-ghost {
+    @apply btn border border-line-strong text-bone;
+  }
+
+  .btn-ghost:hover {
+    @apply border-bone;
+  }
+
+  /* ------------------------------------------------------------ Motion */
+
+  .reveal {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transform: translateY(14px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .animate-on-scroll.is-visible {
+  .reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 
-  /* Stagger children */
-  .stagger-children > .animate-on-scroll:nth-child(1) { transition-delay: 0ms; }
-  .stagger-children > .animate-on-scroll:nth-child(2) { transition-delay: 80ms; }
-  .stagger-children > .animate-on-scroll:nth-child(3) { transition-delay: 160ms; }
-  .stagger-children > .animate-on-scroll:nth-child(4) { transition-delay: 240ms; }
-  .stagger-children > .animate-on-scroll:nth-child(5) { transition-delay: 320ms; }
-  .stagger-children > .animate-on-scroll:nth-child(6) { transition-delay: 400ms; }
+  .stagger > .reveal:nth-child(2) { transition-delay: 60ms; }
+  .stagger > .reveal:nth-child(3) { transition-delay: 120ms; }
+  .stagger > .reveal:nth-child(4) { transition-delay: 180ms; }
+  .stagger > .reveal:nth-child(5) { transition-delay: 240ms; }
+  .stagger > .reveal:nth-child(6) { transition-delay: 300ms; }
 
-  /* Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
-    .animate-on-scroll {
+    .reveal {
       opacity: 1;
       transform: none;
       transition: none;
     }
+  }
 
-    .card:hover {
-      transform: none;
-    }
+  /* ------------------------------------------------------------ Texture */
+
+  /* Film grain over the whole page, and one amber glow bleeding in from the
+     top. Both are fixed and inert (pointer-events: none), and both are faint
+     enough to register as warmth rather than as an effect. */
+  .grain {
+    @apply pointer-events-none fixed inset-0 z-[60];
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    mix-blend-mode: screen;
+  }
+
+  .glow {
+    @apply pointer-events-none absolute inset-x-0 top-0 h-[70vh] -z-10;
+    background:
+      radial-gradient(60% 55% at 70% 0%, rgba(240, 180, 41, 0.13), transparent 70%),
+      radial-gradient(40% 40% at 10% 10%, rgba(240, 180, 41, 0.05), transparent 70%);
+  }
+
+  /* ------------------------------------------------------------ Tabs */
+
+  .tab {
+    @apply relative font-mono text-xs uppercase tracking-[0.14em] text-muted py-4 pr-1 whitespace-nowrap transition-colors duration-200;
+  }
+
+  .tab:hover {
+    @apply text-bone;
+  }
+
+  .tab[aria-selected='true'] {
+    @apply text-bone;
+  }
+
+  .tab[aria-selected='true']::after {
+    content: '';
+    @apply absolute left-0 right-0 -bottom-px h-px bg-accent;
+  }
+
+  .tab .count {
+    @apply ml-1.5 text-accent;
+  }
+}
+
+@layer components {
+  /* Names the venture, glossary, contact, blog and 404 pages still use,
+     mapped onto the system above so they pick up the redesign without a
+     rewrite. New pages should use the primitives directly. */
+  .section-container {
+    @apply page py-16 md:py-24;
+  }
+
+  .section-title {
+    @apply display text-display-lg;
+  }
+
+  .section-subtitle {
+    @apply lede mt-6 mb-12;
+  }
+
+  .card {
+    @apply panel panel-hover p-6;
+  }
+
+  .pill {
+    @apply chip normal-case tracking-normal text-xs text-bone-dim;
+  }
+
+  .link-hover {
+    @apply link;
   }
 }

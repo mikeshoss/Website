@@ -1,54 +1,42 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { projects, site } from '../data/content';
+import { projects, site, companies } from '../data/content';
 import { placement, withCampaign } from '../lib/links';
-import { isActive } from '../lib/projects';
+import { byAssociation, splitByStatus } from '../lib/projects';
 
 /**
- * Grouped by owner first, then Active vs past within each owner.
+ * This page is the personal work only. Epilogue's projects stay in content.ts
+ * — the venture page, its syndication feed, the JSON API and the MCP server
+ * all still read them — but they are not listed here. The studio has its own
+ * site, and that is where its work should be seen.
  *
- * Owner order is fixed rather than derived from the data, so adding an
- * association cannot silently reorder the page. Anything carrying an unexpected
- * association — or none — falls into a trailing "Other" group rather than
- * disappearing, which is what makes a missing `association` visible instead of
- * silent. Array order from content.ts is preserved inside each bucket.
- *
- * The Active vs past test is `isActive` from lib/projects, shared with llms.txt
- * and the venture syndication feeds so the three cannot drift apart.
+ * Anything with an association that is neither Personal nor a known venture
+ * lands in a trailing "Unassigned" group rather than disappearing, which is
+ * what makes a typo in `association` visible instead of silent.
  */
-const OWNERS = [
-  { key: 'Personal', label: 'Personal', blurb: 'Built for myself, in the open.' },
-  { key: 'Epilogue', label: 'Epilogue', blurb: 'Built in the studio.' },
-];
+const personal = splitByStatus(byAssociation(projects, 'Personal'));
 
-const owners = OWNERS
-  .map(owner => {
-    const mine = projects.filter(p => p.association === owner.key);
-    return {
-      ...owner,
-      sections: [
-        { label: 'Active', accent: true, items: mine.filter(isActive) },
-        { label: 'Past', accent: false, items: mine.filter(p => !isActive(p)) },
-      ].filter(section => section.items.length > 0),
-    };
-  })
-  .filter(owner => owner.sections.length > 0);
+const ventureNames = new Set(companies.map(c => c.name));
+const orphans = projects.filter(p => p.association !== 'Personal' && !ventureNames.has(p.association ?? ''));
 
-const claimed = new Set(OWNERS.map(o => o.key));
-const orphans = projects.filter(p => !p.association || !claimed.has(p.association));
+const epilogue = companies.find(c => c.slug === 'epilogue');
+const epilogueProducts = epilogue?.products?.map(p => p.name) ?? [];
+const epilogueUrl = withCampaign(epilogue?.url, 'projects-page');
+
+const listed = [...personal.active, ...personal.past, ...orphans];
 ---
 
 <Layout
   title="Projects — Mike Shoss"
-  description="AI systems, MCP servers, radio and infrastructure projects built by Mike Shoss."
+  description="AI systems, MCP servers, radio and infrastructure projects Mike Shoss builds on his own time."
   breadcrumbs={[{ name: 'Projects', href: '/projects' }]}
   schema={[
     {
       '@type': 'ItemList',
       '@id': `${site.url}/projects/#projects`,
       name: 'Projects by Mike Shoss',
-      numberOfItems: projects.length,
-      itemListElement: projects.map((project, index) => ({
+      numberOfItems: listed.length,
+      itemListElement: listed.map((project, index) => ({
         '@type': 'ListItem',
         position: index + 1,
         item: {
@@ -62,96 +50,112 @@ const orphans = projects.filter(p => !p.association || !claimed.has(p.associatio
     },
   ]}
 >
-  <section class="section-container pt-28">
-    <h1 class="section-title">Projects</h1>
-    <p class="section-subtitle">Things I'm building, experimenting with, and have shipped.</p>
-
-    {[...owners, ...(orphans.length
-      ? [{
-          key: 'other',
-          label: 'Other',
-          blurb: 'Not yet assigned to a group.',
-          sections: [{ label: 'Unassigned', accent: false, items: orphans }],
-        }]
-      : [])].map(owner => (
-      <div class="mb-20 last:mb-0">
-        <div class="mb-8 pb-4 border-b border-surface-200">
-          <h2 class="text-2xl font-bold tracking-tight">{owner.label}</h2>
-          <p class="text-muted mt-1">{owner.blurb}</p>
-        </div>
-
-        {owner.sections.map(section => (
-          <div class="mb-12 last:mb-0">
-            <h3
-              class:list={[
-                'text-sm font-semibold uppercase tracking-wider mb-6',
-                section.accent ? 'text-accent' : 'text-muted',
-              ]}
-            >
-              {section.label}
-            </h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {section.items.map(project => (
-                <article class:list={['card flex flex-col', section.accent ? '' : 'opacity-80']}>
-                  <div class="flex items-start justify-between gap-3 mb-2">
-                    <h4 class="text-lg font-semibold">{project.name}</h4>
-                    <span
-                      class:list={[
-                        'text-xs font-mono px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0',
-                        section.accent
-                          ? 'text-green-400 bg-green-400/10'
-                          : 'text-muted bg-surface-200',
-                      ]}
-                    >
-                      {project.status}
-                    </span>
-                  </div>
-
-                  <p class="text-xs text-muted font-mono mb-3">{project.period}</p>
-
-                  <p class="text-sm text-gray-400 leading-relaxed mb-5">{project.description}</p>
-
-                  {/*
-                    Links sit in a footer row rather than wrapping the whole card:
-                    a project can have both a site and a repository, and an anchor
-                    cannot contain another anchor. mt-auto pins the row to the
-                    bottom so cards sharing a grid row line their links up.
-                  */}
-                  {(project.url || project.repo) && (
-                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-auto pt-4 border-t border-surface-200">
-                      {project.url && (
-                        <a
-                          href={withCampaign(project.url, placement('project', project.name))}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="inline-flex items-center gap-1.5 text-sm font-medium link-hover"
-                        >
-                          Visit site
-                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </a>
-                      )}
-                      {project.repo && (
-                        <a
-                          href={project.repo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="inline-flex items-center gap-1.5 text-sm font-medium link-hover"
-                        >
-                          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                          Source
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    ))}
+  <section class="page pt-20 md:pt-28 pb-12 md:pb-16">
+    <p class="eyebrow"><b>Projects</b> &nbsp;·&nbsp; {personal.active.length} active</p>
+    <h1 class="display text-display-xl mt-6 max-w-[14ch]">Built for myself, <em>in the open.</em></h1>
+    <p class="lede mt-8 max-w-prose">
+      Radio, aircraft, transit, civic records, and a lot of MCP servers. Most of these exist
+      because I wanted the thing and it didn't exist yet. Source is linked wherever the repo is public.
+    </p>
   </section>
+
+  <!-- ============================================================ Active -->
+  <section class="section pt-0 md:pt-0">
+    <div class="rule pt-6 flex items-baseline justify-between">
+      <p class="eyebrow"><b>01</b> — Active</p>
+      <p class="eyebrow hidden sm:block">Newest first</p>
+    </div>
+    <div class="mt-10 grid md:grid-cols-2 gap-px bg-line border border-line stagger">
+      {personal.active.map(project => (
+        <article class="reveal bg-ink p-7 md:p-8 flex flex-col">
+          <div class="flex items-center justify-between gap-3">
+            <span class="chip chip-live">{project.status}</span>
+            <span class="text-xs font-mono text-muted">{project.period}</span>
+          </div>
+          <h2 class="display text-display-sm mt-6">{project.name}</h2>
+          <p class="text-sm text-bone-dim leading-relaxed mt-4">{project.description}</p>
+          {(project.url || project.repo) && (
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-auto pt-6">
+              {project.url && (
+                <a href={withCampaign(project.url, placement('project', project.name))} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">
+                  Visit site <span class="arrow">↗</span>
+                </a>
+              )}
+              {project.repo && (
+                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">
+                  Source <span class="arrow">↗</span>
+                </a>
+              )}
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============================================================ Epilogue -->
+  <section class="section pt-0 md:pt-0 reveal">
+    <div class="panel p-8 md:p-12 grid md:grid-cols-12 gap-8 items-end">
+      <div class="md:col-span-8">
+        <p class="eyebrow"><b>Epilogue</b> &nbsp;·&nbsp; The studio</p>
+        <h2 class="display text-display-md mt-5 max-w-[22ch]">
+          The work we do at Epilogue lives on its own site.
+        </h2>
+        {epilogueProducts.length > 0 && (
+          <p class="text-sm text-muted mt-4 max-w-prose leading-relaxed">
+            {epilogueProducts.join(', ')} — and the client work that pays for them.
+          </p>
+        )}
+      </div>
+      <div class="md:col-span-4 flex flex-col md:items-end gap-3">
+        {epilogueUrl && (
+          <a href={epilogueUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
+            See what we're building ↗
+          </a>
+        )}
+        <a href="/companies/epilogue" class="arrow-link text-xs">About the venture <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ Past -->
+  {personal.past.length > 0 && (
+    <section class="section pt-0 md:pt-0 reveal">
+      <div class="rule pt-6">
+        <p class="eyebrow"><b>02</b> — Past</p>
+      </div>
+      <ol class="mt-10 ruled">
+        {personal.past.map(project => (
+          <li class="py-6 grid md:grid-cols-12 gap-x-8 gap-y-2">
+            <div class="md:col-span-3">
+              <p class="display text-2xl leading-tight">{project.name}</p>
+              <p class="text-xs font-mono text-muted mt-1.5">{project.period}</p>
+            </div>
+            <div class="md:col-span-7">
+              <p class="text-sm text-muted leading-relaxed">{project.description}</p>
+            </div>
+            <div class="md:col-span-2 md:text-right">
+              <span class="chip">{project.status}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  {orphans.length > 0 && (
+    <section class="section pt-0 md:pt-0">
+      <div class="rule pt-6">
+        <p class="eyebrow"><b>??</b> — Unassigned</p>
+      </div>
+      <ol class="mt-10 ruled">
+        {orphans.map(project => (
+          <li class="py-6">
+            <p class="display text-2xl">{project.name}</p>
+            <p class="text-xs font-mono text-muted mt-1">association: {project.association ?? '(none)'}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
 </Layout>

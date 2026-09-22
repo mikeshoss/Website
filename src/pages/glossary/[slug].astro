@@ -53,7 +53,7 @@ const related = (term.related ?? [])
 
     <h1 class="text-4xl font-bold tracking-tight mb-4">{term.term}</h1>
 
-    <p class="text-xl text-gray-300 leading-relaxed max-w-3xl mb-5">{term.short}</p>
+    <p class="text-xl text-bone-dim leading-relaxed max-w-3xl mb-5">{term.short}</p>
 
     {term.aliases && term.aliases.length > 0 && (
       <div class="flex flex-wrap items-center gap-2 mb-14">
@@ -69,7 +69,7 @@ const related = (term.related ?? [])
       </h2>
       <div class="space-y-5">
         {term.means.map(paragraph => (
-          <p class="text-gray-400 leading-relaxed">{paragraph}</p>
+          <p class="text-muted leading-relaxed">{paragraph}</p>
         ))}
       </div>
     </div>
@@ -84,7 +84,7 @@ const related = (term.related ?? [])
       </h2>
       <div class="space-y-5">
         {term.reallyMeans.map(paragraph => (
-          <p class="text-gray-300 leading-relaxed">{paragraph}</p>
+          <p class="text-bone-dim leading-relaxed">{paragraph}</p>
         ))}
       </div>
     </div>
@@ -95,13 +95,13 @@ const related = (term.related ?? [])
           How to tell
         </h2>
         <div class="card">
-          <p class="text-gray-300 leading-relaxed">{term.tell}</p>
+          <p class="text-bone-dim leading-relaxed">{term.tell}</p>
         </div>
       </div>
     )}
 
     {related.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-surface-200">
+      <div class="mt-16 pt-12 border-t border-line">
         <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-6">
           Related
         </h2>
@@ -111,7 +111,7 @@ const related = (term.related ?? [])
               <h3 class="font-semibold group-hover:text-accent transition-colors mb-2">
                 {other.term}
               </h3>
-              <p class="text-sm text-gray-400 leading-relaxed">{other.short}</p>
+              <p class="text-sm text-muted leading-relaxed">{other.short}</p>
             </a>
           ))}
         </div>

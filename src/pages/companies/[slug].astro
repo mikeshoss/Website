@@ -65,14 +65,14 @@ const organization = {
       <span class="text-sm text-muted font-mono whitespace-nowrap sm:mt-2">{company.period}</span>
     </div>
 
-    <p class="text-xl text-gray-300 leading-relaxed max-w-3xl mb-6">{company.tagline}</p>
+    <p class="text-xl text-bone-dim leading-relaxed max-w-3xl mb-6">{company.tagline}</p>
 
     {company.url && (
       <a
         href={withCampaign(company.url, `venture-${company.slug}`)}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 bg-accent hover:bg-accent-dim text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm mb-14"
+        class="btn-primary mb-14"
       >
         Visit {company.name}
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -85,25 +85,25 @@ const organization = {
     {company.body && company.body.length > 0 && (
       <div class={`max-w-3xl space-y-5 ${company.url ? '' : 'mt-8'}`}>
         {company.body.map(paragraph => (
-          <p class="text-gray-400 leading-relaxed">{paragraph}</p>
+          <p class="text-muted leading-relaxed">{paragraph}</p>
         ))}
       </div>
     )}
 
     <!-- Arms -->
     {company.arms && company.arms.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-surface-200">
+      <div class="mt-16 pt-12 border-t border-line">
         <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2">How it works</h2>
         <p class="text-muted mb-8">Two arms, tightly integrated.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {company.arms.map(arm => (
             <div class="card">
-              <h3 class="text-lg font-semibold text-white mb-2">{arm.name}</h3>
-              <p class="text-sm text-gray-400 leading-relaxed mb-5">{arm.description}</p>
+              <h3 class="text-lg font-semibold text-bone mb-2">{arm.name}</h3>
+              <p class="text-sm text-muted leading-relaxed mb-5">{arm.description}</p>
               <ul class="space-y-2">
                 {arm.services.map(service => (
-                  <li class="text-sm text-gray-300 flex items-start gap-2.5">
-                    <span class="w-1 h-1 rounded-full bg-accent flex-shrink-0 mt-2"></span>
+                  <li class="text-sm text-bone-dim flex items-start gap-2.5">
+                    <span class="w-1 h-1 bg-accent flex-shrink-0 mt-2"></span>
                     {service}
                   </li>
                 ))}
@@ -116,7 +116,7 @@ const organization = {
 
     <!-- Products -->
     {company.products && company.products.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-surface-200">
+      <div class="mt-16 pt-12 border-t border-line">
         <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Products</h2>
         <p class="text-muted mb-8">Built in the studio, shipped to real users.</p>
         <div class="space-y-4">
@@ -124,7 +124,7 @@ const organization = {
             <article class="card">
               <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                 <div>
-                  <h3 class="text-lg font-semibold text-white">
+                  <h3 class="text-lg font-semibold text-bone">
                     {product.url ? (
                       <a href={product.url} target="_blank" rel="noopener noreferrer" class="link-hover">
                         {product.name} <span class="text-sm">&#8599;</span>
@@ -135,11 +135,11 @@ const organization = {
                   </h3>
                   <p class="text-sm text-accent font-mono mt-0.5">{product.tagline}</p>
                 </div>
-                <span class="text-xs font-mono text-accent bg-accent/10 px-2.5 py-1 rounded-full whitespace-nowrap self-start">
+                <span class="chip chip-live self-start">
                   {product.status}
                 </span>
               </div>
-              <p class="text-sm text-gray-400 leading-relaxed">{product.description}</p>
+              <p class="text-sm text-muted leading-relaxed">{product.description}</p>
             </article>
           ))}
         </div>
@@ -148,7 +148,7 @@ const organization = {
 
     <!-- Networks (investing) -->
     {company.networks && company.networks.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-surface-200">
+      <div class="mt-16 pt-12 border-t border-line">
         <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Investing through</h2>
         <p class="text-muted mb-8">Syndicates, angel networks and funds.</p>
         <div class="flex flex-wrap gap-3">
@@ -161,7 +161,7 @@ const organization = {
 
     <!-- Clients -->
     {company.clients && company.clients.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-surface-200">
+      <div class="mt-16 pt-12 border-t border-line">
         <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Clients & partners</h2>
         <p class="text-muted mb-8">Selected engagements.</p>
         <div class="flex flex-wrap gap-3">

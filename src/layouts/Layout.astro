@@ -170,7 +170,7 @@ const jsonLd = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#0b0a09" />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -232,7 +232,9 @@ const jsonLd = {
 
     <Analytics />
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col relative">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <Nav />
     <main id="main-content" class="flex-1">
@@ -245,12 +247,13 @@ const jsonLd = {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
             }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0.08 }
       );
-      document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
   </body>
 </html>
