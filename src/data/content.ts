@@ -726,6 +726,16 @@ const experienceData: ExperienceRole[] = [
     ],
   },
   {
+    title: "Founder & Principal — AI Consulting & Product Studio",
+    company: "Epilogue",
+    url: "https://epiloguelabs.com",
+    start: "2023-11",
+    location: "Toronto, Ontario, Canada",
+    highlights: [
+      "An AI company that turns complex business problems into practical, high-impact solutions: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
+    ],
+  },
+  {
     title: "Principal Product Manager, Ecosystem AI",
     company: "Caseware",
     start: "2025-11",
@@ -831,6 +841,15 @@ const experienceData: ExperienceRole[] = [
     highlights: [
       "Transitioned platform to self-serve SaaS, growing ARR 10x and enhancing customer acquisition.",
       "Implemented AI playlist optimization, reducing churn 11.4%, enhancing accessibility by 275%.",
+    ],
+  },
+  {
+    title: "Angel Investor",
+    company: "ShossX",
+    start: "2021-02",
+    location: "Canada",
+    highlights: [
+      "Investing in early-stage Canadian science and technology companies, with a focus on AI, through syndicates, angel networks and funds.",
     ],
   },
   {
