@@ -557,6 +557,88 @@ const projectsData: Project[] = [
     // repo: "https://github.com/mikeshoss/",
   },
 
+  // Earlier work, newest first. Most predate the site and were sunsetted years
+  // ago; they are here because the record should be complete, not because any
+  // of them is still running.
+  {
+    name: "Shoss V1 | NFT Project",
+    description:
+      "A one-month experiment in shipping an NFT collection end to end.",
+    start: "2022-03",
+    end: "2022-03",
+    status: "Discontinued",
+    association: "Personal",
+  },
+  {
+    name: "COVID Numbers Canada | Alexa Skill & Google Action",
+    description:
+      "Daily Canadian COVID-19 numbers from a smart speaker, as both an Alexa skill and a Google Action.",
+    start: "2020-11",
+    end: "2021-01",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "CellarSunday",
+    description: "Built over eleven months under Epilogue Labs, and sunsetted in October 2020.",
+    start: "2019-11",
+    end: "2020-10",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Techno Lingo | Alexa Skill",
+    description:
+      "An Alexa skill that explains technology jargon on request — a spoken glossary, years before the written one on this site.",
+    start: "2018-08",
+    end: "2020-02",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Beau's Brewery | Alexa Skill",
+    description: "An Alexa skill built for Beau's, the Ontario craft brewery.",
+    start: "2018-07",
+    end: "2020-02",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Fresh Pots | Notification System",
+    description: "A notification system that tells the office when a fresh pot of coffee is ready.",
+    start: "2018-06",
+    end: "2018-07",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+  {
+    name: "Character Analysis & Insights — The Nearly Girl",
+    description:
+      "An exploration of the traits, personality and characteristics of the characters in The Nearly Girl.",
+    start: "2016-06",
+    end: "2016-08",
+    status: "Completed",
+    association: "Personal",
+  },
+  {
+    name: "Capstone Project | 2D Platformer",
+    description:
+      "A 2D platformer built in Unity3D with two teammates as the Sheridan College capstone.",
+    start: "2012-09",
+    end: "2012-12",
+    status: "Completed",
+    association: "Personal",
+  },
+  {
+    name: "Custom Firmware | PSP, iOS & Android",
+    description:
+      "Custom system software for the PlayStation Portable from 2006, then for iOS and Android from 2009, built at MHMD.",
+    start: "2006-01",
+    end: "2010-09",
+    status: "Sunsetted",
+    association: "Personal",
+  },
+
   /* ---------------------------------------------------------------- Epilogue */
   {
     name: "AI Edge Briefing & The AI Edge Podcast",
