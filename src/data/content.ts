@@ -860,12 +860,13 @@ const experienceData: ExperienceRole[] = [
   },
   {
     title: "Angel Investor",
-    // The investment company has no trading name yet; ShossX is its parent.
-    company: "ShossX",
+    // A numbered company with no trading name yet. Replace this with the
+    // name when it has one; see the `investing` venture entry.
+    company: "Private investment company",
     start: "2021-02",
     location: "Canada",
     highlights: [
-      "Investing in early-stage Canadian science and technology companies, with a focus on AI, through syndicates, angel networks and funds — via an investment company held by ShossX.",
+      "Investing in early-stage Canadian science and technology companies, with a focus on AI, through syndicates, angel networks and funds.",
     ],
   },
   {
