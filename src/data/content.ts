@@ -595,7 +595,8 @@ const projectsData: Project[] = [
   },
   {
     name: "CellarSunday",
-    description: "Built over eleven months under Epilogue Labs, and sunsetted in October 2020.",
+    description:
+      "A platform for enthusiasts to catalogue, review and showcase their collection: a digital inventory, tasting notes, and curated lists for sharing and in-person experiences.",
     start: "2019-11",
     end: "2020-10",
     status: "Sunsetted",
@@ -629,11 +630,12 @@ const projectsData: Project[] = [
   {
     name: "Character Analysis & Insights — The Nearly Girl",
     description:
-      "An exploration of the traits, personality and characteristics of the characters in The Nearly Girl.",
+      "An exploration of the traits, personality and characteristics of the characters in The Nearly Girl, the novel by Lisa de Nikolits.",
     start: "2016-06",
     end: "2016-08",
     status: "Completed",
     association: "Personal",
+    url: "https://www.amazon.ca/Nearly-Girl-Lisa-Nikolits-ebook/dp/B01IFG44H0/",
   },
   {
     name: "Capstone Project | 2D Platformer",
