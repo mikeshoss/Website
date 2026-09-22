@@ -30,7 +30,6 @@
 
   body {
     @apply bg-ink text-bone font-sans;
-    font-feature-settings: 'ss01', 'cv11';
   }
 
   ::selection {
@@ -117,26 +116,9 @@
     @apply bg-ink-50 border border-line;
   }
 
-  .panel-hover {
-    @apply transition-colors duration-300 ease-out;
-  }
-
-  .panel-hover:hover {
-    @apply border-line-strong bg-ink-100;
-  }
-
   /* Status chip: mono, bordered, no fill. */
   .chip {
     @apply inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-wider px-2 py-0.5 border border-line text-muted;
-  }
-
-  .chip-live {
-    @apply border-accent/40 text-accent;
-  }
-
-  .chip-live::before {
-    content: '';
-    @apply w-1.5 h-1.5 rounded-full bg-accent;
   }
 
   /* ------------------------------------------------------------ Links & buttons */
@@ -157,21 +139,12 @@
     @apply text-bone;
   }
 
-  /* An arrow link — "All projects →" — where the arrow moves on hover. */
   .arrow-link {
     @apply inline-flex items-center gap-2 text-sm font-medium text-bone transition-colors duration-200;
   }
 
-  .arrow-link .arrow {
-    @apply inline-block transition-transform duration-300 ease-out;
-  }
-
   .arrow-link:hover {
     @apply text-accent;
-  }
-
-  .arrow-link:hover .arrow {
-    transform: translateX(4px);
   }
 
   .btn {
@@ -184,63 +157,6 @@
 
   .btn-primary:hover {
     @apply bg-accent-bright;
-  }
-
-  .btn-ghost {
-    @apply btn border border-line-strong text-bone;
-  }
-
-  .btn-ghost:hover {
-    @apply border-bone;
-  }
-
-  /* ------------------------------------------------------------ Motion */
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .stagger > .reveal:nth-child(2) { transition-delay: 60ms; }
-  .stagger > .reveal:nth-child(3) { transition-delay: 120ms; }
-  .stagger > .reveal:nth-child(4) { transition-delay: 180ms; }
-  .stagger > .reveal:nth-child(5) { transition-delay: 240ms; }
-  .stagger > .reveal:nth-child(6) { transition-delay: 300ms; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-  }
-
-  /* ------------------------------------------------------------ Texture */
-
-  /* Film grain over the whole page, and one amber glow bleeding in from the
-     top. Both are fixed and inert (pointer-events: none), and both are faint
-     enough to register as warmth rather than as an effect. */
-  .grain {
-    @apply pointer-events-none fixed inset-0 z-[60];
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 160px 160px;
-    mix-blend-mode: screen;
-  }
-
-  .glow {
-    @apply pointer-events-none absolute inset-x-0 top-0 h-[70vh] -z-10;
-    background:
-      radial-gradient(60% 55% at 70% 0%, rgba(240, 180, 41, 0.13), transparent 70%),
-      radial-gradient(40% 40% at 10% 10%, rgba(240, 180, 41, 0.05), transparent 70%);
   }
 
   /* ------------------------------------------------------------ Tabs */
@@ -284,7 +200,11 @@
   }
 
   .card {
-    @apply panel panel-hover p-6;
+    @apply panel p-6 transition-colors duration-200;
+  }
+
+  .card:hover {
+    @apply bg-ink-100;
   }
 
   .pill {

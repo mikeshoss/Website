@@ -3,67 +3,33 @@ import { site } from '../data/content';
 import { withCampaign } from '../lib/links';
 const year = new Date().getFullYear();
 
-const pages = [
-  { label: 'Ventures', href: '/companies' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Experience', href: '/experience' },
-  { label: 'Glossary', href: '/glossary' },
-  { label: 'Contact', href: '/contact' },
-];
-
-const elsewhere = [
-  { label: 'LinkedIn', href: site.linkedin },
-  { label: 'GitHub', href: site.github },
-  { label: 'Epilogue', href: withCampaign('https://epiloguelabs.com', 'footer') },
-];
-
-const machine = [
-  { label: 'JSON API', href: '/api/index.json' },
+// The page links are in the header on every page; the footer carries only
+// what the header does not.
+const links = [
+  { label: 'LinkedIn', href: site.linkedin, external: true },
+  { label: 'GitHub', href: site.github, external: true },
+  { label: 'Epilogue', href: withCampaign('https://epiloguelabs.com', 'footer'), external: true },
+  { label: 'API', href: '/api/index.json' },
   { label: 'llms.txt', href: '/llms.txt' },
-  { label: 'MCP server', href: '/mcp' },
+  { label: 'MCP', href: '/mcp' },
 ];
 ---
 
 <footer class="border-t border-line mt-16">
-  <div class="page py-14 grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-10">
-    <div class="col-span-2 md:col-span-5">
-      <a href="/" class="font-display text-3xl text-bone hover:text-accent transition-colors">{site.name}</a>
-      <p class="mt-4 max-w-xs text-sm text-muted leading-relaxed">{site.title}</p>
-      <p class="mt-6 text-xs text-muted font-mono">{site.location}</p>
-    </div>
-
-    <div class="md:col-span-2 md:col-start-7">
-      <p class="eyebrow mb-4">Pages</p>
-      <ul class="space-y-2.5">
-        {pages.map(item => (
-          <li><a href={item.href} class="text-sm link-quiet">{item.label}</a></li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="md:col-span-2">
-      <p class="eyebrow mb-4">Elsewhere</p>
-      <ul class="space-y-2.5">
-        {elsewhere.map(item => (
-          <li><a href={item.href} target="_blank" rel="noopener noreferrer" class="text-sm link-quiet">{item.label}</a></li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="md:col-span-2">
-      <p class="eyebrow mb-4">For machines</p>
-      <ul class="space-y-2.5">
-        {machine.map(item => (
-          <li><a href={item.href} class="text-sm link-quiet font-mono">{item.label}</a></li>
-        ))}
-      </ul>
-    </div>
-  </div>
-
-  <div class="border-t border-line">
-    <div class="page py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <p class="text-xs text-muted font-mono">&copy; {year} {site.name}</p>
-      <p class="text-xs text-muted font-mono">Set in Instrument Serif &amp; Geist. Self-hosted, no trackers beyond analytics.</p>
-    </div>
+  <div class="page py-8 flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
+    <p class="text-xs font-mono text-muted">&copy; {year} {site.name} &nbsp;·&nbsp; {site.location}</p>
+    <ul class="flex flex-wrap gap-x-5 gap-y-2">
+      {links.map(link => (
+        <li>
+          <a
+            href={link.href}
+            {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            class="text-xs font-mono link-quiet"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
   </div>
 </footer>

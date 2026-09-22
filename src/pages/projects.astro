@@ -51,8 +51,7 @@ const listed = [...personal.active, ...personal.past, ...orphans];
   ]}
 >
   <section class="page pt-20 md:pt-28 pb-12 md:pb-16">
-    <p class="eyebrow"><b>Projects</b> &nbsp;·&nbsp; {personal.active.length} active</p>
-    <h1 class="display text-display-xl mt-6 max-w-[14ch]">Built for myself, <em>in the open.</em></h1>
+    <h1 class="display text-display-xl max-w-[18ch]">Built for myself, in the open.</h1>
     <p class="lede mt-8 max-w-prose">
       Radio, aircraft, transit, civic records, and a lot of MCP servers. Most of these exist
       because I wanted the thing and it didn't exist yet. Source is linked wherever the repo is public.
@@ -61,30 +60,22 @@ const listed = [...personal.active, ...personal.past, ...orphans];
 
   <!-- ============================================================ Active -->
   <section class="section pt-0 md:pt-0">
-    <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow"><b>01</b> — Active</p>
-      <p class="eyebrow hidden sm:block">Newest first</p>
-    </div>
-    <div class="mt-10 grid md:grid-cols-2 gap-px bg-line border border-line stagger">
+    <p class="eyebrow rule pt-6">Active <b>{personal.active.length}</b></p>
+    <div class="mt-8 grid md:grid-cols-2 gap-px bg-line border border-line">
       {personal.active.map(project => (
-        <article class="reveal bg-ink p-7 md:p-8 flex flex-col">
-          <div class="flex items-center justify-between gap-3">
-            <span class="chip chip-live">{project.status}</span>
-            <span class="text-xs font-mono text-muted">{project.period}</span>
+        <article class="bg-ink p-7 md:p-8 flex flex-col">
+          <div class="flex items-baseline justify-between gap-4">
+            <h2 class="display text-display-sm">{project.name}</h2>
+            <span class="text-xs font-mono text-muted whitespace-nowrap">{project.start.slice(0, 4)}</span>
           </div>
-          <h2 class="display text-display-sm mt-6">{project.name}</h2>
           <p class="text-sm text-bone-dim leading-relaxed mt-4">{project.description}</p>
           {(project.url || project.repo) && (
             <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-auto pt-6">
               {project.url && (
-                <a href={withCampaign(project.url, placement('project', project.name))} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">
-                  Visit site <span class="arrow">↗</span>
-                </a>
+                <a href={withCampaign(project.url, placement('project', project.name))} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">Site ↗</a>
               )}
               {project.repo && (
-                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">
-                  Source <span class="arrow">↗</span>
-                </a>
+                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">Source ↗</a>
               )}
             </div>
           )}
@@ -94,37 +85,26 @@ const listed = [...personal.active, ...personal.past, ...orphans];
   </section>
 
   <!-- ============================================================ Epilogue -->
-  <section class="section pt-0 md:pt-0 reveal">
-    <div class="panel p-8 md:p-12 grid md:grid-cols-12 gap-8 items-end">
-      <div class="md:col-span-8">
-        <p class="eyebrow"><b>Epilogue</b> &nbsp;·&nbsp; The studio</p>
-        <h2 class="display text-display-md mt-5 max-w-[22ch]">
-          The work we do at Epilogue lives on its own site.
-        </h2>
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Epilogue</p>
+    <div class="mt-8 flex flex-col md:flex-row md:items-baseline md:justify-between gap-6">
+      <div>
+        <h2 class="display text-display-md max-w-[22ch]">The work we do at Epilogue lives on its own site.</h2>
         {epilogueProducts.length > 0 && (
-          <p class="text-sm text-muted mt-4 max-w-prose leading-relaxed">
-            {epilogueProducts.join(', ')} — and the client work that pays for them.
-          </p>
+          <p class="text-sm text-muted mt-3 max-w-prose leading-relaxed">{epilogueProducts.join(', ')}.</p>
         )}
       </div>
-      <div class="md:col-span-4 flex flex-col md:items-end gap-3">
-        {epilogueUrl && (
-          <a href={epilogueUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-            See what we're building ↗
-          </a>
-        )}
-        <a href="/companies/epilogue" class="arrow-link text-xs">About the venture <span class="arrow">→</span></a>
-      </div>
+      {epilogueUrl && (
+        <a href={epilogueUrl} target="_blank" rel="noopener noreferrer" class="btn-primary whitespace-nowrap">See what we're building</a>
+      )}
     </div>
   </section>
 
   <!-- ============================================================ Past -->
   {personal.past.length > 0 && (
-    <section class="section pt-0 md:pt-0 reveal">
-      <div class="rule pt-6">
-        <p class="eyebrow"><b>02</b> — Past</p>
-      </div>
-      <ol class="mt-10 ruled">
+    <section class="section pt-0 md:pt-0">
+      <p class="eyebrow rule pt-6">Past <b>{personal.past.length}</b></p>
+      <ol class="mt-8 ruled">
         {personal.past.map(project => (
           <li class="py-6 grid md:grid-cols-12 gap-x-8 gap-y-2">
             <div class="md:col-span-3">
@@ -145,10 +125,8 @@ const listed = [...personal.active, ...personal.past, ...orphans];
 
   {orphans.length > 0 && (
     <section class="section pt-0 md:pt-0">
-      <div class="rule pt-6">
-        <p class="eyebrow"><b>??</b> — Unassigned</p>
-      </div>
-      <ol class="mt-10 ruled">
+      <p class="eyebrow rule pt-6">Unassigned</p>
+      <ol class="mt-8 ruled">
         {orphans.map(project => (
           <li class="py-6">
             <p class="display text-2xl">{project.name}</p>

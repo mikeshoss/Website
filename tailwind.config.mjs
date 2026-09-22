@@ -34,24 +34,21 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['"Instrument Serif"', 'Georgia', 'serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       fontSize: {
         // Display sizes are fluid: the hero headline should fill a phone's
         // width and a desktop's without a breakpoint jump between them.
-        'display-xl': ['clamp(2.75rem, 7.5vw, 6.5rem)', { lineHeight: '0.98', letterSpacing: '-0.015em' }],
-        'display-lg': ['clamp(2.25rem, 5vw, 4.25rem)', { lineHeight: '1.02', letterSpacing: '-0.01em' }],
+        'display-xl': ['clamp(2.5rem, 6vw, 5rem)', { lineHeight: '1.02', letterSpacing: '-0.01em' }],
+        'display-lg': ['clamp(2rem, 4vw, 3.5rem)', { lineHeight: '1.05', letterSpacing: '-0.01em' }],
         'display-md': ['clamp(1.75rem, 3.2vw, 2.75rem)', { lineHeight: '1.08' }],
         'display-sm': ['clamp(1.375rem, 2.2vw, 1.875rem)', { lineHeight: '1.15' }],
       },
       maxWidth: {
         page: '72rem',
         prose: '42rem',
-      },
-      transitionTimingFunction: {
-        out: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

@@ -20,170 +20,124 @@ const keyRoles = FEATURED_COMPANIES.flatMap(name => experience.filter(r => r.com
   return true;
 });
 
-// Three things being built right now, on my own time.
-const building = byAssociation(projects, 'Personal').filter(isActive).slice(0, 3);
-
-const pad = (n: number) => String(n).padStart(2, '0');
+// What is being built right now, on my own time. First sentence only: a
+// list, not a wall of truncated prose.
+const building = byAssociation(projects, 'Personal').filter(isActive).slice(0, 4);
+const firstSentence = (text: string) => text.split(/(?<=[.!?])\s/)[0];
 ---
 
 <Layout ogType="profile">
-  <!-- ============================================================ Hero -->
-  <section class="page pt-20 md:pt-32 pb-16 md:pb-24">
-    <p class="eyebrow reveal is-visible">
-      <b>{site.name}</b> &nbsp;·&nbsp; Product &amp; AI &nbsp;·&nbsp; {site.location}
-    </p>
-    <h1 class="display text-display-xl mt-8 max-w-[15ch]">
+  <!-- Hero: the statement, who is making it, and one way to respond. -->
+  <section class="page pt-20 md:pt-28 pb-16 md:pb-20">
+    <h1 class="display text-display-xl max-w-[18ch]">
       {beforeEm}<em>{hero.headlineEmphasis}</em>{afterEm}
     </h1>
-    <div class="mt-10 md:mt-14 grid md:grid-cols-12 gap-8 md:gap-10">
-      <p class="lede md:col-span-7 max-w-prose">{hero.subheadline}</p>
-      <div class="md:col-span-5 md:col-start-8 flex flex-col gap-4 md:items-end md:justify-end">
-        <div class="flex flex-wrap gap-3">
-          <a href="/contact" class="btn-primary">Get in touch</a>
-          <a href="/experience" class="btn-ghost">Full experience</a>
-        </div>
-        <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-muted hover:text-bone transition-colors">
-          linkedin.com/in/mikeshoss ↗
-        </a>
-      </div>
-    </div>
+    <p class="lede mt-8 md:mt-10 max-w-prose">{hero.subheadline}</p>
+    <p class="mt-6 font-mono text-xs text-muted">
+      {highlights.map((stat, i) => (
+        <>{i > 0 && <span class="mx-2">·</span>}<span class="text-bone">{stat.value}</span> {stat.label.toLowerCase()}</>
+      ))}
+    </p>
+    <a href="/contact" class="btn-primary mt-10">Get in touch</a>
   </section>
 
-  <!-- ============================================================ Now -->
+  <!-- Now: three things at once. The day job is one of them. -->
   <section class="section pt-0 md:pt-0">
-    <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow"><b>01</b> — Now</p>
-      <p class="eyebrow hidden sm:block">Three things at once</p>
-    </div>
-    <div class="mt-10 grid md:grid-cols-3 gap-px bg-line border border-line stagger">
-      {hero.now.map((item, i) => (
-        <a href={item.href} class="reveal group bg-ink p-7 md:p-8 flex flex-col min-h-[16rem] transition-colors duration-300 hover:bg-ink-50">
-          <p class="eyebrow">{pad(i + 1)} &nbsp;{item.label}</p>
-          <h2 class="display text-display-md mt-5 group-hover:text-accent transition-colors duration-300">{item.title}</h2>
+    <p class="eyebrow rule pt-6">Now</p>
+    <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line">
+      {hero.now.map(item => (
+        <a href={item.href} class="group bg-ink p-7 md:p-8 transition-colors duration-200 hover:bg-ink-50">
+          <p class="eyebrow">{item.label}</p>
+          <h2 class="display text-display-md mt-4 group-hover:text-accent transition-colors duration-200">{item.title}</h2>
           <p class="text-sm text-bone-dim mt-1">{item.role}</p>
-          <p class="text-sm text-muted leading-relaxed mt-5">{item.blurb}</p>
-          <span class="arrow-link mt-auto pt-6 text-xs">More <span class="arrow">→</span></span>
+          <p class="text-sm text-muted leading-relaxed mt-4">{item.blurb}</p>
         </a>
       ))}
     </div>
   </section>
 
-  <!-- ============================================================ Numbers -->
-  <section class="page pb-16 md:pb-24">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line">
-      {highlights.map(stat => (
-        <div class="bg-ink p-7 md:p-8">
-          <p class="display text-5xl md:text-6xl leading-none">{stat.value}</p>
-          <p class="mt-4 eyebrow">{stat.label}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- ============================================================ Point of view -->
-  <section class="section pt-0 md:pt-0 reveal">
-    <div class="rule pt-6">
-      <p class="eyebrow"><b>02</b> — Point of view</p>
-    </div>
-    <div class="mt-10 grid md:grid-cols-12 gap-10 md:gap-8">
+  <!-- Point of view -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Point of view</p>
+    <div class="mt-8 grid md:grid-cols-12 gap-8">
       <h2 class="display text-display-lg md:col-span-5 max-w-[14ch]">Why this is a product problem.</h2>
       <div class="md:col-span-6 md:col-start-7 space-y-5 prose-body">
         {hero.thesis.map(paragraph => <p>{paragraph}</p>)}
         <p class="text-muted">{hero.credibility}</p>
       </div>
     </div>
-    <ul class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line">
-      {hero.philosophy.map((item, i) => (
-        <li class="bg-ink p-6">
-          <p class="eyebrow">{pad(i + 1)}</p>
-          <p class="display text-2xl mt-3 leading-snug">{item}</p>
-        </li>
-      ))}
-    </ul>
   </section>
 
-  <!-- ============================================================ Results -->
-  <section class="section pt-0 md:pt-0 reveal">
-    <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow"><b>03</b> — Selected results</p>
-      <p class="eyebrow hidden sm:block">Outcomes with a number attached</p>
-    </div>
-    <ol class="mt-10 ruled">
+  <!-- Results -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Selected results</p>
+    <ol class="mt-8 ruled">
       {selectedResults.map(result => (
-        <li class="grid grid-cols-[6.5rem_1fr] sm:grid-cols-[9rem_1fr] md:grid-cols-[10rem_2fr_3fr] gap-x-6 gap-y-1 py-6 items-baseline">
-          <p class="display text-4xl sm:text-5xl text-accent leading-none">{result.value}</p>
-          <p class="text-bone font-medium">{result.label}</p>
+        <li class="grid grid-cols-[6rem_1fr] md:grid-cols-[8rem_2fr_3fr] gap-x-6 gap-y-1 py-5 items-baseline">
+          <p class="display text-3xl md:text-4xl text-accent leading-none">{result.value}</p>
+          <p class="text-bone">{result.label}</p>
           <p class="text-sm text-muted leading-relaxed col-start-2 md:col-start-3">{result.detail}</p>
         </li>
       ))}
     </ol>
   </section>
 
-  <!-- ============================================================ Track record -->
-  <section class="section pt-0 md:pt-0 reveal">
+  <!-- Track record -->
+  <section class="section pt-0 md:pt-0">
     <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow"><b>04</b> — Track record</p>
-      <a href="/experience" class="arrow-link text-xs">Full history <span class="arrow">→</span></a>
+      <p class="eyebrow">Track record</p>
+      <a href="/experience" class="arrow-link text-xs">Full history →</a>
     </div>
-    <ol class="mt-10 ruled">
+    <ol class="mt-8 ruled">
       {keyRoles.map(role => (
-        <li class="py-6 grid md:grid-cols-12 gap-x-8 gap-y-2">
+        <li class="py-5 grid md:grid-cols-12 gap-x-8 gap-y-1">
           <div class="md:col-span-3">
             <p class="display text-2xl leading-tight">{role.company.replace(/ \(.*\)$/, '')}</p>
-            <p class="text-xs font-mono text-muted mt-1.5">{role.period}</p>
+            <p class="text-xs font-mono text-muted mt-1">{role.period}</p>
           </div>
           <div class="md:col-span-9">
-            <p class="text-bone font-medium">{role.title}</p>
-            {role.highlights[0] && <p class="text-sm text-muted leading-relaxed mt-1.5 max-w-prose">{role.highlights[0]}</p>}
+            <p class="text-bone">{role.title}</p>
+            {role.highlights[0] && <p class="text-sm text-muted leading-relaxed mt-1 max-w-prose">{role.highlights[0]}</p>}
           </div>
         </li>
       ))}
     </ol>
   </section>
 
-  <!-- ============================================================ Building -->
-  <section class="section pt-0 md:pt-0 reveal">
+  <!-- Building -->
+  <section class="section pt-0 md:pt-0">
     <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow"><b>05</b> — Building, on my own time</p>
-      <a href="/projects" class="arrow-link text-xs">All projects <span class="arrow">→</span></a>
+      <p class="eyebrow">Building, on my own time</p>
+      <a href="/projects" class="arrow-link text-xs">All projects →</a>
     </div>
-    <div class="mt-10 grid md:grid-cols-3 gap-px bg-line border border-line stagger">
+    <ol class="mt-8 ruled">
       {building.map(project => {
         const href = project.url ? withCampaign(project.url, placement('home', project.name)) : project.repo;
-        const Tag = href ? 'a' : 'div';
         return (
-          <Tag
-            href={href}
-            {...(href ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            class="reveal group bg-ink p-7 flex flex-col transition-colors duration-300 hover:bg-ink-50"
-          >
-            <div class="flex items-center justify-between gap-3">
-              <span class="chip chip-live">{project.status}</span>
-              <span class="text-xs font-mono text-muted">{project.period}</span>
-            </div>
-            <h3 class="display text-display-sm mt-6 group-hover:text-accent transition-colors duration-300">{project.name}</h3>
-            <p class="text-sm text-muted leading-relaxed mt-3 line-clamp-4">{project.description}</p>
-            {href && <span class="arrow-link mt-auto pt-6 text-xs">{project.url ? 'Visit' : 'Source'} <span class="arrow">↗</span></span>}
-          </Tag>
+          <li class="py-4 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,3fr)_minmax(0,7fr)_auto] gap-x-8 gap-y-1 items-baseline">
+            <p class="display text-2xl leading-tight">
+              {href ? <a href={href} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{project.name}</a> : project.name}
+            </p>
+            <p class="text-sm text-muted hidden md:block truncate">{firstSentence(project.description)}</p>
+            <p class="text-xs font-mono text-muted">{project.start.slice(0, 4)}</p>
+          </li>
         );
       })}
-    </div>
+    </ol>
     <p class="mt-6 text-sm text-muted">
-      The studio's products — Parleh, Fractal, Of Record, Cria — live at
+      Epilogue's products live at
       <a href={withCampaign('https://epiloguelabs.com', 'home-building')} target="_blank" rel="noopener noreferrer" class="link">epiloguelabs.com</a>.
     </p>
   </section>
 
-  <!-- ============================================================ Contact -->
-  <section class="page pb-8 md:pb-16 reveal">
-    <div class="panel p-8 md:p-14 grid md:grid-cols-12 gap-8 items-end">
-      <div class="md:col-span-8">
-        <p class="eyebrow"><b>06</b> — Contact</p>
-        <h2 class="display text-display-lg mt-5">Working on something where being wrong is expensive? <em>Let's talk.</em></h2>
-      </div>
-      <div class="md:col-span-4 flex flex-col md:items-end gap-3">
+  <!-- Contact -->
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Contact</p>
+    <div class="mt-8 flex flex-col md:flex-row md:items-baseline md:justify-between gap-6">
+      <h2 class="display text-display-md max-w-[24ch]">Working on something where being wrong is expensive?</h2>
+      <div class="flex flex-wrap items-center gap-6">
         <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="btn-primary">Message me on LinkedIn</a>
-        <a href={`mailto:${site.email}`} class="text-sm font-mono text-muted hover:text-bone transition-colors">{site.email}</a>
+        <a href={`mailto:${site.email}`} class="link text-sm">{site.email}</a>
       </div>
     </div>
   </section>

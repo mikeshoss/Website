@@ -159,7 +159,7 @@ export const hero = {
   subheadline:
     `Product executive and founder, ${yearsExperience}+ years in. I've built and led product at Firework, VerticalScope and Caseware, hold ${patentCount} patents in AI, and run Epilogue, an AI consulting and product studio. Right now I'm Staff Product Manager at Clio.`,
   credibility:
-    `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents (${grantedPatentCount} granted). 3 companies founded.`,
+    `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents, ${grantedPatentCount} granted.`,
   /**
    * The three things happening at once, in the order they should be read. The
    * day job is one of them, deliberately not the first thing on the page.
