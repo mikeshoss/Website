@@ -1,11 +1,14 @@
 ---
 /**
  * The producer tag. A record producer's tag is the few seconds you hear before
- * the first beat — it says who made this before anything else does. This is
- * that, for the site: the mark, the credit line, and an optional sound.
+ * the first beat — it says who made this before anything else does.
  *
- * The sound never plays on its own. It is synthesised with Web Audio (no
- * file), and only runs when someone presses the button.
+ * On load the ℗ draws itself, then "Produced by Mike Shoss" types out with an
+ * orange cursor that keeps blinking after it. Pressing the ℗ (or any
+ * [data-tag-play] element, like the Key) replays the whole thing with sound.
+ * The sound is synthesised with Web Audio and never plays on its own.
+ *
+ * Without JS, or with reduced motion, the full line is simply there.
  */
 import Mark from './Mark.astro';
 
@@ -15,37 +18,73 @@ interface Props {
   dark?: boolean;
 }
 const { size = 'inline', dark = false } = Astro.props;
+const line = 'Produced by Mike Shoss';
 ---
 
-<div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-4' : 'gap-2.5']}>
-  <button
-    type="button"
-    data-tag-play
-    class="group shrink-0 rounded-full transition-transform duration-300 hover:rotate-[30deg] focus-visible:rotate-[30deg]"
-    aria-label="Play the producer tag"
-    title="Play the tag"
-  >
-    <Mark class={size === 'hero' ? 'w-11 h-11' : 'w-5 h-5'} dark={dark} />
+<div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-4' : 'gap-2.5']} data-tag>
+  <button type="button" data-tag-play class="shrink-0 rounded-full" aria-label="Play the producer tag" title="Play the tag">
+    <Mark class={size === 'hero' ? 'h-11' : 'h-5'} dark={dark} cursor={false} />
   </button>
-  <p class:list={[
-    'font-mono uppercase tracking-[0.18em]',
-    size === 'hero' ? 'text-xs' : 'text-[0.625rem]',
-    dark ? 'text-carbon-muted' : 'text-muted',
-  ]}>
-    Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span>
+  <p
+    class:list={[
+      'font-mono uppercase tracking-[0.18em] flex items-center',
+      size === 'hero' ? 'text-xs' : 'text-[0.625rem]',
+      dark ? 'text-carbon-muted' : 'text-muted',
+    ]}
+    aria-label={line}
+  >
+    <span data-type={line} aria-hidden="true">Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span></span>
+    <span class:list={['tag-cursor inline-block bg-accent ml-1', size === 'hero' ? 'w-[0.45em] h-[1.3em]' : 'w-[0.4em] h-[1.2em]']} aria-hidden="true"></span>
   </p>
 </div>
 
 <script>
-  // One AudioContext for the page, created on the first press (browsers only
-  // allow audio after a user gesture anyway).
-  let ctx: AudioContext | undefined;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function playTag() {
+  // ---------------------------------------------------------------- Typing
+  // "Produced by " in the muted colour, then the name in full ink.
+  const timers = new WeakMap<HTMLElement, number>();
+  function type(el: HTMLElement, delay: number) {
+    const full = el.dataset.type!;
+    const split = 'Produced by '.length;
+    const nameClass = el.querySelector('span')?.className ?? '';
+    window.clearInterval(timers.get(el));
+    let i = 0;
+    el.textContent = '';
+    window.setTimeout(() => {
+      const id = window.setInterval(() => {
+        i++;
+        const head = full.slice(0, Math.min(i, split));
+        const tail = i > split ? full.slice(split, i) : '';
+        el.innerHTML = '';
+        el.append(head);
+        if (tail) {
+          const s = document.createElement('span');
+          s.className = nameClass;
+          s.textContent = tail;
+          el.append(s);
+        }
+        if (i >= full.length) window.clearInterval(id);
+      }, 45);
+      timers.set(el, id);
+    }, delay);
+  }
+
+  // Restart the CSS draw animation on every mark inside `root`.
+  function redraw(root: ParentNode) {
+    root.querySelectorAll<SVGElement>('.tag-mark').forEach(svg => {
+      svg.classList.remove('tag-live');
+      void svg.getBoundingClientRect();
+      svg.classList.add('tag-live');
+    });
+  }
+
+  // ---------------------------------------------------------------- Sound
+  let ctx: AudioContext | undefined;
+  function playSound() {
     ctx ??= new AudioContext();
     const now = ctx.currentTime;
 
-    // Tape-start click.
     const noise = ctx.createBuffer(1, ctx.sampleRate * 0.03, ctx.sampleRate);
     const data = noise.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
@@ -56,7 +95,6 @@ const { size = 'inline', dark = false } = Astro.props;
     click.connect(clickGain).connect(ctx.destination);
     click.start(now);
 
-    // Three notes, rising: the tag itself.
     [392, 523.25, 783.99].forEach((freq, i) => {
       const osc = ctx!.createOscillator();
       const gain = ctx!.createGain();
@@ -72,7 +110,23 @@ const { size = 'inline', dark = false } = Astro.props;
     });
   }
 
-  document.querySelectorAll<HTMLButtonElement>('[data-tag-play]').forEach(btn => {
-    btn.addEventListener('click', playTag);
+  // ---------------------------------------------------------------- Wiring
+  document.querySelectorAll<SVGElement>('.tag-mark').forEach(svg => svg.classList.add('tag-live'));
+
+  if (!reduce) {
+    document.querySelectorAll<HTMLElement>('[data-tag] [data-type]').forEach(el => type(el, 700));
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-tag-play]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      playSound();
+      if (reduce) return;
+      // Replay every tag on the page, so pressing the Key animates the hero too.
+      redraw(document);
+      document.querySelectorAll<HTMLElement>('[data-tag] [data-type]').forEach(el => type(el, 450));
+      btn.classList.remove('tag-pressed');
+      void btn.offsetWidth;
+      btn.classList.add('tag-pressed');
+    });
   });
 </script>

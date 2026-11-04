@@ -186,6 +186,69 @@
     .led { animation: none; }
   }
 
+  /* ------------------------------------------------------------ Producer tag */
+
+  /* The ℗ draws itself: ring first, then the P. `.tag-live` is added by
+     ProducerTag's script, so without JS the mark is simply drawn. */
+  .tag-mark.tag-live .tag-ring,
+  .tag-mark.tag-live .tag-p {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .tag-mark.tag-live .tag-ring {
+    animation: tag-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+
+  .tag-mark.tag-live .tag-p {
+    animation: tag-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.45s forwards;
+  }
+
+  @keyframes tag-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* The cursor: a hard on/off blink, like a terminal. */
+  .tag-cursor {
+    animation: tag-blink 1.06s steps(1, end) infinite;
+  }
+
+  @keyframes tag-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* The key: physical travel when pressed. */
+  .tag-key {
+    transition: transform 0.08s ease-out, filter 0.2s;
+    filter: drop-shadow(0 3px 0 rgb(27 26 24 / 0.22));
+  }
+
+  .tag-key:hover {
+    filter: drop-shadow(0 4px 0 rgb(27 26 24 / 0.22)) brightness(1.05);
+  }
+
+  .tag-key:active,
+  .tag-key.tag-pressed {
+    animation: key-press 0.22s ease-out;
+  }
+
+  @keyframes key-press {
+    40% { transform: translateY(3px); filter: drop-shadow(0 0 0 rgb(27 26 24 / 0.22)); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tag-mark.tag-live .tag-ring,
+    .tag-mark.tag-live .tag-p {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    .tag-cursor,
+    .tag-key.tag-pressed {
+      animation: none;
+    }
+  }
+
   /* Speaker grille: a field of dots, as on the SK4 and the T3. Decorative. */
   .grille {
     background-image: radial-gradient(circle, theme('colors.line.strong') 1.4px, transparent 1.6px);

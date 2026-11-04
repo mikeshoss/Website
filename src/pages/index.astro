@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProducerTag from '../components/ProducerTag.astro';
-import Mark from '../components/Mark.astro';
+import Key from '../components/Key.astro';
 import { site, hero, highlights, credits, calls, machineRoom, about, volunteering, interests } from '../data/content';
 import { formatDate } from '../lib/dates';
 
@@ -194,7 +194,10 @@ const givingBack = [
   <section class="section pt-0 md:pt-0">
     <div class="rounded-[1.75rem] border border-line p-8 md:p-12 grid md:grid-cols-12 gap-8 items-end">
       <div class="md:col-span-8">
-        <Mark class="w-10 h-10" />
+        <div class="flex items-center gap-4">
+          <Key class="w-14 h-14" />
+          <span class="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">Press it</span>
+        </div>
         <h2 class="display text-display-lg mt-8 max-w-[18ch]">No decks. No theatre. Bring the problem.</h2>
         <p class="mt-5 text-muted max-w-prose">If it's real and it's expensive to get wrong, I want to hear about it.</p>
       </div>
