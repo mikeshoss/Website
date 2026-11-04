@@ -16,6 +16,9 @@ import {
   grantedPatentCount,
   education,
   certifications,
+  credits,
+  causes,
+  cardSets,
 } from "../data/content";
 
 // Fully generated from src/data/content.ts — every section derives from the
@@ -41,6 +44,10 @@ ${list(hero.whatIDo)}
 
 ## Selected results
 ${list(selectedResults.map((r) => `${r.value} — ${r.label}. ${r.detail}`))}
+
+## Credits
+The work he is known for, as liner notes: the work, who it was for, his credit on it, and the result. Full list: ${site.url}/credits/
+${list(credits.map((c) => `${c.work} (${c.label}, ${c.year}) — ${c.credit}. ${c.result}`))}
 
 ## Current Roles
 ${list([
@@ -130,6 +137,9 @@ ${list(
   }),
 )}
 
+## Where he gives
+${list(causes.map((c) => `${c.name}: ${c.description ?? ""}${c.donate ? ` Donate: ${c.donate}` : ""}`))}
+
 ## Outside of work
 ${list(
   interests.map((interest) =>
@@ -138,6 +148,10 @@ ${list(
       : interest.name,
   ),
 )}
+
+## Card collection
+Vintage Pokémon TCG, Wizards of the Coast era. Completion only: ${site.url}/collection/
+${list(cardSets.map((s) => `${s.name} (${s.year}): ${s.owned === undefined ? "being counted" : `${s.owned} of ${s.total}`}`))}
 
 ## Glossary
 Definitions of the vocabulary around AI products, each with what the term means

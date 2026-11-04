@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
+import { existsSync } from 'node:fs';
 import { companies, education, experience, site, skills } from '../data/content';
 
 interface Props {
@@ -19,6 +20,14 @@ interface Props {
   breadcrumbs?: { name: string; href: string }[];
   /** Extra JSON-LD nodes merged into this page's @graph (e.g. an Organization). */
   schema?: Record<string, unknown>[];
+  /**
+   * Social card name: public/og/<card>.png, rendered by `npm run images` from
+   * the list in scripts/generate-images.mjs. A name with no file falls back to
+   * the default card rather than shipping a broken image.
+   */
+  card?: string;
+  /** Keep this page out of search indexes (the 404). */
+  noindex?: boolean;
 }
 
 const {
@@ -28,6 +37,8 @@ const {
   ogType = 'website',
   breadcrumbs = [],
   schema = [],
+  card = 'home',
+  noindex = false,
 } = Astro.props;
 
 /**
@@ -49,8 +60,12 @@ const absolute = (path: string) =>
 
 const canonicalUrl = canonical ?? absolute(Astro.url.pathname);
 
-const ogImage = `${site.url}/og-image.png`;
-const ogImageAlt = `${site.name} — ${site.title}`;
+// Checked at build time (this is a static site), so the fallback is decided
+// once per page, not per request.
+const cardFile = existsSync(`public/og/${card}.png`) ? card : 'home';
+const ogImage = `${site.url}/og/${cardFile}.png`;
+const ogImageAlt = `${title} — social card in the site's design, produced by ${site.name}`;
+const defaultImage = `${site.url}/og/home.png`;
 
 const [city, region] = site.location.split(',').map((part) => part.trim());
 
@@ -90,7 +105,7 @@ const person = {
   // A deliberate label, rather than the current role's formal title.
   jobTitle: 'Founder & Product Executive',
   description: site.description,
-  image: ogImage,
+  image: defaultImage,
   email: `mailto:${site.email}`,
   address: {
     '@type': 'PostalAddress',
@@ -190,7 +205,7 @@ const jsonLd = {
     -->
     <meta
       name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
     />
 
     <!--
@@ -227,7 +242,9 @@ const jsonLd = {
 
     <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Fonts loaded via @fontsource (self-hosted, no external requests) -->
 

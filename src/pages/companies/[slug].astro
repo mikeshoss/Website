@@ -49,8 +49,9 @@ const organization = {
 ---
 
 <Layout
+  card={`companies-${company.slug}`}
   title={`${company.name} — Mike Shoss`}
-  description={company.tagline}
+  description={`${company.tagline} Mike Shoss, ${company.role.split(' — ')[0]}, since ${company.start.slice(0, 4)}.`}
   breadcrumbs={[
     { name: 'Ventures', href: '/companies' },
     { name: company.name, href: `/companies/${company.slug}` },

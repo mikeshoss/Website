@@ -28,14 +28,107 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
+/**
+ * One social card per page that gets shared, from the one template in
+ * scripts/og-image.html. The wording mirrors each page's own headline in
+ * src/pages/ and its tagline in src/data/content.ts — when one of those
+ * changes, change it here and re-run. A page without a card here falls back
+ * to the default (see `card` in src/layouts/Layout.astro), so a new venture
+ * never ships a broken image, only a generic one.
+ *
+ * Keep years-of-experience and other derived numbers out of the cards: they
+ * are rendered once and would go stale.
+ */
+const card = (output, params) => ({
+  source: 'scripts/og-image.html',
+  query: new URLSearchParams(params).toString(),
+  output,
+  width: 1200,
+  height: 630,
+});
+
+const HOME = {
+  eyebrow: 'MS–01 · Milton, Ontario',
+  title: 'I ship AI products in industries where being wrong is *expensive*.',
+};
+
+const icon = (output, size) => ({ source: 'scripts/apple-touch-icon.html', query: '', output, width: size, height: size });
+
 const TARGETS = [
-  { source: 'scripts/og-image.html', output: 'public/og-image.png', width: 1200, height: 630 },
-  {
-    source: 'scripts/apple-touch-icon.html',
-    output: 'public/apple-touch-icon.png',
-    width: 180,
-    height: 180,
-  },
+  // The default card, also kept at its old URL so links already shared still resolve.
+  card('public/og-image.png', HOME),
+  card('public/og/home.png', HOME),
+  card('public/og/credits.png', {
+    eyebrow: 'Credits · Selected works',
+    title: "If my name's on it, it *shipped*.",
+    sub: 'The work, who it was for, what I did on it, and what it did.',
+    path: '/credits',
+  }),
+  card('public/og/companies.png', {
+    eyebrow: 'The companies',
+    title: '*Ventures*.',
+    sub: 'Epilogue, ShossX, Milton Innovation and the angel investing.',
+    path: '/companies',
+  }),
+  card('public/og/companies-epilogue.png', {
+    eyebrow: 'Ventures · Founder & Principal',
+    title: '*Epilogue*',
+    sub: 'Turning complex business problems into practical AI systems.',
+    path: '/companies/epilogue',
+  }),
+  card('public/og/companies-investing.png', {
+    eyebrow: 'Ventures · Angel investor',
+    title: 'Angel *investing*',
+    sub: 'Backing early-stage Canadian AI, science and technology companies.',
+    path: '/companies/investing',
+  }),
+  card('public/og/companies-shossx.png', {
+    eyebrow: 'Ventures · Founder',
+    title: '*ShossX*',
+    sub: 'The holding company behind Epilogue, Milton Innovation and the angel investing.',
+    path: '/companies/shossx',
+  }),
+  card('public/og/companies-milton-innovation.png', {
+    eyebrow: 'Ventures · Founder',
+    title: 'Milton *Innovation*',
+    sub: 'A community hub for technologists, innovators and creators in Milton.',
+    path: '/companies/milton-innovation',
+  }),
+  card('public/og/projects.png', {
+    eyebrow: 'Projects',
+    title: 'Built for myself, in the *open*.',
+    sub: 'Radio, aircraft, transit, civic records, castles, and a lot of MCP servers.',
+    path: '/projects',
+  }),
+  card('public/og/experience.png', {
+    eyebrow: 'Experience',
+    title: 'Developer first, then *product*.',
+    sub: 'Career, patents, boards and mentoring.',
+    path: '/experience',
+  }),
+  card('public/og/collection.png', {
+    eyebrow: 'Off the clock · Pokémon TCG',
+    title: 'The *collection*.',
+    sub: 'Vintage Pokémon, done properly. Finish the thing.',
+    path: '/collection',
+  }),
+  card('public/og/glossary.png', {
+    eyebrow: 'Reference',
+    title: '*Glossary*.',
+    sub: 'AI vocabulary, read twice: what it means, and what it really means.',
+    path: '/glossary',
+  }),
+  card('public/og/contact.png', {
+    eyebrow: 'Contact',
+    title: "Let's *build*.",
+    sub: "Bring the problem, not the deck.",
+    path: '/contact',
+  }),
+
+  icon('public/apple-touch-icon.png', 180),
+  icon('public/favicon-32.png', 32),
+  icon('public/icon-192.png', 192),
+  icon('public/icon-512.png', 512),
 ];
 
 /** Playwright's Chromium, wherever this machine keeps it. */
@@ -133,7 +226,7 @@ try {
   const { targetId } = await client.send('Target.createTarget', { url: 'about:blank' });
   const { sessionId } = await client.send('Target.attachToTarget', { targetId, flatten: true });
 
-  for (const { source, output, width, height } of TARGETS) {
+  for (const { source, query, output, width, height } of TARGETS) {
     await client.send('Emulation.setDeviceMetricsOverride', {
       width,
       height,
@@ -142,12 +235,17 @@ try {
     }, sessionId);
 
     await client.send('Page.enable', {}, sessionId);
-    await client.send('Page.navigate', { url: pathToFileURL(resolve(root, source)).href }, sessionId);
+    await client.send('Page.navigate', { url: pathToFileURL(resolve(root, source)).href + (query ? `?${query}` : '') }, sessionId);
 
     // Fonts are the only async work on these pages; waiting on them avoids
     // capturing a frame still painted in the fallback face.
+    // Successive cards navigate the same file with a different query string,
+    // so give the navigation a moment to commit before asking the document
+    // about itself — otherwise the check can answer for the previous card.
+    await new Promise((r) => setTimeout(r, 350));
     await client.send('Runtime.evaluate', {
-      expression: 'document.fonts.ready.then(() => true)',
+      expression:
+        "new Promise((r) => { const go = () => document.fonts.ready.then(() => r(true)); document.readyState === 'complete' ? go() : addEventListener('load', go); })",
       awaitPromise: true,
     }, sessionId);
 

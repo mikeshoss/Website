@@ -139,7 +139,7 @@ export const site = {
    * twitter:description and the JSON-LD Person description. Keep it under 160.
    */
   description:
-    `Mike Shoss builds AI products for work where being wrong is expensive. Product executive, founder of Epilogue, ${patentCount} patents in AI. Currently at Clio.`,
+    `Mike Shoss ships AI products in industries where being wrong is expensive. Founder of Epilogue. ${patentCount} patents in AI. If his name's on it, it shipped.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",

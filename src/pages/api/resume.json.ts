@@ -2,7 +2,9 @@ import type { APIRoute } from "astro";
 import {
   awards,
   causes,
+  cardSets,
   certifications,
+  credits,
   companies,
   education,
   experience,
@@ -17,6 +19,7 @@ import {
   recommendations,
   site,
   skills,
+  slabs,
   volunteering,
 } from "../../data/content";
 import { glossary } from "../../data/glossary";
@@ -33,6 +36,7 @@ export const GET: APIRoute = () =>
     data: {
       basics: { ...site, ...hero },
       highlights,
+      credits,
       skills,
       companies,
       experience,
@@ -48,6 +52,7 @@ export const GET: APIRoute = () =>
       languages,
       interests,
       causes,
+      collection: { sets: cardSets, slabs },
       glossary,
     },
   });

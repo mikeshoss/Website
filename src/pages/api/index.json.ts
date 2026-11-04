@@ -12,6 +12,7 @@ export const prerender = true;
  * (see public/_redirects), so advertising its posts here would be misleading.
  */
 const SECTIONS = [
+  "credits",
   "companies",
   "experience",
   "education",
@@ -29,6 +30,7 @@ const SECTIONS = [
   "languages",
   "interests",
   "causes",
+  "collection",
 ];
 
 export const GET: APIRoute = () => {

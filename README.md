@@ -287,11 +287,20 @@ npm run build     # build the static site to dist/
 npm run preview   # preview the production build locally
 ```
 
-### Social card and icons
+### Social cards and icons
 
-`public/og-image.png` and `public/apple-touch-icon.png` are generated, not
-hand-drawn. Their sources are the HTML files in `scripts/`; edit those and
-re-render:
+Every page that gets shared has its own card in the site's design, in
+`public/og/<name>.png` (`public/og-image.png` is the default, kept at its old URL
+for links already shared). A page picks its card with the `card` prop on
+`Layout`; a name with no file falls back to the default, so a new page never
+ships a broken image.
+
+The cards come from one template, `scripts/og-image.html`, filled from a query
+string; the list of cards and their wording is `TARGETS` in
+`scripts/generate-images.mjs`. The icons (`apple-touch-icon.png`,
+`favicon-32.png`, `icon-192.png`, `icon-512.png`) come from
+`scripts/apple-touch-icon.html`. When a page headline or a venture tagline
+changes, change its card there and re-render:
 
 ```bash
 npm run images
