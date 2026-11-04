@@ -36,6 +36,9 @@
   "env": {
     "staging": {
       "name": "personalwebsite-staging",
+      // STAGING marks every response noindex. STAGING_GATE "off" turns the
+      // password prompt off (owner, 2026-11-04); set it to "on" to bring it back.
+      "vars": { "STAGING": "true", "STAGING_GATE": "off" },
       "routes": [{ "pattern": "staging.mikeshoss.com", "custom_domain": true }],
       "assets": {
         "directory": "dist",

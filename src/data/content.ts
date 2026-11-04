@@ -351,6 +351,14 @@ export const credits: Credit[] = [
     href: "/companies/epilogue",
   },
   {
+    work: "Mugdock Castle, as it stood in 1640",
+    label: "Independent",
+    year: "2026",
+    credit: "Built",
+    result: "A scheduled monument rebuilt in 3D, where every wall carries its source and how sure we are of it.",
+    href: "/projects",
+  },
+  {
     work: "Readback",
     label: "Independent",
     year: "2026",
@@ -638,6 +646,16 @@ export interface Project {
 //         but the author
 const projectsData: Project[] = [
   /* ---------------------------------------------------------------- Personal */
+  {
+    name: "Mugdock Castle 3D Reconstruction",
+    description:
+      "An evidence-based digital reconstruction of Mugdock Castle, a Scottish scheduled monument, as it stood in 1640. Government LiDAR, a 1963 national survey plan, archive photographs, historic maps and excavation reports, lined up to within about a metre and placed on real-world coordinates. Every wall and tower carries its source and a confidence level — surviving, documented, inferred or speculative — so anyone can check any part of it. One data file drives everything: an interactive web viewer, phone AR and print-ready 3D models, built to WCAG 2.2 AA with a tactile print planned for blind and low-vision visitors. Licensed archive material stays private until permission is granted; outreach is under way with Historic Environment Scotland, the country park and the Clan Graham Society.",
+    start: "2026",
+    status: "Active",
+    association: "Personal",
+    // url: not public yet — the viewer is self-hosted and goes public on Mike's go.
+    // repo: "https://github.com/mikeshoss/",
+  },
   {
     name: "Hangar",
     description:

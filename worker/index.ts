@@ -23,6 +23,13 @@ interface Env {
   ASSETS: Assets;
   /** Secret on the staging Worker only. When set, every request needs it. */
   STAGING_PASSWORD?: string;
+  /**
+   * "off" switches the password gate off without removing the secret, so it
+   * can be switched back on by changing one line in wrangler.jsonc.
+   */
+  STAGING_GATE?: string;
+  /** "true" on the staging Worker: every response is marked noindex. */
+  STAGING?: string;
 }
 
 const MCP_PATH = "/mcp";
@@ -63,29 +70,42 @@ function unauthorized(): Response {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    if (env.STAGING_PASSWORD && !isAuthorized(request, env.STAGING_PASSWORD)) {
+    const gated = env.STAGING_PASSWORD && env.STAGING_GATE !== "off";
+    if (gated && !isAuthorized(request, env.STAGING_PASSWORD!)) {
       return unauthorized();
     }
 
-    const { pathname } = new URL(request.url);
+    const response = await route(request, env);
+    if (env.STAGING !== "true") return response;
 
-    if (pathname === MCP_PATH) {
-      switch (request.method) {
-        case "POST":
-          return handlePost(request, env.ASSETS);
-        case "OPTIONS":
-          return handleOptions();
-        case "GET":
-        case "HEAD":
-          return handleGet(request);
-        default:
-          return new Response("Method not allowed", {
-            status: 405,
-            headers: { Allow: "GET, POST, OPTIONS" },
-          });
-      }
-    }
-
-    return env.ASSETS.fetch(request);
+    // Staging is a copy of the site on another hostname. Keep it out of every
+    // index, whether or not the password gate is on.
+    const marked = new Response(response.body, response);
+    marked.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return marked;
   },
 };
+
+/** /mcp is the one dynamic route; everything else is a static asset. */
+async function route(request: Request, env: Env): Promise<Response> {
+  const { pathname } = new URL(request.url);
+
+  if (pathname === MCP_PATH) {
+    switch (request.method) {
+      case "POST":
+        return handlePost(request, env.ASSETS);
+      case "OPTIONS":
+        return handleOptions();
+      case "GET":
+      case "HEAD":
+        return handleGet(request);
+      default:
+        return new Response("Method not allowed", {
+          status: 405,
+          headers: { Allow: "GET, POST, OPTIONS" },
+        });
+    }
+  }
+
+  return env.ASSETS.fetch(request);
+}

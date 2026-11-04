@@ -336,6 +336,11 @@ Worker holds a `STAGING_PASSWORD` secret. When the secret is present the Worker 
 via HTTP Basic Auth (any username) before serving anything, including `/mcp`. Production
 has no such secret, so the gate is inert there.
 
+The gate can be switched off without removing the secret: `STAGING_GATE: "off"` in
+`env.staging.vars` (off since 2026-11-04; set it to `"on"` to bring the password back).
+`STAGING: "true"` marks every staging response `X-Robots-Tag: noindex, nofollow`, so
+staging stays out of search indexes either way.
+
 ```bash
 wrangler secret put STAGING_PASSWORD --env staging   # set or rotate the password
 npm run build && wrangler dev --env staging          # run staging locally
