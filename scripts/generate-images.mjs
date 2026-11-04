@@ -84,7 +84,7 @@ const TARGETS = [
   }),
   card('public/og/companies-shossx.png', {
     eyebrow: 'Ventures · Founder',
-    title: '*ShossX*',
+    title: 'Shoss*X*',
     sub: 'The holding company behind Epilogue, Milton Innovation and the angel investing.',
     path: '/companies/shossx',
   }),
