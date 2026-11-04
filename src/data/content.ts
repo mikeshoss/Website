@@ -1447,6 +1447,14 @@ export const interests: Interest[] = [
     ],
   },
   {
+    name: "Pokémon cards",
+    keywords: ["Wizards-era sets", "Set completion", "Graded slabs"],
+  },
+  {
+    name: "Magic: The Gathering",
+    keywords: ["Commander", "Deckbuilding"],
+  },
+  {
     name: "Homelab",
     keywords: [
       "Self-hosted infrastructure",
@@ -1461,8 +1469,73 @@ export interface Cause {
   name: string;
   description?: string;
   url?: string;
+  /** Straight to the donation page: the point is one tap to give. */
+  donate?: string;
 }
 
-export const causes: Cause[] = [];
+// Where Mike gives. Shown on the home page with a Donate button each, so
+// anyone who lands here is one tap from supporting them.
+export const causes: Cause[] = [
+  {
+    name: "SickKids",
+    description: "The Hospital for Sick Children in Toronto: care, research and training for children's health.",
+    url: "https://www.sickkidsfoundation.com/",
+    donate: "https://www.sickkidsfoundation.com/donate",
+  },
+  {
+    name: "Yamnuska Wolfdog Sanctuary",
+    description: "A sanctuary in Cochrane, Alberta, giving surrendered and unwanted wolfdogs a permanent home.",
+    url: "https://www.yamnuskawolfdogsanctuary.com/",
+    donate: "https://www.yamnuskawolfdogsanctuary.com/donate",
+  },
+  {
+    name: "OVC Pet Trust",
+    description: "Canada's first charitable fund for companion animal health, at the Ontario Veterinary College.",
+    url: "https://pettrust.ca/",
+    donate: "https://pettrust.ca/donate",
+  },
+];
+
+/* ------------------------------------------------------------------------- *
+ * The collection: Pokémon TCG sets and graded slabs, shown on /collection.
+ *
+ * Completion only — deliberately no values, prices or cert numbers. A list of
+ * what a collector owns, next to their home town, is a burglary listing.
+ * ------------------------------------------------------------------------- */
+
+export interface CardSet {
+  name: string;
+  /** Release year, or span for a promo series. */
+  year: string;
+  /** Cards in the set. */
+  total: number;
+  /** Cards owned. Leave out while it is being counted. */
+  owned?: number;
+  note?: string;
+}
+
+export const cardSets: CardSet[] = [
+  { name: "Base Set", year: "1999", total: 102, owned: 102 },
+  { name: "Jungle", year: "1999", total: 64, owned: 64 },
+  { name: "Fossil", year: "1999", total: 62, owned: 62 },
+  {
+    name: "Wizards Black Star Promos",
+    year: "1999–2003",
+    total: 53,
+    // owned: count pending
+    note: "Being counted",
+  },
+  { name: "Best of Game", year: "2002", total: 9, owned: 0, note: "Next up" },
+];
+
+export interface Slab {
+  card: string;
+  set: string;
+  grader: string;
+  grade: string;
+}
+
+/** Graded cards. Empty until the list comes in; the section hides until then. */
+export const slabs: Slab[] = [];
 
 export const organizations = withPeriod(organizationsData);

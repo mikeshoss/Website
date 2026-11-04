@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { cardSets, slabs } from '../data/content';
+
+/**
+ * The collection, as a catalogue: each set is a readout with a completion
+ * bar. Completion only — no values, no prices, no cert numbers (see the note
+ * on `cardSets` in content.ts).
+ */
+const complete = cardSets.filter(s => s.owned === s.total);
+const counted = cardSets.filter(s => s.owned !== undefined);
+const cards = counted.reduce((n, s) => n + (s.owned ?? 0), 0);
+---
+
+<Layout
+  title="The collection — Mike Shoss"
+  description="Mike Shoss's Pokémon card collection: Wizards of the Coast-era sets, completed and in progress."
+  breadcrumbs={[{ name: 'Collection', href: '/collection' }]}
+>
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
+      <span>Off the clock · Pokémon TCG</span>
+      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> Collecting</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[16ch]">The collection.</h1>
+    <p class="lede mt-8 max-w-prose">
+      Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the
+      binder is full. Same instinct as the day job. Finish the thing.
+    </p>
+
+    <dl class="mt-12 grid grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden max-w-2xl">
+      <div class="bg-ink p-5"><dt class="eyebrow">Sets complete</dt><dd class="readout mt-3">{complete.length}</dd></div>
+      <div class="bg-ink p-5"><dt class="eyebrow">In progress</dt><dd class="readout mt-3">{cardSets.length - complete.length}</dd></div>
+      <div class="bg-ink p-5"><dt class="eyebrow">Cards counted</dt><dd class="readout mt-3">{cards}</dd></div>
+    </dl>
+  </section>
+
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Sets</p>
+    <ol class="mt-6 ruled">
+      {cardSets.map(set => {
+        const done = set.owned === set.total;
+        const pct = set.owned === undefined ? undefined : Math.round((set.owned / set.total) * 100);
+        return (
+          <li class="py-6 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,4fr)_minmax(0,5fr)_minmax(0,2fr)] gap-x-8 gap-y-3 items-center">
+            <div>
+              <p class="display text-xl md:text-2xl leading-tight">{set.name}</p>
+              <p class="font-mono text-xs text-muted mt-1">{set.year}</p>
+            </div>
+            <!-- The bar: orange fill, or hatched while the set is being counted. -->
+            <div class="col-span-2 md:col-span-1 row-start-2 md:row-start-auto">
+              <div class="h-2 rounded-full bg-ink-100 overflow-hidden">
+                {pct === undefined
+                  ? <div class="h-full w-full grille opacity-70"></div>
+                  : <div class:list={['h-full rounded-full', done ? 'bg-bone' : 'bg-accent']} style={`width: ${pct}%`}></div>}
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-mono text-lg tabular-nums text-bone">
+                {set.owned ?? '—'}<span class="text-muted"> / {set.total}</span>
+              </p>
+              <p class="mt-1 flex items-center justify-end gap-1.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted">
+                <span class={done ? 'led' : 'led-off'} aria-hidden="true"></span>
+                {done ? 'Complete' : (set.note ?? 'In progress')}
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  </section>
+
+  {slabs.length > 0 && (
+    <section class="section pt-0 md:pt-0">
+      <p class="eyebrow rule pt-6">Graded</p>
+      <div class="mt-8 grid sm:grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        {slabs.map(slab => (
+          <div class="bg-ink p-6">
+            <p class="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">{slab.grader}</p>
+            <p class="readout mt-2 text-accent">{slab.grade}</p>
+            <p class="text-bone mt-4 leading-snug">{slab.card}</p>
+            <p class="text-xs text-muted mt-1">{slab.set}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">Also on the table</p>
+    <p class="mt-6 text-bone-dim max-w-prose">Magic: The Gathering, mostly Commander. Building the deck is the fun part.</p>
+  </section>
+</Layout>
