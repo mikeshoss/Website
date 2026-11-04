@@ -44,18 +44,21 @@ const givingBack = [
       <div class="hidden md:block md:col-span-3 aspect-square rounded-[1.75rem] grille border border-line" aria-hidden="true"></div>
     </div>
 
-    <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-6">
-      <a href="/contact" class="btn-primary">Let's build</a>
-      <a href="/credits" class="btn-quiet">The credits</a>
-      <ProducerTag size="hero" />
+    <!-- On a phone the tag gets its own row, so it never competes with the buttons for width. -->
+    <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-7 sm:gap-10">
+      <div class="flex items-center gap-3">
+        <a href="/contact" class="btn-primary">Let's build</a>
+        <a href="/credits" class="btn-quiet">The credits</a>
+      </div>
+      <ProducerTag size="hero" animate />
     </div>
 
     <!-- Readouts -->
     <dl class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {highlights.map(stat => (
-        <div class="bg-ink p-5 md:p-6">
-          <dt class="eyebrow">{stat.label}</dt>
-          <dd class="readout mt-3">{stat.value}</dd>
+        <div class="bg-ink p-5 md:p-6 flex flex-col-reverse justify-end">
+          <dt class="eyebrow mt-3 leading-relaxed">{stat.label}</dt>
+          <dd class="readout">{stat.value}</dd>
         </div>
       ))}
     </dl>
@@ -161,7 +164,7 @@ const givingBack = [
     <div class="mt-8 grid md:grid-cols-12 gap-8">
       <div class="md:col-span-5">
         <!-- Photo slot: replace with the portrait when it arrives. -->
-        <div class="aspect-[4/5] rounded-[1.75rem] bg-ink-50 border border-line grille flex items-end p-5">
+        <div class="aspect-[4/5] w-2/3 sm:w-1/2 md:w-full rounded-[1.75rem] bg-ink-50 border border-line grille flex items-end p-5">
           <span class="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted bg-ink px-2 py-1 rounded">Photo · coming</span>
         </div>
       </div>
@@ -232,7 +235,7 @@ const givingBack = [
           <Key class="w-14 h-14" />
           <span class="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">Press it</span>
         </div>
-        <h2 class="display text-display-lg mt-8 max-w-[18ch]">No decks. No theatre. Bring the problem.</h2>
+        <h2 class="display text-display-md sm:text-display-lg mt-8"><span class="block">No decks. No theatre.</span><span class="block">Bring the problem.</span></h2>
         <p class="mt-5 text-muted max-w-prose">If it's real and it's expensive to get wrong, I want to hear about it.</p>
       </div>
       <div class="md:col-span-4 flex flex-col items-start md:items-end gap-4">

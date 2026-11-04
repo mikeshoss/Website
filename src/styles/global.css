@@ -79,6 +79,20 @@
     @apply font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted;
   }
 
+  /* Tab rows that scroll sideways on a phone fade out at the right edge, so
+     it's obvious there is more. */
+  .scroll-fade {
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .scroll-fade {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+
   .eyebrow b {
     @apply font-medium text-accent-dim;
   }
@@ -115,7 +129,7 @@
 
   /* Status chip: mono, bordered, no fill. */
   .chip {
-    @apply inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-wider px-2 py-0.5 border border-line text-muted;
+    @apply inline-flex items-center gap-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] px-2 py-1 rounded-md border border-line-strong/60 text-muted whitespace-nowrap;
   }
 
   /* ------------------------------------------------------------ Links & buttons */
@@ -188,29 +202,60 @@
 
   /* ------------------------------------------------------------ Producer tag */
 
-  /* The ℗ draws itself: ring first, then the P. `.tag-live` is added by
-     ProducerTag's script, so without JS the mark is simply drawn. */
-  .tag-mark.tag-live .tag-ring,
-  .tag-mark.tag-live .tag-p {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
+  /* The ℗ draws itself: ring, then P. Lengths are the real path lengths
+     (ring 2πr = 81.7; P = 14 + 5 + π·4.2 + 5 ≈ 37.2), set slightly long so no
+     sliver is left. The start state applies only under `.js` (set in the
+     head before first paint), so without script the mark is simply drawn. */
+  .js .tag-draw .tag-ring {
+    stroke-dasharray: 83;
+    stroke-dashoffset: 83;
+    animation: tag-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
   }
 
-  .tag-mark.tag-live .tag-ring {
-    animation: tag-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-  }
-
-  .tag-mark.tag-live .tag-p {
-    animation: tag-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.45s forwards;
+  .js .tag-draw .tag-p {
+    stroke-dasharray: 38;
+    stroke-dashoffset: 38;
+    animation: tag-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.6s forwards;
   }
 
   @keyframes tag-draw {
     to { stroke-dashoffset: 0; }
   }
 
+  /* The typed line. JetBrains Mono is monospaced, so every character is
+     exactly 1ch + the 0.18em tracking wide, and the 22 characters of
+     "Produced by Mike Shoss" can be revealed one at a time with steps(22).
+     .tag-line reserves the finished width so nothing reflows while typing. */
+  .tag-line {
+    @apply inline-flex items-center whitespace-nowrap;
+  }
+
+  .tag-text {
+    @apply inline-block overflow-hidden whitespace-nowrap align-middle;
+    /* Room for the descenders that overflow:hidden would otherwise clip. */
+    padding-block: 0.15em;
+  }
+
+  .js .tag-type .tag-line {
+    min-width: calc(22 * (1ch + 0.18em) + 0.65em);
+  }
+
+  .js .tag-type .tag-text {
+    width: 0;
+    animation: tag-type 1s steps(22, end) 1.05s forwards;
+  }
+
+  @keyframes tag-type {
+    to { width: calc(22 * (1ch + 0.18em)); }
+  }
+
   /* The cursor: a hard on/off blink, like a terminal. */
   .tag-cursor {
     animation: tag-blink 1.06s steps(1, end) infinite;
+  }
+
+  .tag-cursor.tag-still {
+    animation: none;
   }
 
   @keyframes tag-blink {
@@ -220,12 +265,13 @@
 
   /* The key: physical travel when pressed. */
   .tag-key {
-    transition: transform 0.08s ease-out, filter 0.2s;
+    transition: filter 0.2s;
     filter: drop-shadow(0 3px 0 rgb(27 26 24 / 0.22));
+    -webkit-tap-highlight-color: transparent;
   }
 
   .tag-key:hover {
-    filter: drop-shadow(0 4px 0 rgb(27 26 24 / 0.22)) brightness(1.05);
+    filter: drop-shadow(0 3px 0 rgb(27 26 24 / 0.22)) brightness(1.05);
   }
 
   .tag-key:active,
@@ -238,10 +284,14 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .tag-mark.tag-live .tag-ring,
-    .tag-mark.tag-live .tag-p {
+    .js .tag-draw .tag-ring,
+    .js .tag-draw .tag-p {
       animation: none;
       stroke-dashoffset: 0;
+    }
+    .js .tag-type .tag-text {
+      animation: none;
+      width: auto;
     }
     .tag-cursor,
     .tag-key.tag-pressed {
@@ -298,7 +348,7 @@
   }
 
   .tab .count {
-    @apply ml-1.5 text-accent;
+    @apply ml-1.5 text-accent-dim;
   }
 }
 
@@ -319,15 +369,15 @@
   }
 
   .card {
-    @apply panel p-6 transition-colors duration-200;
+    @apply border border-line rounded-2xl p-6 transition-colors duration-200;
   }
 
   .card:hover {
-    @apply bg-ink-100;
+    @apply bg-ink-50;
   }
 
   .pill {
-    @apply chip normal-case tracking-normal text-xs text-bone-dim;
+    @apply inline-flex items-center px-3.5 py-1.5 rounded-full border border-line-strong/60 text-sm text-bone-dim;
   }
 
   .link-hover {

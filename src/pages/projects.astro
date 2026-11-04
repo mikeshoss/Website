@@ -61,7 +61,7 @@ const listed = [...personal.active, ...personal.past, ...orphans];
   <!-- ============================================================ Active -->
   <section class="section pt-0 md:pt-0">
     <p class="eyebrow rule pt-6">Active <b>{personal.active.length}</b></p>
-    <div class="mt-8 grid md:grid-cols-2 gap-px bg-line border border-line">
+    <div class="mt-8 grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {personal.active.map(project => (
         <article class="bg-ink p-7 md:p-8 flex flex-col">
           <div class="flex items-baseline justify-between gap-4">
@@ -95,7 +95,7 @@ const listed = [...personal.active, ...personal.past, ...orphans];
         )}
       </div>
       {epilogueUrl && (
-        <a href={epilogueUrl} target="_blank" rel="noopener noreferrer" class="btn-primary whitespace-nowrap">See what we're building</a>
+        <a href={epilogueUrl} target="_blank" rel="noopener noreferrer" class="btn-primary whitespace-nowrap self-start md:self-auto">See what we're building</a>
       )}
     </div>
   </section>

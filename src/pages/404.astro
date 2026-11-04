@@ -3,14 +3,16 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Page Not Found — Mike Shoss" description="The page you're looking for doesn't exist.">
-  <section class="section-container pt-28 text-center">
-    <h1 class="text-6xl font-bold text-bone mb-4">404</h1>
-    <p class="text-xl text-muted mb-8">The page you're looking for doesn't exist.</p>
-    <a
-      href="/"
-      class="btn-primary"
-    >
-      Back to home
-    </a>
+  <section class="page pt-14 md:pt-20 pb-24">
+    <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
+      <span>Error 404</span>
+      <span class="flex items-center gap-2"><span class="led-off" aria-hidden="true"></span> No signal</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Nothing on this channel.</h1>
+    <p class="lede mt-8 max-w-prose">The page you're looking for doesn't exist, or it moved.</p>
+    <div class="mt-10 flex items-center gap-3">
+      <a href="/" class="btn-primary">Back to home</a>
+      <a href="/credits" class="btn-quiet">The credits</a>
+    </div>
   </section>
 </Layout>

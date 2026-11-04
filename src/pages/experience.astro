@@ -60,7 +60,7 @@ const tabs = [
 
   <!-- Tab bar. Sticky under the site header so it stays reachable on the long panels. -->
   <div class="sticky top-16 z-40 bg-ink/85 backdrop-blur-md border-b border-line">
-    <div class="page overflow-x-auto">
+    <div class="page overflow-x-auto scroll-fade">
       <div role="tablist" aria-label="Experience sections" class="flex gap-7 md:gap-9" data-tabs>
         {tabs.map((tab, i) => (
           <button
@@ -138,7 +138,7 @@ const tabs = [
               <p class="md:col-span-3 text-xs font-mono text-muted">{patent.number}</p>
               <p class="md:col-span-2 md:text-right text-xs font-mono">
                 {patent.status === 'Granted'
-                  ? <span class="text-accent">Granted {patent.grantedLabel}</span>
+                  ? <span class="text-accent-dim">Granted {patent.grantedLabel}</span>
                   : <span class="text-muted">Filed {patent.filedLabel}</span>}
               </p>
             </Tag>
@@ -156,7 +156,7 @@ const tabs = [
           <div class="rule pt-5 mb-6">
             <p class="eyebrow">{group.label} <b>{group.roles.length}</b></p>
           </div>
-          <div class="grid md:grid-cols-2 gap-px bg-line border border-line">
+          <div class="grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
             {group.roles.map(role => <RoleCard role={role} />)}
           </div>
         </div>
@@ -188,7 +188,7 @@ const tabs = [
 
   <!-- ============================================================ Outside work -->
   <section id="panel-outside" role="tabpanel" aria-labelledby="tab-outside" tabindex="0" class="section" data-panel hidden>
-    <div class="grid md:grid-cols-3 gap-px bg-line border border-line">
+    <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {interests.map(interest => (
         <div class="bg-ink p-7">
           <h2 class="display text-display-sm">{interest.name}</h2>

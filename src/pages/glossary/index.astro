@@ -37,37 +37,38 @@ const groups = (Object.keys(GLOSSARY_CATEGORIES) as GlossaryCategory[])
     },
   ]}
 >
-  <section class="section-container pt-28">
-    <h1 class="section-title">Glossary</h1>
-    <p class="section-subtitle max-w-2xl">
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
+      <span>Reference</span>
+      <span>{groups.reduce((n, g) => n + g.terms.length, 0)} terms</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Glossary.</h1>
+    <p class="lede mt-8 max-w-prose">
       The vocabulary that surrounds AI products, for the person who just heard the word in
       a meeting and would rather not ask. Each term gets two readings: what it means, and
       what it turns out to mean once you have shipped one.
     </p>
-
-    <div class="space-y-14">
-      {groups.map(group => (
-        <div>
-          <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-6">
-            {group.label}
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {group.terms.map(term => (
-              <a href={`/glossary/${term.slug}`} class="card block group flex flex-col">
-                <h3 class="text-lg font-semibold group-hover:text-accent transition-colors">
-                  {term.term}
-                </h3>
-                {term.aliases && term.aliases.length > 0 && (
-                  <p class="text-xs text-muted font-mono mt-1">
-                    also: {term.aliases.join(' · ')}
-                  </p>
-                )}
-                <p class="text-sm text-muted leading-relaxed mt-3">{term.short}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
   </section>
+
+  {groups.map(group => (
+    <section class="section pt-0 md:pt-0">
+      <p class="eyebrow rule pt-6">{group.label} <b>{group.terms.length}</b></p>
+      <ol class="mt-6 ruled">
+        {group.terms.map(term => (
+          <li>
+            <a href={`/glossary/${term.slug}`} class="group py-6 grid md:grid-cols-12 gap-x-8 gap-y-2 items-baseline">
+              <div class="md:col-span-4">
+                <h2 class="display text-display-sm group-hover:text-accent transition-colors duration-200">{term.term}</h2>
+                {term.aliases && term.aliases.length > 0 && (
+                  <p class="text-xs text-muted font-mono mt-1.5">also: {term.aliases.join(' · ')}</p>
+                )}
+              </div>
+              <p class="md:col-span-7 text-sm text-bone-dim leading-relaxed">{term.short}</p>
+              <span class="hidden md:block md:col-span-1 text-right text-muted group-hover:text-accent transition-colors duration-200" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
 </Layout>

@@ -29,9 +29,9 @@ const cards = counted.reduce((n, s) => n + (s.owned ?? 0), 0);
     </p>
 
     <dl class="mt-12 grid grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden max-w-2xl">
-      <div class="bg-ink p-5"><dt class="eyebrow">Sets complete</dt><dd class="readout mt-3">{complete.length}</dd></div>
-      <div class="bg-ink p-5"><dt class="eyebrow">In progress</dt><dd class="readout mt-3">{cardSets.length - complete.length}</dd></div>
-      <div class="bg-ink p-5"><dt class="eyebrow">Cards counted</dt><dd class="readout mt-3">{cards}</dd></div>
+      <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">Sets complete</dt><dd class="readout">{complete.length}</dd></div>
+      <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">In progress</dt><dd class="readout">{cardSets.length - complete.length}</dd></div>
+      <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">Cards counted</dt><dd class="readout">{cards}</dd></div>
     </dl>
   </section>
 

@@ -168,6 +168,10 @@ const jsonLd = {
 <html lang="en-CA">
   <head>
     <meta charset="utf-8" />
+    <!-- Marks the page as script-capable before first paint, so anything that
+         animates in (the producer tag) starts in its "before" state instead of
+         flashing in finished and then being reset. -->
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#edeae3" />

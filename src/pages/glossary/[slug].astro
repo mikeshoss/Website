@@ -42,80 +42,63 @@ const related = (term.related ?? [])
     },
   ]}
 >
-  <section class="section-container pt-28">
-    <a href="/glossary" class="text-sm text-muted hover:text-accent transition-colors mb-8 inline-block">
-      ← Glossary
-    </a>
-
-    <p class="text-xs text-accent font-mono uppercase tracking-wider mb-3">
-      {GLOSSARY_CATEGORIES[term.category]}
-    </p>
-
-    <h1 class="display text-display-lg mb-4">{term.term}</h1>
-
-    <p class="text-xl text-bone-dim leading-relaxed max-w-3xl mb-5">{term.short}</p>
-
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
+      <a href="/glossary" class="hover:text-bone transition-colors">← Glossary</a>
+      <span>{GLOSSARY_CATEGORIES[term.category]}</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[16ch]">{term.term}</h1>
+    <p class="lede mt-8 max-w-prose">{term.short}</p>
     {term.aliases && term.aliases.length > 0 && (
-      <div class="flex flex-wrap items-center gap-2 mb-14">
-        <span class="text-xs text-muted uppercase tracking-wider mr-1">Also called</span>
-        {term.aliases.map(alias => <span class="pill text-xs">{alias}</span>)}
-      </div>
-    )}
-
-    <!-- What it means -->
-    <div class="max-w-3xl">
-      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-5">
-        What it means
-      </h2>
-      <div class="space-y-5">
-        {term.means.map(paragraph => (
-          <p class="text-muted leading-relaxed">{paragraph}</p>
-        ))}
-      </div>
-    </div>
-
-    <!--
-      The second reading is the point of the page, so it is the one element that
-      gets lifted off the ground rather than another card in a stack.
-    -->
-    <div class="max-w-3xl mt-14 border-l-2 border-accent pl-6 md:pl-8">
-      <h2 class="text-sm font-semibold text-accent uppercase tracking-wider mb-5">
-        What it really means
-      </h2>
-      <div class="space-y-5">
-        {term.reallyMeans.map(paragraph => (
-          <p class="text-bone-dim leading-relaxed">{paragraph}</p>
-        ))}
-      </div>
-    </div>
-
-    {term.tell && (
-      <div class="max-w-3xl mt-14">
-        <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-4">
-          How to tell
-        </h2>
-        <div class="card">
-          <p class="text-bone-dim leading-relaxed">{term.tell}</p>
-        </div>
-      </div>
-    )}
-
-    {related.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-line">
-        <h2 class="text-sm font-semibold text-muted uppercase tracking-wider mb-6">
-          Related
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {related.map(other => (
-            <a href={`/glossary/${other.slug}`} class="card block group">
-              <h3 class="font-semibold group-hover:text-accent transition-colors mb-2">
-                {other.term}
-              </h3>
-              <p class="text-sm text-muted leading-relaxed">{other.short}</p>
-            </a>
-          ))}
-        </div>
+      <div class="mt-6 flex flex-wrap items-center gap-2">
+        <span class="eyebrow mr-1">Also called</span>
+        {term.aliases.map(alias => <span class="pill">{alias}</span>)}
       </div>
     )}
   </section>
+
+  <section class="section pt-0 md:pt-0">
+    <div class="rule pt-10 grid md:grid-cols-12 gap-8">
+      <p class="eyebrow md:col-span-4">What it means</p>
+      <div class="md:col-span-7 md:col-start-6 space-y-5">
+        {term.means.map(paragraph => <p class="prose-body">{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The second reading is the point of the page, so it is the one block that
+    gets lifted off the ground: the carbon panel.
+  -->
+  <section class="page">
+    <div class="carbon rounded-[1.75rem] p-8 md:p-12 grid md:grid-cols-12 gap-8">
+      <p class="eyebrow md:col-span-4 flex items-center gap-2"><span class="led" aria-hidden="true"></span>What it really means</p>
+      <div class="md:col-span-7 md:col-start-6 space-y-5">
+        {term.reallyMeans.map(paragraph => <p class="text-lg leading-relaxed text-carbon-text">{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  {term.tell && (
+    <section class="section">
+      <div class="rule pt-10 grid md:grid-cols-12 gap-8">
+        <p class="eyebrow md:col-span-4">How to tell</p>
+        <p class="md:col-span-7 md:col-start-6 display text-display-sm leading-snug">{term.tell}</p>
+      </div>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section class="section pt-0 md:pt-0">
+      <p class="eyebrow rule pt-6">Related</p>
+      <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        {related.map(other => (
+          <a href={`/glossary/${other.slug}`} class="group bg-ink p-7 transition-colors duration-200 hover:bg-ink-50">
+            <h2 class="display text-display-sm group-hover:text-accent transition-colors duration-200">{other.term}</h2>
+            <p class="text-sm text-muted leading-relaxed mt-3">{other.short}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </Layout>

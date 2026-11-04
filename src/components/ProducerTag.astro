@@ -3,12 +3,14 @@
  * The producer tag. A record producer's tag is the few seconds you hear before
  * the first beat — it says who made this before anything else does.
  *
- * On load the ℗ draws itself, then "Produced by Mike Shoss" types out with an
- * orange cursor that keeps blinking after it. Pressing the ℗ (or any
- * [data-tag-play] element, like the Key) replays the whole thing with sound.
- * The sound is synthesised with Web Audio and never plays on its own.
+ * With `animate` (the hero), the ℗ draws itself and "Produced by Mike Shoss"
+ * types out behind an orange cursor that keeps blinking. Everything is CSS
+ * and starts in its "before" state from the first paint (the `js` class set
+ * in Layout's head), so nothing appears and then resets. The line's full
+ * width is reserved up front, so typing never reflows the layout.
  *
- * Without JS, or with reduced motion, the full line is simply there.
+ * Pressing the ℗, or any [data-tag-play] element such as the Key, replays the
+ * animated tags with the sound. The sound is Web Audio, never automatic.
  */
 import Mark from './Mark.astro';
 
@@ -16,70 +18,32 @@ interface Props {
   /** "inline" for the footer and small spots; "hero" for the big one. */
   size?: 'inline' | 'hero';
   dark?: boolean;
+  animate?: boolean;
 }
-const { size = 'inline', dark = false } = Astro.props;
-const line = 'Produced by Mike Shoss';
+const { size = 'inline', dark = false, animate = false } = Astro.props;
 ---
 
-<div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-4' : 'gap-2.5']} data-tag>
-  <button type="button" data-tag-play class="shrink-0 rounded-full" aria-label="Play the producer tag" title="Play the tag">
-    <Mark class={size === 'hero' ? 'h-11' : 'h-5'} dark={dark} cursor={false} />
+<div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-3.5' : 'gap-2.5', animate && 'tag-type']} data-tag={animate ? 'animate' : 'still'}>
+  <button type="button" data-tag-play class="shrink-0 rounded-full -m-1 p-1" aria-label="Play the producer tag" title="Play the tag">
+    <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} />
   </button>
   <p
     class:list={[
-      'font-mono uppercase tracking-[0.18em] flex items-center',
+      'font-mono uppercase tracking-[0.18em] leading-none',
       size === 'hero' ? 'text-xs' : 'text-[0.625rem]',
       dark ? 'text-carbon-muted' : 'text-muted',
     ]}
-    aria-label={line}
   >
-    <span data-type={line} aria-hidden="true">Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span></span>
-    <span class:list={['tag-cursor inline-block bg-accent ml-1', size === 'hero' ? 'w-[0.45em] h-[1.3em]' : 'w-[0.4em] h-[1.2em]']} aria-hidden="true"></span>
+    <span class="tag-line">
+      <span class="tag-text">Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span></span><span
+        class:list={['tag-cursor inline-block bg-accent align-middle', animate ? '' : 'tag-still', size === 'hero' ? 'w-[0.5em] h-[1.25em] ml-[0.15em]' : 'w-[0.45em] h-[1.2em] ml-[0.1em]']}
+        aria-hidden="true"
+      ></span>
+    </span>
   </p>
 </div>
 
 <script>
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ---------------------------------------------------------------- Typing
-  // "Produced by " in the muted colour, then the name in full ink.
-  const timers = new WeakMap<HTMLElement, number>();
-  function type(el: HTMLElement, delay: number) {
-    const full = el.dataset.type!;
-    const split = 'Produced by '.length;
-    const nameClass = el.querySelector('span')?.className ?? '';
-    window.clearInterval(timers.get(el));
-    let i = 0;
-    el.textContent = '';
-    window.setTimeout(() => {
-      const id = window.setInterval(() => {
-        i++;
-        const head = full.slice(0, Math.min(i, split));
-        const tail = i > split ? full.slice(split, i) : '';
-        el.innerHTML = '';
-        el.append(head);
-        if (tail) {
-          const s = document.createElement('span');
-          s.className = nameClass;
-          s.textContent = tail;
-          el.append(s);
-        }
-        if (i >= full.length) window.clearInterval(id);
-      }, 45);
-      timers.set(el, id);
-    }, delay);
-  }
-
-  // Restart the CSS draw animation on every mark inside `root`.
-  function redraw(root: ParentNode) {
-    root.querySelectorAll<SVGElement>('.tag-mark').forEach(svg => {
-      svg.classList.remove('tag-live');
-      void svg.getBoundingClientRect();
-      svg.classList.add('tag-live');
-    });
-  }
-
-  // ---------------------------------------------------------------- Sound
   let ctx: AudioContext | undefined;
   function playSound() {
     ctx ??= new AudioContext();
@@ -110,23 +74,21 @@ const line = 'Produced by Mike Shoss';
     });
   }
 
-  // ---------------------------------------------------------------- Wiring
-  document.querySelectorAll<SVGElement>('.tag-mark').forEach(svg => svg.classList.add('tag-live'));
-
-  if (!reduce) {
-    document.querySelectorAll<HTMLElement>('[data-tag] [data-type]').forEach(el => type(el, 700));
+  /** Restart a CSS animation class: remove, force a reflow, add back. */
+  function restart(el: Element, cls: string) {
+    el.classList.remove(cls);
+    void (el as HTMLElement).offsetWidth;
+    el.classList.add(cls);
   }
 
   document.querySelectorAll<HTMLElement>('[data-tag-play]').forEach(btn => {
     btn.addEventListener('click', () => {
       playSound();
-      if (reduce) return;
-      // Replay every tag on the page, so pressing the Key animates the hero too.
-      redraw(document);
-      document.querySelectorAll<HTMLElement>('[data-tag] [data-type]').forEach(el => type(el, 450));
-      btn.classList.remove('tag-pressed');
-      void btn.offsetWidth;
-      btn.classList.add('tag-pressed');
+      document.querySelectorAll('[data-tag="animate"]').forEach(tag => {
+        restart(tag, 'tag-type');
+        tag.querySelectorAll('.tag-mark').forEach(m => restart(m, 'tag-draw'));
+      });
+      if (btn.classList.contains('tag-key')) restart(btn, 'tag-pressed');
     });
   });
 </script>
