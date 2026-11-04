@@ -1,0 +1,18 @@
+---
+/**
+ * The mark: a dial with its indicator set to twelve o'clock — on. The same
+ * shape as the favicon. It is the visual half of the producer tag; size it
+ * with `class` (it fills its box).
+ */
+interface Props {
+  class?: string;
+  /** Draw the ring in the carbon palette, for dark surfaces. */
+  dark?: boolean;
+}
+const { class: className = 'w-6 h-6', dark = false } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 32 32" aria-hidden="true">
+  <circle cx="16" cy="16" r="12" fill="none" stroke={dark ? '#e9e5dc' : '#1b1a18'} stroke-width="2.4" />
+  <circle cx="16" cy="9" r="3" fill="#e0520f" />
+</svg>

@@ -1,0 +1,78 @@
+---
+/**
+ * The producer tag. A record producer's tag is the few seconds you hear before
+ * the first beat — it says who made this before anything else does. This is
+ * that, for the site: the mark, the credit line, and an optional sound.
+ *
+ * The sound never plays on its own. It is synthesised with Web Audio (no
+ * file), and only runs when someone presses the button.
+ */
+import Mark from './Mark.astro';
+
+interface Props {
+  /** "inline" for the footer and small spots; "hero" for the big one. */
+  size?: 'inline' | 'hero';
+  dark?: boolean;
+}
+const { size = 'inline', dark = false } = Astro.props;
+---
+
+<div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-4' : 'gap-2.5']}>
+  <button
+    type="button"
+    data-tag-play
+    class="group shrink-0 rounded-full transition-transform duration-300 hover:rotate-[30deg] focus-visible:rotate-[30deg]"
+    aria-label="Play the producer tag"
+    title="Play the tag"
+  >
+    <Mark class={size === 'hero' ? 'w-11 h-11' : 'w-5 h-5'} dark={dark} />
+  </button>
+  <p class:list={[
+    'font-mono uppercase tracking-[0.18em]',
+    size === 'hero' ? 'text-xs' : 'text-[0.625rem]',
+    dark ? 'text-carbon-muted' : 'text-muted',
+  ]}>
+    Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span>
+  </p>
+</div>
+
+<script>
+  // One AudioContext for the page, created on the first press (browsers only
+  // allow audio after a user gesture anyway).
+  let ctx: AudioContext | undefined;
+
+  function playTag() {
+    ctx ??= new AudioContext();
+    const now = ctx.currentTime;
+
+    // Tape-start click.
+    const noise = ctx.createBuffer(1, ctx.sampleRate * 0.03, ctx.sampleRate);
+    const data = noise.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    const click = ctx.createBufferSource();
+    click.buffer = noise;
+    const clickGain = ctx.createGain();
+    clickGain.gain.value = 0.25;
+    click.connect(clickGain).connect(ctx.destination);
+    click.start(now);
+
+    // Three notes, rising: the tag itself.
+    [392, 523.25, 783.99].forEach((freq, i) => {
+      const osc = ctx!.createOscillator();
+      const gain = ctx!.createGain();
+      osc.type = i === 2 ? 'triangle' : 'sine';
+      osc.frequency.value = freq;
+      const t = now + 0.06 + i * 0.11;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.18, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + (i === 2 ? 0.6 : 0.16));
+      osc.connect(gain).connect(ctx!.destination);
+      osc.start(t);
+      osc.stop(t + 0.7);
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-tag-play]').forEach(btn => {
+    btn.addEventListener('click', playTag);
+  });
+</script>

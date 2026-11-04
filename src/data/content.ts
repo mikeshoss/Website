@@ -157,7 +157,7 @@ export const hero = {
   headlineEmphasis: "expensive",
   /** Who, before what. The current employer is one clause, not the lead. */
   subheadline:
-    `Product executive and founder, ${yearsExperience}+ years in. I've built and led product at Firework, VerticalScope and Caseware, hold ${patentCount} patents in AI, and run Epilogue, an AI consulting and product studio. Right now I'm Staff Product Manager at Clio.`,
+    `Founder, product leader and builder, ${yearsExperience}+ years in. I've led product at Caseware, Firework and VerticalScope, hold ${patentCount} patents in AI, and run Epilogue. I look at where business and AI are going, then build what works now.`,
   credibility:
     `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents, ${grantedPatentCount} granted.`,
   /**
@@ -240,6 +240,193 @@ export const selectedResults = [
     label: "Conversion lift",
     detail: "Alongside a 33% improvement in lifetime value.",
   },
+];
+
+/* ------------------------------------------------------------------------- *
+ * The producer framing (redesign draft, 2026-11)
+ *
+ * Read like liner notes: the work is the headline, the company is the label it
+ * came out on, and the credit says what Mike did on it. Every fact here is
+ * already stated elsewhere in this file; nothing is new.
+ * ------------------------------------------------------------------------- */
+
+export interface Credit {
+  /** The work itself — the thing that shipped. */
+  work: string;
+  /** Who it was for: the "label". */
+  label: string;
+  year: string;
+  /** What Mike did on it, in one or two words. */
+  credit: "Produced" | "Founded" | "Built" | "Engineered" | "Inventor" | "Advised" | "Strategy";
+  /** The result, with the number first where there is one. */
+  result: string;
+  href?: string;
+}
+
+export const credits: Credit[] = [
+  {
+    work: "Verity Docs",
+    label: "Caseware",
+    year: "2026",
+    credit: "Produced",
+    result: "75% less document work against a 50% target. 97% extraction accuracy. 100% weekly active use.",
+  },
+  {
+    work: "Caseware Studio",
+    label: "Caseware",
+    year: "2025",
+    credit: "Founded",
+    result: "A 43-person product org shipping validated prototypes in 24 hours and production features in a week. Cycle times down 80%.",
+  },
+  {
+    work: "ISO/IEC 42001 AI management system",
+    label: "Caseware",
+    year: "2025",
+    credit: "Engineered",
+    result: "Governance built into the release pipeline. Compliance turned from a blocker into a sales accelerant.",
+  },
+  {
+    work: "ContractorOS",
+    label: "FacilityOS",
+    year: "2024",
+    credit: "Produced",
+    result: "0 to 1 in six months. 37% faster compliance, +20 NPS, 90% retention.",
+  },
+  {
+    work: "The $150M Series B",
+    label: "Firework",
+    year: "2023",
+    credit: "Strategy",
+    result: "Product strategy and investment case behind a round led by SoftBank.",
+  },
+  {
+    work: "AI across the player",
+    label: "Firework",
+    year: "2022",
+    credit: "Produced",
+    result: "Engagement up 400%, conversions doubled. A 60-person team across five product lines.",
+  },
+  {
+    work: "Nine patents in AI and video commerce",
+    label: "Firework",
+    year: "2023–24",
+    credit: "Inventor",
+    result: "Livestream commerce, short-form video and LLM-assisted livestreams. Two granted.",
+    href: "/experience#patents",
+  },
+  {
+    work: "Self-serve SaaS",
+    label: "Firework",
+    year: "2021",
+    credit: "Produced",
+    result: "ARR up 10x.",
+  },
+  {
+    work: "From ads to SaaS",
+    label: "VerticalScope",
+    year: "2020",
+    credit: "Produced",
+    result: "1,500+ sites unified on one platform. 17% month-over-month growth.",
+  },
+  {
+    work: "SalesBop",
+    label: "Advisory",
+    year: "2025",
+    credit: "Advised",
+    result: "AI product strategy through to acquisition by FliteHouse.",
+  },
+  {
+    work: "Canadian AI Sovereign Compute Strategy",
+    label: "Government of Canada",
+    year: "2024",
+    credit: "Advised",
+    result: "Contributed to the strategy guiding Canada's AI infrastructure.",
+  },
+  {
+    work: "Epilogue",
+    label: "Epilogue",
+    year: "2023",
+    credit: "Founded",
+    result: "An AI consulting practice and product studio, run as one.",
+    href: "/companies/epilogue",
+  },
+  {
+    work: "Readback",
+    label: "Independent",
+    year: "2026",
+    credit: "Built",
+    result: "A map of every known licence-plate reader in Canada, each one carrying how it is known.",
+    href: "https://readback.ofrecord.ca",
+  },
+];
+
+/**
+ * Calls: dated, blunt views on where business and AI are going, kept on the
+ * record so they can be marked right or wrong later.
+ *
+ * DRAFTS. These were written by Claude from the thesis above as placeholders
+ * for layout only. Mike writes the real ones; delete `draft` when he does.
+ */
+export interface Call {
+  call: string;
+  made: string;
+  status: "Open" | "Right" | "Wrong";
+  draft?: boolean;
+}
+
+export const calls: Call[] = [
+  {
+    call: "Governance stops being a document and becomes part of the build. The AI teams that win regulated buyers will ship their audit trail with every release.",
+    made: "2026-11",
+    status: "Open",
+    draft: true,
+  },
+  {
+    call: "The scarce skill isn't prompting or picking a model. It's knowing which expensive, document-heavy workflow to point the machine at.",
+    made: "2026-11",
+    status: "Open",
+    draft: true,
+  },
+  {
+    call: "In high-stakes work, the AI products that win will advertise what they don't know. Visible failure becomes a feature buyers ask for.",
+    made: "2026-11",
+    status: "Open",
+    draft: true,
+  },
+];
+
+/**
+ * The machine room: the systems that build the work. Public-safe on purpose:
+ * no hostnames, addresses or anything that maps the homelab.
+ */
+export const machineRoom = [
+  {
+    name: "Agents on call",
+    detail: "Coding agents started on any of my machines from my phone. Pick a machine, pick a project, tap start.",
+  },
+  {
+    name: "Merge is deploy",
+    detail: "A merge reaches production in about five minutes: database dump first, health check after, automatic rollback if it fails.",
+  },
+  {
+    name: "One box runs the house",
+    detail: "A Mac mini runs dozens of self-hosted services, with monitoring, phone alerts and a staging copy of every app. Local models on the machine next to it.",
+  },
+  {
+    name: "One source, every surface",
+    detail: "This site is one content file. It becomes these pages, a JSON API, a JSON Resume, llms.txt and an MCP server an AI can query directly.",
+  },
+  {
+    name: "Antennas on the roof",
+    detail: "A receiver tracking the aircraft overhead, a LoRa mesh node and APRS infrastructure. Software that watches the world, built because I wanted it.",
+  },
+];
+
+/** Who Mike is, in his own words (from the 2026-11 brief). */
+export const about = [
+  "I'm the first one in. I work hard, I look further out than is comfortable, and I care about the work and the people doing it.",
+  "That's why I sit on boards and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
+  "People who've worked with me will tell you I'm a pain in the ass. They'll also tell you they'd follow me to the next thing, because they trust my judgment.",
 ];
 
 export const skills = [

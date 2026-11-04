@@ -1,14 +1,16 @@
 ---
 import { site } from '../data/content';
+import Mark from './Mark.astro';
 
 // The name is the home link, so there is no "Home" entry. Order is the order
 // a first-time visitor should read the site in: what I'm building, what I've
 // built for myself, where I've worked, then reference and contact.
+// The glossary moved to the footer: less, but better.
 const links = [
+  { label: 'Credits', href: '/credits' },
   { label: 'Ventures', href: '/companies' },
   { label: 'Projects', href: '/projects' },
   { label: 'Experience', href: '/experience' },
-  { label: 'Glossary', href: '/glossary' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -18,7 +20,8 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
 
 <header class="sticky top-0 z-50 bg-ink/70 backdrop-blur-md border-b border-line">
   <nav class="page h-16 flex items-center justify-between" aria-label="Main navigation">
-    <a href="/" class="font-display text-2xl leading-none text-bone hover:text-accent transition-colors">
+    <a href="/" class="flex items-center gap-2.5 font-display font-medium text-lg tracking-tight leading-none text-bone hover:text-accent transition-colors">
+      <Mark class="w-5 h-5" />
       {site.name}
     </a>
 

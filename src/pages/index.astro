@@ -1,59 +1,74 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { site, hero, highlights, selectedResults, experience, projects } from '../data/content';
-import { byAssociation, isActive } from '../lib/projects';
-import { placement, withCampaign } from '../lib/links';
-import { formatPeriod } from '../lib/dates';
+import ProducerTag from '../components/ProducerTag.astro';
+import Mark from '../components/Mark.astro';
+import { site, hero, highlights, credits, calls, machineRoom, about, volunteering, interests } from '../data/content';
+import { formatDate } from '../lib/dates';
 
 /**
- * The headline gets one word in italic amber. Split around it here so the
- * content module stays plain text for every other consumer.
+ * Home, in the producer framing: who made this, the credits, the machines
+ * behind them, where it is going, and who the person is. Order is the
+ * argument — proof before opinion, opinion before personality.
  */
+
 const [beforeEm, afterEm] = hero.headline.split(hero.headlineEmphasis);
 
-// A short career strip: one row per company, showing the latest title but
-// the whole tenure — Firework was three roles over 2 years 8 months, and the
-// row should say so rather than show the last role's dates. Order is
-// deliberate: it is the story, not the chronology.
-const FEATURED_COMPANIES = ['Clio', 'Caseware', 'FacilityOS (formerly iLobby)', 'Firework', 'VerticalScope Inc.'];
-const keyRoles = FEATURED_COMPANIES.flatMap(name => {
-  const roles = experience.filter(r => r.company === name);
-  if (roles.length === 0) return [];
-  const latest = roles[0];
-  const first = roles[roles.length - 1];
-  const ongoing = roles.some(r => !r.end);
-  return [{ ...latest, tenure: formatPeriod(first.start, ongoing ? undefined : latest.end) }];
-});
+// The six credits that carry the most weight; the rest are on /credits.
+const selected = credits.slice(0, 6);
 
-// What is being built right now, on my own time. First sentence only: a
-// list, not a wall of truncated prose.
-const building = byAssociation(projects, 'Personal').filter(isActive).slice(0, 4);
-const firstSentence = (text: string) => text.split(/(?<=[.!?])\s/)[0];
+// Giving back: boards first, then mentoring — current roles only.
+const current = volunteering.filter(v => !v.end);
+const givingBack = [
+  ...current.filter(v => v.category === 'governance'),
+  ...current.filter(v => v.category === 'mentoring'),
+];
 ---
 
 <Layout ogType="profile">
-  <!-- Hero: the statement, who is making it, and one way to respond. -->
-  <section class="page pt-20 md:pt-28 pb-16 md:pb-20">
-    <h1 class="display text-display-xl max-w-[18ch]">
-      {beforeEm}<em>{hero.headlineEmphasis}</em>{afterEm}
-    </h1>
-    <p class="lede mt-8 md:mt-10 max-w-prose">{hero.subheadline}</p>
-    <p class="mt-6 font-mono text-xs text-muted">
-      {highlights.map((stat, i) => (
-        <>{i > 0 && <span class="mx-2">·</span>}<span class="text-bone">{stat.value}</span> {stat.label.toLowerCase()}</>
+  <!-- ============================================================ Hero -->
+  <section class="page pt-14 md:pt-20 pb-16 md:pb-24">
+    <!-- Panel markings: the line of small type along the top of a Braun unit. -->
+    <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
+      <span>MS–01 · {site.location.split(',')[0]}, Ontario</span>
+      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> Building</span>
+    </div>
+
+    <div class="mt-12 md:mt-16 grid md:grid-cols-12 gap-10 items-end">
+      <div class="md:col-span-9">
+        <h1 class="display text-display-xl max-w-[16ch]">
+          {beforeEm}<em>{hero.headlineEmphasis}</em>{afterEm}
+        </h1>
+        <p class="lede mt-8 md:mt-10 max-w-prose">{hero.subheadline}</p>
+      </div>
+      <!-- Speaker grille: the one decorative element on the page. -->
+      <div class="hidden md:block md:col-span-3 aspect-square rounded-[1.75rem] grille border border-line" aria-hidden="true"></div>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-6">
+      <a href="/contact" class="btn-primary">Let's build</a>
+      <a href="/credits" class="btn-quiet">The credits</a>
+      <ProducerTag size="hero" />
+    </div>
+
+    <!-- Readouts -->
+    <dl class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+      {highlights.map(stat => (
+        <div class="bg-ink p-5 md:p-6">
+          <dt class="eyebrow">{stat.label}</dt>
+          <dd class="readout mt-3">{stat.value}</dd>
+        </div>
       ))}
-    </p>
-    <a href="/contact" class="btn-primary mt-10">Get in touch</a>
+    </dl>
   </section>
 
-  <!-- Now: three things at once. The day job is one of them. -->
+  <!-- ============================================================ Now -->
   <section class="section pt-0 md:pt-0">
-    <p class="eyebrow rule pt-6">Now</p>
-    <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line">
+    <p class="eyebrow rule pt-6">01 — Now</p>
+    <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {hero.now.map(item => (
         <a href={item.href} class="group bg-ink p-7 md:p-8 transition-colors duration-200 hover:bg-ink-50">
-          <p class="eyebrow">{item.label}</p>
-          <h2 class="display text-display-md mt-4 group-hover:text-accent transition-colors duration-200">{item.title}</h2>
+          <p class="eyebrow flex items-center gap-2"><span class="led" aria-hidden="true"></span>{item.label}</p>
+          <h2 class="display text-display-md mt-5 group-hover:text-accent transition-colors duration-200">{item.title}</h2>
           <p class="text-sm text-bone-dim mt-1">{item.role}</p>
           <p class="text-sm text-muted leading-relaxed mt-4">{item.blurb}</p>
         </a>
@@ -61,87 +76,130 @@ const firstSentence = (text: string) => text.split(/(?<=[.!?])\s/)[0];
     </div>
   </section>
 
-  <!-- Point of view -->
+  <!-- ============================================================ Credits -->
   <section class="section pt-0 md:pt-0">
-    <p class="eyebrow rule pt-6">Point of view</p>
-    <div class="mt-8 grid md:grid-cols-12 gap-8">
-      <h2 class="display text-display-lg md:col-span-5 max-w-[14ch]">Why this is a product problem.</h2>
-      <div class="md:col-span-6 md:col-start-7 space-y-5 prose-body">
-        {hero.thesis.map(paragraph => <p>{paragraph}</p>)}
-        <p class="text-muted">{hero.credibility}</p>
+    <div class="rule pt-6 flex items-baseline justify-between">
+      <p class="eyebrow">02 — Selected credits</p>
+      <a href="/credits" class="arrow-link text-xs">All credits →</a>
+    </div>
+    <h2 class="display text-display-lg mt-8 max-w-[20ch]">If my name's on it, it shipped.</h2>
+    <ol class="mt-10 ruled">
+      {selected.map(c => (
+        <li class="py-5 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,4fr)_minmax(0,2fr)_minmax(0,6fr)_auto] gap-x-6 gap-y-1 items-baseline">
+          <p class="display text-xl md:text-2xl leading-tight">{c.work}</p>
+          <p class="text-xs font-mono uppercase tracking-wider text-muted md:order-none order-last col-span-2 md:col-span-1">{c.label} · <span class="text-accent-dim">{c.credit}</span></p>
+          <p class="text-sm text-bone-dim leading-relaxed hidden md:block">{c.result}</p>
+          <p class="text-xs font-mono text-muted text-right">{c.year}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- ============================================================ Machine room -->
+  <section class="carbon">
+    <div class="section">
+      <div class="flex items-center justify-between">
+        <p class="eyebrow">03 — The machine room</p>
+        <span class="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-carbon-muted"><span class="led" aria-hidden="true"></span> Running</span>
+      </div>
+      <div class="mt-8 grid md:grid-cols-12 gap-10">
+        <div class="md:col-span-5">
+          <h2 class="display text-display-lg max-w-[14ch]">I build the machines that build the machine.</h2>
+          <p class="mt-6 text-carbon-muted leading-relaxed max-w-prose">
+            Shipping fast in high-stakes work isn't heroics. It's infrastructure: agents, pipelines and
+            checks that make the right thing the easy thing. Most of mine run in my house.
+          </p>
+          <div class="mt-10 h-28 rounded-2xl grille-dark hidden md:block" aria-hidden="true"></div>
+        </div>
+        <ol class="md:col-span-7 border-t border-carbon-line">
+          {machineRoom.map((m, i) => (
+            <li class="py-5 border-b border-carbon-line grid grid-cols-[2.5rem_1fr] gap-x-4">
+              <span class="font-mono text-xs text-accent pt-1">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <p class="text-carbon-text font-medium">{m.name}</p>
+                <p class="text-sm text-carbon-muted leading-relaxed mt-1">{m.detail}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- Results -->
-  <section class="section pt-0 md:pt-0">
-    <p class="eyebrow rule pt-6">Selected results</p>
-    <ol class="mt-8 ruled">
-      {selectedResults.map(result => (
-        <li class="grid grid-cols-[6rem_1fr] md:grid-cols-[8rem_2fr_3fr] gap-x-6 gap-y-1 py-5 items-baseline">
-          <p class="display text-3xl md:text-4xl text-accent leading-none">{result.value}</p>
-          <p class="text-bone">{result.label}</p>
-          <p class="text-sm text-muted leading-relaxed col-start-2 md:col-start-3">{result.detail}</p>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- Track record -->
-  <section class="section pt-0 md:pt-0">
-    <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow">Track record</p>
-      <a href="/experience" class="arrow-link text-xs">Full history →</a>
-    </div>
-    <ol class="mt-8 ruled">
-      {keyRoles.map(role => (
-        <li class="py-5 grid md:grid-cols-12 gap-x-8 gap-y-1">
-          <div class="md:col-span-3">
-            <p class="display text-2xl leading-tight">{role.company.replace(/ \(.*\)$/, '')}</p>
-            <p class="text-xs font-mono text-muted mt-1">{role.tenure}</p>
-          </div>
-          <div class="md:col-span-9">
-            <p class="text-bone">{role.title}</p>
-            {role.highlights[0] && <p class="text-sm text-muted leading-relaxed mt-1 max-w-prose">{role.highlights[0]}</p>}
-          </div>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- Building -->
-  <section class="section pt-0 md:pt-0">
-    <div class="rule pt-6 flex items-baseline justify-between">
-      <p class="eyebrow">Building, on my own time</p>
-      <a href="/projects" class="arrow-link text-xs">All projects →</a>
-    </div>
-    <ol class="mt-8 ruled">
-      {building.map(project => {
-        const href = project.url ? withCampaign(project.url, placement('home', project.name)) : project.repo;
-        return (
-          <li class="py-4 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,3fr)_minmax(0,7fr)_auto] gap-x-8 gap-y-1 items-baseline">
-            <p class="display text-2xl leading-tight">
-              {href ? <a href={href} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{project.name}</a> : project.name}
+  <!-- ============================================================ Calls -->
+  <section class="section">
+    <p class="eyebrow rule pt-6">04 — Where it's going</p>
+    <div class="mt-8 grid md:grid-cols-12 gap-8">
+      <div class="md:col-span-5">
+        <h2 class="display text-display-lg max-w-[14ch]">Looking ahead. Building for now.</h2>
+        <p class="mt-6 text-muted leading-relaxed text-sm max-w-prose">
+          Calls on where business and AI are going, dated when I made them and marked right or wrong
+          when the time comes. Opinions are cheap. A record isn't.
+        </p>
+      </div>
+      <ol class="md:col-span-7 ruled">
+        {calls.map(c => (
+          <li class="py-6">
+            <p class="text-lg text-bone leading-snug">{c.call}</p>
+            <p class="mt-3 flex items-center gap-4 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted">
+              <span>Called {formatDate(c.made)}</span>
+              <span class="flex items-center gap-1.5">
+                <span class={c.status === 'Open' ? 'led-off' : c.status === 'Right' ? 'led' : 'inline-block w-2 h-2 rounded-full bg-accent'} aria-hidden="true"></span>
+                {c.status}
+              </span>
+              {c.draft && <span class="text-accent-dim">Draft · placeholder</span>}
             </p>
-            <p class="text-sm text-muted hidden md:block truncate">{firstSentence(project.description)}</p>
-            <p class="text-xs font-mono text-muted">{project.start.slice(0, 4)}</p>
           </li>
-        );
-      })}
-    </ol>
-    <p class="mt-6 text-sm text-muted">
-      Epilogue's products live at
-      <a href={withCampaign('https://epiloguelabs.com', 'home-building')} target="_blank" rel="noopener noreferrer" class="link">epiloguelabs.com</a>.
-    </p>
+        ))}
+      </ol>
+    </div>
   </section>
 
-  <!-- Contact -->
+  <!-- ============================================================ Who I am -->
   <section class="section pt-0 md:pt-0">
-    <p class="eyebrow rule pt-6">Contact</p>
-    <div class="mt-8 flex flex-col md:flex-row md:items-baseline md:justify-between gap-6">
-      <h2 class="display text-display-md max-w-[24ch]">Working on something where being wrong is expensive?</h2>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="btn-primary">Message me on LinkedIn</a>
+    <p class="eyebrow rule pt-6">05 — Who I am</p>
+    <div class="mt-8 grid md:grid-cols-12 gap-8">
+      <div class="md:col-span-5">
+        <!-- Photo slot: replace with the portrait when it arrives. -->
+        <div class="aspect-[4/5] rounded-[1.75rem] bg-ink-50 border border-line grille flex items-end p-5">
+          <span class="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted bg-ink px-2 py-1 rounded">Photo · coming</span>
+        </div>
+      </div>
+      <div class="md:col-span-6 md:col-start-7 space-y-5">
+        {about.map(paragraph => <p class="text-lg text-bone-dim leading-relaxed">{paragraph}</p>)}
+
+        <div class="pt-6">
+          <p class="eyebrow mb-3">Giving back</p>
+          <ul class="ruled">
+            {givingBack.map(v => (
+              <li class="py-3 flex items-baseline justify-between gap-4">
+                <span class="text-sm text-bone">{v.organization.replace(/ \(.*\)$/, '')}</span>
+                <span class="text-xs text-muted text-right">{v.title.split(' — ')[0].replace(/^Board Member & /, 'Board · ')}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-4">
+          <p class="eyebrow mb-3">Off the clock</p>
+          <p class="text-sm text-muted leading-relaxed">
+            {interests.map(i => i.name).join(' · ')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ Contact -->
+  <section class="section pt-0 md:pt-0">
+    <div class="rounded-[1.75rem] border border-line p-8 md:p-12 grid md:grid-cols-12 gap-8 items-end">
+      <div class="md:col-span-8">
+        <Mark class="w-10 h-10" />
+        <h2 class="display text-display-lg mt-8 max-w-[18ch]">No decks. No theatre. Bring the problem.</h2>
+        <p class="mt-5 text-muted max-w-prose">If it's real and it's expensive to get wrong, I want to hear about it.</p>
+      </div>
+      <div class="md:col-span-4 flex flex-col items-start md:items-end gap-4">
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="btn-primary">Let's build</a>
         <a href={`mailto:${site.email}`} class="link text-sm">{site.email}</a>
       </div>
     </div>
