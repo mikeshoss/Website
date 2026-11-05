@@ -4,6 +4,7 @@ import {
   causes,
   cardSets,
   magic,
+  porygon,
   certifications,
   credits,
   companies,
@@ -53,7 +54,7 @@ export const GET: APIRoute = () =>
       languages,
       interests,
       causes,
-      collection: { sets: cardSets, slabs, magic },
+      collection: { sets: cardSets, porygon, slabs, magic },
       glossary,
     },
   });

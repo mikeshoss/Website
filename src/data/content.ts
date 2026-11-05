@@ -1437,27 +1437,37 @@ export interface Interest {
   /** The word beside the green light on its page: what is happening now. */
   status: string;
   keywords?: string[];
+  /** Equipment that is running right now, shown as a panel of lights. */
+  stations?: { name: string; role: string }[];
 }
 
 export const interests: Interest[] = [
   {
     slug: "bicycles",
     name: "Vintage Canadian steel bicycles",
-    summary: "Old Canadian steel frames, restored and back on the road.",
+    summary: "Canadian vintage steel. Frames from the makers who built bikes here, restored and ridden.",
     status: "Restoring",
     keywords: ["Restoration", "Framebuilding", "Cycling"],
   },
   {
     slug: "amateur-radio",
     name: "Amateur radio",
-    summary: "A receiver tracking the aircraft overhead, a LoRa mesh node and APRS infrastructure. Software that watches the world.",
+    summary: "Repeaters and digipeaters running at my house for APRS, LoRa APRS, Meshtastic and MeshCore, plus an ADS-B receiver tracking the aircraft overhead. Infrastructure other people's radios lean on.",
     status: "On air",
     keywords: [
-      "Meshtastic",
-      "LoRa mesh",
       "APRS",
+      "LoRa APRS",
+      "Meshtastic",
+      "MeshCore",
+      "ADS-B",
       "Digipeaters",
-      "Emergency communications",
+    ],
+    stations: [
+      { name: "APRS", role: "Digipeater" },
+      { name: "LoRa APRS", role: "Digipeater" },
+      { name: "Meshtastic", role: "Repeater" },
+      { name: "MeshCore", role: "Repeater" },
+      { name: "ADS-B", role: "Receiver" },
     ],
   },
   {
@@ -1465,7 +1475,7 @@ export const interests: Interest[] = [
     name: "Pokémon and Magic cards",
     summary: "Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
     status: "Collecting",
-    keywords: ["Wizards-era Pokémon", "Set completion", "Graded slabs", "Magic: The Gathering", "Commander"],
+    keywords: ["Wizards-era Pokémon", "Set completion", "Porygon master set", "Graded slabs", "Magic: The Gathering", "Commander"],
   },
   {
     slug: "homelab",
@@ -1550,8 +1560,49 @@ export interface Slab {
   grade: string;
 }
 
-/** Magic: The Gathering. Commander decks only, counted, not catalogued. */
-export const magic = { format: "Commander", decks: 2 };
+/** Magic: The Gathering. Commander decks, with the bracket each one plays at. */
+export interface CommanderDeck {
+  commander: string;
+  build: string;
+  bracket: number;
+}
+
+export const magic: { format: string; decks: CommanderDeck[] } = {
+  format: "Commander",
+  decks: [
+    { commander: "Captain America, Team Leader", build: "Precon", bracket: 2 },
+    { commander: "Éowyn, Shieldmaiden", build: "Upgraded precon", bracket: 3 },
+  ],
+};
+
+/**
+ * The Porygon English master set: every English printing and variant of
+ * Porygon, Porygon2 and Porygon-Z. Snapshot of Mike's tracking sheet, counts
+ * only (no prices). Owned includes cards in transit.
+ */
+export const porygon = {
+  name: "Porygon English master set",
+  updated: "2026-11-05",
+  eras: [
+    { era: "Wizards", owned: 4, total: 15 },
+    { era: "e-Card", owned: 0, total: 6 },
+    { era: "EX", owned: 2, total: 10 },
+    { era: "Diamond & Pearl", owned: 2, total: 13 },
+    { era: "HeartGold SoulSilver", owned: 2, total: 8 },
+    { era: "Black & White", owned: 5, total: 8 },
+    { era: "XY", owned: 7, total: 10 },
+    { era: "Sun & Moon", owned: 12, total: 18 },
+    { era: "Sword & Shield", owned: 5, total: 12 },
+    { era: "Scarlet & Violet", owned: 10, total: 17 },
+  ],
+  /** The hard ones still missing. */
+  hunting: [
+    "Porygon2 · Great Encounters · Staff prerelease stamp",
+    "Porygon-Z · BW Black Star Promo · Staff prerelease stamp",
+    "Dark Porygon2 · Neo Destiny · 1st Edition holo",
+    "Porygon2 · Neo Revelation · 1st Edition holo",
+  ],
+};
 
 /** Graded cards. Empty until the list comes in; the section hides until then. */
 export const slabs: Slab[] = [];

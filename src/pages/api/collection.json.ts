@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { cardSets, magic, slabs } from "../../data/content";
+import { cardSets, magic, porygon, slabs } from "../../data/content";
 import { json } from "../../lib/api";
 
 export const prerender = true;
@@ -8,4 +8,4 @@ export const prerender = true;
  * The card collection on /collection: sets with completion, and graded slabs.
  * Completion only — no values or prices, by design (see content.ts).
  */
-export const GET: APIRoute = () => json({ data: { sets: cardSets, slabs, magic } });
+export const GET: APIRoute = () => json({ data: { sets: cardSets, porygon, slabs, magic } });

@@ -20,6 +20,7 @@ import {
   causes,
   cardSets,
   magic,
+  porygon,
 } from "../data/content";
 
 // Fully generated from src/data/content.ts — every section derives from the
@@ -155,7 +156,8 @@ ${list(
 ## Card collection
 Vintage Pokémon TCG, Wizards of the Coast era, and Magic Commander decks. Completion only: ${site.url}/off-the-clock/cards/
 ${list(cardSets.map((s) => `${s.name} (${s.year}): ${s.owned === undefined ? "being counted" : `${s.owned} of ${s.total}`}`))}
-Magic: The Gathering: ${magic.decks} ${magic.format} decks.
+Porygon English master set: ${porygon.eras.reduce((n, e) => n + e.owned, 0)} of ${porygon.eras.reduce((n, e) => n + e.total, 0)} versions.
+Magic: The Gathering, ${magic.format}: ${magic.decks.map((d) => `${d.commander} (${d.build}, bracket ${d.bracket})`).join("; ")}.
 
 ## Glossary
 Definitions of the vocabulary around AI products, each with what the term means
