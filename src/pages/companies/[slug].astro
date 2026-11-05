@@ -119,7 +119,7 @@ const organization = {
             <div class="md:col-span-4">
               <h2 class="display text-display-sm">
                 {product.url ? (
-                  <a href={product.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">
+                  <a href={product.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent-dim transition-colors">
                     {product.name} <span class="text-muted text-base">↗</span>
                   </a>
                 ) : product.name}
@@ -143,7 +143,7 @@ const organization = {
       <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
         {held.map(h => (
           <a href={`/companies/${h.slug}`} class="group bg-ink p-7 transition-colors duration-200 hover:bg-ink-50">
-            <p class="display text-display-sm group-hover:text-accent transition-colors duration-200">{h.name}</p>
+            <p class="display text-display-sm group-hover:text-accent-dim transition-colors duration-200">{h.name}</p>
             <p class="text-sm text-bone-dim mt-1">{h.role.split(' — ')[0]}</p>
             <p class="text-sm text-muted leading-relaxed mt-3">{h.tagline}</p>
           </a>

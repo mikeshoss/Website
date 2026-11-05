@@ -72,7 +72,7 @@ const givingBack = [
       {hero.now.map(item => (
         <a href={item.href} class="group bg-ink p-7 md:p-8 transition-colors duration-200 hover:bg-ink-50">
           <p class="eyebrow flex items-center gap-2"><span class="led" aria-hidden="true"></span>{item.label}</p>
-          <h2 class="display text-display-md mt-5 group-hover:text-accent transition-colors duration-200">{item.title}</h2>
+          <h2 class="display text-display-md mt-5 group-hover:text-accent-dim transition-colors duration-200">{item.title}</h2>
           <p class="text-sm text-bone-dim mt-1">{item.role}</p>
           <p class="text-sm text-muted leading-relaxed mt-4">{item.blurb}</p>
         </a>
@@ -210,7 +210,7 @@ const givingBack = [
           <div class="bg-ink p-7 md:p-8 flex flex-col">
             <h3 class="display text-display-sm">
               {cause.url
-                ? <a href={cause.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{cause.name}</a>
+                ? <a href={cause.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent-dim transition-colors">{cause.name}</a>
                 : cause.name}
             </h3>
             {cause.description && <p class="text-sm text-muted leading-relaxed mt-3">{cause.description}</p>}

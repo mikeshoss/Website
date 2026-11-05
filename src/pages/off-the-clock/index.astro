@@ -47,11 +47,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <li>
           <a href={`/off-the-clock/${i.slug}/`} class="group py-7 grid grid-cols-[2.5rem_minmax(0,1fr)_auto] md:grid-cols-[3rem_minmax(0,5fr)_minmax(0,6fr)_9rem] gap-x-6 gap-y-2 items-baseline">
             <span class="font-mono text-xs text-accent-dim">{pad(n + 1)}</span>
-            <span class="display text-display-sm group-hover:text-accent transition-colors">{i.name}</span>
+            <span class="display text-display-sm group-hover:text-accent-dim transition-colors">{i.name}</span>
             <span class="text-sm text-bone-dim leading-relaxed col-start-2 col-span-2 md:col-span-1 md:col-start-auto row-start-2 md:row-start-auto">{i.summary}</span>
             <span class="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted whitespace-nowrap justify-self-end row-start-1 col-start-3 md:row-start-auto md:col-start-auto">
               <span class="led" aria-hidden="true"></span>{i.status}
-              <span class="ml-2 text-bone group-hover:text-accent group-hover:translate-x-0.5 transition-all" aria-hidden="true">→</span>
+              <span class="ml-2 text-bone group-hover:text-accent-dim group-hover:translate-x-0.5 transition-all" aria-hidden="true">→</span>
             </span>
           </a>
         </li>

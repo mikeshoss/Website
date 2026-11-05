@@ -14,7 +14,7 @@ import { site } from '../data/content';
 const palette = {
   paper: '#edeae3', paper2: '#e5e1d8', line: '#cfc9bd', lineStrong: '#a9a397',
   muted: '#68635b', inkDim: '#46433d', carbon: '#1b1a18', carbonText: '#e9e5dc', carbonMuted: '#8f897e',
-  orange: '#e0520f', orangeDim: '#b5420b', green: '#3f9a46',
+  orange: '#e0520f', orangeDim: '#a83d0a', orangeBright: '#f0661f', buttonInk: '#111110', green: '#3f9a46',
 };
 
 const lum = (hex: string) => {
@@ -45,8 +45,10 @@ const pairs = [
   { fg: palette.muted, bg: palette.paper, label: 'Muted on paper', use: 'Labels and captions' },
   { fg: palette.orangeDim, bg: palette.paper, label: 'Orange dim on paper', use: 'Small orange text' },
   { fg: palette.carbonMuted, bg: palette.carbon, label: 'Carbon muted on carbon', use: 'Labels on dark' },
-  { fg: palette.carbon, bg: palette.orange, label: 'Carbon on orange', use: 'Buttons' },
-  { fg: palette.orange, bg: palette.paper, label: 'Orange on paper', use: 'The headline word only (large)' },
+  { fg: palette.buttonInk, bg: palette.orange, label: 'Button ink on orange', use: 'Buttons and the sticker' },
+  { fg: palette.orangeBright, bg: palette.carbon, label: 'Bright orange on carbon', use: 'Small orange on dark' },
+  { fg: palette.orange, bg: palette.paper, label: 'Orange on paper', use: 'Large text only: the headline word' },
+  { fg: palette.orangeDim, bg: palette.paper2, label: 'Orange dim on panels', use: 'Small orange text on panels' },
   { fg: palette.green, bg: palette.paper, label: 'Green on paper', use: 'Never as text' },
 ].map((p) => {
   const r = ratio(p.fg, p.bg);
@@ -68,16 +70,20 @@ const misuse = [
 ];
 
 const downloads = [
-  { name: 'The mark', detail: 'SVG · for light backgrounds', href: '/brand/mikeshoss-mark.svg' },
-  { name: 'The mark, on dark', detail: 'SVG · for dark backgrounds', href: '/brand/mikeshoss-mark-on-dark.svg' },
-  { name: 'The key', detail: 'SVG · avatars, favicons, stickers', href: '/brand/mikeshoss-key.svg' },
-  { name: 'The key, square', detail: 'PNG · 512 × 512, full bleed', href: '/icon-512.png' },
-  { name: 'Portrait', detail: 'JPG · 800 × 1000 · for bios and event pages', href: '/brand/mike-shoss-portrait.jpg' },
-  { name: 'Share card', detail: 'PNG · 1200 × 630', href: '/og/home.png' },
+  { name: 'The mark', detail: 'For paper and light backgrounds', preview: '/brand/mikeshoss-mark.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-mark.svg']] },
+  { name: 'The mark, on dark', detail: 'For carbon and dark backgrounds', preview: '/brand/mikeshoss-mark-on-dark.svg', ground: 'bg-carbon-50', files: [['SVG', '/brand/mikeshoss-mark-on-dark.svg']] },
+  { name: 'The mark, one colour', detail: 'Print, embossing, stamps', preview: '/brand/mikeshoss-mark-mono.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-mark-mono.svg']] },
+  { name: 'The key, orange', detail: 'Primary · avatars and app icons', preview: '/brand/mikeshoss-key.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-key.svg'], ['PNG 512', '/brand/mikeshoss-key-512.png'], ['PNG 1024', '/brand/mikeshoss-key-1024.png']] },
+  { name: 'The key, carbon', detail: 'For light backgrounds', preview: '/brand/mikeshoss-key-carbon.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-key-carbon.svg'], ['PNG 512', '/brand/mikeshoss-key-carbon-512.png'], ['PNG 1024', '/brand/mikeshoss-key-carbon-1024.png']] },
+  { name: 'The key, paper', detail: 'For dark backgrounds', preview: '/brand/mikeshoss-key-paper.svg', ground: 'bg-carbon-50', files: [['SVG', '/brand/mikeshoss-key-paper.svg'], ['PNG 512', '/brand/mikeshoss-key-paper-512.png'], ['PNG 1024', '/brand/mikeshoss-key-paper-1024.png']] },
+  { name: 'Portrait', detail: 'For bios and event pages', preview: '/brand/mike-shoss-portrait.jpg', ground: 'bg-carbon-50', photo: true, files: [['JPG 800 × 1000', '/brand/mike-shoss-portrait.jpg']] },
+  { name: 'LinkedIn header, carbon', detail: 'Recommended', preview: '/brand/mikeshoss-linkedin-header-carbon.png', ground: 'bg-carbon-50', wide: true, files: [['PNG 3168 × 792', '/brand/mikeshoss-linkedin-header-carbon.png']] },
+  { name: 'LinkedIn header, paper', detail: 'Alternative', preview: '/brand/mikeshoss-linkedin-header-paper.png', ground: 'bg-carbon-50', wide: true, files: [['PNG 3168 × 792', '/brand/mikeshoss-linkedin-header-paper.png']] },
+  { name: 'Share card', detail: 'Link previews', preview: '/og/home.png', ground: 'bg-carbon-50', wide: true, files: [['PNG 1200 × 630', '/og/home.png']] },
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');
-const chapters = ['The idea', 'The mark', 'Producer tag', 'Misuse', 'Colour', 'Type and case', 'Panel parts', 'Voice', 'Layout', 'Downloads'];
+const chapters = ['The idea', 'The mark', 'Producer tag', 'Misuse', 'Colour', 'Type and case', 'Panel parts', 'Voice', 'Layout', 'In use', 'Downloads'];
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
 ---
 
@@ -331,7 +337,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         <tbody>
           {pairs.map((p) => (
             <tr class="border-t border-line last:border-b">
-              <td class="py-3 pr-4 w-20"><span class="inline-grid place-items-center w-14 h-9 rounded-lg border border-line font-medium" style={`background:${p.bg};color:${p.fg}`}>Aa</span></td>
+              <td class="py-3 pr-4 w-20"><span aria-hidden="true" class="inline-grid place-items-center w-14 h-9 rounded-lg border border-line font-medium" style={`background:${p.bg};color:${p.fg}`}>Aa</span></td>
               <td class="py-3 pr-4">{p.label}</td>
               <td class="py-3 pr-4 font-mono text-xs tabular-nums">{p.r.toFixed(2)} : 1</td>
               <td class="py-3 pr-4 font-mono text-[0.6875rem] uppercase tracking-[0.12em]">
@@ -345,6 +351,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         </tbody>
       </table>
     </div>
+    <p class="text-sm text-muted mt-4 max-w-prose">Ratios measured against WCAG 2.2: AA needs 4.5:1 for body text and 3:1 for large text. How the whole site meets it: <a href="/accessibility" class="link">accessibility</a>.</p>
   </section>
 
   <!-- 06 Type -->
@@ -360,7 +367,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         <p class="text-sm text-muted mt-4">400 for body, 500 for display. Tracking −0.035em at the largest size, easing to −0.015em.</p>
       </div>
       <div class="rounded-2xl bg-carbon text-carbon-text p-8">
-        <p class="eyebrow !text-carbon-muted"><b class="!text-accent">Panel</b> · JetBrains Mono</p>
+        <p class="eyebrow !text-carbon-muted"><b class="!text-accent-bright">Panel</b> · JetBrains Mono</p>
         <p class="font-mono text-[5rem] leading-none tracking-tight mt-6">23<span class="text-accent">.</span>4</p>
         <p class="font-mono text-carbon-muted text-sm mt-4 break-words">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 · / → ×</p>
         <p class="text-sm text-carbon-muted mt-4">Labels in capitals, tracked +0.14 to +0.18em, 10 to 12 px. Numbers tabular.</p>
@@ -441,7 +448,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         <p class="text-sm text-bone-dim bg-ink self-start px-3 py-2 rounded-lg max-w-sm">A 12 px dot field. Fills a quiet corner of the hero and every share card.</p>
       </div>
       <div class="rounded-2xl carbon p-6 grid gap-4 content-start">
-        <p class="eyebrow"><b class="!text-accent">Machine room</b></p>
+        <p class="eyebrow"><b class="!text-accent-bright">Machine room</b></p>
         <p class="display text-2xl">The machines that build the machine.</p>
         <p class="text-sm text-carbon-muted">Carbon is the one dark surface, the top plate of the machine. One section per page at most.</p>
       </div>
@@ -495,28 +502,70 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         ))}
       </div>
     </div>
-    <div class="mt-12">
-      <p class="eyebrow mb-3">In use · the share card</p>
-      <img src="/og/home.png" alt="The home page share card: the headline with 'expensive' in orange, the grille, and the producer tag" width="1200" height="630" class="w-full rounded-2xl border border-line" loading="lazy" decoding="async" />
+  </section>
+
+  <!-- 10 In use -->
+  <section class="page section-b" id="in-use">
+    <p class="eyebrow"><b>10</b> · In use</p>
+    <h2 class="display text-display-lg mt-4">Everywhere the name goes.</h2>
+    <p class="lede mt-6 max-w-prose">The same parts, outside the site. All of these are real and in the press kit below.</p>
+    <div class="mt-10 grid gap-10">
+      <figure>
+        <figcaption class="eyebrow mb-3">LinkedIn header · 1584 × 396</figcaption>
+        <img src="/brand/mikeshoss-linkedin-header-carbon.png" alt="LinkedIn header on carbon: the headline with 'expensive' in orange, the orange key on a grille, and the producer tag" width="3168" height="792" class="w-full rounded-2xl" loading="lazy" decoding="async" />
+        <p class="text-sm text-muted mt-3 max-w-prose">The left quarter stays empty: LinkedIn puts the profile photo there.</p>
+      </figure>
+      <div class="grid md:grid-cols-2 gap-10 items-start">
+        <figure>
+          <figcaption class="eyebrow mb-3">Share card · 1200 × 630</figcaption>
+          <img src="/og/home.png" alt="The home page share card: the headline with 'expensive' in orange, the grille, and the producer tag" width="1200" height="630" class="w-full rounded-2xl border border-line" loading="lazy" decoding="async" />
+          <p class="text-sm text-muted mt-3">One template for every page, so every link preview matches.</p>
+        </figure>
+        <figure>
+          <figcaption class="eyebrow mb-3">Email signature</figcaption>
+          <div class="rounded-2xl border border-line bg-ink p-6">
+            <p class="text-sm text-bone-dim">Talk soon,</p>
+            <div class="mt-5 pt-5 border-t border-line flex items-center gap-4">
+              <Mark class="h-8" still />
+              <div>
+                <p class="font-medium leading-tight">Mike Shoss</p>
+                <p class="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted mt-1">Founder · Epilogue</p>
+              </div>
+            </div>
+            <p class="font-mono text-[0.6875rem] text-bone-dim mt-4">mikeshoss.com <span class="text-muted">·</span> {site.location}</p>
+          </div>
+          <p class="text-sm text-muted mt-3">Plain, no images in the body: the mark is the only graphic, and the text still works if it is blocked.</p>
+        </figure>
+      </div>
     </div>
   </section>
 
-  <!-- 10 Downloads -->
+  <!-- 11 Downloads -->
   <section class="carbon" id="downloads">
     <div class="page py-16 md:py-24">
-      <p class="eyebrow"><b class="!text-accent">10</b> · Downloads</p>
+      <p class="eyebrow"><b>11</b> · Downloads</p>
       <h2 class="display text-display-lg mt-4">Press kit.</h2>
       <p class="mt-6 text-carbon-muted max-w-prose leading-relaxed">
         For event pages, podcasts and anyone writing about the work. Use them as they are. For a bio or a different photo,
-        <a href="/contact" class="underline decoration-carbon-line underline-offset-4 hover:text-accent">get in touch</a>.
+        <a href="/contact" class="underline decoration-carbon-line underline-offset-4 hover:text-accent-bright">get in touch</a>.
       </p>
-      <ul class="mt-10 border-t border-carbon-line">
+      <ul class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {downloads.map((d) => (
-          <li class="border-b border-carbon-line">
-            <a href={d.href} download class="py-5 grid grid-cols-[minmax(0,1fr)_auto] gap-4 items-baseline group">
-              <span><span class="text-carbon-text font-medium group-hover:text-accent transition-colors">{d.name}</span><span class="block font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-carbon-muted mt-1">{d.detail}</span></span>
-              <span class="font-mono text-xs text-carbon-muted group-hover:text-accent transition-colors">Download ↓</span>
+          <li class:list={['rounded-2xl border border-carbon-line overflow-hidden flex flex-col', d.wide && 'sm:col-span-2 lg:col-span-3']}>
+            <a href={d.files[0][1]} download class:list={['block grid place-items-center overflow-hidden', d.ground, d.wide ? 'p-4' : d.photo ? 'h-48' : 'h-40']} aria-label={`Download ${d.name}, ${d.files[0][0]}`}>
+              <img src={d.preview} alt="" loading="lazy" decoding="async" class:list={[d.wide ? 'w-full h-auto rounded-lg' : d.photo ? 'h-full w-full object-cover object-top' : 'h-20 w-auto']} />
             </a>
+            <div class="p-4 border-t border-carbon-line flex items-end justify-between gap-4 mt-auto">
+              <span>
+                <span class="block text-carbon-text font-medium">{d.name}</span>
+                <span class="block font-mono text-[0.625rem] uppercase tracking-[0.14em] text-carbon-muted mt-1">{d.detail}</span>
+              </span>
+              <span class="flex gap-3 flex-wrap justify-end">
+                {d.files.map(([label, href]) => (
+                  <a href={href} download class="font-mono text-[0.6875rem] text-carbon-text underline decoration-carbon-line underline-offset-4 hover:text-accent-bright whitespace-nowrap">{label}</a>
+                ))}
+              </span>
+            </div>
           </li>
         ))}
       </ul>

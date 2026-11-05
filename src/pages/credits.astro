@@ -56,7 +56,7 @@ const isExternal = (href: string) => href.startsWith('http');
             <span class="font-mono text-xs text-accent-dim">{String(i + 1).padStart(2, '0')}</span>
             <p class="display text-xl md:text-2xl leading-tight">
               {href
-                ? <a href={href} {...(isExternal(c.href!) ? { target: '_blank', rel: 'noopener noreferrer' } : {})} class="hover:text-accent transition-colors">{c.work}{isExternal(c.href!) && <span class="text-muted text-base"> ↗</span>}</a>
+                ? <a href={href} {...(isExternal(c.href!) ? { target: '_blank', rel: 'noopener noreferrer' } : {})} class="hover:text-accent-dim transition-colors">{c.work}{isExternal(c.href!) && <span class="text-muted text-base"> ↗</span>}</a>
                 : c.work}
             </p>
             <span class="font-mono text-[0.6875rem] uppercase tracking-wider text-muted hidden md:block">{c.label}</span>

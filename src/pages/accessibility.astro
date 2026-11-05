@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/content';
+
+/**
+ * Accessibility statement. Says only what has actually been checked, and what
+ * has not. Update `checked` and the lists whenever the site is re-audited
+ * (the contrast audit and the 320 px reflow check are scripted; see README).
+ */
+const checked = '2026-11-05';
+const checkedLabel = new Date(`${checked}T12:00:00`).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const done = [
+  { title: 'Contrast, measured', detail: 'Every text element on every page is measured against its real background and size. All of it meets AA: 4.5:1 for body text, 3:1 for large text. The orange is tuned per surface so it passes on paper, on panels and on carbon.' },
+  { title: 'Keyboard all the way', detail: 'Every control is a real link or button with a visible orange focus ring. The first key press offers "Skip to main content". The Experience tabs move with the arrow keys, Home and End.' },
+  { title: 'Motion you can turn off', detail: 'With reduced motion set on your device, nothing animates: the mark is simply drawn, the cursor holds still, the sleeve swaps sides without flipping.' },
+  { title: 'Sound only when asked', detail: 'The producer tag plays a short chime only when you press the mark or the key. Nothing on the site plays sound by itself.' },
+  { title: 'Reflow to 320 pixels', detail: 'Every page fits a 320-pixel-wide screen without sideways scrolling, so it holds up at 400% zoom.' },
+  { title: 'Things that mean something are labelled', detail: 'Photos have descriptions. Decorative marks, the speaker grille and the status lights are hidden from screen readers; the text beside them says the same thing.' },
+];
+
+const notYet = [
+  'No independent audit. These are my own checks, scripted and repeatable, but not certified.',
+  'Not yet tested end to end with a screen reader (VoiceOver, NVDA or JAWS). The structure is built for them: one heading per page in order, landmarks, labelled controls. Hearing it is the next step.',
+  'The share images that appear in link previews carry their text as pictures. The same words are always in the page title and description.',
+];
+---
+
+<Layout
+  card="accessibility"
+  title="Accessibility — Mike Shoss"
+  description="How mikeshoss.com aims for WCAG 2.2 AA: what is measured, what is not yet, and how to tell me when something doesn't work for you."
+  breadcrumbs={[{ name: 'Accessibility', href: '/accessibility' }]}
+>
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between eyebrow">
+      <span>Standard · <b>WCAG 2.2 AA</b></span>
+      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> Checked {checkedLabel}</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[16ch]">Built for <em>everyone</em> who lands here.</h1>
+    <p class="lede mt-8 max-w-prose">
+      I build software for industries where being wrong is expensive. Shutting someone out is one of the ways to be
+      wrong, so this site aims for WCAG 2.2 at level AA, everywhere. Here's what that means in practice, what I
+      haven't covered yet, and how to tell me when something doesn't work for you.
+    </p>
+  </section>
+
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6"><b>01</b> · What is checked</p>
+    <ol class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+      {done.map((d, i) => (
+        <li class="bg-ink p-6">
+          <span class="font-mono text-xs text-accent-dim">{String(i + 1).padStart(2, '0')}</span>
+          <h2 class="display text-xl mt-3">{d.title}</h2>
+          <p class="text-sm text-bone-dim leading-relaxed mt-2">{d.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="section pt-0 md:pt-0">
+    <div class="grid md:grid-cols-12 gap-8 rule pt-6">
+      <div class="md:col-span-5">
+        <p class="eyebrow"><b>02</b> · Not yet</p>
+        <h2 class="display text-display-md mt-4">Honest about the gaps.</h2>
+      </div>
+      <ul class="md:col-span-7 ruled">
+        {notYet.map((n) => (
+          <li class="py-4 flex gap-4 text-bone-dim leading-relaxed">
+            <span class="led-off mt-2 shrink-0" aria-hidden="true"></span>{n}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section pt-0 md:pt-0">
+    <div class="carbon rounded-2xl p-8 md:p-12 grid md:grid-cols-12 gap-8 items-end">
+      <div class="md:col-span-7">
+        <p class="eyebrow"><b>03</b> · Tell me</p>
+        <h2 class="display text-display-md mt-4">Something didn't work for you?</h2>
+        <p class="mt-4 text-carbon-muted leading-relaxed max-w-prose">
+          Tell me what you were trying to do and what got in the way. A screenshot helps but isn't needed. I'll fix it,
+          and I'll tell you when it's fixed.
+        </p>
+      </div>
+      <div class="md:col-span-5 grid gap-3">
+        <a href={`mailto:${site.email}?subject=Accessibility on mikeshoss.com`} class="btn-primary justify-self-start">Email {site.email}</a>
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="text-sm text-carbon-muted underline decoration-carbon-line underline-offset-4 hover:text-accent-bright justify-self-start">Or message me on LinkedIn ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="page pb-16">
+    <p class="text-sm text-muted max-w-prose">
+      The colour rules behind this are on the <a href="/brand#colour" class="link">brand page</a>, with every ratio
+      computed from the actual colours. Last checked {checkedLabel}.
+    </p>
+  </section>
+</Layout>

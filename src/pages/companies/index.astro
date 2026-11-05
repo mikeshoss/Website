@@ -47,7 +47,7 @@ const names = companies.map((company) => company.name).join(', ');
           <a href={`/companies/${company.slug}`} class="group py-8 md:py-10 grid grid-cols-[2.5rem_1fr] md:grid-cols-[3rem_minmax(0,4fr)_minmax(0,6fr)_auto] gap-x-6 gap-y-3 items-baseline">
             <span class="font-mono text-xs text-accent-dim">{String(i + 1).padStart(2, '0')}</span>
             <div>
-              <h2 class="display text-display-md group-hover:text-accent transition-colors duration-200">{company.name}</h2>
+              <h2 class="display text-display-md group-hover:text-accent-dim transition-colors duration-200">{company.name}</h2>
               <p class="text-sm text-bone-dim mt-2">{company.role.split(' — ')[0]}</p>
               <p class="font-mono text-xs text-muted mt-1">{company.period}</p>
             </div>
@@ -60,7 +60,7 @@ const names = companies.map((company) => company.name).join(', ');
                 {company.holdings?.length ? <span>Holds {company.holdings.length}</span> : null}
               </p>
             </div>
-            <span class="hidden md:block text-muted group-hover:text-accent transition-colors duration-200" aria-hidden="true">→</span>
+            <span class="hidden md:block text-muted group-hover:text-accent-dim transition-colors duration-200" aria-hidden="true">→</span>
           </a>
         </li>
       ))}

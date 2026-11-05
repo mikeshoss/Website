@@ -397,3 +397,19 @@ prerendered routes.
 ## License
 
 Licensed under the [Apache License 2.0](./LICENSE). See the [LICENSE](./LICENSE) and [NOTICE](./NOTICE) files for details.
+
+## Accessibility
+
+The site aims for WCAG 2.2 AA; the public statement is `/accessibility`.
+`npm run a11y` audits every page in the sitemap for text contrast (1.4.3)
+and reflow at 320 px (1.4.10) and exits non-zero on any failure:
+
+```sh
+npm run build && npx astro preview   # in one terminal
+npm run a11y                         # in another (defaults to localhost:4321)
+```
+
+After a clean run, update `checked` in `src/pages/accessibility.astro`.
+Colour rule of thumb: small orange text is `accent-dim` on paper and panels,
+`accent-bright` on carbon (`.carbon` does this automatically); text on orange
+is `accent-ink`.

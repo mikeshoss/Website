@@ -88,7 +88,7 @@ const tabs = [
           <div class="md:col-span-3">
             <p class="display text-display-sm leading-tight">
               {t.url
-                ? <a href={t.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{t.company} <span class="text-muted text-lg">↗</span></a>
+                ? <a href={t.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent-dim transition-colors">{t.company} <span class="text-muted text-lg">↗</span></a>
                 : t.company}
             </p>
             <p class="text-xs font-mono text-muted mt-2">{tenureYears(t)}</p>
@@ -133,7 +133,7 @@ const tabs = [
         return (
           <li>
             <Tag {...props} class:list={['py-5 grid md:grid-cols-12 gap-x-8 gap-y-2 transition-colors duration-200', patent.url && 'group hover:bg-ink-50 -mx-4 px-4']}>
-              <p class="md:col-span-7 text-bone leading-snug group-hover:text-accent transition-colors duration-200">
+              <p class="md:col-span-7 text-bone leading-snug group-hover:text-accent-dim transition-colors duration-200">
                 {patent.title}{patent.url && <span class="text-muted"> ↗</span>}
               </p>
               <p class="md:col-span-3 text-xs font-mono text-muted">{patent.number}</p>
@@ -192,7 +192,7 @@ const tabs = [
     <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {interests.map(interest => (
         <a href={`/off-the-clock/${interest.slug}/`} class="group bg-ink p-7 flex flex-col hover:bg-ink-50 transition-colors">
-          <h2 class="display text-display-sm group-hover:text-accent transition-colors">{interest.name}</h2>
+          <h2 class="display text-display-sm group-hover:text-accent-dim transition-colors">{interest.name}</h2>
           {interest.keywords && (
             <ul class="mt-5 space-y-1.5">
               {interest.keywords.map(k => <li class="text-xs font-mono text-muted">{k}</li>)}

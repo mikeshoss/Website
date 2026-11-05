@@ -9,7 +9,8 @@
     "check": "astro check",
     "preview": "astro preview",
     "dev:full": "astro build && wrangler dev",
-    "images": "node scripts/generate-images.mjs"
+    "images": "node scripts/generate-images.mjs",
+    "a11y": "node scripts/a11y-audit.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",

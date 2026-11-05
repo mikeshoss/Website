@@ -136,6 +136,12 @@ const TARGETS = [
     sub: 'The mark, the tag, the colours, the voice. Press kit included.',
     path: '/brand',
   }),
+  card('public/og/accessibility.png', {
+    eyebrow: 'Standard · WCAG 2.2 AA',
+    title: 'Built for *everyone*.',
+    sub: 'What is measured, what is not yet, and how to tell me.',
+    path: '/accessibility',
+  }),
   card('public/og/contact.png', {
     eyebrow: 'Contact',
     title: "Let's *build*.",

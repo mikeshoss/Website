@@ -95,7 +95,7 @@ const related = (term.related ?? [])
       <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
         {related.map(other => (
           <a href={`/glossary/${other.slug}`} class="group bg-ink p-7 transition-colors duration-200 hover:bg-ink-50">
-            <h2 class="display text-display-sm group-hover:text-accent transition-colors duration-200">{other.term}</h2>
+            <h2 class="display text-display-sm group-hover:text-accent-dim transition-colors duration-200">{other.term}</h2>
             <p class="text-sm text-muted leading-relaxed mt-3">{other.short}</p>
           </a>
         ))}

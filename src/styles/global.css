@@ -139,7 +139,7 @@
   }
 
   .link:hover {
-    @apply decoration-accent text-accent;
+    @apply decoration-accent text-accent-dim;
   }
 
   .link-quiet {
@@ -155,7 +155,7 @@
   }
 
   .arrow-link:hover {
-    @apply text-accent;
+    @apply text-accent-dim;
   }
 
   .btn {
@@ -319,6 +319,15 @@
   /* The machine room: the one dark surface on the site. */
   .carbon {
     @apply bg-carbon text-carbon-text;
+  }
+
+  /* On carbon the base orange is 4.46:1, just under AA for small text; the
+     bright orange is 5.5:1. The eyebrow's bold word follows. */
+  .carbon .text-accent,
+  .carbon .eyebrow b,
+  .carbon .hover\:text-accent-dim:hover,
+  .carbon .group:hover .group-hover\:text-accent-dim {
+    color: theme('colors.accent.bright');
   }
 
   .carbon .eyebrow {

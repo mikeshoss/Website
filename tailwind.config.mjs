@@ -31,8 +31,10 @@ export default {
         accent: {
           DEFAULT: '#e0520f',
           bright: '#f0661f',
-          dim: '#b5420b',
-          ink: '#1b1a18',
+          // Small orange text on paper and on the darker panels (5.2:1 / 4.8:1).
+          dim: '#a83d0a',
+          // Text on orange: a hair deeper than carbon so it passes AA (4.84:1).
+          ink: '#111110',
         },
         signal: '#3f9a46',
         carbon: {
