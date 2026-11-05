@@ -1,18 +1,287 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { studio } from '../data/content';
+import { withCampaign } from '../lib/links';
+
+/**
+ * The 404 is a radio. The missing address is the station you tried, 404.0
+ * MHz, all static. Turn the dial (drag, or ← →) and real pages come in as
+ * stations: each locks on with the green light and a one-line pitch, and ↵
+ * tunes in. Before anyone touches it, the page reads the broken address,
+ * guesses the closest page from the ⌘K index (/palette.json), and pre-tunes
+ * to that station or offers "Did you mean". The plain links are always there
+ * too. Static and sound stop for reduced motion; sound only after a press.
+ */
+const stations = [
+  { f: 88.7, name: 'Credits', line: "If my name's on it, it's a hit.", url: '/credits/' },
+  { f: 91.3, name: 'Book the studio', line: 'Projects and engagements, through Epilogue.', url: withCampaign(studio.url, '404-tuner')!, ext: true },
+  { f: 94.7, name: 'Off the clock', line: 'Steel bikes, radio, cards and a homelab.', url: '/off-the-clock/' },
+  { f: 97.1, name: 'Bikes', line: 'Three frames in 8-bit. One hangs on the wall.', url: '/off-the-clock/bicycles/' },
+  { f: 99.9, name: 'Porygon', line: '49 of 117. Still hunting.', url: '/off-the-clock/cards/#porygon' },
+  { f: 101.5, name: 'Ventures', line: 'What I run, and the structure that holds it.', url: '/companies/' },
+  { f: 104.3, name: 'The API', line: 'Everything on this site, as JSON.', url: '/api/' },
+  { f: 106.9, name: 'Contact', line: "Let's make a hit.", url: '/contact/' },
+];
 ---
 
-<Layout noindex title="Page Not Found — Mike Shoss" description="Nothing on this channel. The page you were looking for has moved or never existed; the credits, ventures and contact are one click away.">
-  <section class="page pt-14 md:pt-20 pb-24">
-    <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
-      <span>Error 404</span>
-      <span class="flex items-center gap-2"><span class="led-off" aria-hidden="true"></span> No signal</span>
+<Layout noindex card="home" title="Nothing on this channel — Mike Shoss" description="Nothing on this channel. The page you were looking for has moved or never existed; turn the dial, or take the credits, ventures and contact, one click away.">
+  <section class="page pt-14 md:pt-20 pb-20">
+    <div class="flex items-center justify-between eyebrow">
+      <span>Error 404 · <b>No signal</b></span>
+      <span class="flex items-center gap-2"><span class="led-off" id="t-led" aria-hidden="true"></span> <span id="t-status">Searching</span></span>
     </div>
-    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Nothing on this channel.</h1>
-    <p class="lede mt-8 max-w-prose">The page you're looking for doesn't exist, or it moved.</p>
-    <div class="mt-10 flex items-center gap-3">
-      <a href="/" class="btn-primary">Back to home</a>
-      <a href="/credits" class="btn-quiet">The credits</a>
+    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Nothing on this <em>channel</em>.</h1>
+    <p class="lede mt-6 max-w-prose">
+      <span class="font-mono text-base text-bone break-all" id="t-path">This address</span> is off the air. Turn the dial,
+      or take a shortcut.
+    </p>
+
+    <div class="tuner carbon rounded-[1.25rem] mt-10 p-5 md:p-7 grid gap-5" data-stations={JSON.stringify(stations)}>
+      <div class="flex items-center justify-between gap-4">
+        <p class="font-mono text-[clamp(2.4rem,7vw,4rem)] leading-none tracking-tight tabular-nums text-carbon-text" id="t-freq">404.0<span class="text-[0.35em] text-carbon-muted ml-2 tracking-widest">MHz</span></p>
+        <canvas id="t-static" width="80" height="28" class="w-28 sm:w-40 h-auto rounded-lg border border-carbon-line bg-carbon-50" aria-hidden="true"></canvas>
+      </div>
+
+      <div
+        id="t-dial"
+        class="dial relative h-[4.25rem] rounded-xl bg-carbon-50 border border-carbon-line overflow-hidden cursor-ew-resize select-none"
+        role="slider"
+        tabindex="0"
+        aria-label="Tuning dial: arrow keys to tune, enter to go"
+        aria-valuemin="88"
+        aria-valuemax="108"
+        aria-valuenow="98"
+        aria-valuetext="No signal"
+      >
+        <canvas id="t-scale" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+        <div id="t-needle" class="absolute top-1.5 bottom-1.5 w-[3px] -ml-[1.5px] rounded bg-accent shadow-[0_0_10px_rgb(224_82_15/0.6)]" style="left: 50%"></div>
+      </div>
+
+      <div class="grid grid-cols-[auto_minmax(0,1fr)] sm:grid-cols-[auto_minmax(0,1fr)_auto] gap-x-4 gap-y-2 items-center border-t border-carbon-line pt-4 min-h-[4.5rem]">
+        <span class="led-off" id="t-sled" aria-hidden="true"></span>
+        <div aria-live="polite">
+          <p class="text-lg font-medium text-carbon-text" id="t-name">Static</p>
+          <p class="text-sm text-carbon-muted" id="t-line">Turn the dial. There's something on every few megahertz.</p>
+        </div>
+        <a id="t-go" href="/" class="font-mono text-xs text-accent hover:text-carbon-text transition-colors col-start-2 sm:col-start-auto whitespace-nowrap" hidden>Tune in →</a>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-carbon-muted">
+        <kbd class="tk">←</kbd><kbd class="tk">→</kbd> tune <kbd class="tk ml-2">↵</kbd> go <span class="ml-1">· drag the dial ·</span>
+        <button type="button" id="t-sound" class="ml-1 px-2.5 py-1 rounded-full border border-carbon-line text-carbon-text hover:border-carbon-text transition-colors">Sound on</button>
+      </div>
+    </div>
+
+    <p class="mt-6 text-bone-dim" id="t-guess" hidden></p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/" class="btn-primary">Home</a>
+      <a href="/credits/" class="btn-quiet">Credits</a>
+      <a href={withCampaign(studio.url, '404-links')} target="_blank" rel="noopener noreferrer" class="btn-quiet">Book the studio <span aria-hidden="true">↗</span></a>
+      <button type="button" data-cmdk-open class="btn-quiet">Search everything <kbd class="font-mono text-[0.625rem] text-muted ml-1" data-cmdk-key>⌘K</kbd></button>
     </div>
   </section>
 </Layout>
+
+<style>
+  .tk {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.4rem;
+    height: 1.3rem;
+    padding: 0 0.3rem;
+    border-radius: 0.35rem;
+    border: 1px solid theme('colors.carbon.line');
+    border-bottom-width: 2px;
+    background: theme('colors.carbon.50');
+    color: theme('colors.carbon.text');
+    font: inherit;
+  }
+  #t-static { image-rendering: pixelated; }
+  .dial:focus-visible { outline: 2px solid theme('colors.accent.DEFAULT'); outline-offset: 3px; }
+</style>
+
+<script>
+  type Station = { f: number; name: string; line: string; url: string; ext?: boolean };
+  type Item = { t: string; u?: string; k?: string; x?: true };
+
+  const root = document.querySelector<HTMLElement>('.tuner');
+  const dial = document.getElementById('t-dial');
+  if (root && dial) {
+    const stations: Station[] = JSON.parse(root.dataset.stations || '[]');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = (id: string) => document.getElementById(id)!;
+    const scale = $('t-scale') as HTMLCanvasElement, needle = $('t-needle'), freq = $('t-freq');
+    const sName = $('t-name'), sLine = $('t-line'), sGo = $('t-go') as HTMLAnchorElement, sLed = $('t-sled');
+    const led = $('t-led'), status = $('t-status');
+
+    // The address that wasn't there.
+    const missing = decodeURIComponent(location.pathname + location.search);
+    $('t-path').textContent = missing === '/404.html' || missing === '/404' ? 'This address' : missing;
+
+    let f = 98, tuned = false, locked: Station | null = null, level = 1;
+    let audio: AudioContext | null = null, hiss: GainNode | null = null;
+
+    const xOf = (v: number) => ((v - 88) / 20) * (dial.clientWidth - 24) + 12;
+    function drawScale() {
+      const r = dial!.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+      scale.width = r.width * dpr; scale.height = r.height * dpr;
+      const c = scale.getContext('2d')!; c.scale(dpr, dpr); c.clearRect(0, 0, r.width, r.height);
+      for (let m = 880; m <= 1080; m += 2) {
+        const x = xOf(m / 10), big = m % (r.width < 520 ? 40 : 20) === 0;
+        c.fillStyle = big ? '#8f897e' : '#3a3732'; c.fillRect(x, big ? 10 : 18, 1, big ? 22 : 10);
+        if (big) { c.fillStyle = '#8f897e'; c.font = '10px "JetBrains Mono", monospace'; c.textAlign = 'center'; c.fillText(String(m / 10), x, 46); }
+      }
+      for (const s of stations) { c.fillStyle = '#e0520f'; c.fillRect(xOf(s.f) - 1.5, 54, 3, 3); }
+    }
+    function nearest() {
+      let best = stations[0], d = 99;
+      for (const s of stations) { const dd = Math.abs(s.f - f); if (dd < d) { d = dd; best = s; } }
+      return { s: best, d };
+    }
+    function update() {
+      needle.style.left = `${xOf(f)}px`;
+      const { s, d } = nearest();
+      const lock = tuned && d <= 0.25 ? s : null;
+      (freq.firstChild as Text).nodeValue = tuned ? f.toFixed(1) : '404.0';
+      dial!.setAttribute('aria-valuenow', f.toFixed(1));
+      dial!.setAttribute('aria-valuetext', lock ? `${f.toFixed(1)} megahertz: ${lock.name}` : `${f.toFixed(1)} megahertz: static`);
+      if (lock !== locked) {
+        locked = lock;
+        sName.textContent = lock ? lock.name : 'Static';
+        sLine.textContent = lock ? lock.line : tuned ? 'Keep turning.' : "Turn the dial. There's something on every few megahertz.";
+        sGo.hidden = !lock;
+        if (lock) {
+          sGo.href = lock.url;
+          sGo.textContent = `${lock.ext ? 'epiloguelabs.com ↗' : lock.url.replace(/\/$/, '') || '/'} →`;
+          if (lock.ext) { sGo.target = '_blank'; sGo.rel = 'noopener noreferrer'; } else { sGo.removeAttribute('target'); sGo.removeAttribute('rel'); }
+        }
+        for (const el of [sLed, led]) { el.classList.toggle('led', !!lock); el.classList.toggle('led-off', !lock); }
+        status.textContent = lock ? 'Locked' : 'Searching';
+        if (lock && audio?.state === 'running') blip();
+      }
+      level = lock ? 0.08 : Math.min(1, 0.35 + d * 0.4);
+      if (hiss && audio) hiss.gain.setTargetAtTime(lock ? 0.004 : Math.min(0.08, 0.02 + d * 0.03), audio.currentTime, 0.05);
+    }
+    function setF(v: number) { tuned = true; f = Math.min(108, Math.max(88, Math.round(v * 10) / 10)); update(); }
+    function glide(to: number) {
+      const from = f, t0 = performance.now();
+      if (reduced) { setF(to); return; }
+      const step = (t: number) => { const k = Math.min(1, (t - t0) / 900); setF(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }
+
+    // Static: a little noise field, a clean wave when locked.
+    const sc = ($('t-static') as HTMLCanvasElement).getContext('2d')!;
+    const img = sc.createImageData(80, 28);
+    function noise() {
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = Math.random() < level ? Math.random() * 160 + 40 : 36;
+        img.data[i] = v; img.data[i + 1] = v * 0.97; img.data[i + 2] = v * 0.92; img.data[i + 3] = 255;
+      }
+      sc.putImageData(img, 0, 0);
+      if (locked) { sc.fillStyle = '#3f9a46'; for (let x = 0; x < 80; x++) sc.fillRect(x, 14 + Math.round(Math.sin(x / 5 + performance.now() / 300) * 6), 1, 1); }
+    }
+    let raf = 0;
+    const loop = () => { noise(); raf = requestAnimationFrame(loop); };
+    if (reduced) { noise(); setInterval(noise, 800); } else loop();
+    document.addEventListener('visibilitychange', () => { if (reduced) return; cancelAnimationFrame(raf); if (!document.hidden) loop(); });
+
+    // Dial: drag or keys.
+    const fromX = (x: number) => { const r = dial.getBoundingClientRect(); return 88 + ((x - r.left - 12) / (r.width - 24)) * 20; };
+    let dragging = false;
+    dial.addEventListener('pointerdown', (e) => { dragging = true; dial.setPointerCapture(e.pointerId); setF(fromX(e.clientX)); });
+    dial.addEventListener('pointermove', (e) => { if (dragging) setF(fromX(e.clientX)); });
+    dial.addEventListener('pointerup', () => (dragging = false));
+    dial.addEventListener('keydown', (e) => {
+      const big = e.shiftKey ? 1 : 0.2;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); setF(f + big); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); setF(f - big); }
+      else if (e.key === 'PageUp' || e.key === 'PageDown') {
+        // Jump to the next or previous station.
+        e.preventDefault();
+        const list = e.key === 'PageUp' ? stations.filter((s) => s.f > f + 0.05) : stations.filter((s) => s.f < f - 0.05).reverse();
+        if (list[0]) glide(list[0].f);
+      } else if (e.key === 'Enter' && locked) { e.preventDefault(); sGo.click(); }
+    });
+
+    // Sound: band-passed hiss that fades when locked, and a blip on lock.
+    function blip() {
+      if (!audio) return;
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = 'triangle'; o.frequency.value = 880;
+      g.gain.setValueAtTime(0.0001, audio.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.1, audio.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.25);
+      o.connect(g).connect(audio.destination); o.start(); o.stop(audio.currentTime + 0.3);
+    }
+    $('t-sound').addEventListener('click', (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      try {
+        if (!audio) {
+          audio = new AudioContext();
+          const buf = audio.createBuffer(1, audio.sampleRate * 2, audio.sampleRate), d = buf.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+          const src = audio.createBufferSource(); src.buffer = buf; src.loop = true;
+          const bp = audio.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2400; bp.Q.value = 0.6;
+          hiss = audio.createGain(); hiss.gain.value = 0.04;
+          src.connect(bp).connect(hiss).connect(audio.destination); src.start();
+          btn.textContent = 'Sound off';
+        } else if (audio.state === 'running') { audio.suspend(); btn.textContent = 'Sound on'; }
+        else { audio.resume(); btn.textContent = 'Sound off'; }
+        update();
+      } catch { btn.textContent = 'No audio here'; }
+    });
+
+    // Edit distance, for typos like /experiance.
+    function typos(a: string, b: string): number {
+      const row = Array.from({ length: b.length + 1 }, (_, j) => j);
+      for (let i = 1; i <= a.length; i++) {
+        let prev = row[0]; row[0] = i;
+        for (let j = 1; j <= b.length; j++) {
+          const tmp = row[j];
+          row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+          prev = tmp;
+        }
+      }
+      return row[b.length];
+    }
+
+    // The guess: match the broken address against the ⌘K index.
+    async function guess() {
+      const words = missing.toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length >= 3);
+      if (!words.length) return;
+      let items: Item[] = [];
+      try { items = (await (await fetch('/palette.json')).json()).items; } catch { return; }
+      let best: Item | null = null, bestScore = 0;
+      for (const i of items) {
+        if (!i.u || i.x) continue;
+        // Whole words only: an exact word scores double; a typed word that is the
+        // start of a longer one (credit → credits) counts if it is 5+ letters.
+        const tokens = `${i.t} ${i.u} ${i.k ?? ''}`.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+        let s = 0;
+        for (const w of words) {
+          if (tokens.includes(w)) s += w.length * 2;
+          else if (w.length >= 5 && tokens.some((t) => t.startsWith(w) || (t.length >= 5 && w.startsWith(t)))) s += w.length;
+          else if (w.length >= 6 && tokens.some((t) => Math.abs(t.length - w.length) <= 2 && typos(w, t) <= (w.length >= 9 ? 2 : 1))) s += w.length;
+        }
+        if (i.u.split('#')[0].split('/').filter(Boolean).some((seg) => words.includes(seg))) s += 4;
+        if (s && words.some((w) => i.t.toLowerCase().split(/[^a-z0-9]+/).some((t) => t.startsWith(w)))) s += 3; // a title match beats a section
+        if (s > bestScore) { bestScore = s; best = i; }
+      }
+      if (!best || bestScore < 6) return; // a four-letter partial on its own is not a guess
+      // The most specific station whose page the guess sits under.
+      const station = stations
+        .filter((s) => !s.ext && (s.url.includes('#') ? best!.u === s.url : best!.u!.startsWith(s.url)))
+        .sort((a, b) => b.url.length - a.url.length)[0];
+      if (station) glide(station.f);
+      const g = $('t-guess');
+      g.hidden = false;
+      g.innerHTML = 'Did you mean <a class="link"></a>?';
+      const a = g.querySelector('a')!; a.href = best.u!; a.textContent = best.t;
+    }
+
+    new ResizeObserver(() => { drawScale(); update(); }).observe(dial);
+    guess();
+  }
+</script>

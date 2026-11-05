@@ -1442,6 +1442,8 @@ export interface Interest {
   status: string;
   /** A short line under the page title, for names that need one. */
   aka?: string;
+  /** Extra words people might type for this page (⌘K search and the 404 guess). Not shown. */
+  search?: string;
   keywords?: string[];
   /** Equipment that is running right now, shown as a panel of lights. */
   stations?: { name: string; role: string }[];
@@ -1450,6 +1452,7 @@ export interface Interest {
 export const interests: Interest[] = [
   {
     slug: "bicycles",
+    search: "bikes bike frames cycling",
     name: "Vintage Canadian steel bicycles",
     summary: "Canadian vintage steel, and a few good frames from elsewhere: restored, rebuilt and ridden. One is too rare to ride and hangs on my office wall.",
     status: "Restoring",
@@ -1457,6 +1460,7 @@ export const interests: Interest[] = [
   },
   {
     slug: "amateur-radio",
+    search: "ham radio aprs meshtastic adsb",
     name: "Amateur radio",
     summary: "Repeaters and digipeaters running at my house for APRS, LoRa APRS, Meshtastic and MeshCore, plus an ADS-B receiver tracking the aircraft overhead. Infrastructure other people's radios lean on.",
     status: "On air",
@@ -1478,6 +1482,7 @@ export const interests: Interest[] = [
   },
   {
     slug: "cards",
+    search: "pokemon magic tcg collection slabs",
     name: "Trading cards",
     aka: "TCG · Pokémon and Magic: The Gathering",
     summary: "Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
@@ -1486,6 +1491,7 @@ export const interests: Interest[] = [
   },
   {
     slug: "homelab",
+    search: "servers infrastructure lab",
     name: "Homelab",
     summary: "I should be able to do any work, anywhere, on any device. Five servers, over a hundred containers and a bench of local AI models make that true. Run like production, because some of it is.",
     status: "Running",

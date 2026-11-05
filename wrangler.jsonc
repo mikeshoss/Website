@@ -24,7 +24,10 @@
   "main": "worker/index.ts",
   "assets": {
     "directory": "dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Missing paths get dist/404.html (the radio tuner) with a 404 status,
+    // instead of an empty body.
+    "not_found_handling": "404-page"
   },
 
   // Staging: deployed from the `staging` branch to staging.mikeshoss.com, as a
@@ -43,7 +46,8 @@
       "assets": {
         "directory": "dist",
         "binding": "ASSETS",
-        "run_worker_first": true
+        "run_worker_first": true,
+        "not_found_handling": "404-page"
       }
     }
   }
