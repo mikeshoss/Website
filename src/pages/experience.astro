@@ -1,4 +1,6 @@
 ---
+import { inlineTitle } from '../lib/titles';
+import Title from '../components/Title.astro';
 import Layout from '../layouts/Layout.astro';
 import RoleCard from '../components/RoleCard.astro';
 import { experience, patents, volunteering, education, certifications, interests, grantedPatentCount, yearsExperience } from '../data/content';
@@ -88,8 +90,8 @@ const tabs = [
           <div class="md:col-span-3">
             <p class="display text-display-sm leading-tight">
               {t.url
-                ? <a href={t.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent-dim transition-colors">{t.company} <span class="text-muted text-lg">↗</span></a>
-                : t.company}
+                ? <a href={t.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent-dim transition-colors"><Title text={t.company} /> <span class="text-muted text-lg">↗</span></a>
+                : <Title text={t.company} />}
             </p>
             <p class="text-xs font-mono text-muted mt-2">{tenureYears(t)}</p>
             {t.location && <p class="text-xs text-muted mt-1">{t.location}</p>}
@@ -98,7 +100,7 @@ const tabs = [
             {t.roles.map(role => (
               <div>
                 <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                  <h2 class="font-medium text-bone">{role.title}</h2>
+                  <h2 class="font-medium text-bone"><Title text={role.title} qualClass="block text-sm font-normal text-muted mt-0.5" /></h2>
                   <span class="text-xs font-mono text-muted whitespace-nowrap">{role.period}</span>
                 </div>
                 {role.highlights.length > 0 && (
@@ -183,7 +185,7 @@ const tabs = [
 
     <div class="rule pt-5 mt-14 mb-6"><p class="eyebrow">Certifications</p></div>
     <ul class="flex flex-wrap gap-2">
-      {certifications.map(cert => <li class="chip normal-case tracking-normal text-xs text-bone-dim">{cert.name}</li>)}
+      {certifications.map(cert => <li class="chip normal-case tracking-normal text-xs text-bone-dim">{inlineTitle(cert.name)}</li>)}
     </ul>
   </section>
 

@@ -12,6 +12,11 @@
 @tailwind utilities;
 
 @layer base {
+  /* Line breaks: headings balance their lines; running text avoids leaving one
+     word alone on the last line. */
+  h1, h2, h3, h4, .display { text-wrap: balance; }
+  p, li, dd, figcaption, blockquote { text-wrap: pretty; }
+
   html {
     scroll-behavior: smooth;
     /* Anchored sections land below the sticky 4rem header, not under it. */

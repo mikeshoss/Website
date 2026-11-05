@@ -1,4 +1,5 @@
 ---
+import Title from './Title.astro';
 /**
  * One volunteering, advisory or governance role. Renders as a link when the
  * organisation has a URL, and as a plain block otherwise — the same markup
@@ -21,9 +22,9 @@ const linkProps = role.url ? { href: role.url, target: '_blank', rel: 'noopener 
   <div class="flex items-start justify-between gap-4">
     <div>
       <p class="font-medium text-bone leading-snug group-hover:text-accent-dim transition-colors duration-300">
-        {role.title}{role.url && <span class="text-muted font-normal"> ↗</span>}
+        <Title text={role.title} qualClass="block text-sm font-normal text-muted mt-0.5" />{role.url && <span class="text-muted font-normal"> ↗</span>}
       </p>
-      <p class="text-sm text-bone-dim mt-1">{role.organization}</p>
+      <p class="text-sm text-bone-dim mt-1"><Title text={role.organization} qualClass="block text-xs text-muted mt-0.5" /></p>
     </div>
     <span class="text-xs font-mono text-muted whitespace-nowrap pt-1">{role.period}</span>
   </div>

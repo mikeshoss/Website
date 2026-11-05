@@ -1617,9 +1617,9 @@ export const bikes: Bike[] = [
     story: "Not every good frame carries a famous name. This one came home cheap and was hiding double-butted Tange 900 chromoly, mid-'80s Japanese steel that rides far better than its price. Version 1 strips it back to a clean single-speed fixie on a flip-flop hub.",
     status: "Building · v1",
     frame: "Double-butted Tange 900 chromoly",
-    colour: null,
+    colour: "Champagne gold",
     build: "Fixie: single-speed, flip-flop rear hub",
-    sprite: { frame: "#8f897e", shine: "#bdb7aa", lugs: "#d9d5cc", fixie: true },
+    sprite: { frame: "#b89c62", shine: "#e2cf9c", lugs: "#8c8478", fixie: true },
   },
 ];
 
@@ -1754,12 +1754,14 @@ export const porygon = {
 
 export interface Slab {
   card: string;
+  /** Print and variant: holo, full art, language. Shown on its own line. */
+  variant?: string;
   set: string;
   number?: string;
   year?: string;
   grader: string;
   grade: string;
-  /** The grader's word for the grade, as printed on the label. */
+  /** The grader's short label for the grade, as on the slab: MINT, NM, EX-MT, EX. */
   label: string;
   /** Set when the slab is a card in one of the set runs above, not a stand-alone. */
   partOf?: string;
@@ -1770,11 +1772,11 @@ export interface Slab {
  * as the sets). Two are cards from the completed sets, kept in slabs.
  */
 export const slabs: Slab[] = [
-  { card: "Eevee & Snorlax GX (Full Art)", set: "Team Up", number: "171", year: "2019", grader: "PSA", grade: "9", label: "Mint" },
-  { card: "Bulbasaur (Illustration Rare)", set: "Stellar Crown", number: "143/142", year: "2024", grader: "PSA", grade: "9", label: "Mint" },
-  { card: "Rocket's Mewtwo (Holo, Japanese)", set: "Gym Challenge (Japanese)", number: "150", grader: "PSA", grade: "7", label: "Near Mint" },
-  { card: "Charizard (Holo, Shadowless)", set: "Base Set", number: "4", year: "1999", grader: "PSA", grade: "5", label: "Excellent", partOf: "Base Set" },
-  { card: "Haunter (Holo)", set: "Fossil", number: "6", year: "1999", grader: "PSA", grade: "6", label: "Excellent–Mint", partOf: "Fossil" },
+  { card: "Eevee & Snorlax GX", variant: "Full Art", set: "Team Up", number: "171", year: "2019", grader: "PSA", grade: "9", label: "MINT" },
+  { card: "Bulbasaur", variant: "Illustration Rare", set: "Stellar Crown", number: "143/142", year: "2024", grader: "PSA", grade: "9", label: "MINT" },
+  { card: "Rocket's Mewtwo", variant: "Holo · Japanese", set: "Gym Challenge", number: "150", grader: "PSA", grade: "7", label: "NM" },
+  { card: "Charizard", variant: "Holo · Shadowless", set: "Base Set", number: "4", year: "1999", grader: "PSA", grade: "5", label: "EX", partOf: "Base Set" },
+  { card: "Haunter", variant: "Holo", set: "Fossil", number: "6", year: "1999", grader: "PSA", grade: "6", label: "EX-MT", partOf: "Fossil" },
 ];
 
 export const organizations = withPeriod(organizationsData);

@@ -1,0 +1,18 @@
+---
+/**
+ * Renders a name with its qualifier on its own line (see src/lib/titles.ts).
+ * Put it inside the heading or paragraph that styles the name; the qualifier
+ * steps down in size and colour from whatever surrounds it.
+ */
+import { splitTitle } from '../lib/titles';
+
+interface Props {
+  text: string;
+  /** Classes for the qualifier line. */
+  qualClass?: string;
+}
+const { text, qualClass = 'block mt-1 text-[0.62em] leading-snug font-normal text-muted tracking-normal' } = Astro.props;
+const { main, qual } = splitTitle(text);
+---
+
+{main}{qual && <span class={qualClass}>{qual}</span>}

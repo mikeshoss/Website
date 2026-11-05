@@ -1,4 +1,5 @@
 ---
+import Title from '../components/Title.astro';
 import Layout from '../layouts/Layout.astro';
 import { projects, site, companies } from '../data/content';
 import { placement, withCampaign } from '../lib/links';
@@ -66,7 +67,7 @@ const listed = [...personal.active, ...personal.past, ...orphans];
       {personal.active.map(project => (
         <article class="bg-ink p-7 md:p-8 flex flex-col md:last:odd:col-span-2">
           <div class="flex items-baseline justify-between gap-4">
-            <h2 class="display text-display-sm">{project.name}</h2>
+            <h2 class="display text-display-sm"><Title text={project.name} /></h2>
             <span class="text-xs font-mono text-muted whitespace-nowrap">{project.start.slice(0, 4)}</span>
           </div>
           <p class="text-sm text-bone-dim leading-relaxed mt-4">{project.description}</p>
@@ -109,7 +110,7 @@ const listed = [...personal.active, ...personal.past, ...orphans];
         {personal.past.map(project => (
           <li class="py-6 grid md:grid-cols-12 gap-x-8 gap-y-2">
             <div class="md:col-span-3">
-              <p class="display text-2xl leading-tight">{project.name}</p>
+              <p class="display text-2xl leading-tight"><Title text={project.name} /></p>
               <p class="text-xs font-mono text-muted mt-1.5">{project.period}</p>
             </div>
             <div class="md:col-span-7">
@@ -140,7 +141,7 @@ const listed = [...personal.active, ...personal.past, ...orphans];
       <ol class="mt-8 ruled">
         {orphans.map(project => (
           <li class="py-6">
-            <p class="display text-2xl">{project.name}</p>
+            <p class="display text-2xl"><Title text={project.name} /></p>
             <p class="text-xs font-mono text-muted mt-1">association: {project.association ?? '(none)'}</p>
           </li>
         ))}
