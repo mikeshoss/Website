@@ -140,10 +140,11 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
   <!-- 02 Mark -->
   <section class="page section-b" id="the-mark">
     <p class="eyebrow"><b>02</b> · The mark</p>
-    <h2 class="display text-display-lg mt-4">M in the ring, and a live cursor.</h2>
+    <h2 class="display text-display-lg mt-4">The signal in the ring.</h2>
     <p class="lede mt-6 max-w-prose">
-      My initial in a ring, the way record labels circle their marks (℗, ©). The orange cursor beside
-      it says the machine is on. Together: made by Mike, and still building. The ℗ stays in the producer tag.
+      My initial, drawn as a signal: two peaks of a waveform that read as an M. Sound for the producer, signal for
+      the radio, a machine writing it out. It sits in a ring, the way record labels circle their marks, and the
+      orange cursor beside it says the machine is on. The ℗ stays in the producer tag.
     </p>
     <div class="mt-10 grid sm:grid-cols-2 gap-4">
       <div class="rounded-2xl border border-line grid place-items-center py-16"><Mark class="h-24 md:h-28" /></div>
@@ -161,7 +162,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
           <line x1="0" y1="9" x2="44" y2="9" stroke={palette.green} stroke-width=".08" stroke-dasharray=".4 .3" />
           <line x1="0" y1="23" x2="44" y2="23" stroke={palette.green} stroke-width=".08" stroke-dasharray=".4 .3" />
           <circle cx="16" cy="16" r="13" fill="none" stroke={palette.carbon} stroke-width="2.2" />
-          <path d="M10.4 22.2V9.8L16 17.2l5.6-7.4v12.4" fill="none" stroke={palette.carbon} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
+          <path d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={palette.carbon} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
           <rect x="34" y="7" width="4" height="18" fill={palette.orange} />
           <text x="16" y="-1.2" font-family="JetBrains Mono, monospace" font-size="1.3" fill={palette.muted} text-anchor="middle">32</text>
           <text x="36" y="-1.2" font-family="JetBrains Mono, monospace" font-size="1.3" fill={palette.muted} text-anchor="middle">+12</text>
@@ -173,7 +174,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         <h3 class="display text-display-sm">Construction</h3>
         <p class="prose-body mt-3">
           Drawn on a 32-unit square. The cursor sits outside it, 2 units clear of the ring, so the whole mark is
-          44 × 32. The M runs from 9.8 to 22.2, the cursor from 7 to 25: a little taller than the letter, like a
+          44 × 32. The signal runs from 10 to 20.3, set about a unit above centre because its thin peaks and wide base make it read low. The cursor runs from 7 to 25, like a
           terminal's block cursor.
         </p>
         <dl class="mt-6 ruled text-sm">
@@ -208,7 +209,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
       <div>
         <h3 class="display text-display-sm">The key</h3>
         <p class="prose-body mt-3">
-          An orange key, like the ones on a Braun ET66 calculator, with the M on it. It's the favicon, the
+          An orange key, like the ones on a Braun ET66 calculator, with the signal on it. It's the favicon, the
           home-screen icon and the contact button. Press it: it plays the producer tag. On a home screen it's drawn
           full-bleed and square, because iOS and Android add their own corner.
         </p>
@@ -274,7 +275,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
           <div class="h-28 grid place-items-center">
             <svg viewBox="0 0 44 32" class="h-16" style={m.stretch ? 'transform:scaleX(1.45)' : undefined} aria-hidden="true">
               <circle cx="16" cy="16" r="13" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.2} />
-              <path d="M10.4 22.2V9.8L16 17.2l5.6-7.4v12.4" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.4} stroke-linejoin="round" stroke-linecap="round" />
+              <path d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.4} stroke-linejoin="round" stroke-linecap="round" />
               <rect x="34" y="7" width="4" height="18" fill={m.cur} />
             </svg>
           </div>
