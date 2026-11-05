@@ -372,8 +372,8 @@ export const credits: Credit[] = [
  * Calls: dated, blunt views on where business and AI are going, kept on the
  * record so they can be marked right or wrong later.
  *
- * DRAFTS. These were written by Claude from the thesis above as placeholders
- * for layout only. Mike writes the real ones; delete `draft` when he does.
+ * Approved by Mike 2026-11-05. Set `draft` on any new call until he signs it
+ * off; drafts show a "Draft" label on the home page.
  */
 export interface Call {
   call: string;
@@ -382,24 +382,28 @@ export interface Call {
   draft?: boolean;
 }
 
+/**
+ * The studio: where the work is booked. This site is the producer; Epilogue
+ * is the studio. "Book the studio" buttons point here, tagged with
+ * withCampaign at each placement.
+ */
+export const studio = { name: "Epilogue", url: "https://epiloguelabs.com" };
+
 export const calls: Call[] = [
   {
     call: "Governance stops being a document and becomes part of the build. The AI teams that win regulated buyers will ship their audit trail with every release.",
     made: "2026-11",
     status: "Open",
-    draft: true,
   },
   {
     call: "The scarce skill isn't prompting or picking a model. It's knowing which expensive, document-heavy workflow to point the machine at.",
     made: "2026-11",
     status: "Open",
-    draft: true,
   },
   {
     call: "In high-stakes work, the AI products that win will advertise what they don't know. Visible failure becomes a feature buyers ask for.",
     made: "2026-11",
     status: "Open",
-    draft: true,
   },
 ];
 
@@ -1445,7 +1449,7 @@ export const interests: Interest[] = [
   {
     slug: "bicycles",
     name: "Vintage Canadian steel bicycles",
-    summary: "Canadian vintage steel. Frames from the makers who built bikes here, restored and ridden.",
+    summary: "Canadian vintage steel, and a few good frames from elsewhere: restored, rebuilt and ridden. One is too rare to ride and hangs on my office wall.",
     status: "Restoring",
     keywords: ["Restoration", "Framebuilding", "Cycling"],
   },
@@ -1554,12 +1558,70 @@ export const cardSets: CardSet[] = [
   { name: "Best of Game", year: "2002", total: 9, owned: 0, note: "Next up" },
 ];
 
-export interface Slab {
-  card: string;
-  set: string;
-  grader: string;
-  grade: string;
+/**
+ * The bikes, from Mike's build notes (2026). Each is drawn on its page as an
+ * 8-bit sprite of the frame and fork only (src/components/BikeSprite.astro),
+ * in the frame's real colours. `colour` null = not confirmed yet: the sprite
+ * is drawn in bare-metal grey and says so.
+ */
+export interface Bike {
+  slug: string;
+  year: string;
+  make: string;
+  model: string;
+  line: string;
+  story: string;
+  status: string;
+  frame: string;
+  size?: string;
+  colour: string | null;
+  build: string;
+  sprite: { frame: string; shine: string; lugs: string; fork?: string; fixie?: boolean; tall?: boolean };
 }
+
+export const bikes: Bike[] = [
+  {
+    slug: "ccm-tour-du-monde",
+    year: "1984",
+    make: "CCM",
+    model: "Tour du Monde",
+    line: "Built in France by Peugeot, badged by Canada's CCM.",
+    story: "By 1984 the original Canada Cycle & Motor Co. was leaving the bicycle business; this one was built by Peugeot on Reynolds 501 and came to me all original. Too rare to modify, so it was taken apart, cleaned and preserved. The frame and fork hang on my office wall.",
+    status: "On the wall",
+    frame: "Reynolds 501 steel",
+    size: '22"',
+    colour: "Burgundy with gold striping",
+    build: "Preserved: SunTour 12-speed, Weinmann and Dia-Compe, 27-inch wheels, all boxed",
+    sprite: { frame: "#9b1b2a", shine: "#c94355", lugs: "#d6a73e", tall: true },
+  },
+  {
+    slug: "miele-uno-ls",
+    year: "1988",
+    make: "Miele",
+    model: "Uno LS",
+    line: "Built in Ontario: Canadian lugged steel with an Italian name.",
+    story: "Miele built well-regarded lugged-steel frames around Toronto until cheap imports closed the doors in 1996. The Uno LS is light, lively Tange chromoly. Version 2 turns it into a fast fitness bike: bullhorns, Tiagra levers, white cork tape and a ride kit that means it's always ready to go.",
+    status: "Riding · v2",
+    frame: "Tange chromoly",
+    size: "54 cm",
+    colour: "Teal",
+    build: "Fitness mode: bullhorn bars, Shimano 2×6, Sugino MP crank, 700×35C",
+    sprite: { frame: "#139aa6", shine: "#58cdd4", lugs: "#d9d5cc" },
+  },
+  {
+    slug: "nakamura-champion",
+    year: "1987",
+    make: "Nakamura",
+    model: "Champion",
+    line: "A budget-rack rescue on a quality Tange 900 frame.",
+    story: "Not every good frame carries a famous name. This one came home cheap and was hiding double-butted Tange 900 chromoly, mid-'80s Japanese steel that rides far better than its price. Version 1 strips it back to a clean single-speed fixie on a flip-flop hub.",
+    status: "Building · v1",
+    frame: "Double-butted Tange 900 chromoly",
+    colour: null,
+    build: "Fixie: single-speed, flip-flop rear hub",
+    sprite: { frame: "#8f897e", shine: "#bdb7aa", lugs: "#d9d5cc", fixie: true },
+  },
+];
 
 /** Magic: The Gathering. Commander decks, with the bracket each one plays at. */
 export interface CommanderDeck {
@@ -1690,7 +1752,29 @@ export const porygon = {
   ],
 };
 
-/** Graded cards. Empty until the list comes in; the section hides until then. */
-export const slabs: Slab[] = [];
+export interface Slab {
+  card: string;
+  set: string;
+  number?: string;
+  year?: string;
+  grader: string;
+  grade: string;
+  /** The grader's word for the grade, as printed on the label. */
+  label: string;
+  /** Set when the slab is a card in one of the set runs above, not a stand-alone. */
+  partOf?: string;
+}
+
+/**
+ * Graded cards. Grades only: no cert numbers, prices or values (the same rule
+ * as the sets). Two are cards from the completed sets, kept in slabs.
+ */
+export const slabs: Slab[] = [
+  { card: "Eevee & Snorlax GX (Full Art)", set: "Team Up", number: "171", year: "2019", grader: "PSA", grade: "9", label: "Mint" },
+  { card: "Bulbasaur (Illustration Rare)", set: "Stellar Crown", number: "143/142", year: "2024", grader: "PSA", grade: "9", label: "Mint" },
+  { card: "Rocket's Mewtwo (Holo, Japanese)", set: "Gym Challenge (Japanese)", number: "150", grader: "PSA", grade: "7", label: "Near Mint" },
+  { card: "Charizard (Holo, Shadowless)", set: "Base Set", number: "4", year: "1999", grader: "PSA", grade: "5", label: "Excellent", partOf: "Base Set" },
+  { card: "Haunter (Holo)", set: "Fossil", number: "6", year: "1999", grader: "PSA", grade: "6", label: "Excellent–Mint", partOf: "Fossil" },
+];
 
 export const organizations = withPeriod(organizationsData);

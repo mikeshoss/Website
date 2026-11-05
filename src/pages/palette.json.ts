@@ -71,7 +71,7 @@ const actions: Item[] = [
   { t: "Copy my email", h: site.email, g: "Actions", a: "copy", v: site.email, k: "mail contact" },
   { t: "Open LinkedIn", h: "↗", g: "Actions", u: site.linkedin, x: true, k: "message dm" },
   { t: "Open GitHub", h: "↗", g: "Actions", u: site.github, x: true, k: "code" },
-  { t: "Epilogue, the studio", h: "↗", g: "Actions", u: "https://epiloguelabs.com/?utm_source=mikeshoss&utm_medium=referral&utm_content=command-menu", x: true, k: "book work consulting hire" },
+  { t: "Book the studio", h: "Epilogue ↗", g: "Actions", u: "https://epiloguelabs.com/?utm_source=mikeshoss&utm_medium=referral&utm_content=command-menu", x: true, k: "epilogue book work consulting hire studio" },
   { t: "Play the producer tag", h: "Sound", g: "Actions", a: "tag", k: "sound music hit" },
   { t: "Copy an API curl", h: "curl", g: "Actions", a: "copy", v: `curl ${site.url}/api/index.json`, k: "developer json" },
   { t: "Copy the MCP server URL", h: "MCP", g: "Actions", a: "copy", v: `${site.url}/mcp`, k: "agents claude" },

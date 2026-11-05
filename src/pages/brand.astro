@@ -426,7 +426,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
       </div>
       <div class="rounded-2xl border border-line p-6 grid gap-4 content-start">
         <p class="eyebrow"><b>Buttons</b></p>
-        <div class="flex gap-3 flex-wrap"><a href="/contact" class="btn-primary">Let's build</a><a href="/credits" class="btn-quiet">The credits</a></div>
+        <div class="flex gap-3 flex-wrap"><a href="https://epiloguelabs.com" target="_blank" rel="noopener noreferrer" class="btn-primary">Book the studio <span aria-hidden="true">↗</span></a><a href="/credits" class="btn-quiet">The credits</a></div>
         <p class="text-sm text-bone-dim">Fully round. One orange button per view; the rest are outlined.</p>
       </div>
       <div class="rounded-2xl border border-line p-6 grid gap-4 content-start">
@@ -479,7 +479,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
       </div>
     </div>
     <dl class="mt-8 grid md:grid-cols-2 gap-x-10">
-      {[['Ship, build, run', 'Leverage, drive, enable'], ['Credits', 'Portfolio, résumé'], ['Ventures', 'Side hustles'], ['75%, 97%, 15 years', 'Significant, robust'], ["Where it's going", 'Thought leadership'], ["Let's build", 'Book a discovery call']].map(([y, n]) => (
+      {[['Ship, build, run', 'Leverage, drive, enable'], ['Credits', 'Portfolio, résumé'], ['Ventures', 'Side hustles'], ['75%, 97%, 15 years', 'Significant, robust'], ["Where it's going", 'Thought leadership'], ['Book the studio', 'Book a discovery call']].map(([y, n]) => (
         <div class="grid grid-cols-2 gap-4 py-3 border-b border-line text-[0.9375rem]"><dt>{y}</dt><dd class="text-muted">{n}</dd></div>
       ))}
     </dl>

@@ -144,8 +144,8 @@ const TARGETS = [
   }),
   card('public/og/contact.png', {
     eyebrow: 'Contact',
-    title: "Let's *build*.",
-    sub: "Bring the problem, not the deck.",
+    title: "Let's make a *hit*.",
+    sub: "Book the studio, or talk to the producer.",
     path: '/contact',
   }),
 

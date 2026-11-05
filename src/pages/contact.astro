@@ -1,25 +1,53 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { site } from '../data/content';
+import { site, studio } from '../data/content';
+import { withCampaign } from '../lib/links';
 ---
 
 <Layout
   card="contact"
   title="Contact — Mike Shoss"
-  description="Get in touch with Mike Shoss for AI consulting, product strategy, or collaboration."
+  description="Two ways in: book Epilogue, the studio, for projects and engagements, or talk to Mike Shoss directly about boards, advising, investing and speaking."
 >
   <section class="page pt-14 md:pt-20 pb-16 md:pb-24">
     <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
       <span>Contact</span>
       <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> Open</span>
     </div>
-    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Let's build.</h1>
+    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Let's make a <em>hit</em>.</h1>
     <p class="lede mt-8 max-w-prose">
-      Bring the problem, not the deck. If it's real and it's expensive to get wrong, I want to
-      hear about it. LinkedIn is the fastest way to reach me.
+      Bring the problem, not the deck. If it's real and it's expensive to get wrong, I want to hear about it.
+      There are two ways in.
     </p>
 
-    <div class="mt-12 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+    <!-- Two doors: the studio sells the work; the producer is for everything else. -->
+    <div class="mt-12 grid md:grid-cols-2 gap-4">
+      <div class="carbon rounded-2xl p-7 md:p-9 flex flex-col">
+        <p class="eyebrow"><b>A</b> · The work</p>
+        <h2 class="display text-display-md mt-4">Book the studio.</h2>
+        <p class="mt-4 text-carbon-muted leading-relaxed max-w-prose">
+          Projects and engagements run through Epilogue, my studio. Bring the problem; we'll make the hit.
+        </p>
+        <div class="mt-auto pt-8">
+          <a href={withCampaign(studio.url, 'contact-book-the-studio')} target="_blank" rel="noopener noreferrer" class="btn-primary">Book the studio <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-line p-7 md:p-9 flex flex-col">
+        <p class="eyebrow"><b>B</b> · Everything else</p>
+        <h2 class="display text-display-md mt-4">Talk to the producer.</h2>
+        <p class="mt-4 text-bone-dim leading-relaxed max-w-prose">
+          Boards, advising, investing, founders who want a second opinion, a stage. That's me, not the studio.
+          LinkedIn is the fastest way to reach me.
+        </p>
+        <div class="mt-auto pt-8">
+          <a href="#channels" class="btn-quiet">Ways to reach me <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </div>
+
+    <p class="eyebrow mt-16" id="channels">Reach me directly</p>
+
+    <div class="mt-4 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="group bg-ink p-7 transition-colors duration-200 hover:bg-ink-50">
         <p class="eyebrow">Fastest</p>
         <p class="display text-display-sm mt-4 group-hover:text-accent-dim transition-colors duration-200">LinkedIn ↗</p>

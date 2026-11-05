@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { interests, cardSets, slabs, magic, porygon, homelab, machineRoom } from '../../data/content';
+import { interests, cardSets, slabs, magic, porygon, homelab, machineRoom, bikes } from '../../data/content';
+import BikeSprite from '../../components/BikeSprite.astro';
 
 /**
  * One page per interest. Every page has the same frame (status, summary,
@@ -67,6 +68,43 @@ const description =
           </li>
         ))}
       </ul>
+    </section>
+  )}
+
+  {interest.slug === 'bicycles' && (
+    <section class="section pt-0 md:pt-0" id="bikes">
+      <div class="rule pt-10 flex items-baseline justify-between gap-4">
+        <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">A</span>The bikes</h2>
+        <span class="eyebrow hidden sm:inline">Frame and fork, 8-bit</span>
+      </div>
+      <ol class="mt-8 grid gap-6">
+        {bikes.map((b, i) => (
+          <li class="grid md:grid-cols-12 gap-6 md:gap-10 items-start rounded-2xl border border-line p-5 md:p-7" id={b.slug}>
+            <div class="md:col-span-5">
+              <div class="pixel-screen rounded-xl border border-line p-6 md:p-8">
+                <BikeSprite {...b.sprite} label={`Pixel drawing of the ${b.year} ${b.make} ${b.model} frame and fork${b.colour ? `, ${b.colour.toLowerCase()}` : ''}`} />
+              </div>
+              <p class="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted mt-3 flex justify-between gap-3">
+                <span>Player {i + 1}</span><span>{b.colour ?? 'Colour to confirm'}</span>
+              </p>
+            </div>
+            <div class="md:col-span-7">
+              <div class="flex items-center justify-between gap-4">
+                <span class="eyebrow">{b.year} · {b.make}</span>
+                <span class="chip"><span class:list={[b.status === 'On the wall' ? 'led-off' : 'led', '!w-1.5 !h-1.5 !shadow-none']} aria-hidden="true"></span>{b.status}</span>
+              </div>
+              <h3 class="display text-display-sm mt-2">{b.make} {b.model}</h3>
+              <p class="text-bone-dim mt-2">{b.line}</p>
+              <dl class="mt-5 ruled text-sm">
+                {[['Frame', b.frame], ['Size', b.size], ['Colour', b.colour ?? 'To confirm'], ['Build', b.build]].filter(([, v]) => v).map(([k, v]) => (
+                  <div class="py-2.5 grid grid-cols-[5.5rem_1fr] gap-4"><dt class="eyebrow pt-0.5">{k}</dt><dd class="text-bone-dim">{v}</dd></div>
+                ))}
+              </dl>
+              <p class="text-sm text-bone-dim leading-relaxed mt-5 max-w-prose">{b.story}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
   )}
 
@@ -157,7 +195,7 @@ const description =
               <li class="py-6 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,4fr)_minmax(0,5fr)_minmax(0,2fr)] gap-x-8 gap-y-3 items-center">
                 <div>
                   <p class="display text-xl md:text-2xl leading-tight">{set.name}</p>
-                  <p class="font-mono text-xs text-muted mt-1">{set.year}</p>
+                  <p class="font-mono text-xs text-muted mt-1">{set.year}{slabs.some((sl) => sl.partOf === set.name) && <span class="text-accent-dim"> · {slabs.filter((sl) => sl.partOf === set.name).map((sl) => sl.card.split(' (')[0]).join(', ')} graded</span>}</p>
                 </div>
                 <div class="col-span-2 md:col-span-1 row-start-2 md:row-start-auto">
                   <div class="h-2 rounded-full bg-ink-100 overflow-hidden">
@@ -180,17 +218,29 @@ const description =
 
         {slabs.length > 0 && (
           <>
-            <p class="eyebrow mt-12">Graded</p>
-            <div class="mt-4 grid sm:grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
-              {slabs.map((slab) => (
-                <div class="bg-ink p-6">
-                  <p class="eyebrow">{slab.grader}</p>
-                  <p class="readout mt-2 text-accent">{slab.grade}</p>
-                  <p class="text-bone mt-4 leading-snug">{slab.card}</p>
-                  <p class="text-xs text-muted mt-1">{slab.set}</p>
-                </div>
-              ))}
+            <div class="mt-14 flex items-baseline justify-between gap-4">
+              <p class="eyebrow">Graded · {slabs.length} slabs</p>
+              <span class="eyebrow hidden sm:inline">Grades only</span>
             </div>
+            <ul class="mt-4 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {slabs.map((slab) => (
+                <li class="slab rounded-2xl border border-line-strong/60 bg-ink-50 p-3 flex flex-col">
+                  <div class="rounded-lg bg-ink border border-line px-3 py-2.5 flex items-start justify-between gap-3">
+                    <span class="min-w-0">
+                      <span class="block font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-muted truncate">{[slab.year, slab.set].filter(Boolean).join(' · ')}</span>
+                      <span class="block font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-muted mt-0.5">{slab.grader} · {slab.label}</span>
+                    </span>
+                    <span class="readout !text-3xl leading-none">{slab.grade}</span>
+                  </div>
+                  <div class="flex-1 grid place-items-center py-6 px-2">
+                    <p class="text-bone text-center leading-snug">{slab.card}</p>
+                  </div>
+                  <p class:list={['font-mono text-[0.625rem] uppercase tracking-[0.14em] text-center pb-1', slab.partOf ? 'text-accent-dim' : 'text-muted']}>
+                    {slab.partOf ? `In the ${slab.partOf} set` : `No. ${slab.number}`}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </>
         )}
       </section>
@@ -283,3 +333,14 @@ const description =
     </a>
   </section>
 </Layout>
+
+<style>
+  /* The sprite's screen: paper with a faint pixel grid, like a sprite editor. */
+  .pixel-screen {
+    background-color: #e5e1d8;
+    background-image:
+      linear-gradient(rgb(169 163 151 / 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(169 163 151 / 0.18) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+</style>
