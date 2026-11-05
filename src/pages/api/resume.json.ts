@@ -3,6 +3,7 @@ import {
   awards,
   causes,
   cardSets,
+  magic,
   certifications,
   credits,
   companies,
@@ -52,7 +53,7 @@ export const GET: APIRoute = () =>
       languages,
       interests,
       causes,
-      collection: { sets: cardSets, slabs },
+      collection: { sets: cardSets, slabs, magic },
       glossary,
     },
   });

@@ -1522,8 +1522,7 @@ export const cardSets: CardSet[] = [
     name: "Wizards Black Star Promos",
     year: "1999–2003",
     total: 53,
-    // owned: count pending
-    note: "Being counted",
+    owned: 28,
   },
   { name: "Best of Game", year: "2002", total: 9, owned: 0, note: "Next up" },
 ];
@@ -1534,6 +1533,9 @@ export interface Slab {
   grader: string;
   grade: string;
 }
+
+/** Magic: The Gathering. Commander decks only, counted, not catalogued. */
+export const magic = { format: "Commander", decks: 2 };
 
 /** Graded cards. Empty until the list comes in; the section hides until then. */
 export const slabs: Slab[] = [];

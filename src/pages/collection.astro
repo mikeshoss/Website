@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { cardSets, slabs } from '../data/content';
+import { cardSets, magic, slabs } from '../data/content';
 
 /**
  * The collection, as a catalogue: each set is a readout with a completion
@@ -89,6 +89,9 @@ const cards = counted.reduce((n, s) => n + (s.owned ?? 0), 0);
 
   <section class="section pt-0 md:pt-0">
     <p class="eyebrow rule pt-6">Also on the table</p>
-    <p class="mt-6 text-bone-dim max-w-prose">Magic: The Gathering, mostly Commander. Building the deck is the fun part.</p>
+    <div class="mt-6 flex items-baseline gap-5">
+      <p class="readout">{magic.decks}</p>
+      <p class="text-bone-dim max-w-prose">{magic.format} decks in Magic: The Gathering. Building the deck is the fun part.</p>
+    </div>
   </section>
 </Layout>

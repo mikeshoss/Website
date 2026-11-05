@@ -19,6 +19,7 @@ import {
   credits,
   causes,
   cardSets,
+  magic,
 } from "../data/content";
 
 // Fully generated from src/data/content.ts — every section derives from the
@@ -154,6 +155,7 @@ ${list(
 ## Card collection
 Vintage Pokémon TCG, Wizards of the Coast era. Completion only: ${site.url}/collection/
 ${list(cardSets.map((s) => `${s.name} (${s.year}): ${s.owned === undefined ? "being counted" : `${s.owned} of ${s.total}`}`))}
+Magic: The Gathering: ${magic.decks} ${magic.format} decks.
 
 ## Glossary
 Definitions of the vocabulary around AI products, each with what the term means
