@@ -4,9 +4,7 @@ import ProducerTag from '../components/ProducerTag.astro';
 import Key from '../components/Key.astro';
 import { site, hero, highlights, credits, calls, machineRoom, about, volunteering, interests, causes } from '../data/content';
 import { formatDate } from '../lib/dates';
-import { Picture } from 'astro:assets';
-import portrait from '../assets/photos/mike-shoss-portrait.jpg';
-import onTheMic from '../assets/photos/mike-shoss-on-the-mic.jpg';
+import Sleeve from '../components/Sleeve.astro';
 
 /**
  * Home, in the producer framing: who made this, the credits, the machines
@@ -166,32 +164,8 @@ const givingBack = [
     <p class="eyebrow rule pt-6">05 — Who I am</p>
     <div class="mt-8 grid md:grid-cols-12 gap-8">
       <div class="md:col-span-5">
-        <!-- The portrait, then the room. Astro serves AVIF/WebP at the width each screen needs. -->
-        <figure class="w-2/3 sm:w-1/2 md:w-full">
-          <Picture
-            src={portrait}
-            formats={['avif', 'webp']}
-            widths={[360, 540, 720, 1068]}
-            sizes="(min-width: 768px) 40vw, (min-width: 640px) 50vw, 66vw"
-            alt="Mike Shoss in a charcoal three-piece suit, smiling at the camera"
-            loading="lazy"
-            decoding="async"
-            class="aspect-[4/5] w-full h-auto rounded-[1.75rem] border border-line object-cover"
-          />
-        </figure>
-        <figure class="mt-4 w-2/3 sm:w-1/2 md:w-4/5">
-          <Picture
-            src={onTheMic}
-            formats={['avif', 'webp']}
-            widths={[320, 480, 640, 960]}
-            sizes="(min-width: 768px) 32vw, (min-width: 640px) 50vw, 66vw"
-            alt="Mike Shoss speaking into a microphone to a room, leaning on a high table"
-            loading="lazy"
-            decoding="async"
-            class="aspect-[3/2] w-full h-auto rounded-2xl border border-line object-cover"
-          />
-          <figcaption class="eyebrow mt-3 flex items-center gap-2"><span class="led" aria-hidden="true"></span> On the mic</figcaption>
-        </figure>
+        <!-- The record sleeve: the portrait as Side A, the mic photo and liner notes on Side B. -->
+        <Sleeve class="w-[78%] sm:w-[60%] md:w-[88%]" />
       </div>
       <div class="md:col-span-6 md:col-start-7 space-y-5">
         {about.map(paragraph => <p class="text-lg text-bone-dim leading-relaxed">{paragraph}</p>)}
