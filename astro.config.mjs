@@ -15,7 +15,7 @@ export default defineConfig({
     // produced it. Priority is a hint about relative importance within this
     // site only — the home page first, then the pages that carry the substance.
     sitemap({
-      filter: (page) => !page.includes('/blog'),
+      filter: (page) => !page.includes('/blog') && !page.includes('/lab/'),
       serialize(item) {
         // Slash-stripped only to classify the page; the emitted URL keeps its.
         const path = new URL(item.url).pathname.replace(/\/+$/, '') || '/';

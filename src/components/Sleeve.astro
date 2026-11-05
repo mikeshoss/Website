@@ -1,0 +1,192 @@
+---
+/**
+ * The record sleeve: the portrait as an LP cover (Side A) that flips to the
+ * B-side, the mic photo with liner notes. A record peeks out of the sleeve and
+ * slides further out on hover. One object on the page, two photos inside it.
+ *
+ * The whole sleeve is one button (aria-pressed tracks which side is up). With
+ * reduced motion the flip becomes a crossfade and the record does not move.
+ */
+import { Picture } from 'astro:assets';
+import front from '../assets/photos/mike-shoss-sleeve.jpg';
+import back from '../assets/photos/mike-shoss-on-the-mic.jpg';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+
+const tracks = ['First one in', 'Further out than is comfortable', 'Take care of the people', 'Pain in the ass (radio edit)', 'Follow me to the next thing'];
+---
+
+<div class:list={['sleeve-wrap relative', className]}>
+  <!-- The record, behind the sleeve -->
+  <div class="record" aria-hidden="true">
+    <div class="record-label">
+      <svg viewBox="0 0 32 32" class="w-[46%] h-auto">
+        <circle cx="16" cy="16" r="13" fill="none" stroke="#1b1a18" stroke-width="2.2" />
+        <path d="M12.5 23V9h5a4.2 4.2 0 010 8.4h-5" fill="none" stroke="#1b1a18" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
+      </svg>
+    </div>
+  </div>
+
+  <button type="button" class="sleeve" aria-pressed="false" aria-label="Record sleeve. Press to flip to the B-side." data-sleeve>
+    <span class="sleeve-inner">
+      <!-- Side A -->
+      <span class="face face-front">
+        <Picture
+          src={front}
+          formats={['avif', 'webp']}
+          widths={[360, 540, 720, 1080]}
+          sizes="(min-width: 768px) 38vw, (min-width: 640px) 50vw, 70vw"
+          alt="Mike Shoss in a charcoal three-piece suit, smiling at the camera"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <span class="absolute top-0 inset-x-0 flex justify-between p-[5%] pb-[12%] font-mono text-[0.625rem] uppercase tracking-[0.18em] text-white/90 bg-gradient-to-b from-black/45 to-transparent">
+          <span>MS–01</span><span>Side A</span>
+        </span>
+        <span class="absolute bottom-0 inset-x-0 flex items-end justify-between gap-3 p-[5%] bg-gradient-to-t from-black/55 to-transparent pt-[18%]">
+          <span>
+            <span class="block font-medium text-white text-lg leading-none tracking-tight">Mike Shoss</span>
+            <span class="block font-mono text-[0.625rem] uppercase tracking-[0.18em] text-white/70 mt-1.5">The producer</span>
+          </span>
+          <span class="flip-hint font-mono text-[0.625rem] uppercase tracking-[0.16em] text-white/80 flex items-center gap-1.5">Flip <span aria-hidden="true">↻</span></span>
+        </span>
+      </span>
+
+      <!-- Side B -->
+      <span class="face face-back bg-carbon text-carbon-text">
+        <span class="block relative aspect-[3/2] overflow-hidden">
+          <Picture
+            src={back}
+            formats={['avif', 'webp']}
+            widths={[320, 480, 640, 960]}
+            sizes="(min-width: 768px) 38vw, (min-width: 640px) 50vw, 70vw"
+            alt="Mike Shoss speaking into a microphone to a room"
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <span class="absolute top-0 inset-x-0 flex justify-between p-[5%] font-mono text-[0.625rem] uppercase tracking-[0.18em] text-white/85">
+            <span>Side B</span><span>Recorded live</span>
+          </span>
+        </span>
+        <span class="block px-[6%] py-[4%]">
+          <span class="block font-mono text-[0.5625rem] uppercase tracking-[0.18em] text-carbon-muted">Liner notes</span>
+          <span class="block mt-1.5 space-y-0.5">
+            {tracks.map((t, i) => (
+              <span class="flex gap-2.5 text-[0.75rem] leading-snug">
+                <span class="font-mono text-accent w-4 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-carbon-text/90">{t}</span>
+              </span>
+            ))}
+          </span>
+          <span class="flex justify-between mt-[4%] font-mono text-[0.5625rem] uppercase tracking-[0.16em] text-carbon-muted">
+            <span>℗ 2026 Mike Shoss</span><span>Flip ↻</span>
+          </span>
+        </span>
+      </span>
+    </span>
+  </button>
+</div>
+
+<style>
+  .sleeve-wrap { aspect-ratio: 1 / 1; perspective: 1600px; }
+
+  /* The record: a black disc with grooves and an orange ℗ label. */
+  .record {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+    width: 94%;
+    height: 94%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, transparent 0 17%, rgb(255 255 255 / 0.05) 17.4%, transparent 18%),
+      repeating-radial-gradient(circle, #1b1a18 0 1.6px, #24221f 1.6px 3.2px);
+    box-shadow: 0 8px 24px -10px rgb(0 0 0 / 0.5);
+    transform: translateX(14%) rotate(0deg);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    display: grid;
+    place-items: center;
+  }
+  .record-label {
+    width: 34%;
+    height: 34%;
+    border-radius: 50%;
+    background: #e0520f;
+    display: grid;
+    place-items: center;
+    box-shadow: inset 0 0 0 2px rgb(0 0 0 / 0.15);
+  }
+  .sleeve-wrap:hover .record,
+  .sleeve-wrap:focus-within .record { transform: translateX(28%) rotate(40deg); }
+
+  /* The sleeve: one button, two faces. */
+  .sleeve {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 0.5rem;
+  }
+  .sleeve:focus-visible { outline: 2px solid #e0520f; outline-offset: 4px; }
+  .sleeve-inner {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sleeve[aria-pressed='true'] .sleeve-inner { transform: rotateY(180deg); }
+  .face {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    /* Card stock: a hairline edge and the shadow of a sleeve standing on a shelf. */
+    box-shadow:
+      inset 0 0 0 1px rgb(0 0 0 / 0.12),
+      0 1px 0 rgb(0 0 0 / 0.04),
+      0 22px 40px -24px rgb(27 26 24 / 0.6);
+  }
+  .face-front::after {
+    /* Ring wear: the faint circle a record leaves on an old sleeve. */
+    content: '';
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+    pointer-events: none;
+  }
+  .face-back { transform: rotateY(180deg); display: flex; flex-direction: column; }
+  .flip-hint { transition: transform 0.3s; }
+  .sleeve:hover .flip-hint { transform: translateX(-2px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .record, .sleeve-wrap:hover .record, .sleeve-wrap:focus-within .record { transition: none; transform: translateX(14%); }
+    .sleeve-inner { transition: none; transform: none !important; }
+    .face { transition: opacity 0.2s; backface-visibility: visible; }
+    .face-back { transform: none; opacity: 0; }
+    .sleeve[aria-pressed='true'] .face-front { opacity: 0; }
+    .sleeve[aria-pressed='true'] .face-back { opacity: 1; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-sleeve]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const flipped = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!flipped));
+      btn.setAttribute('aria-label', flipped ? 'Record sleeve. Press to flip to the B-side.' : 'Record sleeve, B-side. Press to flip back to Side A.');
+    });
+  });
+</script>
