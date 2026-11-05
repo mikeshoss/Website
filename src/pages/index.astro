@@ -184,12 +184,11 @@ const givingBack = [
         </div>
 
         <div class="pt-4">
-          <p class="eyebrow mb-3">Off the clock</p>
+          <a href="/off-the-clock/" class="eyebrow mb-3 inline-block hover:text-bone transition-colors">Off the clock</a>
+          <!-- Plain text on purpose: each one is a link, but the line reads as a list, not a menu. -->
           <p class="text-sm text-muted leading-relaxed">
             {interests.map((i, n) => (
-              <>{n > 0 && ' · '}{i.name.startsWith('Pokémon')
-                ? <a href="/collection" class="link">{i.name}</a>
-                : i.name}</>
+              <>{n > 0 && ' · '}<a href={`/off-the-clock/${i.slug}/`} class="hover:text-bone transition-colors">{i.name}</a></>
             ))}
           </p>
         </div>

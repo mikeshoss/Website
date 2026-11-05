@@ -1426,18 +1426,32 @@ export interface Organization {
 
 const organizationsData: Organization[] = [];
 
+/**
+ * Off the clock. Each interest has its own page at /off-the-clock/<slug>/.
+ * `summary` is one line in Mike's voice; keep it to what is true today.
+ */
 export interface Interest {
+  slug: string;
   name: string;
+  summary: string;
+  /** The word beside the green light on its page: what is happening now. */
+  status: string;
   keywords?: string[];
 }
 
 export const interests: Interest[] = [
   {
+    slug: "bicycles",
     name: "Vintage Canadian steel bicycles",
+    summary: "Old Canadian steel frames, restored and back on the road.",
+    status: "Restoring",
     keywords: ["Restoration", "Framebuilding", "Cycling"],
   },
   {
+    slug: "amateur-radio",
     name: "Amateur radio",
+    summary: "A receiver tracking the aircraft overhead, a LoRa mesh node and APRS infrastructure. Software that watches the world.",
+    status: "On air",
     keywords: [
       "Meshtastic",
       "LoRa mesh",
@@ -1447,15 +1461,17 @@ export const interests: Interest[] = [
     ],
   },
   {
-    name: "Pokémon cards",
-    keywords: ["Wizards-era sets", "Set completion", "Graded slabs"],
+    slug: "cards",
+    name: "Pokémon and Magic cards",
+    summary: "Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
+    status: "Collecting",
+    keywords: ["Wizards-era Pokémon", "Set completion", "Graded slabs", "Magic: The Gathering", "Commander"],
   },
   {
-    name: "Magic: The Gathering",
-    keywords: ["Commander", "Deckbuilding"],
-  },
-  {
+    slug: "homelab",
     name: "Homelab",
+    summary: "A Mac mini runs dozens of self-hosted services, with monitoring, phone alerts and a staging copy of every app. Local models on the machine next to it.",
+    status: "Running",
     keywords: [
       "Self-hosted infrastructure",
       "Local-first AI",
@@ -1497,7 +1513,7 @@ export const causes: Cause[] = [
 ];
 
 /* ------------------------------------------------------------------------- *
- * The collection: Pokémon TCG sets and graded slabs, shown on /collection.
+ * The collection: Pokémon TCG sets and graded slabs, shown on /off-the-clock/cards/.
  *
  * Completion only — deliberately no values, prices or cert numbers. A list of
  * what a collector owns, next to their home town, is a burglary listing.

@@ -1,0 +1,61 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { interests, site } from '../../data/content';
+
+/**
+ * Off the clock: what Mike builds and collects when nobody is paying for it.
+ * One row per interest, each linking to its own page.
+ */
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Layout
+  card="off-the-clock"
+  title="Off the clock — Mike Shoss"
+  description="What Mike Shoss builds and collects when nobody's paying: vintage steel bikes, amateur radio, Pokémon and Magic cards, and a homelab."
+  breadcrumbs={[{ name: 'Off the clock', href: '/off-the-clock' }]}
+  schema={[
+    {
+      '@type': 'ItemList',
+      '@id': `${site.url}/off-the-clock/#list`,
+      name: 'Off the clock — Mike Shoss',
+      numberOfItems: interests.length,
+      itemListElement: interests.map((i, n) => ({
+        '@type': 'ListItem',
+        position: n + 1,
+        url: `${site.url}/off-the-clock/${i.slug}/`,
+        name: i.name,
+      })),
+    },
+  ]}
+>
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between eyebrow">
+      <span>Side B · Off the clock</span>
+      <span>{interests.length} channels</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[14ch]">Off the <em>clock</em>.</h1>
+    <p class="lede mt-8 max-w-prose">
+      What I build and collect when nobody's paying for it. Same instinct as the day job: take it apart, learn how
+      it works, finish the thing.
+    </p>
+  </section>
+
+  <section class="section pt-0 md:pt-0">
+    <ol class="ruled">
+      {interests.map((i, n) => (
+        <li>
+          <a href={`/off-the-clock/${i.slug}/`} class="group py-7 grid grid-cols-[2.5rem_minmax(0,1fr)_auto] md:grid-cols-[3rem_minmax(0,5fr)_minmax(0,6fr)_9rem] gap-x-6 gap-y-2 items-baseline">
+            <span class="font-mono text-xs text-accent-dim">{pad(n + 1)}</span>
+            <span class="display text-display-sm group-hover:text-accent transition-colors">{i.name}</span>
+            <span class="text-sm text-bone-dim leading-relaxed col-start-2 col-span-2 md:col-span-1 md:col-start-auto row-start-2 md:row-start-auto">{i.summary}</span>
+            <span class="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted whitespace-nowrap justify-self-end row-start-1 col-start-3 md:row-start-auto md:col-start-auto">
+              <span class="led" aria-hidden="true"></span>{i.status}
+              <span class="ml-2 text-bone group-hover:text-accent group-hover:translate-x-0.5 transition-all" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Layout>

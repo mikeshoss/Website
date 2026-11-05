@@ -1,0 +1,156 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { interests, cardSets, slabs, magic, machineRoom, site } from '../../data/content';
+
+/**
+ * One page per interest. Every page has the same frame (status, summary,
+ * keywords, the next channel); some carry their own panel below it:
+ * the cards page has the Pokémon sets and the Magic decks, and the radio and
+ * homelab pages show the matching machine-room entries.
+ */
+export function getStaticPaths() {
+  return interests.map((interest, index) => ({ params: { slug: interest.slug }, props: { interest, index } }));
+}
+
+const { interest, index } = Astro.props as { interest: (typeof interests)[number]; index: number };
+const next = interests[(index + 1) % interests.length];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const complete = cardSets.filter((s) => s.owned === s.total);
+const cardsOwned = cardSets.reduce((n, s) => n + (s.owned ?? 0), 0);
+
+// The public-safe machine-room entries that belong to each page.
+const machine: Record<string, string[]> = {
+  'amateur-radio': ['Antennas on the roof'],
+  homelab: ['One box runs the house', 'Merge is deploy', 'Agents on call', 'One source, every surface'],
+};
+const related = machineRoom.filter((m) => machine[interest.slug]?.includes(m.name));
+
+const description =
+  interest.slug === 'cards'
+    ? `Mike Shoss's cards: ${complete.length} Wizards-era Pokémon sets complete, ${cardsOwned} cards counted, and ${magic.decks} ${magic.format} decks.`
+    : `${interest.name}, off the clock. ${interest.summary}`;
+---
+
+<Layout
+  card={interest.slug === 'cards' ? 'collection' : 'off-the-clock'}
+  title={`${interest.name} — Mike Shoss`}
+  description={description.length > 160 ? description.slice(0, 157).replace(/\s+\S*$/, '') + '…' : description}
+  breadcrumbs={[{ name: 'Off the clock', href: '/off-the-clock' }, { name: interest.name, href: `/off-the-clock/${interest.slug}` }]}
+>
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between eyebrow">
+      <a href="/off-the-clock/" class="hover:text-bone transition-colors">Off the clock · <b>{pad(index + 1)}</b></a>
+      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> {interest.status}</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[16ch]">{interest.name}.</h1>
+    <p class="lede mt-8 max-w-prose">{interest.summary}</p>
+    {interest.keywords && (
+      <ul class="mt-8 flex flex-wrap gap-2">
+        {interest.keywords.map((k) => <li class="pill">{k}</li>)}
+      </ul>
+    )}
+  </section>
+
+  {interest.slug === 'cards' && (
+    <>
+      <!-- Pokémon -->
+      <section class="section pt-0 md:pt-0" id="pokemon">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">A</span>Pokémon</h2>
+          <span class="eyebrow hidden sm:inline">Wizards of the Coast era</span>
+        </div>
+
+        <dl class="mt-8 grid grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden max-w-2xl">
+          <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">Sets complete</dt><dd class="readout">{complete.length}</dd></div>
+          <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">In progress</dt><dd class="readout">{cardSets.length - complete.length}</dd></div>
+          <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">Cards counted</dt><dd class="readout">{cardsOwned}</dd></div>
+        </dl>
+
+        <ol class="mt-10 ruled">
+          {cardSets.map((set) => {
+            const done = set.owned === set.total;
+            const pct = set.owned === undefined ? undefined : Math.round((set.owned / set.total) * 100);
+            return (
+              <li class="py-6 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,4fr)_minmax(0,5fr)_minmax(0,2fr)] gap-x-8 gap-y-3 items-center">
+                <div>
+                  <p class="display text-xl md:text-2xl leading-tight">{set.name}</p>
+                  <p class="font-mono text-xs text-muted mt-1">{set.year}</p>
+                </div>
+                <div class="col-span-2 md:col-span-1 row-start-2 md:row-start-auto">
+                  <div class="h-2 rounded-full bg-ink-100 overflow-hidden">
+                    {pct === undefined
+                      ? <div class="h-full w-full grille opacity-70"></div>
+                      : <div class:list={['h-full rounded-full', done ? 'bg-bone' : 'bg-accent']} style={`width: ${pct}%`}></div>}
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-mono text-lg tabular-nums text-bone">{set.owned ?? '—'}<span class="text-muted"> / {set.total}</span></p>
+                  <p class="mt-1 flex items-center justify-end gap-1.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted">
+                    <span class={done ? 'led' : 'led-off'} aria-hidden="true"></span>
+                    {done ? 'Complete' : (set.note ?? `${pct}%`)}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        {slabs.length > 0 && (
+          <>
+            <p class="eyebrow mt-12">Graded</p>
+            <div class="mt-4 grid sm:grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+              {slabs.map((slab) => (
+                <div class="bg-ink p-6">
+                  <p class="eyebrow">{slab.grader}</p>
+                  <p class="readout mt-2 text-accent">{slab.grade}</p>
+                  <p class="text-bone mt-4 leading-snug">{slab.card}</p>
+                  <p class="text-xs text-muted mt-1">{slab.set}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </section>
+
+      <!-- Magic -->
+      <section class="section pt-0 md:pt-0" id="magic">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">B</span>Magic: The Gathering</h2>
+          <span class="eyebrow">{magic.format}</span>
+        </div>
+        <div class="mt-8 flex items-baseline gap-6">
+          <p class="readout !text-5xl">{magic.decks}</p>
+          <p class="text-bone-dim max-w-prose">{magic.format} decks. Building the deck is the fun part.</p>
+        </div>
+      </section>
+    </>
+  )}
+
+  {related.length > 0 && (
+    <section class="carbon">
+      <div class="page py-14 md:py-20">
+        <p class="eyebrow">From the machine room</p>
+        <ol class="mt-6 border-t border-carbon-line">
+          {related.map((m, i) => (
+            <li class="py-5 border-b border-carbon-line grid grid-cols-[2.5rem_minmax(0,1fr)] md:grid-cols-[2.5rem_minmax(0,4fr)_minmax(0,7fr)] gap-x-4 gap-y-1">
+              <span class="font-mono text-xs text-accent">{pad(i + 1)}</span>
+              <p class="text-carbon-text font-medium">{m.name}</p>
+              <p class="text-sm text-carbon-muted leading-relaxed col-start-2 md:col-start-auto">{m.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <section class="page py-12 md:py-16">
+    <a href={`/off-the-clock/${next.slug}/`} class="group rule pt-8 flex items-baseline justify-between gap-6">
+      <span>
+        <span class="eyebrow block">Next channel</span>
+        <span class="display text-display-sm mt-2 block group-hover:text-accent transition-colors">{next.name}</span>
+      </span>
+      <span class="font-mono text-bone group-hover:text-accent group-hover:translate-x-1 transition-all" aria-hidden="true">→</span>
+    </a>
+  </section>
+</Layout>

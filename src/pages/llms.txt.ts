@@ -147,13 +147,13 @@ ${list(causes.map((c) => `${c.name}: ${c.description ?? ""}${c.donate ? ` Donate
 ${list(
   interests.map((interest) =>
     interest.keywords?.length
-      ? `${interest.name}: ${interest.keywords.join(", ")}`
-      : interest.name,
+      ? `${interest.name}: ${interest.keywords.join(", ")} (${site.url}/off-the-clock/${interest.slug}/)`
+      : `${interest.name} (${site.url}/off-the-clock/${interest.slug}/)`,
   ),
 )}
 
 ## Card collection
-Vintage Pokémon TCG, Wizards of the Coast era. Completion only: ${site.url}/collection/
+Vintage Pokémon TCG, Wizards of the Coast era, and Magic Commander decks. Completion only: ${site.url}/off-the-clock/cards/
 ${list(cardSets.map((s) => `${s.name} (${s.year}): ${s.owned === undefined ? "being counted" : `${s.owned} of ${s.total}`}`))}
 Magic: The Gathering: ${magic.decks} ${magic.format} decks.
 

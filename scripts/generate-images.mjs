@@ -107,10 +107,16 @@ const TARGETS = [
     path: '/experience',
   }),
   card('public/og/collection.png', {
-    eyebrow: 'Off the clock · Pokémon TCG',
-    title: 'The *collection*.',
-    sub: 'Vintage Pokémon, done properly. Finish the thing.',
-    path: '/collection',
+    eyebrow: 'Off the clock · Trading cards',
+    title: 'Pokémon and *Magic*.',
+    sub: 'Wizards-era Pokémon, set by set. Commander decks on the side.',
+    path: '/off-the-clock/cards',
+  }),
+  card('public/og/off-the-clock.png', {
+    eyebrow: 'Side B',
+    title: 'Off the *clock*.',
+    sub: 'Steel bikes, radio, cards and a homelab. Finish the thing.',
+    path: '/off-the-clock',
   }),
   card('public/og/glossary.png', {
     eyebrow: 'Reference',

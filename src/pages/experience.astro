@@ -191,14 +191,15 @@ const tabs = [
   <section id="panel-outside" role="tabpanel" aria-labelledby="tab-outside" tabindex="0" class="section" data-panel hidden>
     <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {interests.map(interest => (
-        <div class="bg-ink p-7">
-          <h2 class="display text-display-sm">{interest.name}</h2>
+        <a href={`/off-the-clock/${interest.slug}/`} class="group bg-ink p-7 flex flex-col hover:bg-ink-50 transition-colors">
+          <h2 class="display text-display-sm group-hover:text-accent transition-colors">{interest.name}</h2>
           {interest.keywords && (
             <ul class="mt-5 space-y-1.5">
               {interest.keywords.map(k => <li class="text-xs font-mono text-muted">{k}</li>)}
             </ul>
           )}
-        </div>
+          <span class="mt-auto pt-6 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted group-hover:text-bone transition-colors">Open <span aria-hidden="true">→</span></span>
+        </a>
       ))}
     </div>
   </section>
