@@ -14,19 +14,27 @@ import { about } from '../../data/content';
   <section class="page pt-14 md:pt-20 pb-6">
     <div class="flex items-center justify-between eyebrow">
       <span>Lab · Preview · not linked</span>
-      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> Option 2</span>
+      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> Option 2 · sticker and spine</span>
     </div>
-    <p class="lede mt-6 max-w-prose">The record sleeve, in place in "Who I am". Hover to slide the record out, click to flip to the B-side.</p>
+    <p class="lede mt-6 max-w-prose">The record sleeve with a hype sticker and a printed spine, in place in "Who I am". Click it to flip to the B-side. The record version is underneath for comparison.</p>
   </section>
 
   <section class="section pt-6 md:pt-10">
     <p class="eyebrow rule pt-6">05 — Who I am</p>
     <div class="mt-8 grid md:grid-cols-12 gap-8">
       <div class="md:col-span-5">
-        <Sleeve class="w-[78%] sm:w-[60%] md:w-[88%]" />
+        <Sleeve class="w-[78%] sm:w-[60%] md:w-[88%]" variant="sticker" />
       </div>
       <div class="md:col-span-6 md:col-start-7 space-y-5">
         {about.map((paragraph) => <p class="text-lg text-bone-dim leading-relaxed">{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0 md:pt-0">
+    <p class="eyebrow rule pt-6">For comparison · the first version, with the record</p>
+    <div class="mt-8 grid md:grid-cols-12 gap-8">
+      <div class="md:col-span-5">
+        <Sleeve class="w-[60%] sm:w-[45%] md:w-[70%]" variant="record" />
       </div>
     </div>
   </section>
