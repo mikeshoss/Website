@@ -5,6 +5,10 @@
  * ⌘K / Ctrl+K, "/", or any [data-cmdk-open] button. The index is
  * /palette.json, fetched on first open.
  *
+ * Browse: before anything is typed it is a numbered menu. 1–9 open an item;
+ * items with a › open a submenu (Esc, ← or Backspace go back). Typing
+ * searches everything instead.
+ *
  * Cheat codes: type one exactly and press Enter. They are not listed or
  * searchable; the footer counts how many this browser has found.
  *
@@ -33,13 +37,13 @@
         autocomplete="off"
         autocapitalize="off"
         spellcheck="false"
-        placeholder="Type a page, a term, or a code"
+        placeholder="Pick a number, or type anything"
       />
     </div>
     <ul id="cmdk-list" class="cmdk-list" role="listbox" aria-label="Results"></ul>
     <div class="cmdk-foot">
       <span id="cmdk-help" class="cmdk-keys">
-        <kbd>↑</kbd><kbd>↓</kbd> move <kbd>↵</kbd> open <kbd>esc</kbd> close
+        <kbd>1–9</kbd> pick <kbd>↵</kbd> open <kbd>esc</kbd> back
       </span>
       <span id="cmdk-codes" class="cmdk-codes"></span>
     </div>
@@ -154,6 +158,28 @@
     border-radius: 2px;
     background: #e0520f;
   }
+  .cmdk-num, .cmdk-num-gap {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-right: 0.75rem;
+    border-radius: 0.35rem;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.6875rem;
+    color: #e9e5dc;
+    background: #24221f;
+    border: 1px solid #3a3732;
+    border-bottom-width: 2px;
+    align-self: center;
+  }
+  .cmdk-num-gap { visibility: hidden; }
+  .cmdk-list:not(.numbered) .cmdk-num-gap { display: none; }
+  .cmdk-item[aria-selected='true'] .cmdk-num { background: #e0520f; border-color: #b5420b; color: #111110; }
+  .cmdk-item .t { flex: 1; min-width: 0; }
+  .cmdk-back { cursor: pointer; color: #e9e5dc; margin-right: 0.75rem; }
+  .cmdk-back:hover { color: #f0661f; }
   .cmdk-empty { padding: 1.5rem 0.7rem; color: #8f897e; font-size: 0.9375rem; }
   .cmdk-empty b { color: #e9e5dc; font-weight: 500; }
 
@@ -173,9 +199,7 @@
     font: inherit;
     letter-spacing: 0.06em;
   }
-  .cmdk-keys kbd:nth-of-type(2) { margin-right: 0.35rem; }
-  .cmdk-keys kbd:nth-of-type(3) { margin-right: 0.35rem; margin-left: 0.6rem; }
-  .cmdk-keys kbd:nth-of-type(4) { margin-left: 0.6rem; }
+  .cmdk-keys kbd:nth-of-type(2), .cmdk-keys kbd:nth-of-type(3) { margin-left: 0.6rem; }
   .cmdk-codes b { color: #f0661f; font-weight: 500; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -183,25 +207,27 @@
   }
   @media (max-width: 480px) {
     .cmdk { margin-top: 1rem; }
-    .cmdk-keys kbd:nth-of-type(1), .cmdk-keys kbd:nth-of-type(2) { display: none; }
+    .cmdk-codes { display: none; }
   }
 </style>
 
 <script>
-  type Item = { t: string; h?: string; g: string; u?: string; k?: string; x?: true; a?: 'copy' | 'tag'; v?: string };
+  type Item = { t: string; h?: string; g?: string; u?: string; k?: string; x?: true; a?: 'copy' | 'tag'; v?: string; c?: Item[] };
 
   // Cheat codes. Unlisted and unsearchable on purpose: you have to know them.
+  // Codes start with a letter: digits on an empty prompt are menu shortcuts.
   const CODES: Record<string, { label: string; run: () => void | Promise<void> }> = {
     HIT: { label: 'Now playing', run: () => playTag() },
     FLIP: { label: 'B-side', run: () => { store('ms-flip', '1', sessionStorage); go('/#who-i-am'); } },
     PORYGON: { label: 'Master set', run: () => go('/off-the-clock/cards/#porygon') },
     ONAIR: { label: 'Signal found', run: () => go('/off-the-clock/amateur-radio/') },
-    '122B': { label: 'Big model', run: () => go('/off-the-clock/homelab/#fleet') },
+    BIGMODEL: { label: '122 billion parameters', run: () => go('/off-the-clock/homelab/#fleet') },
     STUDIO: { label: 'Booking the studio', run: () => open('https://epiloguelabs.com/?utm_source=mikeshoss&utm_medium=referral&utm_content=cheat-code') },
     SUDO: { label: 'Nice try', run: () => go('/contact/') },
     MS01: { label: 'Model number', run: () => go('/brand/#the-mark') },
   };
   const TOTAL = Object.keys(CODES).length;
+  const BASE = 'MS–01 · Command';
 
   const dialog = document.getElementById('cmdk') as HTMLDialogElement | null;
   const input = document.getElementById('cmdk-input') as HTMLInputElement | null;
@@ -211,8 +237,11 @@
   const codesEl = document.getElementById('cmdk-codes');
 
   let items: Item[] = [];
+  let menu: Item[] = [];
+  let path: Item[] = []; // the submenus opened, root first
   let shown: Item[] = [];
   let active = 0;
+  let browsing = true;
   let opener: Element | null = null;
 
   const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
@@ -226,11 +255,11 @@
   }
   const found = (): string[] => { try { return JSON.parse(read('ms-codes') || '[]'); } catch { return []; } };
   const recents = (): string[] => { try { return JSON.parse(read('ms-recent') || '[]'); } catch { return []; } };
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
   function go(url: string) {
     dialog?.close();
-    const here = location.pathname + location.hash;
-    if (url === here) return;
+    if (url === location.pathname + location.hash) return;
     location.href = url;
   }
   function open(url: string) {
@@ -244,15 +273,17 @@
   async function load() {
     if (items.length) return;
     try {
-      const res = await fetch('/palette.json');
-      items = await res.json();
+      const data = await (await fetch('/palette.json')).json();
+      items = data.items;
+      menu = data.menu;
     } catch {
       items = [];
+      menu = [];
     }
   }
 
-  // Forgiving match: every typed character in order; earlier, word-start and
-  // consecutive hits score higher. Title beats hint beats keywords.
+  // Forgiving match on titles: every typed character in order; earlier,
+  // word-start and consecutive hits score higher.
   function score(query: string, text: string): number {
     if (!text) return 0;
     const q = query.toLowerCase(), t = text.toLowerCase();
@@ -269,75 +300,108 @@
     }
     return Math.min(55, s);
   }
-
   function contains(query: string, text?: string): number {
     if (!text) return 0;
     const at = text.toLowerCase().indexOf(query.toLowerCase());
     return at < 0 ? 0 : at === 0 || /\W/.test(text[at - 1]) ? 80 : 60;
   }
-
   function highlight(title: string, query: string): string {
-    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
     if (!query) return esc(title);
     const at = title.toLowerCase().indexOf(query.toLowerCase());
     if (at < 0) return esc(title);
     return esc(title.slice(0, at)) + '<mark>' + esc(title.slice(at, at + query.length)) + '</mark>' + esc(title.slice(at + query.length));
   }
 
-  const GROUP_ORDER = ['Recent', 'Pages', 'Sections', 'Ventures', 'Off the clock', 'Glossary', 'API', 'Actions'];
+  function baseStatus() {
+    return path.length ? `${BASE} › ${path.map((p) => p.t).join(' › ')}` : BASE;
+  }
+  function setStatus() {
+    if (status && !status.classList.contains('accepted')) status.textContent = baseStatus();
+  }
+
+  function option(i: Item, n: number, query: string, num?: number) {
+    const key = num ? `<kbd class="cmdk-num" aria-hidden="true">${num}</kbd>` : '<span class="cmdk-num-gap" aria-hidden="true"></span>';
+    const hint = i.c ? `${esc(i.h || '')} <span aria-hidden="true">›</span>` : esc(i.h || '');
+    const label = i.c ? `${i.t}, submenu` : i.t;
+    return `<li class="cmdk-item" role="option" id="cmdk-o${n}" data-i="${n}" aria-selected="${n === active}" aria-label="${esc((num ? num + '. ' : '') + label)}">${key}<span class="t">${highlight(i.t, query)}</span>${hint ? `<span class="h">${hint}</span>` : ''}</li>`;
+  }
 
   function render() {
     if (!list || !input) return;
     const query = input.value.trim();
-    if (!query) {
-      const rec = recents().map((t) => items.find((i) => i.t === t)).filter(Boolean) as Item[];
-      shown = [...rec.map((i) => ({ ...i, g: 'Recent' })), ...items.filter((i) => i.g === 'Pages' || i.g === 'Actions')];
+    browsing = !query;
+    let html = '';
+
+    if (browsing) {
+      // The numbered menu: the current level, then recent picks at the top level.
+      const level = path.length ? path[path.length - 1].c! : menu;
+      const rec = path.length ? [] : (recents().map((t) => items.find((i) => i.t === t)).filter(Boolean) as Item[]);
+      shown = [...level, ...rec];
+      active = Math.min(active, Math.max(0, shown.length - 1));
+      const title = path.length ? path[path.length - 1].t : 'Menu';
+      html += `<li role="presentation"><div class="cmdk-group" id="cmdk-g1">${path.length ? '<span class="cmdk-back">‹ Back</span>' : '<b>01</b>'}${esc(title)}</div><ul role="group" aria-labelledby="cmdk-g1">`;
+      level.forEach((i, n) => (html += option(i, n, '', n < 9 ? n + 1 : undefined)));
+      html += '</ul></li>';
+      if (rec.length) {
+        html += '<li role="presentation"><div class="cmdk-group" id="cmdk-g2"><b>02</b>Recent</div><ul role="group" aria-labelledby="cmdk-g2">';
+        rec.forEach((i, n) => (html += option(i, level.length + n, '')));
+        html += '</ul></li>';
+      }
     } else {
+      // Search: flat across everything; loose matching on titles only, hints
+      // and keywords must contain the query, so results stay relevant.
       shown = items
-        // Loose letter-by-letter matching on titles only; hints and keywords
-        // must contain the query as written, so results stay relevant.
         .map((i) => ({ i, s: Math.max(score(query, i.t) * 1.2, contains(query, i.h) * 0.7, contains(query, i.k) * 0.6) }))
         .filter((r) => r.s >= 12)
         .sort((a, b) => b.s - a.s)
         .slice(0, 40)
         .map((r) => r.i);
-    }
-    // Keep groups together, in a fixed order, best group first when searching.
-    const groups = new Map<string, Item[]>();
-    for (const i of shown) (groups.get(i.g) ?? groups.set(i.g, []).get(i.g)!).push(i);
-    const order = query ? [...groups.keys()] : GROUP_ORDER.filter((g) => groups.has(g));
-    shown = order.flatMap((g) => groups.get(g)!);
-    active = Math.min(active, Math.max(0, shown.length - 1));
-
-    let html = '', n = 0, gi = 0;
-    for (const g of order) {
-      gi++;
-      const gid = `cmdk-g${gi}`;
-      html += `<li role="presentation"><div class="cmdk-group" id="${gid}"><b>${String(gi).padStart(2, '0')}</b>${g}</div><ul role="group" aria-labelledby="${gid}" style="list-style:none;margin:0;padding:0">`;
-      for (const i of groups.get(g)!) {
-        const hint = i.h ? `<span class="h">${i.h.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!)}</span>` : '';
-        html += `<li class="cmdk-item" role="option" id="cmdk-o${n}" data-i="${n}" aria-selected="${n === active}"><span class="t">${highlight(i.t, query)}</span>${hint}</li>`;
-        n++;
+      const groups = new Map<string, Item[]>();
+      for (const i of shown) (groups.get(i.g!) ?? groups.set(i.g!, []).get(i.g!)!).push(i);
+      shown = [...groups.values()].flat();
+      active = Math.min(active, Math.max(0, shown.length - 1));
+      let n = 0, gi = 0;
+      for (const [g, group] of groups) {
+        gi++;
+        html += `<li role="presentation"><div class="cmdk-group" id="cmdk-g${gi}"><b>${String(gi).padStart(2, '0')}</b>${esc(g)}</div><ul role="group" aria-labelledby="cmdk-g${gi}">`;
+        for (const i of group) html += option(i, n++, query);
+        html += '</ul></li>';
       }
-      html += '</ul></li>';
+      if (!shown.length) html = `<li class="cmdk-empty" role="presentation">Nothing called <b>${esc(query)}</b>. If it's a code, press enter.</li>`;
     }
-    if (!shown.length) {
-      html = `<li class="cmdk-empty" role="presentation">Nothing called <b>${query.replace(/[&<>]/g, '')}</b>. If it's a code, press enter.</li>`;
-    }
+
     list.innerHTML = html;
+    list.classList.toggle('numbered', browsing);
     input.setAttribute('aria-activedescendant', shown.length ? `cmdk-o${active}` : '');
-    if (live) live.textContent = query ? `${shown.length} result${shown.length === 1 ? '' : 's'}` : '';
+    input.placeholder = path.length ? 'Pick a number, or type to search' : 'Pick a number, or type anything';
+    if (live) live.textContent = browsing ? '' : `${shown.length} result${shown.length === 1 ? '' : 's'}`;
+    setStatus();
     list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
   }
 
   function renderCodes() {
-    if (!codesEl) return;
-    const n = found().length;
-    codesEl.innerHTML = n ? `Codes <b>${n}</b>/${TOTAL}` : `Codes 0/${TOTAL}`;
+    if (codesEl) codesEl.innerHTML = `Codes <b>${found().length}</b>/${TOTAL}`;
+  }
+
+  function into(i: Item) {
+    path.push(i);
+    active = 0;
+    if (input) input.value = '';
+    render();
+    if (live) live.textContent = `${i.t}: ${i.c!.length} options`;
+  }
+  function back(): boolean {
+    if (!path.length) return false;
+    const left = path.pop()!;
+    const level = path.length ? path[path.length - 1].c! : menu;
+    active = Math.max(0, level.indexOf(left));
+    render();
+    return true;
   }
 
   async function run(i: Item | undefined) {
     if (!i) return;
+    if (i.c) { into(i); return; }
     store('ms-recent', JSON.stringify([i.t, ...recents().filter((t) => t !== i.t)].slice(0, 4)));
     if (i.a === 'tag') { dialog?.close(); playTag(); return; }
     if (i.a === 'copy' && i.v) {
@@ -360,8 +424,8 @@
     if (live) live.textContent = text;
     clearTimeout(flashTimer);
     flashTimer = window.setTimeout(() => {
-      status.textContent = 'MS–01 · Command';
       status.classList.remove('accepted');
+      status.textContent = baseStatus();
     }, 2200);
   }
 
@@ -383,6 +447,7 @@
     if (dialog.open) { dialog.close(); return; }
     opener = document.activeElement;
     input.value = '';
+    path = [];
     active = 0;
     renderCodes();
     dialog.showModal();
@@ -394,18 +459,33 @@
   dialog?.addEventListener('close', () => {
     if (opener instanceof HTMLElement) opener.focus();
   });
+  // Esc in a submenu goes back a level; at the top it closes.
+  dialog?.addEventListener('cancel', (e) => {
+    if (input?.value) { e.preventDefault(); input.value = ''; render(); }
+    else if (back()) e.preventDefault();
+  });
   // A click on the dimmed backdrop closes it.
   dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
   input?.addEventListener('input', () => { active = 0; render(); });
   input?.addEventListener('keydown', (e) => {
+    const empty = !input.value;
+    // Number keys on an empty prompt: open that item straight away.
+    if (empty && /^[1-9]$/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      const level = path.length ? path[path.length - 1].c! : menu;
+      const pick = level[+e.key - 1];
+      if (pick) { e.preventDefault(); active = +e.key - 1; run(pick); }
+      return;
+    }
     if (e.key === 'ArrowDown' || (e.ctrlKey && e.key === 'n')) { e.preventDefault(); active = Math.min(shown.length - 1, active + 1); render(); }
     else if (e.key === 'ArrowUp' || (e.ctrlKey && e.key === 'p')) { e.preventDefault(); active = Math.max(0, active - 1); render(); }
-    else if (e.key === 'Home' && !input.value) { e.preventDefault(); active = 0; render(); }
-    else if (e.key === 'End' && !input.value) { e.preventDefault(); active = shown.length - 1; render(); }
+    else if (e.key === 'ArrowRight' && empty && shown[active]?.c) { e.preventDefault(); into(shown[active]); }
+    else if ((e.key === 'ArrowLeft' || e.key === 'Backspace') && empty && path.length) { e.preventDefault(); back(); }
+    else if (e.key === 'Home' && empty) { e.preventDefault(); active = 0; render(); }
+    else if (e.key === 'End' && empty) { e.preventDefault(); active = shown.length - 1; render(); }
     else if (e.key === 'Enter') {
       e.preventDefault();
-      if (tryCode(input.value)) return;
+      if (!empty && tryCode(input.value)) return;
       run(shown[active]);
     }
   });
@@ -414,8 +494,9 @@
     if (li && +li.dataset.i! !== active) { active = +li.dataset.i!; render(); }
   });
   list?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('.cmdk-back')) { back(); input?.focus(); return; }
     const li = (e.target as HTMLElement).closest<HTMLElement>('[data-i]');
-    if (li) run(shown[+li.dataset.i!]);
+    if (li) { run(shown[+li.dataset.i!]); input?.focus(); }
   });
 
   document.addEventListener('keydown', (e) => {

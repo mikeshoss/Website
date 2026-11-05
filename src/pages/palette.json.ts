@@ -13,6 +13,7 @@ export const prerender = true;
  * Item keys are short on purpose: t title, h hint, g group, u url, k extra
  * search words, x external link, a action ('copy' | 'tag'), v action value.
  * The cheat codes are not here: they live in the component, unlisted.
+ * Shape: { items (flat, for search), menu (tree, for the numbered browse) }.
  */
 type Item = { t: string; h?: string; g: string; u?: string; k?: string; x?: true; a?: "copy" | "tag"; v?: string };
 
@@ -76,7 +77,52 @@ const actions: Item[] = [
   { t: "Copy the MCP server URL", h: "MCP", g: "Actions", a: "copy", v: `${site.url}/mcp`, k: "agents claude" },
 ];
 
+/**
+ * The numbered menu shown before anything is typed: 1–9 open an item, and an
+ * item with children (c) opens a submenu whose first entry opens the page
+ * itself. Search ignores this tree and uses the flat list above.
+ */
+type Node = { t: string; h?: string; u?: string; x?: true; a?: "copy" | "tag"; v?: string; c?: Node[] };
+const page = (t: string): Item => pages.find((p) => p.t === t)!;
+const strip = ({ t, h, u, x, a, v }: Item): Node => ({ t, h, u, x, a, v });
+const open = (t: string, u: string): Node => ({ t: `Open ${t}`, h: "Page", u });
+const sectionsOf = (hint: string) => sections.filter((s) => s.h === hint).map(strip);
+
+const menu: Node[] = [
+  { t: "Home", h: "Sections", c: [open("Home", "/"), ...sectionsOf("Home")] },
+  { ...strip(page("Credits")) },
+  { t: "Ventures", h: "Companies", c: [open("Ventures", "/companies/"), ...ventures.map(strip)] },
+  { ...strip(page("Projects")) },
+  { t: "Experience", h: "Tabs", c: [open("Experience", "/experience/"), ...sectionsOf("Experience")] },
+  {
+    t: "Off the clock",
+    h: "Channels",
+    c: [
+      open("Off the clock", "/off-the-clock/"),
+      ...channels.map(strip),
+      ...sectionsOf("Cards"),
+      ...sectionsOf("Homelab"),
+    ],
+  },
+  {
+    t: "Contact",
+    h: "Ways in",
+    c: [open("Contact", "/contact/"), ...actions.filter((a) => /email|LinkedIn|GitHub|studio/.test(a.t)).map(strip)],
+  },
+  {
+    t: "Reference",
+    h: "Glossary, brand, API",
+    c: [
+      { t: "Glossary", h: "Terms", c: [open("Glossary", "/glossary/"), ...terms.map(strip)] },
+      { t: "Brand", h: "Chapters", c: [open("Brand", "/brand/"), ...sectionsOf("Brand")] },
+      { t: "API", h: "Endpoints", c: [open("API docs", "/api/"), ...sectionsOf("API"), ...api.map(strip)] },
+      strip(page("Accessibility")),
+    ],
+  },
+  { t: "Actions", h: "Do something", c: actions.map(strip) },
+];
+
 export const GET: APIRoute = () =>
-  new Response(JSON.stringify([...pages, ...sections, ...ventures, ...channels, ...terms, ...api, ...actions]), {
+  new Response(JSON.stringify({ items: [...pages, ...sections, ...ventures, ...channels, ...terms, ...api, ...actions], menu }), {
     headers: { "Content-Type": "application/json; charset=utf-8" },
   });
