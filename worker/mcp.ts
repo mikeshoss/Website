@@ -103,7 +103,7 @@ function matches(entry: unknown, query: string): boolean {
   return JSON.stringify(entry).toLowerCase().includes(query.toLowerCase());
 }
 
-const TOOLS: Record<string, Tool> = {
+export const TOOLS: Record<string, Tool> = {
   get_resume: {
     description:
       "Get Mike Shoss's full structured resume: work history, companies founded, education, projects, patents, skills, volunteering and more. Use this for any broad question about his background, and pass `section` to retrieve just one part.",
@@ -429,6 +429,6 @@ export const handleGet = (request: Request): Response => {
     protocolVersion: LATEST_PROTOCOL,
     transport: "streamable-http",
     tools: Object.keys(TOOLS),
-    documentation: `${origin}/api/index.json`,
+    documentation: `${origin}/api/`,
   });
 };

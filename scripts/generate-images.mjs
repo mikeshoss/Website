@@ -118,6 +118,18 @@ const TARGETS = [
     sub: 'AI vocabulary, read twice: what it means, and what it really means.',
     path: '/glossary',
   }),
+  card('public/og/api.png', {
+    eyebrow: 'Developers · v2',
+    title: 'The *API*.',
+    sub: 'Everything on this site as JSON. OpenAPI spec, no key, plus an MCP server.',
+    path: '/api',
+  }),
+  card('public/og/brand.png', {
+    eyebrow: 'Brand guidelines',
+    title: '℗ and a live *cursor*.',
+    sub: 'The mark, the tag, the colours, the voice. Press kit included.',
+    path: '/brand',
+  }),
   card('public/og/contact.png', {
     eyebrow: 'Contact',
     title: "Let's *build*.",

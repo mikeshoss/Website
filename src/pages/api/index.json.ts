@@ -42,7 +42,8 @@ export const GET: APIRoute = () => {
       version: API_VERSION,
       description:
         "Public read-only API for mikeshoss.com. Prerendered JSON, regenerated on each deploy.",
-      documentation: `${base}/api/index.json`,
+      documentation: `${base}/api/`,
+      openapi: `${base}/api/openapi.json`,
       mcp: `${base}/mcp`,
       endpoints: {
         profile: `${base}/api/profile.json`,

@@ -57,6 +57,8 @@ ${list([
 
 ## Structured data
 This site publishes its content as JSON and over MCP.
+- JSON API docs: ${site.url}/api/
+- OpenAPI 3.1 spec: ${site.url}/api/openapi.json
 - JSON API index: ${site.url}/api/index.json
 - Full resume: ${site.url}/api/resume.json
 - JSON Resume (jsonresume.org schema): ${site.url}/api/jsonresume.json
