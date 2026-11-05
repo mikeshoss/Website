@@ -3,13 +3,13 @@
  * The producer tag. A record producer's tag is the few seconds you hear before
  * the first beat — it says who made this before anything else does.
  *
- * With `animate` (the hero), the ℗ draws itself and "Produced by Mike Shoss"
+ * With `animate` (the hero), the mark draws itself and "Produced by Mike Shoss"
  * types out behind an orange cursor that keeps blinking. Everything is CSS
  * and starts in its "before" state from the first paint (the `js` class set
  * in Layout's head), so nothing appears and then resets. The line's full
  * width is reserved up front, so typing never reflows the layout.
  *
- * Pressing the ℗, or any [data-tag-play] element such as the Key, replays the
+ * Pressing the mark, or any [data-tag-play] element such as the Key, replays the
  * animated tags with the sound. The sound is Web Audio, never automatic.
  */
 import Mark from './Mark.astro';
@@ -25,7 +25,7 @@ const { size = 'inline', dark = false, animate = false } = Astro.props;
 
 <div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-3.5' : 'gap-2.5', animate && 'tag-type']} data-tag={animate ? 'animate' : 'still'}>
   <button type="button" data-tag-play class="shrink-0 rounded-full -m-1 p-1" aria-label="Play the producer tag" title="Play the tag">
-    <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} glyph="p" />
+    <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} />
   </button>
   <p
     class:list={[

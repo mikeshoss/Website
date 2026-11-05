@@ -202,9 +202,8 @@
 
   /* ------------------------------------------------------------ Producer tag */
 
-  /* The ℗ draws itself: ring, then P. Lengths are the real path lengths
-     (ring 2πr = 81.7; P = 14 + 5 + π·4.2 + 5 ≈ 37.2), set slightly long so no
-     sliver is left. The start state applies only under `.js` (set in the
+  /* The mark draws itself: ring, then the signal. Lengths are the real path
+     lengths (ring 2πr = 81.7), set slightly long so no sliver is left. The start state applies only under `.js` (set in the
      head before first paint), so without script the mark is simply drawn. */
   .js .tag-draw .tag-ring {
     stroke-dasharray: 83;
@@ -212,11 +211,6 @@
     animation: tag-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
   }
 
-  .js .tag-draw .tag-p {
-    stroke-dasharray: 38;
-    stroke-dashoffset: 38;
-    animation: tag-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.6s forwards;
-  }
 
   /* The logo's signal M: two rounded peaks, 40.1 long (measured). */
   .js .tag-draw .tag-m {
@@ -292,7 +286,6 @@
 
   @media (prefers-reduced-motion: reduce) {
     .js .tag-draw .tag-ring,
-    .js .tag-draw .tag-p,
     .js .tag-draw .tag-m {
       animation: none;
       stroke-dashoffset: 0;

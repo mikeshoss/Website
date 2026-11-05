@@ -1,9 +1,10 @@
 ---
 /**
- * The mark: the signal in the ring (the logo) or ℗, the phonogram (the producer tag) — the circled P printed on every record, meaning
- * "produced by" — with an orange cursor beside it, meaning the machine is live.
+ * The mark: the signal in the ring. Mike's initial drawn as two peaks of a
+ * waveform, inside the circle record labels use for their marks, with an
+ * orange cursor beside it, meaning the machine is live.
  *
- * `animate` draws it in (ring, then P) — used on the hero tag only. Everywhere
+ * `animate` draws it in (ring, then the signal) — used on the hero tag only. Everywhere
  * else it is simply there. The draw uses explicit path lengths rather than
  * `pathLength`, which Safari has handled inconsistently on basic shapes.
  *
@@ -18,14 +19,8 @@ interface Props {
   cursor?: boolean;
   animate?: boolean;
   still?: boolean;
-  /**
-   * `m` (default) is the logo: the signal in the ring, Mike's initial drawn as
-   * two peaks of a waveform, inside the circle record labels use. `p` is the ℗ phonogram, kept for the producer tag line
-   * ("Produced by Mike Shoss"), where "produced by" is what it means.
-   */
-  glyph?: 'm' | 'p';
 }
-const { class: className = 'h-6', dark = false, cursor = true, animate = false, still = false, glyph = 'm' } = Astro.props;
+const { class: className = 'h-6', dark = false, cursor = true, animate = false, still = false } = Astro.props;
 const ink = dark ? '#e9e5dc' : '#1b1a18';
 ---
 
@@ -35,8 +30,6 @@ const ink = dark ? '#e9e5dc' : '#1b1a18';
   aria-hidden="true"
 >
   <circle class="tag-ring" cx="16" cy="16" r="13" fill="none" stroke={ink} stroke-width="2.2" transform="rotate(-90 16 16)" />
-  {glyph === 'm'
-    ? <path class="tag-m" d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
-    : <path class="tag-p" d="M12.5 23V9h5a4.2 4.2 0 010 8.4h-5" fill="none" stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />}
+  <path class="tag-m" d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
   {cursor && <rect class:list={['tag-cursor', still && 'tag-still']} x="34" y="7" width="4" height="18" fill="#e0520f" />}
 </svg>

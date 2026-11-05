@@ -144,7 +144,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
     <p class="lede mt-6 max-w-prose">
       My initial, drawn as a signal: two peaks of a waveform that read as an M. Sound for the producer, signal for
       the radio, a machine writing it out. It sits in a ring, the way record labels circle their marks, and the
-      orange cursor beside it says the machine is on. The ℗ stays in the producer tag.
+      orange cursor beside it says the machine is on.
     </p>
     <div class="mt-10 grid sm:grid-cols-2 gap-4">
       <div class="rounded-2xl border border-line grid place-items-center py-16"><Mark class="h-24 md:h-28" /></div>
@@ -232,9 +232,9 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
     <p class="eyebrow"><b>03</b> · Producer tag</p>
     <h2 class="display text-display-lg mt-4">Produced by Mike Shoss.</h2>
     <p class="lede mt-6 max-w-prose">
-      The signature, and the one place the ℗ lives: the phonogram printed on every record, meaning "produced by". The
-      ring draws, the P draws, the line types out and the cursor keeps blinking. It runs once, on the hero, in about
-      two seconds. Press the ℗ to hear it.
+      The signature, like a producer's tag at the top of a track. The ring draws, the signal traces through it, the
+      line types out and the cursor keeps blinking. It runs once, on the hero, in about two seconds. Press the mark
+      to hear it.
     </p>
     <div class="mt-10 rounded-2xl border border-line p-8 md:p-12">
       <ProducerTag size="hero" animate />
@@ -245,7 +245,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         <tbody class="text-bone-dim tabular-nums">
           {[
             ["Ring draws, from 12 o'clock", '0.10 s', '0.70 s', 'cubic-bezier(.65, 0, .35, 1)'],
-            ['P draws', '0.60 s', '0.45 s', 'same'],
+            ['Signal draws', '0.60 s', '0.70 s', 'same'],
             ['"Produced by Mike Shoss" types', '1.05 s', '1.00 s', 'steps(22), one per letter'],
             ['Cursor blinks', 'always', '1.06 s cycle', 'hard on and off'],
             ['Sound, on press only', 'on press', 'about 0.6 s', 'a click, then G4, C5, G5'],
@@ -283,7 +283,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         </figure>
       ))}
     </div>
-    <p class="text-sm text-muted mt-6 max-w-prose">Also: never type the M or the ℗ in a font in place of the drawing, and never rewrite the line. It's always "Produced by Mike Shoss".</p>
+    <p class="text-sm text-muted mt-6 max-w-prose">Also: never type the mark in a font in place of the drawing, and never rewrite the line. It's always "Produced by Mike Shoss".</p>
   </section>
 
   <!-- 05 Colour -->
