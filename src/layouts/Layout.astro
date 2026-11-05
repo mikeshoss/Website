@@ -66,6 +66,8 @@ const cardFile = existsSync(`public/og/${card}.png`) ? card : 'home';
 const ogImage = `${site.url}/og/${cardFile}.png`;
 const ogImageAlt = `${title} — social card in the site's design, produced by ${site.name}`;
 const defaultImage = `${site.url}/og/home.png`;
+// A real photo for the Person node: what Google and AI tools show for "Mike Shoss".
+const portrait = `${site.url}/brand/mike-shoss-portrait.jpg`;
 
 const [city, region] = site.location.split(',').map((part) => part.trim());
 
@@ -105,7 +107,7 @@ const person = {
   // A deliberate label, rather than the current role's formal title.
   jobTitle: 'Founder & Product Executive',
   description: site.description,
-  image: defaultImage,
+  image: portrait,
   email: `mailto:${site.email}`,
   address: {
     '@type': 'PostalAddress',
