@@ -1440,6 +1440,8 @@ export interface Interest {
   summary: string;
   /** The word beside the green light on its page: what is happening now. */
   status: string;
+  /** A short line under the page title, for names that need one. */
+  aka?: string;
   keywords?: string[];
   /** Equipment that is running right now, shown as a panel of lights. */
   stations?: { name: string; role: string }[];
@@ -1476,7 +1478,8 @@ export const interests: Interest[] = [
   },
   {
     slug: "cards",
-    name: "Pokémon and Magic cards",
+    name: "Trading cards",
+    aka: "TCG · Pokémon and Magic: The Gathering",
     summary: "Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
     status: "Collecting",
     keywords: ["Wizards-era Pokémon", "Set completion", "Porygon master set", "Graded slabs", "Magic: The Gathering", "Commander"],

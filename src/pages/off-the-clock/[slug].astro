@@ -49,6 +49,7 @@ const description =
       <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> {interest.status}</span>
     </div>
     <h1 class="display text-display-xl mt-12 max-w-[16ch]">{interest.name}.</h1>
+    {interest.aka && <p class="eyebrow mt-5">{interest.aka}</p>}
     <p class="lede mt-8 max-w-prose">{interest.summary}</p>
     {interest.keywords && (
       <ul class="mt-8 flex flex-wrap gap-2">

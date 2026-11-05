@@ -108,8 +108,8 @@ const TARGETS = [
   }),
   card('public/og/collection.png', {
     eyebrow: 'Off the clock · Trading cards',
-    title: 'Pokémon and *Magic*.',
-    sub: 'Wizards-era Pokémon, set by set. Commander decks on the side.',
+    title: 'Trading *cards*.',
+    sub: 'Pokémon and Magic. Wizards-era sets, a Porygon master set, Commander decks.',
     path: '/off-the-clock/cards',
   }),
   card('public/og/off-the-clock.png', {

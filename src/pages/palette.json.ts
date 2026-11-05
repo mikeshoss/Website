@@ -61,7 +61,7 @@ const sections: Item[] = [
 ].map((s) => ({ ...s, g: "Sections" }) as Item);
 
 const ventures: Item[] = companies.map((c) => ({ t: c.name, h: c.role ?? "Venture", g: "Ventures", u: `/companies/${c.slug}/`, k: c.tagline }));
-const channels: Item[] = interests.map((i) => ({ t: i.name, h: i.status, g: "Off the clock", u: `/off-the-clock/${i.slug}/`, k: (i.keywords ?? []).join(" ") }));
+const channels: Item[] = interests.map((i) => ({ t: i.name, h: i.status, g: "Off the clock", u: `/off-the-clock/${i.slug}/`, k: [i.aka ?? "", ...(i.keywords ?? [])].join(" ") }));
 const terms: Item[] = glossary.map((t) => ({ t: t.term, h: "Glossary", g: "Glossary", u: `/glossary/${t.slug}/` }));
 const api: Item[] = [
   { t: "OpenAPI spec", h: "JSON", g: "API", u: "/api/openapi.json", k: "swagger postman" },
