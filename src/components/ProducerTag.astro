@@ -25,7 +25,7 @@ const { size = 'inline', dark = false, animate = false } = Astro.props;
 
 <div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-3.5' : 'gap-2.5', animate && 'tag-type']} data-tag={animate ? 'animate' : 'still'}>
   <button type="button" data-tag-play class="shrink-0 rounded-full -m-1 p-1" aria-label="Play the producer tag" title="Play the tag">
-    <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} />
+    <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} glyph="p" />
   </button>
   <p
     class:list={[

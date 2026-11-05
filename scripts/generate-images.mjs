@@ -132,7 +132,7 @@ const TARGETS = [
   }),
   card('public/og/brand.png', {
     eyebrow: 'Brand guidelines',
-    title: '℗ and a live *cursor*.',
+    title: 'M in the ring, and a live *cursor*.',
     sub: 'The mark, the tag, the colours, the voice. Press kit included.',
     path: '/brand',
   }),

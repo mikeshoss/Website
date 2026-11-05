@@ -1,6 +1,6 @@
 ---
 /**
- * The key: an orange Braun ET66-style key with the ℗ on it. The same drawing
+ * The key: an orange Braun ET66-style key with the M on it. The same drawing
  * as the favicon. Pressing it plays the producer tag (wired in ProducerTag's
  * script via [data-tag-play]).
  */
@@ -13,7 +13,6 @@ const { class: className = 'w-16 h-16' } = Astro.props;
 <button type="button" data-tag-play class:list={['tag-key group rounded-[28%]', className]} aria-label="Play the producer tag" title="Press me">
   <svg class="w-full h-full" viewBox="0 0 32 32" aria-hidden="true">
     <rect x="1" y="1" width="30" height="30" rx="8.5" fill="#e0520f" />
-    <path d="M12.5 23V9h4.6a4.1 4.1 0 010 8.2h-4.6" fill="none" stroke="#1b1a18" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" />
-    <rect class="tag-cursor" x="21.5" y="19" width="3" height="4" fill="#1b1a18" />
+    <path d="M9.8 22.4V9.6L16 17.6l6.2-8v12.8" fill="none" stroke="#1b1a18" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" />
   </svg>
 </button>

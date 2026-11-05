@@ -140,10 +140,10 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
   <!-- 02 Mark -->
   <section class="page section-b" id="the-mark">
     <p class="eyebrow"><b>02</b> · The mark</p>
-    <h2 class="display text-display-lg mt-4">℗ and a live cursor.</h2>
+    <h2 class="display text-display-lg mt-4">M in the ring, and a live cursor.</h2>
     <p class="lede mt-6 max-w-prose">
-      The ℗ is the phonogram: the circled P printed on every record, meaning "produced by". The orange cursor beside
-      it says the machine is on. Together: produced by, and still building.
+      My initial in a ring, the way record labels circle their marks (℗, ©). The orange cursor beside
+      it says the machine is on. Together: made by Mike, and still building. The ℗ stays in the producer tag.
     </p>
     <div class="mt-10 grid sm:grid-cols-2 gap-4">
       <div class="rounded-2xl border border-line grid place-items-center py-16"><Mark class="h-24 md:h-28" /></div>
@@ -161,7 +161,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
           <line x1="0" y1="9" x2="44" y2="9" stroke={palette.green} stroke-width=".08" stroke-dasharray=".4 .3" />
           <line x1="0" y1="23" x2="44" y2="23" stroke={palette.green} stroke-width=".08" stroke-dasharray=".4 .3" />
           <circle cx="16" cy="16" r="13" fill="none" stroke={palette.carbon} stroke-width="2.2" />
-          <path d="M12.5 23V9h5a4.2 4.2 0 010 8.4h-5" fill="none" stroke={palette.carbon} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
+          <path d="M10.4 22.2V9.8L16 17.2l5.6-7.4v12.4" fill="none" stroke={palette.carbon} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
           <rect x="34" y="7" width="4" height="18" fill={palette.orange} />
           <text x="16" y="-1.2" font-family="JetBrains Mono, monospace" font-size="1.3" fill={palette.muted} text-anchor="middle">32</text>
           <text x="36" y="-1.2" font-family="JetBrains Mono, monospace" font-size="1.3" fill={palette.muted} text-anchor="middle">+12</text>
@@ -173,7 +173,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         <h3 class="display text-display-sm">Construction</h3>
         <p class="prose-body mt-3">
           Drawn on a 32-unit square. The cursor sits outside it, 2 units clear of the ring, so the whole mark is
-          44 × 32. The P runs from 9 to 23, the cursor from 7 to 25: a little taller than the letter, like a
+          44 × 32. The M runs from 9.8 to 22.2, the cursor from 7 to 25: a little taller than the letter, like a
           terminal's block cursor.
         </p>
         <dl class="mt-6 ruled text-sm">
@@ -181,7 +181,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
             ['Ring', 'Circle r 13 at 16,16 · stroke 2.2'],
             ['P', 'Stroke 2.4, round caps and joins; 0.2 heavier than the ring, so the letter leads'],
             ['Cursor', '4 × 18 at 34,7 · signal orange, always'],
-            ['Clear space', "The P's bowl height (8.4 units) on every side"],
+            ['Clear space', "A quarter of the mark's height (8 units) on every side"],
             ['Minimum', '16 px tall. Below that, use the key'],
           ].map(([k, v]) => (
             <div class="py-3 grid grid-cols-[7rem_1fr] gap-4"><dt class="eyebrow pt-0.5">{k}</dt><dd class="text-bone-dim">{v}</dd></div>
@@ -208,7 +208,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
       <div>
         <h3 class="display text-display-sm">The key</h3>
         <p class="prose-body mt-3">
-          An orange key, like the ones on a Braun ET66 calculator, with the P on it. It's the favicon, the
+          An orange key, like the ones on a Braun ET66 calculator, with the M on it. It's the favicon, the
           home-screen icon and the contact button. Press it: it plays the producer tag. On a home screen it's drawn
           full-bleed and square, because iOS and Android add their own corner.
         </p>
@@ -231,8 +231,9 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
     <p class="eyebrow"><b>03</b> · Producer tag</p>
     <h2 class="display text-display-lg mt-4">Produced by Mike Shoss.</h2>
     <p class="lede mt-6 max-w-prose">
-      The signature. The ring draws, the P draws, the line types out and the cursor keeps blinking. It runs once, on
-      the hero, in about two seconds. Press the ℗ to hear it.
+      The signature, and the one place the ℗ lives: the phonogram printed on every record, meaning "produced by". The
+      ring draws, the P draws, the line types out and the cursor keeps blinking. It runs once, on the hero, in about
+      two seconds. Press the ℗ to hear it.
     </p>
     <div class="mt-10 rounded-2xl border border-line p-8 md:p-12">
       <ProducerTag size="hero" animate />
@@ -273,7 +274,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
           <div class="h-28 grid place-items-center">
             <svg viewBox="0 0 44 32" class="h-16" style={m.stretch ? 'transform:scaleX(1.45)' : undefined} aria-hidden="true">
               <circle cx="16" cy="16" r="13" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.2} />
-              <path d="M12.5 23V9h5a4.2 4.2 0 010 8.4h-5" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.4} stroke-linejoin="round" stroke-linecap="round" />
+              <path d="M10.4 22.2V9.8L16 17.2l5.6-7.4v12.4" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.4} stroke-linejoin="round" stroke-linecap="round" />
               <rect x="34" y="7" width="4" height="18" fill={m.cur} />
             </svg>
           </div>
@@ -281,7 +282,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
         </figure>
       ))}
     </div>
-    <p class="text-sm text-muted mt-6 max-w-prose">Also: never type ℗ in a font in place of the drawing, and never rewrite the line. It's always "Produced by Mike Shoss".</p>
+    <p class="text-sm text-muted mt-6 max-w-prose">Also: never type the M or the ℗ in a font in place of the drawing, and never rewrite the line. It's always "Produced by Mike Shoss".</p>
   </section>
 
   <!-- 05 Colour -->
