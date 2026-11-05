@@ -63,7 +63,7 @@ const tabs = [
 
   <!-- Tab bar. Sticky under the site header so it stays reachable on the long panels. -->
   <div class="sticky top-16 z-40 bg-ink/85 backdrop-blur-md border-b border-line">
-    <div class="page overflow-x-auto scroll-fade">
+    <div class="page overflow-x-auto overflow-y-hidden scroll-fade">
       <div role="tablist" aria-label="Experience sections" class="flex gap-7 md:gap-9" data-tabs>
         {tabs.map((tab, i) => (
           <button

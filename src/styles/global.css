@@ -359,9 +359,11 @@
     @apply text-bone;
   }
 
+  /* The underline sits inside the tab, on its bottom edge: hanging it below
+     made the scrolling tab bar scroll vertically by a pixel. */
   .tab[aria-selected='true']::after {
     content: '';
-    @apply absolute left-0 right-0 -bottom-px h-px bg-accent;
+    @apply absolute left-0 right-0 bottom-0 h-0.5 bg-accent;
   }
 
   .tab .count {
