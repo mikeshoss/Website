@@ -65,6 +65,8 @@ This site publishes its content as JSON and over MCP.
 - Full resume: ${site.url}/api/resume.json
 - JSON Resume (jsonresume.org schema): ${site.url}/api/jsonresume.json
 - MCP server: ${site.url}/mcp
+- Brand guidelines and press kit: ${site.url}/brand/
+- Accessibility statement (WCAG 2.2 AA): ${site.url}/accessibility/
 
 ## Ventures
 ${companies

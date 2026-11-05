@@ -6,7 +6,8 @@
  * /palette.json, fetched on first open.
  *
  * Browse: before anything is typed it is a numbered menu. 1–9 open an item;
- * items with a › open a submenu (Esc, ← or Backspace go back). Typing
+ * items with a › open a submenu; → goes in, or opens an item with nothing
+ * below it (Esc, ← or Backspace go back). Typing
  * searches everything instead.
  *
  * Cheat codes: type one exactly and press Enter. They are not listed or
@@ -244,7 +245,7 @@
   let browsing = true;
   let opener: Element | null = null;
 
-  const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  const isMac = /Mac|iPhone|iPad/.test((navigator as Navigator & { userAgentData?: { platform: string } }).userAgentData?.platform || navigator.userAgent);
   document.querySelectorAll<HTMLElement>('[data-cmdk-key]').forEach((el) => (el.textContent = isMac ? '⌘K' : 'Ctrl K'));
 
   function read(key: string, area: Storage = localStorage): string | null {
@@ -479,7 +480,8 @@
     }
     if (e.key === 'ArrowDown' || (e.ctrlKey && e.key === 'n')) { e.preventDefault(); active = Math.min(shown.length - 1, active + 1); render(); }
     else if (e.key === 'ArrowUp' || (e.ctrlKey && e.key === 'p')) { e.preventDefault(); active = Math.max(0, active - 1); render(); }
-    else if (e.key === 'ArrowRight' && empty && shown[active]?.c) { e.preventDefault(); into(shown[active]); }
+    // → goes deeper into a submenu, or opens the item if there is nothing below it.
+    else if (e.key === 'ArrowRight' && empty && shown[active]) { e.preventDefault(); run(shown[active]); }
     else if ((e.key === 'ArrowLeft' || e.key === 'Backspace') && empty && path.length) { e.preventDefault(); back(); }
     else if (e.key === 'Home' && empty) { e.preventDefault(); active = 0; render(); }
     else if (e.key === 'End' && empty) { e.preventDefault(); active = shown.length - 1; render(); }

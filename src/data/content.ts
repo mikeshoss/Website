@@ -426,7 +426,7 @@ export const machineRoom = [
   },
   {
     name: "Antennas on the roof",
-    detail: "A receiver tracking the aircraft overhead, a LoRa mesh node and APRS infrastructure. Software that watches the world, built because I wanted it.",
+    detail: "Repeaters and digipeaters for APRS, LoRa APRS, Meshtastic and MeshCore, and a receiver tracking the aircraft overhead. Software that watches the world, built because I wanted it.",
   },
 ];
 
