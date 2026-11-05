@@ -60,7 +60,7 @@ const TARGETS = [
   card('public/og/home.png', HOME),
   card('public/og/credits.png', {
     eyebrow: 'Credits · Selected works',
-    title: "If my name's on it, it *shipped*.",
+    title: "If my name's on it, it's a *hit*.",
     sub: 'The work, who it was for, what I did on it, and what it did.',
     path: '/credits',
   }),
