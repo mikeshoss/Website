@@ -1480,13 +1480,14 @@ export const interests: Interest[] = [
   {
     slug: "homelab",
     name: "Homelab",
-    summary: "A Mac mini runs dozens of self-hosted services, with monitoring, phone alerts and a staging copy of every app. Local models on the machine next to it.",
+    summary: "Five servers, over a hundred containers and a 122-billion-parameter model running at home. Run like production, because some of it is.",
     status: "Running",
     keywords: [
       "Self-hosted infrastructure",
       "Local-first AI",
       "Docker",
       "Observability",
+      "Backups",
     ],
   },
 ];
@@ -1573,6 +1574,64 @@ export const magic: { format: string; decks: CommanderDeck[] } = {
     { commander: "Captain America, Team Leader", build: "Precon", bracket: 2 },
     { commander: "Éowyn, Shieldmaiden", build: "Upgraded precon", bracket: 3 },
   ],
+};
+
+/**
+ * The homelab, public-safe on purpose: roles, hardware and counts only. No
+ * hostnames, addresses, ports, domains, software versions, locations, remote
+ * consoles or anything that would map the network. Source: the stack
+ * inventory of 2026-10-31.
+ */
+export const homelab = {
+  readouts: [
+    { value: "5", label: "Servers" },
+    { value: "100+", label: "Containers" },
+    { value: "50 TB", label: "Storage" },
+    { value: "122B", label: "Largest local model" },
+    { value: "20", label: "Domains" },
+  ],
+  machines: [
+    {
+      role: "The server",
+      hardware: "Mac mini M4 · 32 GB",
+      does: "Around 60 containers: the photo library, monitoring with alerts to my phone, automation, an MCP gateway with about 20 tools for AI agents, and a staging copy of every public app with its own data.",
+    },
+    {
+      role: "The AI box",
+      hardware: "Apple M3 Max · 128 GB",
+      does: "Local models up to 122 billion parameters behind one OpenAI-compatible router, plus speech-to-text, text-to-speech, image generation and a vector store. Nothing leaves the house unless I send it.",
+    },
+    {
+      role: "The public box",
+      hardware: "Cloud server · 4 GB",
+      does: "Five production apps and their databases, each behind its own tunnel. Nightly backups come home.",
+    },
+    {
+      role: "The vault",
+      hardware: "Raspberry Pi 4 · 8 GB · 17 TB",
+      does: "Encrypted backups for every machine, Time Machine for the Macs, the photo store, DNS for the network, and the UPS that shuts everything down cleanly.",
+    },
+    {
+      role: "The sky box",
+      hardware: "Raspberry Pi 4 · 4 GB",
+      does: "ADS-B feeders, mesh-radio monitoring, Reticulum and the sensor message bus. The radio page has the rest.",
+    },
+    {
+      role: "The house",
+      hardware: "Home Assistant",
+      does: "Home automation, on the same network and the same alerts as everything else.",
+    },
+  ],
+  /** How it is run. Each one is a rule the lab actually enforces. */
+  rules: [
+    { rule: "Merge is deploy.", detail: "A merge reaches production in about five minutes: database dump first, health check after, automatic rollback if it fails." },
+    { rule: "Staging for everything.", detail: "Every public app has a staging copy with its own data and its outbound switched off: no email, no webhooks, no surprises." },
+    { rule: "Nothing gets deleted.", detail: "Files go to the Trash and only I empty it. No script, job or agent may delete on its own." },
+    { rule: "New jobs report first.", detail: "A new scheduled job runs report-only, and a human reads its log before it is allowed to change anything." },
+    { rule: "Unreadable is not broken.", detail: "A permission error or a timeout stops the job. It is never taken as proof a file is damaged." },
+    { rule: "One list.", detail: "Every service is in one registry. Ports, links and uptime checks are generated from it, so nothing runs that nobody knows about." },
+  ],
+  retired: "Retired this autumn: a Proxmox host and its two VMs, an old NAS whose disk moved into the vault, a laptop and a cyberdeck.",
 };
 
 /**

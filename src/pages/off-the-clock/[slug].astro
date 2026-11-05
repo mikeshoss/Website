@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { interests, cardSets, slabs, magic, porygon, machineRoom } from '../../data/content';
+import { interests, cardSets, slabs, magic, porygon, homelab, machineRoom } from '../../data/content';
 
 /**
  * One page per interest. Every page has the same frame (status, summary,
@@ -22,7 +22,7 @@ const cardsOwned = cardSets.reduce((n, s) => n + (s.owned ?? 0), 0);
 // The public-safe machine-room entries that belong to each page.
 const machine: Record<string, string[]> = {
   'amateur-radio': ['Antennas on the roof'],
-  homelab: ['One box runs the house', 'Merge is deploy', 'Agents on call', 'One source, every surface'],
+  homelab: ['Agents on call', 'One source, every surface'],
 };
 const related = machineRoom.filter((m) => machine[interest.slug]?.includes(m.name));
 
@@ -59,15 +59,63 @@ const description =
   {interest.stations && (
     <section class="section pt-0 md:pt-0">
       <p class="eyebrow rule pt-6">On the air at home</p>
-      <ul class="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+      <ul class="mt-6 grid grid-cols-2 lg:grid-cols-5 gap-px bg-line border border-line rounded-2xl overflow-hidden">
         {interest.stations.map((st) => (
-          <li class="bg-ink p-5">
+          <li class="bg-ink p-5 last:odd:col-span-2 lg:last:odd:col-span-1">
             <span class="flex items-center gap-2 eyebrow"><span class="led" aria-hidden="true"></span>{st.role}</span>
             <span class="display text-xl mt-4 block">{st.name}</span>
           </li>
         ))}
       </ul>
     </section>
+  )}
+
+  {interest.slug === 'homelab' && (
+    <>
+      <section class="section pt-0 md:pt-0">
+        <dl class="grid grid-cols-2 lg:grid-cols-5 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+          {homelab.readouts.map((r) => (
+            <div class="bg-ink p-5 flex flex-col-reverse justify-end last:col-span-2 lg:last:col-span-1"><dt class="eyebrow mt-3">{r.label}</dt><dd class="readout">{r.value}</dd></div>
+          ))}
+        </dl>
+      </section>
+
+      <section class="section pt-0 md:pt-0" id="fleet">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">A</span>The fleet</h2>
+          <span class="eyebrow hidden sm:inline">By role, not by name</span>
+        </div>
+        <ol class="mt-8 ruled">
+          {homelab.machines.map((m, i) => (
+            <li class="py-6 grid grid-cols-[2.5rem_minmax(0,1fr)] md:grid-cols-[2.5rem_minmax(0,3fr)_minmax(0,7fr)] gap-x-4 gap-y-2 items-baseline">
+              <span class="font-mono text-xs text-accent-dim">{pad(i + 1)}</span>
+              <span>
+                <span class="display text-xl md:text-2xl block">{m.role}</span>
+                <span class="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted mt-1 block">{m.hardware}</span>
+              </span>
+              <p class="text-sm text-bone-dim leading-relaxed col-start-2 md:col-start-auto">{m.does}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="text-sm text-muted mt-6 max-w-prose">{homelab.retired}</p>
+      </section>
+
+      <section class="section pt-0 md:pt-0" id="rules">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">B</span>House rules</h2>
+          <span class="eyebrow hidden sm:inline">Enforced, not aspirational</span>
+        </div>
+        <ol class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+          {homelab.rules.map((r, i) => (
+            <li class="bg-ink p-6">
+              <span class="font-mono text-xs text-accent-dim">{pad(i + 1)}</span>
+              <p class="display text-xl mt-3">{r.rule}</p>
+              <p class="text-sm text-bone-dim leading-relaxed mt-2">{r.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </>
   )}
 
   {interest.slug === 'cards' && (
