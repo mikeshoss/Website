@@ -27,7 +27,7 @@ export default {
           DEFAULT: '#1b1a18',
           dim: '#46433d',
         },
-        muted: '#77726a',
+        muted: '#68635b',
         accent: {
           DEFAULT: '#e0520f',
           bright: '#f0661f',
