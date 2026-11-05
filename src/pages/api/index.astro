@@ -1,0 +1,326 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { site } from '../../data/content';
+import { API_VERSION } from '../../lib/api';
+import { GROUPS, endpoints, ventureFeed, sample, ventureSample, fields, excerpt } from '../../lib/apiDocs';
+import { TOOLS } from '../../../worker/mcp';
+
+/**
+ * Human docs for the JSON API, in the site's own design. Everything here is
+ * read from the route handlers at build time (src/lib/apiDocs.ts), the same
+ * source as /api/openapi.json, so the docs, the spec and the API agree.
+ */
+
+const base = site.url;
+const docs = await Promise.all(
+  endpoints.map(async (ep) => {
+    const body = await sample(ep.id);
+    return { ...ep, fields: fields(ep, body), example: excerpt(body, ep) };
+  }),
+);
+const ventureBody = await ventureSample();
+const venture = {
+  ...ventureFeed,
+  fields: fields({ shape: 'object' }, ventureBody),
+  example: excerpt(ventureBody, { shape: 'object' }),
+};
+
+const byGroup = GROUPS.filter((g) => g !== 'Syndication').map((g) => ({
+  group: g,
+  items: docs.filter((d) => d.group === g),
+}));
+
+const tools = Object.entries(TOOLS).map(([name, t]) => ({
+  name,
+  summary: t.description.split(/(?<=\.)\s/)[0],
+  params: Object.keys(((t.inputSchema as any).properties ?? {}) as Record<string, unknown>),
+}));
+
+const total = endpoints.length + ventureFeed.slugs.length + 1; // + openapi.json
+const curl = (path: string) => `curl ${base}${path}`;
+const firstSentence = (s: string) => s.split(/(?<=\.)\s/)[0];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const envelope = `{
+  "data": [ … ],          // or an object, for single records
+  "count": 14,            // list endpoints only
+  "meta": {
+    "generatedAt": "2026-11-05T01:07:11.959Z",
+    "source": "${base}",
+    "license": "Apache-2.0",
+    "version": "${API_VERSION}"
+  }
+}`;
+
+const mcpConfig = `{
+  "mcpServers": {
+    "mikeshoss": {
+      "type": "http",
+      "url": "${base}/mcp"
+    }
+  }
+}`;
+---
+
+<Layout
+  card="api"
+  title="API — Mike Shoss"
+  description={`Public, read-only JSON for everything on mikeshoss.com: ${endpoints.length} endpoints, an OpenAPI 3.1 spec and an MCP server. No key, open CORS.`}
+  breadcrumbs={[{ name: 'API', href: '/api' }]}
+  schema={[
+    {
+      '@type': 'WebAPI',
+      '@id': `${base}/api/#api`,
+      name: `${site.name} API`,
+      description: 'Public, read-only JSON API for mikeshoss.com.',
+      documentation: `${base}/api/`,
+      url: `${base}/api/index.json`,
+      provider: { '@id': `${base}/#person` },
+    },
+  ]}
+>
+  <!-- Head -->
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between eyebrow">
+      <span>MS–API · <b>v{API_VERSION}</b></span>
+      <span class="flex items-center gap-2"><span class="led"></span> Live</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[14ch]">The <em>API</em>.</h1>
+    <p class="lede mt-8 max-w-prose">
+      Everything on this site, as JSON. Public and read-only, no key, open to any origin. Rebuilt on every
+      deploy, so it's never out of step with the pages.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/api/openapi.json" class="btn-primary">OpenAPI spec</a>
+      <a href="/api/index.json" class="btn-quiet">Discovery JSON</a>
+      <a href="#mcp" class="btn-quiet">MCP server</a>
+    </div>
+
+    <dl class="mt-14 grid grid-cols-2 md:grid-cols-4 border-t border-line">
+      {[
+        [String(total), 'Endpoints'],
+        ['None', 'Auth'],
+        ['Any', 'CORS origin'],
+        ['GET', 'Methods'],
+      ].map(([v, l], i) => (
+        <div class:list={['pt-5 pb-1 pr-4', i > 0 && 'md:pl-5 md:border-l border-line', i % 2 === 1 && 'pl-5 border-l md:border-l']}>
+          <dd class="readout">{v}</dd>
+          <dt class="eyebrow mt-2">{l}</dt>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- Quick start -->
+  <section class="page pb-16 md:pb-24">
+    <div class="rule pt-10 grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10">
+      <div>
+        <p class="eyebrow"><b>00</b> · Quick start</p>
+        <h2 class="display text-display-md mt-4">One request, no setup.</h2>
+        <p class="prose-body mt-5 max-w-prose">
+          Base URL <code class="font-mono text-[0.8125rem] text-bone">{base}</code>. Every response is UTF-8 JSON.
+          Lists come back as <code class="font-mono text-[0.8125rem] text-bone">data</code> plus a
+          <code class="font-mono text-[0.8125rem] text-bone">count</code>; single records as
+          <code class="font-mono text-[0.8125rem] text-bone">data</code> alone. Both carry
+          <code class="font-mono text-[0.8125rem] text-bone">meta</code>, whose
+          <code class="font-mono text-[0.8125rem] text-bone">generatedAt</code> is the last deploy.
+        </p>
+        <p class="prose-body mt-4 max-w-prose">
+          Responses are cached for five minutes in browsers and an hour at the edge. The version only changes when
+          a response shape could break a client.
+        </p>
+      </div>
+      <div class="grid gap-4 content-start">
+        <div class="code-block">
+          <div class="code-head"><span>Request</span><button type="button" class="copy-btn" data-copy={curl('/api/credits.json')}>Copy</button></div>
+          <pre><code>{curl('/api/credits.json')}</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-head"><span>Every response</span></div>
+          <pre><code>{envelope}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Endpoints -->
+  {byGroup.map(({ group, items }, gi) => (
+    <section class="page pb-16 md:pb-20" id={group.toLowerCase().replace(/[^a-z]+/g, '-')}>
+      <div class="flex items-baseline justify-between gap-4 pb-4">
+        <h2 class="display text-display-sm"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">{pad(gi + 1)}</span>{group}</h2>
+        <span class="eyebrow">{items.length} endpoints</span>
+      </div>
+      <ul class="ruled">
+        {items.map((ep) => (
+          <li>
+            <details class="endpoint group">
+              <summary class="py-5 grid grid-cols-[auto_minmax(0,1fr)_auto] md:grid-cols-[auto_minmax(0,16rem)_minmax(0,1fr)_auto] gap-x-4 gap-y-1.5 items-baseline cursor-pointer">
+                <span class="method justify-self-start">GET</span>
+                <span class="font-mono text-[0.8125rem] text-bone break-all">{ep.path}</span>
+                <span class="text-sm text-bone-dim col-start-2 md:col-start-auto">
+                  <span class="font-medium text-bone">{ep.title}.</span> {firstSentence(ep.description)}
+                </span>
+                <span class="toggle row-start-1 col-start-3 md:row-start-auto md:col-start-auto" aria-hidden="true">+</span>
+              </summary>
+              <div class="pb-8 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8">
+                <div>
+                  <p class="prose-body text-sm">{ep.description}</p>
+                  {ep.fields.length > 0 && (
+                    <table class="fields mt-5">
+                      <thead><tr><th>Field</th><th>Type</th></tr></thead>
+                      <tbody>
+                        {ep.fields.map((f) => (
+                          <tr>
+                            <td><code>{f.name}</code>{!f.always && <span class="opt">optional</span>}</td>
+                            <td>{f.type}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                  <div class="mt-5 flex flex-wrap gap-2">
+                    <a href={ep.path} class="btn-quiet !px-4 !py-2 !text-xs">Open JSON ↗</a>
+                    <button type="button" class="btn-quiet !px-4 !py-2 !text-xs copy-btn" data-copy={curl(ep.path)}>Copy curl</button>
+                  </div>
+                </div>
+                <div class="code-block">
+                  <div class="code-head"><span>Example · {ep.shape === 'collection' ? 'first item' : ep.shape === 'raw' ? 'no envelope' : 'trimmed'}</span></div>
+                  <pre class="max-h-[26rem]"><code>{ep.example}</code></pre>
+                </div>
+              </div>
+            </details>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <!-- Syndication -->
+  <section class="page pb-16 md:pb-24" id="syndication">
+    <div class="flex items-baseline justify-between gap-4 pb-4">
+      <h2 class="display text-display-sm"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">{pad(byGroup.length + 1)}</span>Syndication</h2>
+      <span class="eyebrow">{venture.slugs.length} feeds</span>
+    </div>
+    <ul class="ruled">
+      <li>
+        <details class="endpoint group">
+          <summary class="py-5 grid grid-cols-[auto_minmax(0,1fr)_auto] md:grid-cols-[auto_minmax(0,16rem)_minmax(0,1fr)_auto] gap-x-4 gap-y-1.5 items-baseline cursor-pointer">
+            <span class="method justify-self-start">GET</span>
+            <span class="font-mono text-[0.8125rem] text-bone break-all">/api/companies/<span class="text-accent-dim">{'{slug}'}</span>.json</span>
+            <span class="text-sm text-bone-dim col-start-2 md:col-start-auto"><span class="font-medium text-bone">{venture.title}.</span> {firstSentence(venture.description)}</span>
+            <span class="toggle row-start-1 col-start-3 md:row-start-auto md:col-start-auto" aria-hidden="true">+</span>
+          </summary>
+          <div class="pb-8 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8">
+            <div>
+              <p class="prose-body text-sm">{venture.description}</p>
+              <p class="eyebrow mt-5">slug</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {venture.slugs.map((s) => <a href={`/api/companies/${s}.json`} class="chip hover:text-bone hover:border-bone transition-colors">{s}</a>)}
+              </div>
+              <table class="fields mt-5">
+                <thead><tr><th>Field</th><th>Type</th></tr></thead>
+                <tbody>{venture.fields.map((f) => <tr><td><code>{f.name}</code></td><td>{f.type}</td></tr>)}</tbody>
+              </table>
+            </div>
+            <div class="code-block">
+              <div class="code-head"><span>Example · {venture.slugs[0]}, trimmed</span></div>
+              <pre class="max-h-[26rem]"><code>{venture.example}</code></pre>
+            </div>
+          </div>
+        </details>
+      </li>
+    </ul>
+  </section>
+
+  <!-- MCP -->
+  <section class="carbon" id="mcp">
+    <div class="page py-16 md:py-24 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12">
+      <div>
+        <div class="flex items-center justify-between eyebrow">
+          <span><b>{pad(byGroup.length + 2)}</b> · For agents</span>
+          <span class="flex items-center gap-2"><span class="led"></span> Live</span>
+        </div>
+        <h2 class="display text-display-md mt-6">Ask your agent about me.</h2>
+        <p class="mt-5 text-carbon-muted leading-relaxed max-w-prose">
+          The same data, over the Model Context Protocol. Streamable HTTP, stateless, no key. Point Claude or any
+          MCP client at <code class="font-mono text-[0.8125rem] text-carbon-text">{base}/mcp</code> and it can
+          search my work directly.
+        </p>
+        <div class="code-block dark mt-8">
+          <div class="code-head"><span>Client config</span><button type="button" class="copy-btn" data-copy={mcpConfig}>Copy</button></div>
+          <pre><code>{mcpConfig}</code></pre>
+        </div>
+        <p class="mt-6 text-sm text-carbon-muted">
+          Prefer plain text? <a href="/llms.txt" class="underline decoration-carbon-line underline-offset-4 hover:text-accent-dim">llms.txt</a> has the whole site in one file.
+        </p>
+      </div>
+      <ol class="border-t border-carbon-line">
+        {tools.map((t, i) => (
+          <li class="py-5 border-b border-carbon-line grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4">
+            <span class="font-mono text-xs text-accent">{pad(i + 1)}</span>
+            <div>
+              <p class="font-mono text-sm text-carbon-text">{t.name}<span class="text-carbon-muted">({t.params.join(', ')})</span></p>
+              <p class="mt-1.5 text-sm text-carbon-muted leading-relaxed">{t.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="page py-12">
+    <p class="text-sm text-muted max-w-prose">
+      Licensed Apache-2.0. Use it, build on it, credit it. Found something wrong or want an endpoint?
+      <a href="/contact" class="link">Get in touch</a>.
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .method {
+    @apply font-mono text-[0.625rem] tracking-[0.14em] px-2 py-1 rounded-md bg-signal/10 text-[#256329] border border-signal/30;
+  }
+  .endpoint summary { list-style: none; }
+  .endpoint summary::-webkit-details-marker { display: none; }
+  .endpoint summary:hover .toggle,
+  .endpoint[open] .toggle { @apply text-accent; }
+  .toggle {
+    @apply font-mono text-lg leading-none text-muted transition-transform duration-200 select-none;
+  }
+  .endpoint[open] .toggle { transform: rotate(45deg); }
+  .endpoint summary:focus-visible { @apply outline outline-2 outline-accent outline-offset-2 rounded-sm; }
+
+  .code-block {
+    @apply rounded-2xl bg-carbon text-carbon-text overflow-hidden min-w-0;
+  }
+  .code-block.dark { @apply bg-carbon-50 border border-carbon-line; }
+  .code-head {
+    @apply flex items-center justify-between gap-3 px-4 py-2.5 border-b border-carbon-line font-mono text-[0.625rem] uppercase tracking-[0.16em] text-carbon-muted;
+  }
+  .code-block pre {
+    @apply px-4 py-4 overflow-auto font-mono text-[0.75rem] leading-relaxed;
+  }
+  .code-head .copy-btn {
+    @apply font-mono text-[0.625rem] uppercase tracking-[0.14em] px-2 py-0.5 rounded-md border border-carbon-line text-carbon-muted hover:text-carbon-text hover:border-carbon-text transition-colors;
+  }
+  .fields { @apply w-full text-sm; border-collapse: collapse; }
+  .fields th { @apply text-left font-mono font-normal text-[0.625rem] uppercase tracking-[0.14em] text-muted pb-2 border-b border-line; }
+  .fields td { @apply py-2 pr-3 border-b border-line align-baseline font-mono text-xs text-bone-dim; }
+  .fields td:first-child { @apply text-bone; }
+  .fields .opt { @apply ml-2 text-[0.625rem] uppercase tracking-[0.12em] text-muted; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((btn) => {
+    const label = btn.textContent;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+        btn.textContent = 'Copied';
+      } catch {
+        btn.textContent = 'Copy failed';
+      }
+      setTimeout(() => (btn.textContent = label), 1400);
+    });
+  });
+</script>

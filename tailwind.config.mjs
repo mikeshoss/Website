@@ -6,45 +6,57 @@ export default {
   content: ['./src/**/*.{astro,html,md,mdx}'],
   theme: {
     extend: {
-      // Warm ink rather than pure black, bone rather than pure white, and one
-      // accent. Amber is a signal colour — fitting for a site whose thesis is
-      // "work where being wrong is expensive" — and it reads warm against the
-      // ink instead of the default blue-on-black of every developer portfolio.
+      // Dieter Rams / Braun: warm paper, carbon type, one signal orange, and a
+      // green "on" light for what is live right now. The token names are
+      // semantic and predate the palette — `ink` is the page surface and
+      // `bone` the type — so every page picks the palette up without edits.
+      // `carbon` is the one dark surface: the machine room, like the black
+      // top plate on an SK4.
       colors: {
         ink: {
-          DEFAULT: '#0b0a09',
-          50: '#12100e',
-          100: '#181613',
-          200: '#221f1b',
+          DEFAULT: '#edeae3',
+          50: '#e5e1d8',
+          100: '#dcd7cc',
+          200: '#d2ccbf',
         },
         line: {
-          DEFAULT: '#28241f',
-          strong: '#3a352e',
+          DEFAULT: '#cfc9bd',
+          strong: '#a9a397',
         },
         bone: {
-          DEFAULT: '#f3efe6',
-          dim: '#c9c2b5',
+          DEFAULT: '#1b1a18',
+          dim: '#46433d',
         },
-        muted: '#847d72',
+        muted: '#68635b',
         accent: {
-          DEFAULT: '#f0b429',
-          bright: '#ffc94d',
-          dim: '#c08f1c',
-          ink: '#0b0a09',
+          DEFAULT: '#e0520f',
+          bright: '#f0661f',
+          // Small orange text on paper and on the darker panels (5.2:1 / 4.8:1).
+          dim: '#a83d0a',
+          // Text on orange: a hair deeper than carbon so it passes AA (4.84:1).
+          ink: '#111110',
+        },
+        signal: '#3f9a46',
+        carbon: {
+          DEFAULT: '#1b1a18',
+          50: '#24221f',
+          line: '#3a3732',
+          text: '#e9e5dc',
+          muted: '#8f897e',
         },
       },
       fontFamily: {
         sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['"Instrument Serif"', 'Georgia', 'serif'],
+        display: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       fontSize: {
         // Display sizes are fluid: the hero headline should fill a phone's
         // width and a desktop's without a breakpoint jump between them.
-        'display-xl': ['clamp(2.5rem, 6vw, 5rem)', { lineHeight: '1.02', letterSpacing: '-0.01em' }],
-        'display-lg': ['clamp(2rem, 4vw, 3.5rem)', { lineHeight: '1.05', letterSpacing: '-0.01em' }],
-        'display-md': ['clamp(1.75rem, 3.2vw, 2.75rem)', { lineHeight: '1.08' }],
-        'display-sm': ['clamp(1.375rem, 2.2vw, 1.875rem)', { lineHeight: '1.15' }],
+        'display-xl': ['clamp(2.5rem, 6vw, 5.25rem)', { lineHeight: '1.0', letterSpacing: '-0.035em' }],
+        'display-lg': ['clamp(2rem, 4vw, 3.5rem)', { lineHeight: '1.04', letterSpacing: '-0.03em' }],
+        'display-md': ['clamp(1.625rem, 3vw, 2.5rem)', { lineHeight: '1.08', letterSpacing: '-0.025em' }],
+        'display-sm': ['clamp(1.25rem, 2vw, 1.625rem)', { lineHeight: '1.2', letterSpacing: '-0.015em' }],
       },
       maxWidth: {
         page: '72rem',

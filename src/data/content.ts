@@ -139,7 +139,7 @@ export const site = {
    * twitter:description and the JSON-LD Person description. Keep it under 160.
    */
   description:
-    `Mike Shoss builds AI products for work where being wrong is expensive. Product executive, founder of Epilogue, ${patentCount} patents in AI. Currently at Clio.`,
+    `Mike Shoss ships AI products in industries where being wrong is expensive. Founder of Epilogue. ${patentCount} patents in AI. If his name's on it, it's a hit.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -157,7 +157,7 @@ export const hero = {
   headlineEmphasis: "expensive",
   /** Who, before what. The current employer is one clause, not the lead. */
   subheadline:
-    `Product executive and founder, ${yearsExperience}+ years in. I've built and led product at Firework, VerticalScope and Caseware, hold ${patentCount} patents in AI, and run Epilogue, an AI consulting and product studio. Right now I'm Staff Product Manager at Clio.`,
+    `Founder, product leader and builder, ${yearsExperience}+ years in. I've led product at Caseware, Firework and VerticalScope, hold ${patentCount} patents in AI, and run Epilogue. I look at where business and AI are going, then build what works now.`,
   credibility:
     `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents, ${grantedPatentCount} granted.`,
   /**
@@ -240,6 +240,205 @@ export const selectedResults = [
     label: "Conversion lift",
     detail: "Alongside a 33% improvement in lifetime value.",
   },
+];
+
+/* ------------------------------------------------------------------------- *
+ * The producer framing (redesign draft, 2026-11)
+ *
+ * Read like liner notes: the work is the headline, the company is the label it
+ * came out on, and the credit says what Mike did on it. Every fact here is
+ * already stated elsewhere in this file; nothing is new.
+ * ------------------------------------------------------------------------- */
+
+export interface Credit {
+  /** The work itself — the thing that shipped. */
+  work: string;
+  /** Who it was for: the "label". */
+  label: string;
+  year: string;
+  /** What Mike did on it, in one or two words. */
+  credit: "Produced" | "Founded" | "Built" | "Engineered" | "Inventor" | "Advised" | "Strategy";
+  /** The result, with the number first where there is one. */
+  result: string;
+  href?: string;
+}
+
+export const credits: Credit[] = [
+  {
+    work: "Verity Docs",
+    label: "Caseware",
+    year: "2026",
+    credit: "Produced",
+    result: "75% less document work against a 50% target. 97% extraction accuracy. 100% weekly active use.",
+  },
+  {
+    work: "Caseware Studio",
+    label: "Caseware",
+    year: "2025",
+    credit: "Founded",
+    result: "A 43-person product org shipping validated prototypes in 24 hours and production features in a week. Cycle times down 80%.",
+  },
+  {
+    work: "ISO/IEC 42001 AI management system",
+    label: "Caseware",
+    year: "2025",
+    credit: "Engineered",
+    result: "Governance built into the release pipeline. Compliance turned from a blocker into a sales accelerant.",
+  },
+  {
+    work: "ContractorOS",
+    label: "FacilityOS",
+    year: "2024",
+    credit: "Produced",
+    result: "0 to 1 in six months. 37% faster compliance, +20 NPS, 90% retention.",
+  },
+  {
+    work: "The $150M Series B",
+    label: "Firework",
+    year: "2023",
+    credit: "Strategy",
+    result: "Product strategy and investment case behind a round led by SoftBank.",
+  },
+  {
+    work: "AI across the player",
+    label: "Firework",
+    year: "2022",
+    credit: "Produced",
+    result: "Engagement up 400%, conversions doubled. A 60-person team across five product lines.",
+  },
+  {
+    work: "Nine patents in AI and video commerce",
+    label: "Firework",
+    year: "2023–24",
+    credit: "Inventor",
+    result: "Livestream commerce, short-form video and LLM-assisted livestreams. Two granted.",
+    href: "/experience#patents",
+  },
+  {
+    work: "Self-serve SaaS",
+    label: "Firework",
+    year: "2021",
+    credit: "Produced",
+    result: "ARR up 10x.",
+  },
+  {
+    work: "From ads to SaaS",
+    label: "VerticalScope",
+    year: "2020",
+    credit: "Produced",
+    result: "1,500+ sites unified on one platform. 17% month-over-month growth.",
+  },
+  {
+    work: "SalesBop",
+    label: "Advisory",
+    year: "2025",
+    credit: "Advised",
+    result: "AI product strategy through to acquisition by FliteHouse.",
+  },
+  {
+    work: "Canadian AI Sovereign Compute Strategy",
+    label: "Government of Canada",
+    year: "2024",
+    credit: "Advised",
+    result: "Contributed to the strategy guiding Canada's AI infrastructure.",
+  },
+  {
+    work: "Epilogue",
+    label: "Epilogue",
+    year: "2023",
+    credit: "Founded",
+    result: "An AI consulting practice and product studio, run as one.",
+    href: "/companies/epilogue",
+  },
+  {
+    work: "Mugdock Castle, as it stood in 1640",
+    label: "Independent",
+    year: "2026",
+    credit: "Built",
+    result: "A scheduled monument rebuilt in 3D, where every wall carries its source and how sure we are of it.",
+    href: "/projects",
+  },
+  {
+    work: "Readback",
+    label: "Independent",
+    year: "2026",
+    credit: "Built",
+    result: "A map of every known licence-plate reader in Canada, each one carrying how it is known.",
+    href: "https://readback.ofrecord.ca",
+  },
+];
+
+/**
+ * Calls: dated, blunt views on where business and AI are going, kept on the
+ * record so they can be marked right or wrong later.
+ *
+ * Approved by Mike 2026-11-05. Set `draft` on any new call until he signs it
+ * off; drafts show a "Draft" label on the home page.
+ */
+export interface Call {
+  call: string;
+  made: string;
+  status: "Open" | "Right" | "Wrong";
+  draft?: boolean;
+}
+
+/**
+ * The studio: where the work is booked. This site is the producer; Epilogue
+ * is the studio. "Book the studio" buttons point here, tagged with
+ * withCampaign at each placement.
+ */
+export const studio = { name: "Epilogue", url: "https://epiloguelabs.com" };
+
+export const calls: Call[] = [
+  {
+    call: "Governance stops being a document and becomes part of the build. The AI teams that win regulated buyers will ship their audit trail with every release.",
+    made: "2026-11",
+    status: "Open",
+  },
+  {
+    call: "The scarce skill isn't prompting or picking a model. It's knowing which expensive, document-heavy workflow to point the machine at.",
+    made: "2026-11",
+    status: "Open",
+  },
+  {
+    call: "In high-stakes work, the AI products that win will advertise what they don't know. Visible failure becomes a feature buyers ask for.",
+    made: "2026-11",
+    status: "Open",
+  },
+];
+
+/**
+ * The machine room: the systems that build the work. Public-safe on purpose:
+ * no hostnames, addresses or anything that maps the homelab.
+ */
+export const machineRoom = [
+  {
+    name: "Agents on call",
+    detail: "Coding agents started on any of my machines from my phone. Pick a machine, pick a project, tap start.",
+  },
+  {
+    name: "Merge is deploy",
+    detail: "A merge reaches production in about five minutes: database dump first, health check after, automatic rollback if it fails.",
+  },
+  {
+    name: "One box runs the house",
+    detail: "A Mac mini runs dozens of self-hosted services, with monitoring, phone alerts and a staging copy of every app. Local models on the machine next to it.",
+  },
+  {
+    name: "One source, every surface",
+    detail: "This site is one content file. It becomes these pages, a JSON API, a JSON Resume, llms.txt and an MCP server an AI can query directly.",
+  },
+  {
+    name: "Antennas on the roof",
+    detail: "Repeaters and digipeaters for APRS, LoRa APRS, Meshtastic and MeshCore, and a receiver tracking the aircraft overhead. Software that watches the world, built because I wanted it.",
+  },
+];
+
+/** Who Mike is, in his own words (from the 2026-11 brief). */
+export const about = [
+  "I'm the first one in. I work hard, I look further out than is comfortable, and I care about the work and the people doing it.",
+  "That's why I sit on boards and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
+  "People who've worked with me will tell you I'm a pain in the ass. They'll also tell you they'd follow me to the next thing, because they trust my judgment.",
 ];
 
 export const skills = [
@@ -451,6 +650,16 @@ export interface Project {
 //         but the author
 const projectsData: Project[] = [
   /* ---------------------------------------------------------------- Personal */
+  {
+    name: "Mugdock Castle 3D Reconstruction",
+    description:
+      "An evidence-based digital reconstruction of Mugdock Castle, a Scottish scheduled monument, as it stood in 1640. Government LiDAR, a 1963 national survey plan, archive photographs, historic maps and excavation reports, lined up to within about a metre and placed on real-world coordinates. Every wall and tower carries its source and a confidence level — surviving, documented, inferred or speculative — so anyone can check any part of it. One data file drives everything: an interactive web viewer, phone AR and print-ready 3D models, built to WCAG 2.2 AA with a tactile print planned for blind and low-vision visitors. Licensed archive material stays private until permission is granted; outreach is under way with Historic Environment Scotland, the country park and the Clan Graham Society.",
+    start: "2026",
+    status: "Active",
+    association: "Personal",
+    // url: not public yet — the viewer is self-hosted and goes public on Mike's go.
+    // repo: "https://github.com/mikeshoss/",
+  },
   {
     name: "Hangar",
     description:
@@ -1221,33 +1430,77 @@ export interface Organization {
 
 const organizationsData: Organization[] = [];
 
+/**
+ * Off the clock. Each interest has its own page at /off-the-clock/<slug>/.
+ * `summary` is one line in Mike's voice; keep it to what is true today.
+ */
 export interface Interest {
+  slug: string;
   name: string;
+  summary: string;
+  /** The word beside the green light on its page: what is happening now. */
+  status: string;
+  /** A short line under the page title, for names that need one. */
+  aka?: string;
+  /** Extra words people might type for this page (⌘K search and the 404 guess). Not shown. */
+  search?: string;
   keywords?: string[];
+  /** Equipment that is running right now, shown as a panel of lights. */
+  stations?: { name: string; role: string }[];
 }
 
 export const interests: Interest[] = [
   {
+    slug: "bicycles",
+    search: "bikes bike frames cycling",
     name: "Vintage Canadian steel bicycles",
+    summary: "Canadian vintage steel, and a few good frames from elsewhere: restored, rebuilt and ridden. One is too rare to ride and hangs on my office wall.",
+    status: "Restoring",
     keywords: ["Restoration", "Framebuilding", "Cycling"],
   },
   {
+    slug: "amateur-radio",
+    search: "ham radio aprs meshtastic adsb",
     name: "Amateur radio",
+    summary: "Repeaters and digipeaters running at my house for APRS, LoRa APRS, Meshtastic and MeshCore, plus an ADS-B receiver tracking the aircraft overhead. Infrastructure other people's radios lean on.",
+    status: "On air",
     keywords: [
-      "Meshtastic",
-      "LoRa mesh",
       "APRS",
+      "LoRa APRS",
+      "Meshtastic",
+      "MeshCore",
+      "ADS-B",
       "Digipeaters",
-      "Emergency communications",
+    ],
+    stations: [
+      { name: "APRS", role: "Digipeater" },
+      { name: "LoRa APRS", role: "Digipeater" },
+      { name: "Meshtastic", role: "Repeater" },
+      { name: "MeshCore", role: "Repeater" },
+      { name: "ADS-B", role: "Receiver" },
     ],
   },
   {
+    slug: "cards",
+    search: "pokemon magic tcg collection slabs",
+    name: "Trading cards",
+    aka: "TCG · Pokémon and Magic: The Gathering",
+    summary: "Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
+    status: "Collecting",
+    keywords: ["Wizards-era Pokémon", "Set completion", "Porygon master set", "Graded slabs", "Magic: The Gathering", "Commander"],
+  },
+  {
+    slug: "homelab",
+    search: "servers infrastructure lab",
     name: "Homelab",
+    summary: "I should be able to do any work, anywhere, on any device. Five servers, over a hundred containers and a bench of local AI models make that true. Run like production, because some of it is.",
+    status: "Running",
     keywords: [
       "Self-hosted infrastructure",
       "Local-first AI",
       "Docker",
       "Observability",
+      "Backups",
     ],
   },
 ];
@@ -1256,8 +1509,283 @@ export interface Cause {
   name: string;
   description?: string;
   url?: string;
+  /** Straight to the donation page: the point is one tap to give. */
+  donate?: string;
 }
 
-export const causes: Cause[] = [];
+// Where Mike gives. Shown on the home page with a Donate button each, so
+// anyone who lands here is one tap from supporting them.
+export const causes: Cause[] = [
+  {
+    name: "SickKids",
+    description: "The Hospital for Sick Children in Toronto: care, research and training for children's health.",
+    url: "https://www.sickkidsfoundation.com/",
+    donate: "https://www.sickkidsfoundation.com/donate",
+  },
+  {
+    name: "Yamnuska Wolfdog Sanctuary",
+    description: "A sanctuary in Cochrane, Alberta, giving surrendered and unwanted wolfdogs a permanent home.",
+    url: "https://www.yamnuskawolfdogsanctuary.com/",
+    donate: "https://www.yamnuskawolfdogsanctuary.com/donate",
+  },
+  {
+    name: "OVC Pet Trust",
+    description: "Canada's first charitable fund for companion animal health, at the Ontario Veterinary College.",
+    url: "https://pettrust.ca/",
+    donate: "https://pettrust.ca/donate",
+  },
+];
+
+/* ------------------------------------------------------------------------- *
+ * The collection: Pokémon TCG sets and graded slabs, shown on /off-the-clock/cards/.
+ *
+ * Completion only — deliberately no values, prices or cert numbers. A list of
+ * what a collector owns, next to their home town, is a burglary listing.
+ * ------------------------------------------------------------------------- */
+
+export interface CardSet {
+  name: string;
+  /** Release year, or span for a promo series. */
+  year: string;
+  /** Cards in the set. */
+  total: number;
+  /** Cards owned. Leave out while it is being counted. */
+  owned?: number;
+  note?: string;
+}
+
+export const cardSets: CardSet[] = [
+  { name: "Base Set", year: "1999", total: 102, owned: 102 },
+  { name: "Jungle", year: "1999", total: 64, owned: 64 },
+  { name: "Fossil", year: "1999", total: 62, owned: 62 },
+  {
+    name: "Wizards Black Star Promos",
+    year: "1999–2003",
+    total: 53,
+    owned: 28,
+  },
+  { name: "Best of Game", year: "2002", total: 9, owned: 0, note: "Next up" },
+];
+
+/**
+ * The bikes, from Mike's build notes (2026). Each is drawn on its page as an
+ * 8-bit sprite of the frame and fork only (src/components/BikeSprite.astro),
+ * in the frame's real colours. `colour` null = not confirmed yet: the sprite
+ * is drawn in bare-metal grey and says so.
+ */
+export interface Bike {
+  slug: string;
+  year: string;
+  make: string;
+  model: string;
+  line: string;
+  story: string;
+  status: string;
+  frame: string;
+  size?: string;
+  colour: string | null;
+  build: string;
+  sprite: { frame: string; shine: string; lugs: string; fork?: string; fixie?: boolean; tall?: boolean };
+}
+
+export const bikes: Bike[] = [
+  {
+    slug: "ccm-tour-du-monde",
+    year: "1984",
+    make: "CCM",
+    model: "Tour du Monde",
+    line: "Built in France by Peugeot, badged by Canada's CCM.",
+    story: "By 1984 the original Canada Cycle & Motor Co. was leaving the bicycle business; this one was built by Peugeot on Reynolds 501 and came to me all original. Too rare to modify, so it was taken apart, cleaned and preserved. The frame and fork hang on my office wall.",
+    status: "On the wall",
+    frame: "Reynolds 501 steel",
+    size: '22"',
+    colour: "Burgundy with gold striping",
+    build: "Preserved: SunTour 12-speed, Weinmann and Dia-Compe, 27-inch wheels, all boxed",
+    sprite: { frame: "#9b1b2a", shine: "#c94355", lugs: "#d6a73e", tall: true },
+  },
+  {
+    slug: "miele-uno-ls",
+    year: "1988",
+    make: "Miele",
+    model: "Uno LS",
+    line: "Built in Ontario: Canadian lugged steel with an Italian name.",
+    story: "Miele built well-regarded lugged-steel frames around Toronto until cheap imports closed the doors in 1996. The Uno LS is light, lively Tange chromoly. Version 2 turns it into a fast fitness bike: bullhorns, Tiagra levers, white cork tape and a ride kit that means it's always ready to go.",
+    status: "Riding · v2",
+    frame: "Tange chromoly",
+    size: "54 cm",
+    colour: "Teal",
+    build: "Fitness mode: bullhorn bars, Shimano 2×6, Sugino MP crank, 700×35C",
+    sprite: { frame: "#139aa6", shine: "#58cdd4", lugs: "#d9d5cc" },
+  },
+  {
+    slug: "nakamura-champion",
+    year: "1987",
+    make: "Nakamura",
+    model: "Champion",
+    line: "A budget-rack rescue on a quality Tange 900 frame.",
+    story: "Not every good frame carries a famous name. This one came home cheap and was hiding double-butted Tange 900 chromoly, mid-'80s Japanese steel that rides far better than its price. Version 1 strips it back to a clean single-speed fixie on a flip-flop hub.",
+    status: "Building · v1",
+    frame: "Double-butted Tange 900 chromoly",
+    colour: "Champagne gold",
+    build: "Fixie: single-speed, flip-flop rear hub",
+    sprite: { frame: "#b89c62", shine: "#e2cf9c", lugs: "#8c8478", fixie: true },
+  },
+];
+
+/** Magic: The Gathering. Commander decks, with the bracket each one plays at. */
+export interface CommanderDeck {
+  commander: string;
+  build: string;
+  bracket: number;
+}
+
+export const magic: { format: string; decks: CommanderDeck[] } = {
+  format: "Commander",
+  decks: [
+    { commander: "Captain America, Team Leader", build: "Precon", bracket: 2 },
+    { commander: "Éowyn, Shieldmaiden", build: "Upgraded precon", bracket: 3 },
+  ],
+};
+
+/**
+ * The homelab, public-safe on purpose: roles, hardware and counts only. No
+ * hostnames, addresses, ports, domains, software versions, locations, remote
+ * consoles or anything that would map the network. Source: the stack
+ * inventory of 2026-10-31.
+ */
+export const homelab = {
+  why: "Any work, anywhere, on any device.",
+  whyDetail:
+    "Nothing important lives on the device in my hand. It lives here, so a phone, a borrowed laptop or the one in my bag can pick up exactly where I left off. That's the whole reason this exists.",
+  readouts: [
+    { value: "5", label: "Servers" },
+    { value: "100+", label: "Containers" },
+    { value: "50 TB", label: "Storage" },
+    { value: "5", label: "Local LLMs" },
+    { value: "122B", label: "Largest model" },
+    { value: "20", label: "Domains" },
+  ],
+  machines: [
+    {
+      role: "The server",
+      hardware: "Mac mini M4 · 32 GB",
+      does: "Around 60 containers. The always-on heart of it: if a service matters, it runs here, watched, backed up and with a staging twin.",
+      themes: [
+        { name: "Media", detail: "The household photo library, with face and place search, and a media server for the house." },
+        { name: "Monitoring", detail: "Metrics, logs and uptime checks for every machine, with alerts to my phone." },
+        { name: "Automation", detail: "Workflows and scheduled jobs, each one logged and on a switchboard I can turn off from anywhere." },
+        { name: "AI tooling", detail: "An MCP gateway with about 20 tools any agent can use, and one chat interface for every model." },
+        { name: "Staging", detail: "A copy of every public app with its own data and its outbound switched off." },
+        { name: "Data pipelines", detail: "The crawlers and publishers behind two public data sites." },
+        { name: "Workbench", detail: "Spin up an experiment, share it with an end date, and it cleans itself up." },
+      ],
+    },
+    {
+      role: "The AI box",
+      hardware: "Apple M3 Max · 128 GB",
+      does: "A private AI lab. Several models on one machine, the right size for each job, behind one OpenAI-compatible router, so any app or agent can use them without knowing which is which. Nothing leaves the house unless I send it.",
+      themes: [
+        { name: "Language", detail: "Gemma 3 12B, gpt-oss 20B, Qwen 3.5 9B and 122B, Qwen 3.8 27B." },
+        { name: "Router", detail: "One OpenAI-compatible endpoint in front of every model." },
+        { name: "Speech", detail: "Whisper large-v3-turbo transcribing on the GPU." },
+        { name: "Voice", detail: "Kokoro text-to-speech." },
+        { name: "Images", detail: "ComfyUI for image generation." },
+        { name: "Memory", detail: "Embedding models and a vector store for search and recall." },
+        { name: "Agents", detail: "A local agent with its own MCP server." },
+      ],
+    },
+    {
+      role: "The public box",
+      hardware: "Cloud server · 4 GB",
+      does: "Five production apps and their databases, each behind its own tunnel. Nightly backups come home.",
+    },
+    {
+      role: "The vault",
+      hardware: "Raspberry Pi 4 · 8 GB · 17 TB",
+      does: "Encrypted backups for every machine, Time Machine for the Macs, the photo store, DNS for the network, and the UPS that shuts everything down cleanly.",
+    },
+    {
+      role: "The sky box",
+      hardware: "Raspberry Pi 4 · 4 GB",
+      does: "ADS-B feeders, mesh-radio monitoring, Reticulum and the sensor message bus. The radio page has the rest.",
+    },
+    {
+      role: "The house",
+      hardware: "Home Assistant",
+      does: "Home automation, on the same network and the same alerts as everything else.",
+    },
+    {
+      role: "The laptop",
+      hardware: "MacBook Neo · disposable by design",
+      does: "Not because I don't care about it: because nothing mission-critical lives on it. Lose it, wipe it, pick up any other device and keep working. That's the test the rest of the lab has to pass.",
+    },
+  ],
+  /** How it is run. Each one is a rule the lab actually enforces. */
+  rules: [
+    { rule: "Merge is deploy.", detail: "A merge reaches production in about five minutes: database dump first, health check after, automatic rollback if it fails." },
+    { rule: "Staging for everything.", detail: "Every public app has a staging copy with its own data and its outbound switched off: no email, no webhooks, no surprises." },
+    { rule: "Nothing gets deleted.", detail: "Files go to the Trash and only I empty it. No script, job or agent may delete on its own." },
+    { rule: "New jobs report first.", detail: "A new scheduled job runs report-only, and a human reads its log before it is allowed to change anything." },
+    { rule: "Unreadable is not broken.", detail: "A permission error or a timeout stops the job. It is never taken as proof a file is damaged." },
+    { rule: "One list.", detail: "Every service is in one registry. Ports, links and uptime checks are generated from it, so nothing runs that nobody knows about." },
+  ],
+  retired: "Retired this autumn: a Proxmox host and its two VMs, an old NAS whose disk moved into the vault, a laptop and a cyberdeck.",
+};
+
+/**
+ * The Porygon English master set: every English printing and variant of
+ * Porygon, Porygon2 and Porygon-Z. Snapshot of Mike's tracking sheet, counts
+ * only (no prices). Owned includes cards in transit.
+ */
+export const porygon = {
+  name: "Porygon English master set",
+  updated: "2026-11-05",
+  eras: [
+    { era: "Wizards", owned: 4, total: 15 },
+    { era: "e-Card", owned: 0, total: 6 },
+    { era: "EX", owned: 2, total: 10 },
+    { era: "Diamond & Pearl", owned: 2, total: 13 },
+    { era: "HeartGold SoulSilver", owned: 2, total: 8 },
+    { era: "Black & White", owned: 5, total: 8 },
+    { era: "XY", owned: 7, total: 10 },
+    { era: "Sun & Moon", owned: 12, total: 18 },
+    { era: "Sword & Shield", owned: 5, total: 12 },
+    { era: "Scarlet & Violet", owned: 10, total: 17 },
+  ],
+  /** The hard ones still missing. */
+  hunting: [
+    "Porygon2 · Great Encounters · Staff prerelease stamp",
+    "Porygon-Z · BW Black Star Promo · Staff prerelease stamp",
+    "Dark Porygon2 · Neo Destiny · 1st Edition holo",
+    "Porygon2 · Neo Revelation · 1st Edition holo",
+  ],
+};
+
+export interface Slab {
+  card: string;
+  /** Print and variant: holo, full art, language. Shown on its own line. */
+  variant?: string;
+  set: string;
+  number?: string;
+  year?: string;
+  grader: string;
+  grade: string;
+  /** The grader's short label for the grade, as on the slab: MINT, NM, EX-MT, EX. */
+  label: string;
+  /** Set when the slab is a card in one of the set runs above, not a stand-alone. */
+  partOf?: string;
+}
+
+/**
+ * Graded cards. Grades only: no cert numbers, prices or values (the same rule
+ * as the sets). Two are cards from the completed sets, kept in slabs.
+ */
+export const slabs: Slab[] = [
+  { card: "Eevee & Snorlax GX", variant: "Full Art", set: "Team Up", number: "171", year: "2019", grader: "PSA", grade: "9", label: "MINT" },
+  { card: "Bulbasaur", variant: "Illustration Rare", set: "Stellar Crown", number: "143/142", year: "2024", grader: "PSA", grade: "9", label: "MINT" },
+  { card: "Rocket's Mewtwo", variant: "Holo · Japanese", set: "Gym Challenge", number: "150", grader: "PSA", grade: "7", label: "NM" },
+  { card: "Charizard", variant: "Holo · Shadowless", set: "Base Set", number: "4", year: "1999", grader: "PSA", grade: "5", label: "EX", partOf: "Base Set" },
+  { card: "Haunter", variant: "Holo", set: "Fossil", number: "6", year: "1999", grader: "PSA", grade: "6", label: "EX-MT", partOf: "Fossil" },
+];
 
 export const organizations = withPeriod(organizationsData);

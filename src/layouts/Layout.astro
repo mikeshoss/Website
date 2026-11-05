@@ -2,7 +2,9 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 import Analytics from '../components/Analytics.astro';
+import { existsSync } from 'node:fs';
 import { companies, education, experience, site, skills } from '../data/content';
 
 interface Props {
@@ -19,6 +21,14 @@ interface Props {
   breadcrumbs?: { name: string; href: string }[];
   /** Extra JSON-LD nodes merged into this page's @graph (e.g. an Organization). */
   schema?: Record<string, unknown>[];
+  /**
+   * Social card name: public/og/<card>.png, rendered by `npm run images` from
+   * the list in scripts/generate-images.mjs. A name with no file falls back to
+   * the default card rather than shipping a broken image.
+   */
+  card?: string;
+  /** Keep this page out of search indexes (the 404). */
+  noindex?: boolean;
 }
 
 const {
@@ -28,6 +38,8 @@ const {
   ogType = 'website',
   breadcrumbs = [],
   schema = [],
+  card = 'home',
+  noindex = false,
 } = Astro.props;
 
 /**
@@ -49,8 +61,13 @@ const absolute = (path: string) =>
 
 const canonicalUrl = canonical ?? absolute(Astro.url.pathname);
 
-const ogImage = `${site.url}/og-image.png`;
-const ogImageAlt = `${site.name} — ${site.title}`;
+// Checked at build time (this is a static site), so the fallback is decided
+// once per page, not per request.
+const cardFile = existsSync(`public/og/${card}.png`) ? card : 'home';
+const ogImage = `${site.url}/og/${cardFile}.png`;
+const ogImageAlt = `${title} — social card in the site's design, produced by ${site.name}`;
+// A real photo for the Person node: what Google and AI tools show for "Mike Shoss".
+const portrait = `${site.url}/brand/mike-shoss-portrait.jpg`;
 
 const [city, region] = site.location.split(',').map((part) => part.trim());
 
@@ -90,7 +107,7 @@ const person = {
   // A deliberate label, rather than the current role's formal title.
   jobTitle: 'Founder & Product Executive',
   description: site.description,
-  image: ogImage,
+  image: portrait,
   email: `mailto:${site.email}`,
   address: {
     '@type': 'PostalAddress',
@@ -168,9 +185,13 @@ const jsonLd = {
 <html lang="en-CA">
   <head>
     <meta charset="utf-8" />
+    <!-- Marks the page as script-capable before first paint, so anything that
+         animates in (the producer tag) starts in its "before" state instead of
+         flashing in finished and then being reset. -->
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0b0a09" />
+    <meta name="theme-color" content="#edeae3" />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -186,7 +207,7 @@ const jsonLd = {
     -->
     <meta
       name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
     />
 
     <!--
@@ -223,7 +244,9 @@ const jsonLd = {
 
     <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Fonts loaded via @fontsource (self-hosted, no external requests) -->
 
@@ -239,5 +262,6 @@ const jsonLd = {
       <slot />
     </main>
     <Footer />
+    <CommandPalette />
   </body>
 </html>

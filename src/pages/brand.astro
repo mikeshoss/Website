@@ -1,0 +1,597 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Mark from '../components/Mark.astro';
+import Key from '../components/Key.astro';
+import ProducerTag from '../components/ProducerTag.astro';
+import { site } from '../data/content';
+
+/**
+ * Brand guidelines and press kit. The colours below mirror tailwind.config.mjs
+ * (that file is CommonJS-flavoured and is not imported here). Contrast ratios
+ * are computed from them at build time, so the table cannot lie.
+ */
+
+const palette = {
+  paper: '#edeae3', paper2: '#e5e1d8', line: '#cfc9bd', lineStrong: '#a9a397',
+  muted: '#68635b', inkDim: '#46433d', carbon: '#1b1a18', carbonText: '#e9e5dc', carbonMuted: '#8f897e',
+  orange: '#e0520f', orangeDim: '#a83d0a', orangeBright: '#f0661f', buttonInk: '#111110', green: '#3f9a46',
+};
+
+const lum = (hex: string) => {
+  const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+};
+const ratio = (a: string, b: string) => {
+  const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m);
+  return (x + 0.05) / (y + 0.05);
+};
+
+const core = [
+  { name: 'Paper', hex: palette.paper, token: 'ink', use: 'Every page.' },
+  { name: 'Carbon', hex: palette.carbon, token: 'bone · carbon', use: 'Type, and the machine room.' },
+  { name: 'Signal orange', hex: palette.orange, token: 'accent', use: 'The cursor, the key, one word.' },
+  { name: 'On green', hex: palette.green, token: 'signal', use: 'The live light. Nothing else.' },
+];
+const support = [
+  { name: 'Paper 2', hex: palette.paper2 }, { name: 'Line', hex: palette.line }, { name: 'Line strong', hex: palette.lineStrong },
+  { name: 'Muted', hex: palette.muted }, { name: 'Ink dim', hex: palette.inkDim }, { name: 'Orange dim', hex: palette.orangeDim },
+];
+
+const pairs = [
+  { fg: palette.carbon, bg: palette.paper, label: 'Carbon on paper', use: 'Any text' },
+  { fg: palette.carbonText, bg: palette.carbon, label: 'Carbon text on carbon', use: 'Any text' },
+  { fg: palette.inkDim, bg: palette.paper, label: 'Ink dim on paper', use: 'Body copy' },
+  { fg: palette.muted, bg: palette.paper, label: 'Muted on paper', use: 'Labels and captions' },
+  { fg: palette.orangeDim, bg: palette.paper, label: 'Orange dim on paper', use: 'Small orange text' },
+  { fg: palette.carbonMuted, bg: palette.carbon, label: 'Carbon muted on carbon', use: 'Labels on dark' },
+  { fg: palette.buttonInk, bg: palette.orange, label: 'Button ink on orange', use: 'Buttons and the sticker' },
+  { fg: palette.orangeBright, bg: palette.carbon, label: 'Bright orange on carbon', use: 'Small orange on dark' },
+  { fg: palette.orange, bg: palette.paper, label: 'Orange on paper', use: 'Large text only: the headline word' },
+  { fg: palette.orangeDim, bg: palette.paper2, label: 'Orange dim on panels', use: 'Small orange text on panels' },
+  { fg: palette.green, bg: palette.paper, label: 'Green on paper', use: 'Never as text' },
+].map((p) => {
+  const r = ratio(p.fg, p.bg);
+  return { ...p, r, grade: r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'Large only' : 'Fails' };
+});
+
+const scale = [
+  { name: 'Display XL', spec: 'clamp 40 → 84 px', cls: 'text-display-xl', text: 'Being wrong is <em>expensive</em>.' },
+  { name: 'Display LG', spec: 'clamp 32 → 56 px', cls: 'text-display-lg', text: 'Selected <em>credits</em>.' },
+  { name: 'Display MD', spec: 'clamp 26 → 40 px', cls: 'text-display-md', text: "Where it's going." },
+  { name: 'Display SM', spec: 'clamp 20 → 26 px', cls: 'text-display-sm', text: 'Document Intelligence Agent' },
+];
+
+const misuse = [
+  { note: "Don't set the ring in orange. Orange belongs to the cursor and the key.", ring: palette.orange, cur: palette.orange },
+  { note: 'Don\'t recolour the cursor. Green means "on" in the interface, not in the mark.', ring: palette.carbon, cur: palette.green },
+  { note: "Don't stretch or squash it.", ring: palette.carbon, cur: palette.orange, stretch: true },
+  { note: "Don't thicken the strokes. Use the key when it has to be small or bold.", ring: palette.carbon, cur: palette.orange, heavy: true },
+];
+
+const downloads = [
+  { name: 'The mark', detail: 'For paper and light backgrounds', preview: '/brand/mikeshoss-mark.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-mark.svg']] },
+  { name: 'The mark, on dark', detail: 'For carbon and dark backgrounds', preview: '/brand/mikeshoss-mark-on-dark.svg', ground: 'bg-carbon-50', files: [['SVG', '/brand/mikeshoss-mark-on-dark.svg']] },
+  { name: 'The mark, one colour', detail: 'Print, embossing, stamps', preview: '/brand/mikeshoss-mark-mono.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-mark-mono.svg']] },
+  { name: 'The key, orange', detail: 'Primary · avatars and app icons', preview: '/brand/mikeshoss-key.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-key.svg'], ['PNG 512', '/brand/mikeshoss-key-512.png'], ['PNG 1024', '/brand/mikeshoss-key-1024.png']] },
+  { name: 'The key, carbon', detail: 'For light backgrounds', preview: '/brand/mikeshoss-key-carbon.svg', ground: 'bg-ink', files: [['SVG', '/brand/mikeshoss-key-carbon.svg'], ['PNG 512', '/brand/mikeshoss-key-carbon-512.png'], ['PNG 1024', '/brand/mikeshoss-key-carbon-1024.png']] },
+  { name: 'The key, paper', detail: 'For dark backgrounds', preview: '/brand/mikeshoss-key-paper.svg', ground: 'bg-carbon-50', files: [['SVG', '/brand/mikeshoss-key-paper.svg'], ['PNG 512', '/brand/mikeshoss-key-paper-512.png'], ['PNG 1024', '/brand/mikeshoss-key-paper-1024.png']] },
+  { name: 'Portrait', detail: 'For bios and event pages', preview: '/brand/mike-shoss-portrait.jpg', ground: 'bg-carbon-50', photo: true, files: [['JPG 800 × 1000', '/brand/mike-shoss-portrait.jpg']] },
+  { name: 'LinkedIn header, carbon', detail: 'Recommended', preview: '/brand/mikeshoss-linkedin-header-carbon.png', ground: 'bg-carbon-50', wide: true, files: [['PNG 3168 × 792', '/brand/mikeshoss-linkedin-header-carbon.png']] },
+  { name: 'LinkedIn header, paper', detail: 'Alternative', preview: '/brand/mikeshoss-linkedin-header-paper.png', ground: 'bg-carbon-50', wide: true, files: [['PNG 3168 × 792', '/brand/mikeshoss-linkedin-header-paper.png']] },
+  { name: 'Share card', detail: 'Link previews', preview: '/og/home.png', ground: 'bg-carbon-50', wide: true, files: [['PNG 1200 × 630', '/og/home.png']] },
+];
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const chapters = ['The idea', 'The mark', 'Producer tag', 'Misuse', 'Colour', 'Type and case', 'Panel parts', 'Voice', 'Layout', 'In use', 'Downloads'];
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
+---
+
+<Layout
+  card="brand"
+  title="Brand — Mike Shoss"
+  description="How the mark, the producer tag, the colours, the type and the voice work on mikeshoss.com. With downloads of the mark and the key."
+  breadcrumbs={[{ name: 'Brand', href: '/brand' }]}
+>
+  <!-- Cover -->
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between eyebrow">
+      <span>MS–01 · Brand guidelines · <b>v1.0</b></span>
+      <span class="flex items-center gap-2"><span class="led"></span> In use</span>
+    </div>
+    <div class="mt-12 grid md:grid-cols-[minmax(0,1fr)_auto] gap-10 items-end">
+      <div>
+        <h1 class="display text-display-xl max-w-[13ch]">If my name's on it, it's a <em>hit</em>.</h1>
+        <p class="lede mt-8 max-w-prose">
+          How the mark, the producer tag, the colours, the type and the voice work, on this site and anywhere the
+          name goes. Less, but better. Press kit at the <a href="#downloads" class="link">bottom</a>.
+        </p>
+      </div>
+      <div class="hidden md:block w-52 h-52 rounded-[2rem] border border-line grille" aria-hidden="true"></div>
+    </div>
+    <nav class="mt-14 rule pt-6" aria-label="Chapters">
+      <ol class="grid grid-cols-2 sm:grid-cols-5 gap-x-6 gap-y-2">
+        {chapters.map((c, i) => (
+          <li><a href={`#${slug(c)}`} class="text-sm link-quiet"><span class="font-mono text-xs text-accent-dim mr-2">{pad(i + 1)}</span>{c}</a></li>
+        ))}
+      </ol>
+    </nav>
+  </section>
+
+  <!-- 01 Idea -->
+  <section class="page section-b" id="the-idea">
+    <p class="eyebrow"><b>01</b> · The idea</p>
+    <h2 class="display text-display-lg mt-4 max-w-[20ch]">The producer, not the session player.</h2>
+    <p class="lede mt-6 max-w-prose">
+      A record producer leaves a tag at the top of a track: a few seconds that say who made it, so you know it'll be
+      good before the beat drops. This brand is that tag for my work. It talks to CEOs and VCs as a peer. The
+      consulting is sold through <a href="https://epiloguelabs.com" class="link" target="_blank" rel="noopener noreferrer">Epilogue</a>; this site is the person.
+    </p>
+    <p class="display text-display-md mt-12 max-w-[22ch]">Building the <em>machines</em> that build the machine.</p>
+    <div class="mt-12 grid md:grid-cols-3 border-t border-line">
+      {[
+        ['A · Rams', 'Less, but better.', 'Warm paper, carbon type, one orange. Every element has a job. If it doesn\'t, it goes.'],
+        ['B · Braun', 'Retro hardware, real tech.', 'Speaker grilles, a green "on" light, calculator readouts, an orange key. The panel of a machine that runs.'],
+        ['C · Producer', 'Signed, not sold.', 'Credits, not a résumé. The work is the headline; the company is the label it came out on.'],
+      ].map(([k, h, p], i) => (
+        <div class:list={['pt-6 pb-2 md:pr-6', i > 0 && 'border-t md:border-t-0 md:border-l border-line md:pl-6 mt-6 md:mt-0']}>
+          <p class="eyebrow"><b>{k.split(' · ')[0]}</b> · {k.split(' · ')[1]}</p>
+          <h3 class="display text-xl mt-3">{h}</h3>
+          <p class="prose-body text-[0.9375rem] mt-2">{p}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 02 Mark -->
+  <section class="page section-b" id="the-mark">
+    <p class="eyebrow"><b>02</b> · The mark</p>
+    <h2 class="display text-display-lg mt-4">The signal in the ring.</h2>
+    <p class="lede mt-6 max-w-prose">
+      My initial, drawn as a signal: two peaks of a waveform that read as an M. Sound for the producer, signal for
+      the radio, a machine writing it out. It sits in a ring, the way record labels circle their marks, and the
+      orange cursor beside it says the machine is on.
+    </p>
+    <div class="mt-10 grid sm:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-line grid place-items-center py-16"><Mark class="h-24 md:h-28" /></div>
+      <div class="rounded-2xl bg-carbon grid place-items-center py-16"><Mark class="h-24 md:h-28" dark still /></div>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-2 gap-10 items-start">
+      <div class="rounded-2xl border border-line p-6">
+        <svg viewBox="-4 -4 52 40" class="w-full max-w-md mx-auto block" role="img" aria-label="Construction drawing of the mark on its 32-unit grid">
+          <defs><pattern id="grid" width="1" height="1" patternUnits="userSpaceOnUse"><path d="M1 0H0V1" fill="none" stroke={palette.line} stroke-width=".04" /></pattern></defs>
+          <rect width="44" height="32" fill="url(#grid)" />
+          <rect width="32" height="32" fill="none" stroke={palette.lineStrong} stroke-width=".12" stroke-dasharray=".5 .4" />
+          <line x1="16" y1="0" x2="16" y2="32" stroke={palette.orange} stroke-width=".08" opacity=".7" />
+          <line x1="0" y1="16" x2="44" y2="16" stroke={palette.orange} stroke-width=".08" opacity=".7" />
+          <line x1="0" y1="9" x2="44" y2="9" stroke={palette.green} stroke-width=".08" stroke-dasharray=".4 .3" />
+          <line x1="0" y1="23" x2="44" y2="23" stroke={palette.green} stroke-width=".08" stroke-dasharray=".4 .3" />
+          <circle cx="16" cy="16" r="13" fill="none" stroke={palette.carbon} stroke-width="2.2" />
+          <path d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={palette.carbon} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
+          <rect x="34" y="7" width="4" height="18" fill={palette.orange} />
+          <text x="16" y="-1.2" font-family="JetBrains Mono, monospace" font-size="1.3" fill={palette.muted} text-anchor="middle">32</text>
+          <text x="36" y="-1.2" font-family="JetBrains Mono, monospace" font-size="1.3" fill={palette.muted} text-anchor="middle">+12</text>
+          <text x="44.6" y="9.4" font-family="JetBrains Mono, monospace" font-size="1.1" fill={palette.green}>9</text>
+          <text x="44.6" y="23.4" font-family="JetBrains Mono, monospace" font-size="1.1" fill={palette.green}>23</text>
+        </svg>
+      </div>
+      <div>
+        <h3 class="display text-display-sm">Construction</h3>
+        <p class="prose-body mt-3">
+          Drawn on a 32-unit square. The cursor sits outside it, 2 units clear of the ring, so the whole mark is
+          44 × 32. The signal runs from 10 to 20.3, set about a unit above centre because its thin peaks and wide base make it read low. The cursor runs from 7 to 25, like a
+          terminal's block cursor.
+        </p>
+        <dl class="mt-6 ruled text-sm">
+          {[
+            ['Ring', 'Circle r 13 at 16,16 · stroke 2.2'],
+            ['P', 'Stroke 2.4, round caps and joins; 0.2 heavier than the ring, so the letter leads'],
+            ['Cursor', '4 × 18 at 34,7 · signal orange, always'],
+            ['Clear space', "A quarter of the mark's height (8 units) on every side"],
+            ['Minimum', '16 px tall. Below that, use the key'],
+          ].map(([k, v]) => (
+            <div class="py-3 grid grid-cols-[7rem_1fr] gap-4"><dt class="eyebrow pt-0.5">{k}</dt><dd class="text-bone-dim">{v}</dd></div>
+          ))}
+        </dl>
+      </div>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-2 gap-10 items-center">
+      <div class="flex items-end gap-8 flex-wrap">
+        <figure class="grid gap-3 justify-items-center">
+          <Key class="w-28 h-28" />
+          <figcaption class="eyebrow">Press it</figcaption>
+        </figure>
+        <figure class="grid gap-3 justify-items-center">
+          <img src="/apple-touch-icon.png" alt="The key as a home-screen icon" width="112" height="112" class="w-28 h-28 rounded-[24px] shadow-[0_10px_24px_-12px_rgba(27,26,24,.55)]" />
+          <figcaption class="eyebrow">Home screen</figcaption>
+        </figure>
+        <figure class="grid gap-3 justify-items-center">
+          <img src="/favicon.svg" alt="The key as a favicon" width="32" height="32" class="w-8 h-8" />
+          <figcaption class="eyebrow">32 px</figcaption>
+        </figure>
+      </div>
+      <div>
+        <h3 class="display text-display-sm">The key</h3>
+        <p class="prose-body mt-3">
+          An orange key, like the ones on a Braun ET66 calculator, with the signal on it. It's the favicon, the
+          home-screen icon and the contact button. Press it: it plays the producer tag. On a home screen it's drawn
+          full-bleed and square, because iOS and Android add their own corner.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-14 grid sm:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-line grid place-items-center py-10">
+        <span class="flex items-center gap-3 text-xl font-medium tracking-tight"><Mark class="h-6" still />Mike Shoss</span>
+      </div>
+      <div class="rounded-2xl bg-carbon grid place-items-center py-10">
+        <span class="flex items-center gap-3 text-xl font-medium tracking-tight text-carbon-text"><Mark class="h-6" dark still />Mike Shoss</span>
+      </div>
+    </div>
+    <p class="text-sm text-muted mt-4 max-w-prose">Name lockup, as in the nav: the mark at about 1.2× the cap height, then the name in Geist Medium.</p>
+  </section>
+
+  <!-- 03 Tag -->
+  <section class="page section-b" id="producer-tag">
+    <p class="eyebrow"><b>03</b> · Producer tag</p>
+    <h2 class="display text-display-lg mt-4">Produced by Mike Shoss.</h2>
+    <p class="lede mt-6 max-w-prose">
+      The signature, like a producer's tag at the top of a track. The ring draws, the signal traces through it, the
+      line types out and the cursor keeps blinking. It runs once, on the hero, in about two seconds. Press the mark
+      to hear it.
+    </p>
+    <div class="mt-10 rounded-2xl border border-line p-8 md:p-12">
+      <ProducerTag size="hero" animate />
+    </div>
+    <div class="mt-8 overflow-x-auto overflow-y-hidden">
+      <table class="w-full text-sm min-w-[34rem]">
+        <thead><tr class="eyebrow text-left"><th class="font-normal pb-3">Step</th><th class="font-normal pb-3">Starts</th><th class="font-normal pb-3">Length</th><th class="font-normal pb-3">Easing</th></tr></thead>
+        <tbody class="text-bone-dim tabular-nums">
+          {[
+            ["Ring draws, from 12 o'clock", '0.10 s', '0.70 s', 'cubic-bezier(.65, 0, .35, 1)'],
+            ['Signal draws', '0.60 s', '0.70 s', 'same'],
+            ['"Produced by Mike Shoss" types', '1.05 s', '1.00 s', 'steps(22), one per letter'],
+            ['Cursor blinks', 'always', '1.06 s cycle', 'hard on and off'],
+            ['Sound, on press only', 'on press', 'about 0.6 s', 'a click, then G4, C5, G5'],
+          ].map((r) => <tr class="border-t border-line">{r.map((c) => <td class="py-3 pr-4">{c}</td>)}</tr>)}
+        </tbody>
+      </table>
+    </div>
+    <ul class="mt-8 grid md:grid-cols-3 gap-4">
+      {[
+        ['Once', 'Animate on the hero only. Its width is held from the first frame, so nothing shifts while it types.'],
+        ['One cursor', 'One blinking cursor per screen. Every other tag holds still.'],
+        ['Quiet', 'Sound only when someone presses. With reduced motion on, the tag is simply drawn.'],
+      ].map(([h, p]) => (
+        <li class="rounded-2xl bg-ink-50 border border-line p-6"><p class="eyebrow"><b>{h}</b></p><p class="prose-body text-[0.9375rem] mt-3">{p}</p></li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- 04 Misuse -->
+  <section class="page section-b" id="misuse">
+    <p class="eyebrow"><b>04</b> · Misuse</p>
+    <h2 class="display text-display-lg mt-4">Don't remix the tag.</h2>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {misuse.map((m) => (
+        <figure class="rounded-2xl border border-line p-6 relative">
+          <span class="absolute top-4 right-4 w-6 h-6 rounded-full bg-bone text-ink grid place-items-center text-sm leading-none" aria-hidden="true">×</span>
+          <div class="h-28 grid place-items-center">
+            <svg viewBox="0 0 44 32" class="h-16" style={m.stretch ? 'transform:scaleX(1.45)' : undefined} aria-hidden="true">
+              <circle cx="16" cy="16" r="13" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.2} />
+              <path d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={m.ring} stroke-width={m.heavy ? 4.5 : 2.4} stroke-linejoin="round" stroke-linecap="round" />
+              <rect x="34" y="7" width="4" height="18" fill={m.cur} />
+            </svg>
+          </div>
+          <figcaption class="text-sm text-bone-dim mt-4">{m.note}</figcaption>
+        </figure>
+      ))}
+    </div>
+    <p class="text-sm text-muted mt-6 max-w-prose">Also: never type the mark in a font in place of the drawing, and never rewrite the line. It's always "Produced by Mike Shoss".</p>
+  </section>
+
+  <!-- 05 Colour -->
+  <section class="page section-b" id="colour">
+    <p class="eyebrow"><b>05</b> · Colour</p>
+    <h2 class="display text-display-lg mt-4">Paper, carbon, one orange.</h2>
+    <p class="lede mt-6 max-w-prose">The palette of a Braun SK4: a warm off-white case, a black top plate, one orange control. Green is only ever the "on" light. Press a swatch to copy it.</p>
+    <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {core.map((c) => (
+        <button type="button" class="swatch text-left rounded-2xl border border-line overflow-hidden hover:border-line-strong transition-colors" data-copy={c.hex}>
+          <span class="block h-32" style={`background:${c.hex}`}></span>
+          <span class="block p-4 border-t border-line">
+            <span class="block font-medium">{c.name}</span>
+            <span class="block font-mono text-xs text-bone-dim mt-1 uppercase" data-label>{c.hex}</span>
+            <span class="block text-sm text-muted mt-1">{c.use}</span>
+            <span class="block font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted mt-2">Token {c.token}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+    <div class="mt-4 grid grid-cols-3 lg:grid-cols-6 gap-3">
+      {support.map((c) => (
+        <button type="button" class="swatch text-left rounded-xl border border-line overflow-hidden hover:border-line-strong transition-colors" data-copy={c.hex}>
+          <span class="block h-12" style={`background:${c.hex}`}></span>
+          <span class="block px-3 py-2"><span class="block text-[0.8125rem] font-medium">{c.name}</span><span class="block font-mono text-[0.6875rem] text-muted uppercase" data-label>{c.hex}</span></span>
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-12">
+      <p class="eyebrow">Proportion</p>
+      <div class="mt-3 flex h-14 rounded-xl overflow-hidden border border-line" role="img" aria-label="Paper 78%, carbon 16%, line 4%, orange 1.5%, green 0.5%">
+        <span style="flex:78" class="bg-ink flex items-end p-2 font-mono text-[0.625rem] uppercase tracking-wider text-muted">Paper</span>
+        <span style="flex:16" class="bg-carbon flex items-end p-2 font-mono text-[0.625rem] uppercase tracking-wider text-carbon-muted">Carbon</span>
+        <span style="flex:4" class="bg-line"></span>
+        <span style="flex:1.5" class="bg-accent"></span>
+        <span style="flex:.5" class="bg-signal"></span>
+      </div>
+      <p class="prose-body text-[0.9375rem] mt-3 max-w-prose">Orange is rare on purpose: one word per headline, the cursor, the key, the main button. If a screen has more than that, take some away.</p>
+    </div>
+
+    <div class="mt-12 overflow-x-auto overflow-y-hidden">
+      <p class="eyebrow mb-3">Readable pairs · computed</p>
+      <table class="w-full text-sm min-w-[34rem]">
+        <tbody>
+          {pairs.map((p) => (
+            <tr class="border-t border-line last:border-b">
+              <td class="py-3 pr-4 w-20"><span aria-hidden="true" class="inline-grid place-items-center w-14 h-9 rounded-lg border border-line font-medium" style={`background:${p.bg};color:${p.fg}`}>Aa</span></td>
+              <td class="py-3 pr-4">{p.label}</td>
+              <td class="py-3 pr-4 font-mono text-xs tabular-nums">{p.r.toFixed(2)} : 1</td>
+              <td class="py-3 pr-4 font-mono text-[0.6875rem] uppercase tracking-[0.12em]">
+                <span class="inline-flex items-center gap-2">
+                  <span class:list={['w-2 h-2 rounded-full', p.r >= 4.5 ? 'bg-signal' : p.r >= 3 ? 'bg-accent' : 'bg-line-strong']}></span>{p.grade}
+                </span>
+              </td>
+              <td class="py-3 text-bone-dim">{p.use}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-muted mt-4 max-w-prose">Ratios measured against WCAG 2.2: AA needs 4.5:1 for body text and 3:1 for large text. How the whole site meets it: <a href="/accessibility" class="link">accessibility</a>.</p>
+  </section>
+
+  <!-- 06 Type -->
+  <section class="page section-b" id="type-and-case">
+    <p class="eyebrow"><b>06</b> · Type and case</p>
+    <h2 class="display text-display-lg mt-4 max-w-[20ch]">One sans for words, one mono for the panel.</h2>
+    <p class="lede mt-6 max-w-prose">Geist does the talking. JetBrains Mono does the markings: labels, dates, counts and readouts, like the print on a hi-fi front panel. No serif, no italics.</p>
+    <div class="mt-10 grid md:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-line p-8">
+        <p class="eyebrow"><b>Primary</b> · Geist</p>
+        <p class="display text-[7rem] leading-none tracking-[-0.045em] mt-6">Aa</p>
+        <p class="text-bone-dim mt-4 break-words">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p>
+        <p class="text-sm text-muted mt-4">400 for body, 500 for display. Tracking −0.035em at the largest size, easing to −0.015em.</p>
+      </div>
+      <div class="rounded-2xl bg-carbon text-carbon-text p-8">
+        <p class="eyebrow !text-carbon-muted"><b class="!text-accent-bright">Panel</b> · JetBrains Mono</p>
+        <p class="font-mono text-[5rem] leading-none tracking-tight mt-6">23<span class="text-accent">.</span>4</p>
+        <p class="font-mono text-carbon-muted text-sm mt-4 break-words">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 · / → ×</p>
+        <p class="text-sm text-carbon-muted mt-4">Labels in capitals, tracked +0.14 to +0.18em, 10 to 12 px. Numbers tabular.</p>
+      </div>
+    </div>
+    <div class="mt-12 ruled">
+      {scale.map((s) => (
+        <div class="py-5 grid md:grid-cols-[11rem_minmax(0,1fr)] gap-2 md:gap-6 items-baseline">
+          <div><p class="eyebrow">{s.name}</p><p class="font-mono text-[0.6875rem] text-muted mt-1">{s.spec}</p></div>
+          <p class:list={['display', s.cls]} set:html={s.text} />
+        </div>
+      ))}
+      <div class="py-5 grid md:grid-cols-[11rem_minmax(0,1fr)] gap-2 md:gap-6 items-baseline">
+        <div><p class="eyebrow">Readout</p><p class="font-mono text-[0.6875rem] text-muted mt-1">mono · tabular</p></div>
+        <p class="readout">75%</p>
+      </div>
+      <div class="py-5 grid md:grid-cols-[11rem_minmax(0,1fr)] gap-2 md:gap-6 items-baseline">
+        <div><p class="eyebrow">Label</p><p class="font-mono text-[0.6875rem] text-muted mt-1">mono · 11 px · caps</p></div>
+        <p class="eyebrow">02 · Selected <b>credits</b></p>
+      </div>
+    </div>
+    <div class="mt-12 grid md:grid-cols-3 gap-4">
+      <div class="rounded-2xl border border-line p-6">
+        <p class="eyebrow"><b>Sentence case</b> · words</p>
+        <p class="display text-2xl mt-4">Nothing on this channel.</p>
+        <p class="text-sm text-bone-dim mt-3">Every headline, button and link. Capitals at the start and on names only. Headlines end with a full stop: they're statements.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <p class="eyebrow"><b>All caps</b> · panel</p>
+        <p class="eyebrow !text-[0.8125rem] mt-5">05 · Who <b>I am</b></p>
+        <p class="text-sm text-bone-dim mt-4">Mono labels only: eyebrows, chips, dates, tabs. Always tracked out. Never Geist in capitals.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <p class="eyebrow"><b>Names</b> · as written</p>
+        <p class="display text-2xl mt-4">Shoss<span class="text-accent">X</span> · Epilogue · Pokémon</p>
+        <p class="text-sm text-bone-dim mt-3">Names keep their own case. ShossX carries an orange X when it's set large.</p>
+      </div>
+    </div>
+    <p class="prose-body mt-8 max-w-prose">
+      <span class="text-bone font-medium">The orange word.</span> A headline can set one word in signal orange, upright,
+      same weight. Pick the word the sentence turns on: <span class="text-accent-dim">expensive</span>,
+      <span class="text-accent-dim">hit</span>, <span class="text-accent-dim">credits</span>.
+    </p>
+  </section>
+
+  <!-- 07 Parts -->
+  <section class="page section-b" id="panel-parts">
+    <p class="eyebrow"><b>07</b> · Panel parts</p>
+    <h2 class="display text-display-lg mt-4 max-w-[22ch]">The details people haven't thought of.</h2>
+    <p class="lede mt-6 max-w-prose">Hardware language that carries the brand when the mark isn't there. Each one means something: a light means live, a readout is a real number.</p>
+    <div class="mt-10 grid md:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-line p-6 grid gap-4 content-start">
+        <p class="eyebrow"><b>On light</b></p>
+        <div class="flex gap-6 flex-wrap"><span class="eyebrow !text-bone flex items-center gap-2"><span class="led"></span> Building</span><span class="eyebrow flex items-center gap-2"><span class="led-off"></span> Shipped</span></div>
+        <p class="text-sm text-bone-dim">Green pulses slowly for what's live now; grey for what's done. Never decoration.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6 grid gap-4 content-start">
+        <p class="eyebrow"><b>Buttons</b></p>
+        <div class="flex gap-3 flex-wrap"><a href="https://epiloguelabs.com" target="_blank" rel="noopener noreferrer" class="btn-primary">Book the studio <span aria-hidden="true">↗</span></a><a href="/credits" class="btn-quiet">The credits</a></div>
+        <p class="text-sm text-bone-dim">Fully round. One orange button per view; the rest are outlined.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6 grid gap-4 content-start">
+        <p class="eyebrow"><b>Readouts</b></p>
+        <div class="grid grid-cols-3 border-t border-line">
+          {[['15+', 'Years'], ['75%', 'Less work'], ['97%', 'Accuracy']].map(([v, l], i) => (
+            <div class:list={['pt-4', i > 0 && 'pl-4 border-l border-line']}><p class="readout !text-3xl">{v}</p><p class="eyebrow mt-1">{l}</p></div>
+          ))}
+        </div>
+        <p class="text-sm text-bone-dim">Value first, label under it, like a calculator display. Real numbers only.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6 grid gap-4 content-start">
+        <p class="eyebrow"><b>Chips and pills</b></p>
+        <div class="flex gap-2 flex-wrap items-center"><span class="chip"><span class="led !w-1.5 !h-1.5 !shadow-none"></span>Active</span><span class="chip">Granted</span><span class="chip">2026</span><span class="pill">Pokémon cards</span><span class="pill">Commander</span></div>
+        <p class="text-sm text-bone-dim">Chips are status: mono, small corners, no fill. Pills are interests and tags: sans, fully round.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6 grille min-h-[11rem] flex flex-col justify-between">
+        <p class="eyebrow bg-ink self-start px-1.5 py-0.5 rounded"><b>Speaker grille</b></p>
+        <p class="text-sm text-bone-dim bg-ink self-start px-3 py-2 rounded-lg max-w-sm">A 12 px dot field. Fills a quiet corner of the hero and every share card.</p>
+      </div>
+      <div class="rounded-2xl carbon p-6 grid gap-4 content-start">
+        <p class="eyebrow"><b class="!text-accent-bright">Machine room</b></p>
+        <p class="display text-2xl">The machines that build the machine.</p>
+        <p class="text-sm text-carbon-muted">Carbon is the one dark surface, the top plate of the machine. One section per page at most.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Voice -->
+  <section class="page section-b" id="voice">
+    <p class="eyebrow"><b>08</b> · Voice</p>
+    <h2 class="display text-display-lg mt-4">Short. Direct. Can back it up.</h2>
+    <p class="lede mt-6 max-w-prose">Talk like someone who's already done it and doesn't have time to oversell it. Peer to peer with a CEO. First person. Numbers, not adjectives.</p>
+    <div class="mt-10 grid md:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-line p-6">
+        <p class="eyebrow"><b>Write</b></p>
+        <ul class="mt-4 grid gap-3">
+          {["I ship AI products in industries where being wrong is expensive.", "Cut document work by 75% against a 50% target.", "If my name's on it, it's a hit.", "Nothing on this channel."].map((t) => (
+            <li class="flex gap-3"><span class="w-2 h-2 rounded-full bg-signal mt-2 shrink-0"></span>{t}</li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <p class="eyebrow"><b>Don't write</b></p>
+        <ul class="mt-4 grid gap-3 text-muted">
+          {["Passionate thought leader leveraging cutting-edge AI.", "Helped drive significant efficiency improvements.", "Excited to partner with you on your journey!", "Oops! Something went wrong."].map((t) => (
+            <li class="flex gap-3"><span class="w-2 h-2 rounded-full bg-line-strong mt-2 shrink-0"></span><span class="line-through decoration-line-strong">{t}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <dl class="mt-8 grid md:grid-cols-2 gap-x-10">
+      {[['Ship, build, run', 'Leverage, drive, enable'], ['Credits', 'Portfolio, résumé'], ['Ventures', 'Side hustles'], ['75%, 97%, 15 years', 'Significant, robust'], ["Where it's going", 'Thought leadership'], ['Book the studio', 'Book a discovery call']].map(([y, n]) => (
+        <div class="grid grid-cols-2 gap-4 py-3 border-b border-line text-[0.9375rem]"><dt>{y}</dt><dd class="text-muted">{n}</dd></div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- 09 Layout -->
+  <section class="page section-b" id="layout">
+    <p class="eyebrow"><b>09</b> · Layout</p>
+    <h2 class="display text-display-lg mt-4">A front panel, not a brochure.</h2>
+    <p class="lede mt-6 max-w-prose">Sections are numbered like controls. Lines divide; boxes are rare. Plenty of paper around everything.</p>
+    <div class="mt-10 grid md:grid-cols-2 gap-10">
+      <dl class="ruled text-sm">
+        {[['Page', '72 rem (1152 px) wide at most'], ['Prose', '42 rem, about 65 characters'], ['Gutter', '20 px phone, 32 px from tablet up'], ['Spacing', '4 px base: 8 · 16 · 24 · 48 · 64 / 96 between sections'], ['Motion', 'Colour changes 200 ms. The tag draws once. The light pulses every 2.8 s. Reduced motion means still.']].map(([k, v]) => (
+          <div class="py-3 grid grid-cols-[6rem_1fr] gap-4"><dt class="eyebrow pt-0.5">{k}</dt><dd class="text-bone-dim">{v}</dd></div>
+        ))}
+      </dl>
+      <div class="grid grid-cols-4 gap-3">
+        {[['rounded-md', '6 px · chips'], ['rounded-2xl', '16 px · cards'], ['rounded-[28%]', '28% · the key'], ['rounded-full', 'Full · buttons']].map(([r, l]) => (
+          <figure class="grid gap-2 content-start"><span class:list={['block h-20 border-[1.5px] border-bone bg-ink-50', r]}></span><figcaption class="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted">{l}</figcaption></figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 In use -->
+  <section class="page section-b" id="in-use">
+    <p class="eyebrow"><b>10</b> · In use</p>
+    <h2 class="display text-display-lg mt-4">Everywhere the name goes.</h2>
+    <p class="lede mt-6 max-w-prose">The same parts, outside the site. All of these are real and in the press kit below.</p>
+    <div class="mt-10 grid gap-10">
+      <figure>
+        <figcaption class="eyebrow mb-3">LinkedIn header · 1584 × 396</figcaption>
+        <img src="/brand/mikeshoss-linkedin-header-carbon.png" alt="LinkedIn header on carbon: the headline with 'expensive' in orange, the orange key on a grille, and the producer tag" width="3168" height="792" class="w-full rounded-2xl" loading="lazy" decoding="async" />
+        <p class="text-sm text-muted mt-3 max-w-prose">The left quarter stays empty: LinkedIn puts the profile photo there.</p>
+      </figure>
+      <div class="grid md:grid-cols-2 gap-10 items-start">
+        <figure>
+          <figcaption class="eyebrow mb-3">Share card · 1200 × 630</figcaption>
+          <img src="/og/home.png" alt="The home page share card: the headline with 'expensive' in orange, the grille, and the producer tag" width="1200" height="630" class="w-full rounded-2xl border border-line" loading="lazy" decoding="async" />
+          <p class="text-sm text-muted mt-3">One template for every page, so every link preview matches.</p>
+        </figure>
+        <figure>
+          <figcaption class="eyebrow mb-3">Email signature</figcaption>
+          <div class="rounded-2xl border border-line bg-ink p-6">
+            <p class="text-sm text-bone-dim">Talk soon,</p>
+            <div class="mt-5 pt-5 border-t border-line flex items-center gap-4">
+              <Mark class="h-8" still />
+              <div>
+                <p class="font-medium leading-tight">Mike Shoss</p>
+                <p class="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted mt-1">Founder · Epilogue</p>
+              </div>
+            </div>
+            <p class="font-mono text-[0.6875rem] text-bone-dim mt-4">mikeshoss.com <span class="text-muted">·</span> {site.location}</p>
+          </div>
+          <p class="text-sm text-muted mt-3">Plain, no images in the body: the mark is the only graphic, and the text still works if it is blocked.</p>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 Downloads -->
+  <section class="carbon" id="downloads">
+    <div class="page py-16 md:py-24">
+      <p class="eyebrow"><b>11</b> · Downloads</p>
+      <h2 class="display text-display-lg mt-4">Press kit.</h2>
+      <p class="mt-6 text-carbon-muted max-w-prose leading-relaxed">
+        For event pages, podcasts and anyone writing about the work. Use them as they are. For a bio or a different photo,
+        <a href="/contact" class="underline decoration-carbon-line underline-offset-4 hover:text-accent-bright">get in touch</a>.
+      </p>
+      <ul class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {downloads.map((d) => (
+          <li class:list={['rounded-2xl border border-carbon-line overflow-hidden flex flex-col', d.wide && 'sm:col-span-2 lg:col-span-3']}>
+            <a href={d.files[0][1]} download class:list={['block grid place-items-center overflow-hidden', d.ground, d.wide ? 'p-4' : d.photo ? 'h-48' : 'h-40']} aria-label={`Download ${d.name}, ${d.files[0][0]}`}>
+              <img src={d.preview} alt="" loading="lazy" decoding="async" class:list={[d.wide ? 'w-full h-auto rounded-lg' : d.photo ? 'h-full w-full object-cover object-top' : 'h-20 w-auto']} />
+            </a>
+            <div class="p-4 border-t border-carbon-line flex items-end justify-between gap-4 mt-auto">
+              <span>
+                <span class="block text-carbon-text font-medium">{d.name}</span>
+                <span class="block font-mono text-[0.625rem] uppercase tracking-[0.14em] text-carbon-muted mt-1">{d.detail}</span>
+              </span>
+              <span class="flex gap-3 flex-wrap justify-end">
+                {d.files.map(([label, href]) => (
+                  <a href={href} download class="font-mono text-[0.6875rem] text-carbon-text underline decoration-carbon-line underline-offset-4 hover:text-accent-bright whitespace-nowrap">{label}</a>
+                ))}
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 text-sm text-carbon-muted">The colours, as tokens: paper {palette.paper.toUpperCase()} · carbon {palette.carbon.toUpperCase()} · signal orange {palette.orange.toUpperCase()} · on green {palette.green.toUpperCase()}.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .section-b { @apply py-16 md:py-24 border-t border-line; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.swatch[data-copy]').forEach((btn) => {
+    const label = btn.querySelector<HTMLElement>('[data-label]');
+    const hex = btn.dataset.copy ?? '';
+    btn.setAttribute('aria-label', `Copy ${hex}`);
+    btn.addEventListener('click', async () => {
+      if (!label) return;
+      try {
+        await navigator.clipboard.writeText(hex.toUpperCase());
+        label.textContent = 'Copied';
+      } catch {
+        label.textContent = hex;
+      }
+      setTimeout(() => (label.textContent = hex), 1200);
+    });
+  });
+</script>

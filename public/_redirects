@@ -5,3 +5,7 @@
 # are what make the blog unreachable. Delete them to bring the blog back.
 /blog      /  301
 /blog/*    /  301
+
+# The card collection moved under Off the clock (Pokémon and Magic share a page).
+/collection    /off-the-clock/cards/  301
+/collection/   /off-the-clock/cards/  301

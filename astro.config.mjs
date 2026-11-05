@@ -22,7 +22,7 @@ export default defineConfig({
         const priority =
           path === '/' ? 1.0
           : path === '/companies' || path.startsWith('/companies/') ? 0.9
-          : path === '/experience' || path === '/projects' ? 0.8
+          : path === '/experience' || path === '/projects' || path === '/credits' ? 0.8
           : 0.6;
 
         // item.url is left as Astro emits it — the trailing-slash form, which

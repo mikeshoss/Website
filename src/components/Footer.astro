@@ -1,6 +1,7 @@
 ---
 import { site } from '../data/content';
 import { withCampaign } from '../lib/links';
+import ProducerTag from './ProducerTag.astro';
 const year = new Date().getFullYear();
 
 // The page links are in the header on every page; the footer carries only
@@ -9,7 +10,10 @@ const links = [
   { label: 'LinkedIn', href: site.linkedin, external: true },
   { label: 'GitHub', href: site.github, external: true },
   { label: 'Epilogue', href: withCampaign('https://epiloguelabs.com', 'footer'), external: true },
-  { label: 'API', href: '/api/index.json' },
+  { label: 'Glossary', href: '/glossary' },
+  { label: 'Brand', href: '/brand' },
+  { label: 'Accessibility', href: '/accessibility' },
+  { label: 'API', href: '/api' },
   { label: 'llms.txt', href: '/llms.txt' },
   { label: 'MCP', href: '/mcp' },
 ];
@@ -17,7 +21,10 @@ const links = [
 
 <footer class="border-t border-line mt-16">
   <div class="page py-8 flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
-    <p class="text-xs font-mono text-muted">&copy; {year} {site.name} &nbsp;·&nbsp; {site.location}</p>
+    <div class="space-y-3">
+      <ProducerTag />
+      <p class="text-xs font-mono text-muted">&copy; {year} &nbsp;·&nbsp; {site.location}</p>
+    </div>
     <ul class="flex flex-wrap gap-x-5 gap-y-2">
       {links.map(link => (
         <li>

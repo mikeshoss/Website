@@ -1,40 +1,41 @@
 <!doctype html>
 <!--
-  Source for public/og-image.png — the Open Graph / Twitter card image.
+  Source for every social card: public/og-image.png (the default) and the
+  per-page cards in public/og/. One template, driven by the query string:
+
+    ?eyebrow=Credits&title=If my name's on it, it's a *hit*.&sub=...&path=/credits
+
+  *word* marks the one word set in signal orange, as on the site.
 
   Social platforms (LinkedIn, X, Facebook, Slack, iMessage) do not render SVG
-  in og:image, so the shipped card has to be a raster file. This page is the
-  design; the PNG is the build artefact. Regenerate after editing:
+  in og:image, so the shipped cards are PNGs. This page is the design; the
+  PNGs are build artefacts. Regenerate after editing this file or the card
+  list in scripts/generate-images.mjs:
 
     npm run images
 
   It renders at exactly 1200x630 — the size referenced by og:image:width and
-  og:image:height in src/layouts/Layout.astro. Changing the dimensions here
-  means changing them there too.
+  og:image:height in src/layouts/Layout.astro.
 
-  Colours are the Tailwind theme tokens from tailwind.config.mjs.
+  Colours are the Tailwind theme tokens from tailwind.config.mjs (Braun
+  palette): paper #edeae3, carbon #1b1a18, signal orange #e0520f, on-green
+  #3f9a46.
 -->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <style>
       @font-face {
-        font-family: 'Inter';
+        font-family: 'Geist';
         font-weight: 400;
         font-display: block;
-        src: url('../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2');
+        src: url('../node_modules/@fontsource/geist/files/geist-latin-400-normal.woff2') format('woff2');
       }
       @font-face {
-        font-family: 'Inter';
-        font-weight: 600;
+        font-family: 'Geist';
+        font-weight: 500;
         font-display: block;
-        src: url('../node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2');
-      }
-      @font-face {
-        font-family: 'Inter';
-        font-weight: 700;
-        font-display: block;
-        src: url('../node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2');
+        src: url('../node_modules/@fontsource/geist/files/geist-latin-500-normal.woff2') format('woff2');
       }
       @font-face {
         font-family: 'JetBrains Mono';
@@ -43,121 +44,136 @@
         src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2') format('woff2');
       }
 
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
 
-      /*
-        Anchored to the viewport rather than to fixed pixel dimensions: headless
-        Chromium does not always give the document the exact --window-size, and
-        a body sized in px then leaves an unpainted strip at the bottom of the
-        screenshot. Filling the viewport makes the render size-agnostic — the
-        PNG's dimensions come from --window-size alone.
-      */
-      html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
 
       body {
-        position: fixed;
-        inset: 0;
-        background: linear-gradient(135deg, #0a0a0a 0%, #0d1117 55%, #131b2e 100%);
-        font-family: 'Inter', system-ui, sans-serif;
-        color: #ffffff;
+        background: #edeae3;
+        color: #1b1a18;
+        font-family: 'Geist', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        padding: 64px 72px 60px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        padding: 0 88px;
-        position: relative;
-        -webkit-font-smoothing: antialiased;
       }
 
-      /* Faint grid, echoing the site's engineered feel without competing with the type. */
-      .grid {
-        position: absolute;
-        inset: 0;
-        background-image:
-          linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
-        background-size: 60px 60px;
-      }
-
-      /* Accent bloom behind the top-right corner. */
-      .bloom {
-        position: absolute;
-        top: -220px;
-        right: -160px;
-        width: 620px;
-        height: 620px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.20) 0%, rgba(139, 92, 246, 0.10) 45%, transparent 70%);
-      }
-
-      .content { position: relative; }
-
-      .eyebrow {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 21px;
-        letter-spacing: 0.14em;
+      .mono {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
         text-transform: uppercase;
-        color: #3b82f6;
-        margin-bottom: 30px;
+        letter-spacing: 0.18em;
+        font-size: 17px;
+        color: #77726a;
       }
 
-      .name {
-        font-size: 82px;
-        font-weight: 700;
+      .marks { display: flex; justify-content: space-between; align-items: center; }
+      .on { display: flex; align-items: center; gap: 12px; }
+      .led { width: 13px; height: 13px; border-radius: 50%; background: #3f9a46; box-shadow: 0 0 0 5px rgb(63 154 70 / 0.18); }
+
+      .body { flex: 1; display: flex; align-items: center; gap: 56px; }
+      .copy { flex: 1; min-width: 0; }
+
+      h1 {
+        font-weight: 500;
         letter-spacing: -0.035em;
-        line-height: 1;
-        margin-bottom: 26px;
+        line-height: 1.02;
+        font-size: var(--size, 76px);
+        max-width: 15ch;
+      }
+      h1 em { font-style: normal; color: #e0520f; }
+
+      .sub {
+        margin-top: 26px;
+        font-size: 27px;
+        line-height: 1.35;
+        color: #46433d;
+        max-width: 30ch;
       }
 
-      .headline {
-        font-size: 40px;
-        font-weight: 600;
-        line-height: 1.32;
-        letter-spacing: -0.018em;
-        max-width: 940px;
-        background: linear-gradient(100deg, #ffffff 0%, #c7d2fe 55%, #a5b4fc 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 34px;
+      .grille {
+        width: 230px;
+        height: 230px;
+        flex: none;
+        border-radius: 40px;
+        border: 2px solid #cfc9bd;
+        background-image: radial-gradient(circle, #a9a397 2.3px, transparent 2.6px);
+        background-size: 19px 19px;
+        background-position: 6px 6px;
       }
 
-      .meta {
-        font-size: 25px;
-        font-weight: 400;
-        color: #8b93a1;
-        letter-spacing: -0.005em;
-      }
-
-      .meta strong { color: #d1d5db; font-weight: 600; }
-
-      .rule {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-      }
+      .foot { display: flex; justify-content: space-between; align-items: center; padding-top: 26px; border-top: 2px solid #cfc9bd; }
+      .tag { display: flex; align-items: center; gap: 16px; }
+      .tag b { color: #1b1a18; font-weight: 400; }
+      .cursor { display: inline-block; width: 0.55em; height: 1.25em; background: #e0520f; margin-left: 0.2em; vertical-align: -0.28em; }
+      .path b { color: #1b1a18; font-weight: 400; }
     </style>
   </head>
   <body>
-    <div class="grid"></div>
-    <div class="bloom"></div>
-
-    <div class="content">
-      <p class="eyebrow">mikeshoss.com</p>
-      <h1 class="name">Mike Shoss</h1>
-      <p class="headline">I ship AI products in industries where being wrong is expensive.</p>
-      <p class="meta">
-        Staff Product Manager at <strong>Clio</strong>
-        &nbsp;·&nbsp; Founder of <strong>Epilogue</strong>
-      </p>
+    <div class="marks mono">
+      <span id="eyebrow">MS–01 · Milton, Ontario</span>
+      <span class="on"><span class="led"></span> Building</span>
     </div>
 
-    <div class="rule"></div>
+    <div class="body">
+      <div class="copy">
+        <h1 id="title">I ship AI products in industries where being wrong is <em>expensive</em>.</h1>
+        <p class="sub" id="sub" hidden></p>
+      </div>
+      <div class="grille" aria-hidden="true"></div>
+    </div>
+
+    <div class="foot mono">
+      <span class="tag">
+        <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="#1b1a18" stroke-width="2.2" />
+          <path d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke="#1b1a18" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
+        </svg>
+        <span>Produced by <b>Mike Shoss</b><span class="cursor"></span></span>
+      </span>
+      <span class="path" id="path"><b>mikeshoss.com</b></span>
+    </div>
+
+    <script>
+      // Fill the card from the query string. Text is set with textContent and
+      // only the *word* marker becomes an element, so no markup is injected.
+      const q = new URLSearchParams(location.search);
+      const set = (id, text) => { if (text) document.getElementById(id).textContent = text; };
+
+      set('eyebrow', q.get('eyebrow'));
+
+      const title = q.get('title');
+      if (title) {
+        const h1 = document.getElementById('title');
+        h1.textContent = '';
+        title.split(/(\*[^*]+\*)/).forEach(part => {
+          if (/^\*[^*]+\*$/.test(part)) {
+            const em = document.createElement('em');
+            em.textContent = part.slice(1, -1);
+            h1.append(em);
+          } else {
+            h1.append(part);
+          }
+        });
+        // Long titles step down so they never run into the footer.
+        const n = title.replace(/\*/g, '').length;
+        h1.style.setProperty('--size', n > 60 ? '70px' : n > 34 ? '80px' : '96px');
+      }
+
+      const sub = q.get('sub');
+      if (sub) {
+        const el = document.getElementById('sub');
+        el.textContent = sub;
+        el.hidden = false;
+      }
+
+      const path = q.get('path');
+      if (path && path !== '/') {
+        const el = document.getElementById('path');
+        el.textContent = '';
+        const b = document.createElement('b');
+        b.textContent = 'mikeshoss.com';
+        el.append(b, path);
+      }
+    </script>
   </body>
 </html>

@@ -1,0 +1,348 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { interests, cardSets, slabs, magic, porygon, homelab, machineRoom, bikes } from '../../data/content';
+import BikeSprite from '../../components/BikeSprite.astro';
+
+/**
+ * One page per interest. Every page has the same frame (status, summary,
+ * keywords, the next channel); some carry their own panel below it:
+ * the cards page has the Pokémon sets and the Magic decks, and the radio and
+ * homelab pages show the matching machine-room entries.
+ */
+export function getStaticPaths() {
+  return interests.map((interest, index) => ({ params: { slug: interest.slug }, props: { interest, index } }));
+}
+
+const { interest, index } = Astro.props as { interest: (typeof interests)[number]; index: number };
+const next = interests[(index + 1) % interests.length];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const complete = cardSets.filter((s) => s.owned === s.total);
+const cardsOwned = cardSets.reduce((n, s) => n + (s.owned ?? 0), 0);
+
+// The public-safe machine-room entries that belong to each page.
+const machine: Record<string, string[]> = {
+  'amateur-radio': ['Antennas on the roof'],
+  homelab: ['Agents on call', 'One source, every surface'],
+};
+const related = machineRoom.filter((m) => machine[interest.slug]?.includes(m.name));
+
+const pOwned = porygon.eras.reduce((n, e) => n + e.owned, 0);
+const pTotal = porygon.eras.reduce((n, e) => n + e.total, 0);
+const pPct = Math.round((pOwned / pTotal) * 100);
+
+const description =
+  interest.slug === 'cards'
+    ? `Mike Shoss's cards: ${complete.length} Wizards-era Pokémon sets complete, ${cardsOwned} cards counted, and ${magic.decks.length} ${magic.format} decks.`
+    : `${interest.name}, off the clock. ${interest.summary}`;
+---
+
+<Layout
+  card={interest.slug === 'cards' ? 'collection' : 'off-the-clock'}
+  title={`${interest.name} — Mike Shoss`}
+  description={description.length > 160 ? description.slice(0, 157).replace(/\s+\S*$/, '') + '…' : description}
+  breadcrumbs={[{ name: 'Off the clock', href: '/off-the-clock' }, { name: interest.name, href: `/off-the-clock/${interest.slug}` }]}
+>
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
+    <div class="flex items-center justify-between eyebrow">
+      <a href="/off-the-clock/" class="hover:text-bone transition-colors">Off the clock · <b>{pad(index + 1)}</b></a>
+      <span class="flex items-center gap-2"><span class="led" aria-hidden="true"></span> {interest.status}</span>
+    </div>
+    <h1 class="display text-display-xl mt-12 max-w-[16ch]">{interest.name}.</h1>
+    {interest.aka && <p class="eyebrow mt-5">{interest.aka}</p>}
+    <p class="lede mt-8 max-w-prose">{interest.summary}</p>
+    {interest.keywords && (
+      <ul class="mt-8 flex flex-wrap gap-2">
+        {interest.keywords.map((k) => <li class="pill">{k}</li>)}
+      </ul>
+    )}
+  </section>
+
+  {interest.stations && (
+    <section class="section pt-0 md:pt-0">
+      <p class="eyebrow rule pt-6">On the air at home</p>
+      <ul class="mt-6 grid grid-cols-2 lg:grid-cols-5 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        {interest.stations.map((st) => (
+          <li class="bg-ink p-5 last:odd:col-span-2 lg:last:odd:col-span-1">
+            <span class="flex items-center gap-2 eyebrow"><span class="led" aria-hidden="true"></span>{st.role}</span>
+            <span class="display text-xl mt-4 block">{st.name}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {interest.slug === 'bicycles' && (
+    <section class="section pt-0 md:pt-0" id="bikes">
+      <div class="rule pt-10 flex items-baseline justify-between gap-4">
+        <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">A</span>The bikes</h2>
+        <span class="eyebrow hidden sm:inline">Frame and fork, 8-bit</span>
+      </div>
+      <ol class="mt-8 grid gap-6">
+        {bikes.map((b, i) => (
+          <li class="grid md:grid-cols-12 gap-6 md:gap-10 items-start rounded-2xl border border-line p-5 md:p-7" id={b.slug}>
+            <div class="md:col-span-5">
+              <div class="pixel-screen rounded-xl border border-line p-6 md:p-8">
+                <BikeSprite {...b.sprite} label={`Pixel drawing of the ${b.year} ${b.make} ${b.model} frame and fork${b.colour ? `, ${b.colour.toLowerCase()}` : ''}`} />
+              </div>
+              <p class="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted mt-3 flex justify-between gap-3">
+                <span>Player {i + 1}</span><span>{b.colour ?? 'Colour to confirm'}</span>
+              </p>
+            </div>
+            <div class="md:col-span-7">
+              <div class="flex items-center justify-between gap-4">
+                <span class="eyebrow">{b.year} · {b.make}</span>
+                <span class="chip"><span class:list={[b.status === 'On the wall' ? 'led-off' : 'led', '!w-1.5 !h-1.5 !shadow-none']} aria-hidden="true"></span>{b.status}</span>
+              </div>
+              <h3 class="display text-display-sm mt-2">{b.make} {b.model}</h3>
+              <p class="text-bone-dim mt-2">{b.line}</p>
+              <dl class="mt-5 ruled text-sm">
+                {[['Frame', b.frame], ['Size', b.size], ['Colour', b.colour ?? 'To confirm'], ['Build', b.build]].filter(([, v]) => v).map(([k, v]) => (
+                  <div class="py-2.5 grid grid-cols-[5.5rem_1fr] gap-4"><dt class="eyebrow pt-0.5">{k}</dt><dd class="text-bone-dim">{v}</dd></div>
+                ))}
+              </dl>
+              <p class="text-sm text-bone-dim leading-relaxed mt-5 max-w-prose">{b.story}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  {interest.slug === 'homelab' && (
+    <>
+      <section class="section pt-0 md:pt-0">
+        <div class="carbon rounded-2xl p-8 md:p-12 grid md:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] gap-6 md:gap-12 items-end">
+          <p class="display text-display-md !text-carbon-text">{homelab.why.replace(/\.$/, '')}<span class="text-accent">.</span></p>
+          <p class="text-carbon-muted leading-relaxed">{homelab.whyDetail}</p>
+        </div>
+        <dl class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+          {homelab.readouts.map((r) => (
+            <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">{r.label}</dt><dd class="readout">{r.value}</dd></div>
+          ))}
+        </dl>
+      </section>
+
+      <section class="section pt-0 md:pt-0" id="fleet">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">A</span>The fleet</h2>
+          <span class="eyebrow hidden sm:inline">By role, not by name</span>
+        </div>
+        <ol class="mt-8 ruled">
+          {homelab.machines.map((m, i) => (
+            <li class="py-6 grid grid-cols-[2.5rem_minmax(0,1fr)] md:grid-cols-[2.5rem_minmax(0,3fr)_minmax(0,7fr)] gap-x-4 gap-y-2 items-baseline">
+              <span class="font-mono text-xs text-accent-dim">{pad(i + 1)}</span>
+              <span>
+                <span class="display text-xl md:text-2xl block">{m.role}</span>
+                <span class="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted mt-1 block">{m.hardware}</span>
+              </span>
+              <div class="col-start-2 md:col-start-auto">
+                <p class="text-sm text-bone-dim leading-relaxed">{m.does}</p>
+                {m.themes && (
+                  <dl class="mt-5 grid sm:grid-cols-2 gap-x-6 gap-y-4">
+                    {m.themes.map((t) => (
+                      <div class="border-t border-line pt-3">
+                        <dt class="eyebrow"><b>{t.name}</b></dt>
+                        <dd class="text-sm text-bone-dim leading-relaxed mt-1">{t.detail}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="text-sm text-muted mt-6 max-w-prose">{homelab.retired}</p>
+      </section>
+
+      <section class="section pt-0 md:pt-0" id="rules">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">B</span>House rules</h2>
+          <span class="eyebrow hidden sm:inline">Enforced, not aspirational</span>
+        </div>
+        <ol class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+          {homelab.rules.map((r, i) => (
+            <li class="bg-ink p-6">
+              <span class="font-mono text-xs text-accent-dim">{pad(i + 1)}</span>
+              <p class="display text-xl mt-3">{r.rule}</p>
+              <p class="text-sm text-bone-dim leading-relaxed mt-2">{r.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </>
+  )}
+
+  {interest.slug === 'cards' && (
+    <>
+      <!-- Pokémon -->
+      <section class="section pt-0 md:pt-0" id="pokemon">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">A</span>Pokémon</h2>
+          <span class="eyebrow hidden sm:inline">Wizards of the Coast era</span>
+        </div>
+
+        <dl class="mt-8 grid grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden max-w-2xl">
+          <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">Sets complete</dt><dd class="readout">{complete.length}</dd></div>
+          <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">In progress</dt><dd class="readout">{cardSets.length - complete.length}</dd></div>
+          <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">Cards counted</dt><dd class="readout">{cardsOwned}</dd></div>
+        </dl>
+
+        <ol class="mt-10 ruled">
+          {cardSets.map((set) => {
+            const done = set.owned === set.total;
+            const pct = set.owned === undefined ? undefined : Math.round((set.owned / set.total) * 100);
+            return (
+              <li class="py-6 grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,4fr)_minmax(0,5fr)_minmax(0,2fr)] gap-x-8 gap-y-3 items-center">
+                <div>
+                  <p class="display text-xl md:text-2xl leading-tight">{set.name}</p>
+                  <p class="font-mono text-xs text-muted mt-1">{set.year}{slabs.some((sl) => sl.partOf === set.name) && <span class="text-accent-dim"> · {slabs.filter((sl) => sl.partOf === set.name).map((sl) => sl.card).join(', ')} graded</span>}</p>
+                </div>
+                <div class="col-span-2 md:col-span-1 row-start-2 md:row-start-auto">
+                  <div class="h-2 rounded-full bg-ink-100 overflow-hidden">
+                    {pct === undefined
+                      ? <div class="h-full w-full grille opacity-70"></div>
+                      : <div class:list={['h-full rounded-full', done ? 'bg-bone' : 'bg-accent']} style={`width: ${pct}%`}></div>}
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-mono text-lg tabular-nums text-bone">{set.owned ?? '—'}<span class="text-muted"> / {set.total}</span></p>
+                  <p class="mt-1 flex items-center justify-end gap-1.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted">
+                    <span class={done ? 'led' : 'led-off'} aria-hidden="true"></span>
+                    {done ? 'Complete' : (set.note ?? `${pct}%`)}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        {slabs.length > 0 && (
+          <>
+            <div class="mt-14 flex items-baseline justify-between gap-4">
+              <p class="eyebrow">Graded · {slabs.length} slabs</p>
+              <span class="eyebrow hidden sm:inline">Grades only</span>
+            </div>
+            <ul class="mt-4 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {slabs.map((slab) => (
+                <li class="slab rounded-2xl border border-line-strong/60 bg-ink-50 p-3 flex flex-col">
+                  <div class="rounded-lg bg-ink border border-line px-3 py-2.5 flex items-center justify-between gap-3">
+                    <span class="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted leading-relaxed whitespace-nowrap">{slab.grader}<br />{slab.label}</span>
+                    <span class="readout !text-3xl leading-none">{slab.grade}</span>
+                  </div>
+                  <div class="flex-1 flex flex-col justify-center text-center py-6 px-2">
+                    <p class="text-bone leading-snug text-balance">{slab.card}</p>
+                    {slab.variant && <p class="text-xs text-muted mt-1.5">{slab.variant}</p>}
+                  </div>
+                  <div class="text-center pb-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] leading-relaxed">
+                    <p class="text-muted">{slab.set}</p>
+                    {slab.partOf
+                      ? <p class="text-accent-dim">Part of the run</p>
+                      : <p class="text-muted">{[slab.year, slab.number && `No. ${slab.number}`].filter(Boolean).join(' · ')}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
+
+      <!-- Porygon -->
+      <section class="section pt-0 md:pt-0" id="porygon">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">B</span>Porygon, every English print</h2>
+          <span class="eyebrow hidden sm:inline">Master set</span>
+        </div>
+        <p class="prose-body mt-4 max-w-prose">
+          Every English printing and variant of Porygon, Porygon2 and Porygon-Z, from Base Set to Destined Rivals. A
+          virtual Pokémon made of code: the right mascot for someone who builds AI.
+        </p>
+        <div class="mt-8 grid md:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] gap-10 items-start">
+          <div>
+            <p class="readout !text-6xl">{pOwned}<span class="text-muted text-3xl"> / {pTotal}</span></p>
+            <p class="eyebrow mt-3">Versions owned · {pPct}%</p>
+            <div class="mt-5 h-2 rounded-full bg-ink-100 overflow-hidden"><div class="h-full rounded-full bg-accent" style={`width:${pPct}%`}></div></div>
+            <p class="eyebrow mt-10">Still hunting</p>
+            <ul class="mt-3 ruled text-sm">
+              {porygon.hunting.map((h) => <li class="py-2.5 text-bone-dim">{h}</li>)}
+            </ul>
+          </div>
+          <ol class="ruled">
+            {porygon.eras.map((e) => {
+              const pct = Math.round((e.owned / e.total) * 100);
+              return (
+                <li class="py-3 grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)_4rem] sm:grid-cols-[12rem_minmax(0,1fr)_4.5rem] gap-4 items-center">
+                  <span class="text-sm text-bone">{e.era}</span>
+                  <span class="h-1.5 rounded-full bg-ink-100 overflow-hidden"><span class:list={['block h-full rounded-full', e.owned === e.total ? 'bg-bone' : 'bg-accent']} style={`width:${pct}%`}></span></span>
+                  <span class="font-mono text-xs tabular-nums text-right text-bone">{e.owned}<span class="text-muted"> / {e.total}</span></span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
+      <!-- Magic -->
+      <section class="section pt-0 md:pt-0" id="magic">
+        <div class="rule pt-10 flex items-baseline justify-between gap-4">
+          <h2 class="display text-display-md"><span class="font-mono text-sm text-accent-dim mr-3 align-middle">C</span>Magic: The Gathering</h2>
+          <span class="eyebrow">{magic.format}</span>
+        </div>
+        <ol class="mt-8 ruled">
+          {magic.decks.map((d, i) => (
+            <li class="py-6 grid grid-cols-[2.5rem_minmax(0,1fr)_auto] gap-x-4 gap-y-1 items-baseline">
+              <span class="font-mono text-xs text-accent-dim">{String(i + 1).padStart(2, '0')}</span>
+              <span>
+                <span class="display text-xl md:text-2xl block">{d.commander}</span>
+                <span class="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted mt-1 block">{d.build}</span>
+              </span>
+              <span class="text-right">
+                <span class="readout !text-3xl block">{d.bracket}</span>
+                <span class="eyebrow block mt-1">Bracket</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+        <p class="text-sm text-muted mt-6 max-w-prose">Building the deck is the fun part.</p>
+      </section>
+    </>
+  )}
+
+  {related.length > 0 && (
+    <section class="carbon">
+      <div class="page py-14 md:py-20">
+        <p class="eyebrow">From the machine room</p>
+        <ol class="mt-6 border-t border-carbon-line">
+          {related.map((m, i) => (
+            <li class="py-5 border-b border-carbon-line grid grid-cols-[2.5rem_minmax(0,1fr)] md:grid-cols-[2.5rem_minmax(0,4fr)_minmax(0,7fr)] gap-x-4 gap-y-1">
+              <span class="font-mono text-xs text-accent">{pad(i + 1)}</span>
+              <p class="text-carbon-text font-medium">{m.name}</p>
+              <p class="text-sm text-carbon-muted leading-relaxed col-start-2 md:col-start-auto">{m.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <section class="page py-12 md:py-16">
+    <a href={`/off-the-clock/${next.slug}/`} class="group rule pt-8 flex items-baseline justify-between gap-6">
+      <span>
+        <span class="eyebrow block">Next channel</span>
+        <span class="display text-display-sm mt-2 block group-hover:text-accent-dim transition-colors">{next.name}</span>
+      </span>
+      <span class="font-mono text-bone group-hover:text-accent-dim group-hover:translate-x-1 transition-all" aria-hidden="true">→</span>
+    </a>
+  </section>
+</Layout>
+
+<style>
+  /* The sprite's screen: paper with a faint pixel grid, like a sprite editor. */
+  .pixel-screen {
+    background-color: #e5e1d8;
+    background-image:
+      linear-gradient(rgb(169 163 151 / 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(169 163 151 / 0.18) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+</style>

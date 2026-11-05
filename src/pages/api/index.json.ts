@@ -12,6 +12,7 @@ export const prerender = true;
  * (see public/_redirects), so advertising its posts here would be misleading.
  */
 const SECTIONS = [
+  "credits",
   "companies",
   "experience",
   "education",
@@ -29,6 +30,7 @@ const SECTIONS = [
   "languages",
   "interests",
   "causes",
+  "collection",
 ];
 
 export const GET: APIRoute = () => {
@@ -40,7 +42,8 @@ export const GET: APIRoute = () => {
       version: API_VERSION,
       description:
         "Public read-only API for mikeshoss.com. Prerendered JSON, regenerated on each deploy.",
-      documentation: `${base}/api/index.json`,
+      documentation: `${base}/api/`,
+      openapi: `${base}/api/openapi.json`,
       mcp: `${base}/mcp`,
       endpoints: {
         profile: `${base}/api/profile.json`,

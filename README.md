@@ -287,11 +287,20 @@ npm run build     # build the static site to dist/
 npm run preview   # preview the production build locally
 ```
 
-### Social card and icons
+### Social cards and icons
 
-`public/og-image.png` and `public/apple-touch-icon.png` are generated, not
-hand-drawn. Their sources are the HTML files in `scripts/`; edit those and
-re-render:
+Every page that gets shared has its own card in the site's design, in
+`public/og/<name>.png` (`public/og-image.png` is the default, kept at its old URL
+for links already shared). A page picks its card with the `card` prop on
+`Layout`; a name with no file falls back to the default, so a new page never
+ships a broken image.
+
+The cards come from one template, `scripts/og-image.html`, filled from a query
+string; the list of cards and their wording is `TARGETS` in
+`scripts/generate-images.mjs`. The icons (`apple-touch-icon.png`,
+`favicon-32.png`, `icon-192.png`, `icon-512.png`) come from
+`scripts/apple-touch-icon.html`. When a page headline or a venture tagline
+changes, change its card there and re-render:
 
 ```bash
 npm run images
@@ -335,6 +344,11 @@ in two ways: `run_worker_first` routes every request through `worker/index.ts`, 
 Worker holds a `STAGING_PASSWORD` secret. When the secret is present the Worker demands it
 via HTTP Basic Auth (any username) before serving anything, including `/mcp`. Production
 has no such secret, so the gate is inert there.
+
+The gate can be switched off without removing the secret: `STAGING_GATE: "off"` in
+`env.staging.vars` (off since 2026-11-04; set it to `"on"` to bring the password back).
+`STAGING: "true"` marks every staging response `X-Robots-Tag: noindex, nofollow`, so
+staging stays out of search indexes either way.
 
 ```bash
 wrangler secret put STAGING_PASSWORD --env staging   # set or rotate the password
@@ -383,3 +397,28 @@ prerendered routes.
 ## License
 
 Licensed under the [Apache License 2.0](./LICENSE). See the [LICENSE](./LICENSE) and [NOTICE](./NOTICE) files for details.
+
+## Accessibility
+
+The site aims for WCAG 2.2 AA; the public statement is `/accessibility`.
+`npm run a11y` audits every page in the sitemap for text contrast (1.4.3)
+and reflow at 320 px (1.4.10) and exits non-zero on any failure:
+
+```sh
+npm run build && npx astro preview   # in one terminal
+npm run a11y                         # in another (defaults to localhost:4321)
+```
+
+After a clean run, update `checked` in `src/pages/accessibility.astro`.
+Colour rule of thumb: small orange text is `accent-dim` on paper and panels,
+`accent-bright` on carbon (`.carbon` does this automatically); text on orange
+is `accent-ink`.
+
+## Command menu (⌘K)
+
+`src/components/CommandPalette.astro`, on every page: ⌘K / Ctrl+K or `/`
+opens it, the `⌘K` key cap in the nav and "Search everything" in the mobile
+menu too. Its index is `/palette.json`, built from `content.ts`, the glossary
+and the API catalogue (`src/pages/palette.json.ts`), and fetched on first
+open. Cheat codes live unlisted in the component; the footer counts how many a
+browser has found (localStorage `ms-codes`).

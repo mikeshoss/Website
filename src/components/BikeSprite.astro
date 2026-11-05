@@ -1,0 +1,101 @@
+---
+/**
+ * An 8-bit sprite of a bicycle frame and fork, drawn at build time on a
+ * 64 × 40 pixel grid: each tube is rasterised (Bresenham) two pixels thick,
+ * the top row of every tube is the highlight colour, the lugs and dropouts
+ * are blocks in the lug colour, and the whole thing gets a one-pixel dark
+ * outline, like a sprite on an old console. Output is plain SVG rects with
+ * crisp edges, so it stays sharp at any size and costs nothing at runtime.
+ *
+ * Frame and fork only: no wheels, no parts. `tall` raises the top of the
+ * frame for a bigger size; `fixie` gives it horizontal track ends.
+ */
+interface Props {
+  frame: string;
+  shine: string;
+  lugs: string;
+  fork?: string;
+  fixie?: boolean;
+  tall?: boolean;
+  label: string;
+  class?: string;
+}
+const { frame, shine, lugs, fork = frame, fixie = false, tall = false, label, class: className = '' } = Astro.props;
+
+const W = 64, H = 40;
+const lift = tall ? 2 : 0;
+type P = [number, number];
+// Road geometry, in pixels: axles level, bottom bracket a little below them,
+// seat tube leaning back, head tube steeper, fork with a bend of rake.
+const RD: P = [8, 30];
+const BB: P = [27, 32];
+const ST: P = [23, 7 - lift];
+const HT: P = [47, 9 - lift];
+const HB: P = [49, 16];
+const FK: P = [52, 25];
+const FT: P = [56, 30];
+
+function line([x0, y0]: P, [x1, y1]: P): P[] {
+  const pts: P[] = [];
+  const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0);
+  const sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+  let err = dx + dy, x = x0, y = y0;
+  for (;;) {
+    pts.push([x, y]);
+    if (x === x1 && y === y1) break;
+    const e2 = 2 * err;
+    if (e2 >= dy) { err += dy; x += sx; }
+    if (e2 <= dx) { err += dx; y += sy; }
+  }
+  return pts;
+}
+
+const px = new Map<string, string>();
+const key = (x: number, y: number) => `${x},${y}`;
+const put = (x: number, y: number, c: string) => { if (x >= 0 && y >= 0 && x < W && y < H) px.set(key(x, y), c); };
+
+// Tubes: top pixel row is the shine, the row under it the paint.
+function tube(a: P, b: P, color: string, highlight: string) {
+  for (const [x, y] of line(a, b)) {
+    if (!px.has(key(x, y)) || px.get(key(x, y)) === highlight) put(x, y, highlight);
+    put(x, y + 1, color);
+  }
+}
+tube(BB, RD, frame, frame);          // chainstay
+tube(ST, RD, frame, shine);          // seatstay
+tube(ST, HT, frame, shine);          // top tube
+tube(HB, BB, frame, shine);          // down tube
+tube([ST[0], ST[1]], BB, frame, shine); // seat tube
+tube(HB, FK, fork, shine);           // fork blade
+tube(FK, FT, fork, fork);
+// Head tube: three pixels wide, top to bottom.
+for (const [x, y] of line(HT, HB)) { put(x - 1, y, shine); put(x, y, frame); put(x + 1, y, frame); }
+
+// Lugs, shell and dropouts in the lug colour.
+const block = (x: number, y: number, w: number, h: number) => { for (let i = 0; i < w; i++) for (let j = 0; j < h; j++) put(x + i, y + j, lugs); };
+block(ST[0] - 1, ST[1] - 2, 3, 3);         // seat lug and binder
+block(HT[0] - 1, HT[1] - 2, 3, 2);         // top headset cup
+block(HB[0] - 1, HB[1] + 1, 3, 2);         // bottom headset cup / fork crown
+block(BB[0] - 2, BB[1] - 1, 5, 4);         // bottom bracket shell
+if (fixie) block(RD[0] - 4, RD[1], 5, 2);  // horizontal track ends
+else block(RD[0] - 2, RD[1], 3, 3);        // dropout
+block(FT[0], FT[1], 2, 2);                 // fork tip
+
+// One-pixel outline around everything.
+const outline = '#1b1a18';
+const filled = [...px.keys()].map((k) => k.split(',').map(Number) as P);
+for (const [x, y] of filled) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+  const k = key(x + dx, y + dy);
+  if (!px.has(k) && x + dx >= 0 && y + dy >= 0 && x + dx < W && y + dy < H) px.set(k, outline);
+}
+
+const rects = [...px.entries()].map(([k, c]) => { const [x, y] = k.split(',').map(Number); return { x, y, c }; });
+// Crop the canvas to the drawing, with a two-pixel margin, so it fills its frame.
+const pad = 2;
+const minX = Math.min(...rects.map((r) => r.x)) - pad, maxX = Math.max(...rects.map((r) => r.x)) + 1 + pad;
+const minY = Math.min(...rects.map((r) => r.y)) - pad, maxY = Math.max(...rects.map((r) => r.y)) + 1 + pad;
+---
+
+<svg viewBox={`${minX} ${minY} ${maxX - minX} ${maxY - minY}`} class:list={['block w-full h-auto', className]} shape-rendering="crispEdges" role="img" aria-label={label}>
+  {rects.map((r) => <rect x={r.x} y={r.y} width="1" height="1" fill={r.c} />)}
+</svg>

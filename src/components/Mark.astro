@@ -1,0 +1,35 @@
+---
+/**
+ * The mark: the signal in the ring. Mike's initial drawn as two peaks of a
+ * waveform, inside the circle record labels use for their marks, with an
+ * orange cursor beside it, meaning the machine is live.
+ *
+ * `animate` draws it in (ring, then the signal) — used on the hero tag only. Everywhere
+ * else it is simply there. The draw uses explicit path lengths rather than
+ * `pathLength`, which Safari has handled inconsistently on basic shapes.
+ *
+ * `cursor={false}` drops the cursor, for places where a typed line carries its
+ * own (ProducerTag). `still` stops the cursor blinking (the footer: one
+ * blinking cursor per screen is enough).
+ */
+interface Props {
+  class?: string;
+  /** Draw in the carbon palette, for dark surfaces. */
+  dark?: boolean;
+  cursor?: boolean;
+  animate?: boolean;
+  still?: boolean;
+}
+const { class: className = 'h-6', dark = false, cursor = true, animate = false, still = false } = Astro.props;
+const ink = dark ? '#e9e5dc' : '#1b1a18';
+---
+
+<svg
+  class:list={['tag-mark w-auto shrink-0', animate && 'tag-draw', className]}
+  viewBox={cursor ? '0 0 44 32' : '0 0 32 32'}
+  aria-hidden="true"
+>
+  <circle class="tag-ring" cx="16" cy="16" r="13" fill="none" stroke={ink} stroke-width="2.2" transform="rotate(-90 16 16)" />
+  <path class="tag-m" d="M8.2 20.3l3.4-9.6c.3-.9 1.1-.9 1.4 0L16 17.9l3-7.2c.3-.9 1.1-.9 1.4 0l3.4 9.6" fill="none" stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" />
+  {cursor && <rect class:list={['tag-cursor', still && 'tag-still']} x="34" y="7" width="4" height="18" fill="#e0520f" />}
+</svg>

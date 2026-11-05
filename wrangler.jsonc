@@ -24,7 +24,10 @@
   "main": "worker/index.ts",
   "assets": {
     "directory": "dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Missing paths get dist/404.html (the radio tuner) with a 404 status,
+    // instead of an empty body.
+    "not_found_handling": "404-page"
   },
 
   // Staging: deployed from the `staging` branch to staging.mikeshoss.com, as a
@@ -36,11 +39,15 @@
   "env": {
     "staging": {
       "name": "personalwebsite-staging",
+      // STAGING marks every response noindex. STAGING_GATE "off" turns the
+      // password prompt off (owner, 2026-11-04); set it to "on" to bring it back.
+      "vars": { "STAGING": "true", "STAGING_GATE": "off" },
       "routes": [{ "pattern": "staging.mikeshoss.com", "custom_domain": true }],
       "assets": {
         "directory": "dist",
         "binding": "ASSETS",
-        "run_worker_first": true
+        "run_worker_first": true,
+        "not_found_handling": "404-page"
       }
     }
   }

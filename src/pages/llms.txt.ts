@@ -16,6 +16,11 @@ import {
   grantedPatentCount,
   education,
   certifications,
+  credits,
+  causes,
+  cardSets,
+  magic,
+  porygon,
 } from "../data/content";
 
 // Fully generated from src/data/content.ts — every section derives from the
@@ -42,6 +47,10 @@ ${list(hero.whatIDo)}
 ## Selected results
 ${list(selectedResults.map((r) => `${r.value} — ${r.label}. ${r.detail}`))}
 
+## Credits
+The work he is known for, as liner notes: the work, who it was for, his credit on it, and the result. Full list: ${site.url}/credits/
+${list(credits.map((c) => `${c.work} (${c.label}, ${c.year}) — ${c.credit}. ${c.result}`))}
+
 ## Current Roles
 ${list([
   ...current.map((role) => `${role.title} at ${role.company} (${role.period})`),
@@ -50,10 +59,14 @@ ${list([
 
 ## Structured data
 This site publishes its content as JSON and over MCP.
+- JSON API docs: ${site.url}/api/
+- OpenAPI 3.1 spec: ${site.url}/api/openapi.json
 - JSON API index: ${site.url}/api/index.json
 - Full resume: ${site.url}/api/resume.json
 - JSON Resume (jsonresume.org schema): ${site.url}/api/jsonresume.json
 - MCP server: ${site.url}/mcp
+- Brand guidelines and press kit: ${site.url}/brand/
+- Accessibility statement (WCAG 2.2 AA): ${site.url}/accessibility/
 
 ## Ventures
 ${companies
@@ -130,14 +143,23 @@ ${list(
   }),
 )}
 
+## Where he gives
+${list(causes.map((c) => `${c.name}: ${c.description ?? ""}${c.donate ? ` Donate: ${c.donate}` : ""}`))}
+
 ## Outside of work
 ${list(
   interests.map((interest) =>
     interest.keywords?.length
-      ? `${interest.name}: ${interest.keywords.join(", ")}`
-      : interest.name,
+      ? `${interest.name}: ${interest.keywords.join(", ")} (${site.url}/off-the-clock/${interest.slug}/)`
+      : `${interest.name} (${site.url}/off-the-clock/${interest.slug}/)`,
   ),
 )}
+
+## Card collection
+Vintage Pokémon TCG, Wizards of the Coast era, and Magic Commander decks. Completion only: ${site.url}/off-the-clock/cards/
+${list(cardSets.map((s) => `${s.name} (${s.year}): ${s.owned === undefined ? "being counted" : `${s.owned} of ${s.total}`}`))}
+Porygon English master set: ${porygon.eras.reduce((n, e) => n + e.owned, 0)} of ${porygon.eras.reduce((n, e) => n + e.total, 0)} versions.
+Magic: The Gathering, ${magic.format}: ${magic.decks.map((d) => `${d.commander} (${d.build}, bracket ${d.bracket})`).join("; ")}.
 
 ## Glossary
 Definitions of the vocabulary around AI products, each with what the term means

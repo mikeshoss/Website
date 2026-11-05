@@ -21,7 +21,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         {posts.map(post => (
           <a href={`/blog/${post.slug}`} class="card block group">
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-              <h2 class="text-xl font-semibold group-hover:text-accent transition-colors">
+              <h2 class="text-xl font-semibold group-hover:text-accent-dim transition-colors">
                 {post.data.title}
               </h2>
               <time class="text-sm text-muted font-mono whitespace-nowrap">

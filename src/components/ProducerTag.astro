@@ -1,0 +1,94 @@
+---
+/**
+ * The producer tag. A record producer's tag is the few seconds you hear before
+ * the first beat — it says who made this before anything else does.
+ *
+ * With `animate` (the hero), the mark draws itself and "Produced by Mike Shoss"
+ * types out behind an orange cursor that keeps blinking. Everything is CSS
+ * and starts in its "before" state from the first paint (the `js` class set
+ * in Layout's head), so nothing appears and then resets. The line's full
+ * width is reserved up front, so typing never reflows the layout.
+ *
+ * Pressing the mark, or any [data-tag-play] element such as the Key, replays the
+ * animated tags with the sound. The sound is Web Audio, never automatic.
+ */
+import Mark from './Mark.astro';
+
+interface Props {
+  /** "inline" for the footer and small spots; "hero" for the big one. */
+  size?: 'inline' | 'hero';
+  dark?: boolean;
+  animate?: boolean;
+}
+const { size = 'inline', dark = false, animate = false } = Astro.props;
+---
+
+<div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-3.5' : 'gap-2.5', animate && 'tag-type']} data-tag={animate ? 'animate' : 'still'}>
+  <button type="button" data-tag-play class="shrink-0 rounded-full -m-1 p-1" aria-label="Play the producer tag" title="Play the tag">
+    <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} />
+  </button>
+  <p
+    class:list={[
+      'font-mono uppercase tracking-[0.18em] leading-none',
+      size === 'hero' ? 'text-xs' : 'text-[0.625rem]',
+      dark ? 'text-carbon-muted' : 'text-muted',
+    ]}
+  >
+    <span class="tag-line">
+      <span class="tag-text">Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span></span><span
+        class:list={['tag-cursor inline-block bg-accent align-middle', animate ? '' : 'tag-still', size === 'hero' ? 'w-[0.5em] h-[1.25em] ml-[0.15em]' : 'w-[0.45em] h-[1.2em] ml-[0.1em]']}
+        aria-hidden="true"
+      ></span>
+    </span>
+  </p>
+</div>
+
+<script>
+  let ctx: AudioContext | undefined;
+  function playSound() {
+    ctx ??= new AudioContext();
+    const now = ctx.currentTime;
+
+    const noise = ctx.createBuffer(1, ctx.sampleRate * 0.03, ctx.sampleRate);
+    const data = noise.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    const click = ctx.createBufferSource();
+    click.buffer = noise;
+    const clickGain = ctx.createGain();
+    clickGain.gain.value = 0.25;
+    click.connect(clickGain).connect(ctx.destination);
+    click.start(now);
+
+    [392, 523.25, 783.99].forEach((freq, i) => {
+      const osc = ctx!.createOscillator();
+      const gain = ctx!.createGain();
+      osc.type = i === 2 ? 'triangle' : 'sine';
+      osc.frequency.value = freq;
+      const t = now + 0.06 + i * 0.11;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.18, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + (i === 2 ? 0.6 : 0.16));
+      osc.connect(gain).connect(ctx!.destination);
+      osc.start(t);
+      osc.stop(t + 0.7);
+    });
+  }
+
+  /** Restart a CSS animation class: remove, force a reflow, add back. */
+  function restart(el: Element, cls: string) {
+    el.classList.remove(cls);
+    void (el as HTMLElement).offsetWidth;
+    el.classList.add(cls);
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-tag-play]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      playSound();
+      document.querySelectorAll('[data-tag="animate"]').forEach(tag => {
+        restart(tag, 'tag-type');
+        tag.querySelectorAll('.tag-mark').forEach(m => restart(m, 'tag-draw'));
+      });
+      if (btn.classList.contains('tag-key')) restart(btn, 'tag-pressed');
+    });
+  });
+</script>

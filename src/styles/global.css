@@ -1,9 +1,6 @@
-/* Self-hosted type. Three faces, each with one job:
-   - Instrument Serif for display: headlines, big numerals, the name.
-   - Geist for everything you read.
-   - JetBrains Mono for labels, dates and eyebrows. */
-@import '@fontsource/instrument-serif/latin-400.css';
-@import '@fontsource/instrument-serif/latin-400-italic.css';
+/* Self-hosted type. Two faces, each with one job:
+   - Geist, a plain grotesk, for headlines and everything you read.
+   - JetBrains Mono for labels, dates and readouts — the markings on the panel. */
 @import '@fontsource/geist/latin-400.css';
 @import '@fontsource/geist/latin-500.css';
 @import '@fontsource/geist/latin-600.css';
@@ -15,8 +12,15 @@
 @tailwind utilities;
 
 @layer base {
+  /* Line breaks: headings balance their lines; running text avoids leaving one
+     word alone on the last line. */
+  h1, h2, h3, h4, .display { text-wrap: balance; }
+  p, li, dd, figcaption, blockquote { text-wrap: pretty; }
+
   html {
     scroll-behavior: smooth;
+    /* Anchored sections land below the sticky 4rem header, not under it. */
+    scroll-padding-top: 5rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -67,13 +71,13 @@
   /* ------------------------------------------------------------ Type */
 
   .display {
-    @apply font-display font-normal text-bone;
+    @apply font-display font-medium text-bone;
   }
 
-  /* The one emphasised word in a headline: italic, amber. */
+  /* The one emphasised word in a headline: signal orange, upright. */
   .display em {
     @apply text-accent;
-    font-style: italic;
+    font-style: normal;
   }
 
   /* Small uppercase mono label above a heading. Carries an optional index
@@ -82,8 +86,22 @@
     @apply font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted;
   }
 
+  /* Tab rows that scroll sideways on a phone fade out at the right edge, so
+     it's obvious there is more. */
+  .scroll-fade {
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .scroll-fade {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+
   .eyebrow b {
-    @apply font-medium text-accent;
+    @apply font-medium text-accent-dim;
   }
 
   .lede {
@@ -118,7 +136,7 @@
 
   /* Status chip: mono, bordered, no fill. */
   .chip {
-    @apply inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-wider px-2 py-0.5 border border-line text-muted;
+    @apply inline-flex items-center gap-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] px-2 py-1 rounded-md border border-line-strong/60 text-muted whitespace-nowrap;
   }
 
   /* ------------------------------------------------------------ Links & buttons */
@@ -128,7 +146,7 @@
   }
 
   .link:hover {
-    @apply decoration-accent text-accent;
+    @apply decoration-accent text-accent-dim;
   }
 
   .link-quiet {
@@ -144,7 +162,7 @@
   }
 
   .arrow-link:hover {
-    @apply text-accent;
+    @apply text-accent-dim;
   }
 
   .btn {
@@ -152,11 +170,179 @@
   }
 
   .btn-primary {
-    @apply btn bg-accent text-accent-ink;
+    @apply btn bg-accent text-accent-ink rounded-full;
   }
 
   .btn-primary:hover {
     @apply bg-accent-bright;
+  }
+
+  .btn-quiet {
+    @apply btn rounded-full border border-line-strong text-bone;
+  }
+
+  .btn-quiet:hover {
+    @apply border-bone;
+  }
+
+  /* ------------------------------------------------------------ Braun details */
+
+  /* The green "on" light. Pulses slowly unless motion is reduced. */
+  .led {
+    @apply inline-block w-2 h-2 rounded-full bg-signal;
+    box-shadow: 0 0 0 3px rgb(63 154 70 / 0.18);
+    animation: led-pulse 2.8s ease-in-out infinite;
+  }
+
+  .led-off {
+    @apply inline-block w-2 h-2 rounded-full bg-line-strong;
+  }
+
+  @keyframes led-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .led { animation: none; }
+  }
+
+  /* ------------------------------------------------------------ Producer tag */
+
+  /* The mark draws itself: ring, then the signal. Lengths are the real path
+     lengths (ring 2πr = 81.7), set slightly long so no sliver is left. The start state applies only under `.js` (set in the
+     head before first paint), so without script the mark is simply drawn. */
+  .js .tag-draw .tag-ring {
+    stroke-dasharray: 83;
+    stroke-dashoffset: 83;
+    animation: tag-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+  }
+
+
+  /* The logo's signal M: two rounded peaks, 40.1 long (measured). */
+  .js .tag-draw .tag-m {
+    stroke-dasharray: 41;
+    stroke-dashoffset: 41;
+    animation: tag-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.6s forwards;
+  }
+
+  @keyframes tag-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* The typed line. JetBrains Mono is monospaced, so every character is
+     exactly 1ch + the 0.18em tracking wide, and the 22 characters of
+     "Produced by Mike Shoss" can be revealed one at a time with steps(22).
+     .tag-line reserves the finished width so nothing reflows while typing. */
+  .tag-line {
+    @apply inline-flex items-center whitespace-nowrap;
+  }
+
+  .tag-text {
+    @apply inline-block overflow-hidden whitespace-nowrap align-middle;
+    /* Room for the descenders that overflow:hidden would otherwise clip. */
+    padding-block: 0.15em;
+  }
+
+  .js .tag-type .tag-line {
+    min-width: calc(22 * (1ch + 0.18em) + 0.65em);
+  }
+
+  .js .tag-type .tag-text {
+    width: 0;
+    animation: tag-type 1s steps(22, end) 1.05s forwards;
+  }
+
+  @keyframes tag-type {
+    to { width: calc(22 * (1ch + 0.18em)); }
+  }
+
+  /* The cursor: a hard on/off blink, like a terminal. */
+  .tag-cursor {
+    animation: tag-blink 1.06s steps(1, end) infinite;
+  }
+
+  .tag-cursor.tag-still {
+    animation: none;
+  }
+
+  @keyframes tag-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* The key: physical travel when pressed. */
+  .tag-key {
+    transition: filter 0.2s;
+    filter: drop-shadow(0 3px 0 rgb(27 26 24 / 0.22));
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tag-key:hover {
+    filter: drop-shadow(0 3px 0 rgb(27 26 24 / 0.22)) brightness(1.05);
+  }
+
+  .tag-key:active,
+  .tag-key.tag-pressed {
+    animation: key-press 0.22s ease-out;
+  }
+
+  @keyframes key-press {
+    40% { transform: translateY(3px); filter: drop-shadow(0 0 0 rgb(27 26 24 / 0.22)); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .tag-draw .tag-ring,
+    .js .tag-draw .tag-m {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    .js .tag-type .tag-text {
+      animation: none;
+      width: auto;
+    }
+    .tag-cursor,
+    .tag-key.tag-pressed {
+      animation: none;
+    }
+  }
+
+  /* Speaker grille: a field of dots, as on the SK4 and the T3. Decorative. */
+  .grille {
+    background-image: radial-gradient(circle, theme('colors.line.strong') 1.4px, transparent 1.6px);
+    background-size: 12px 12px;
+  }
+
+  .grille-dark {
+    background-image: radial-gradient(circle, theme('colors.carbon.line') 1.4px, transparent 1.6px);
+    background-size: 12px 12px;
+  }
+
+  /* A readout: big mono numeral over a small label, like a calculator display. */
+  .readout {
+    @apply font-mono text-3xl md:text-4xl text-bone tabular-nums tracking-tight;
+  }
+
+  /* The machine room: the one dark surface on the site. */
+  .carbon {
+    @apply bg-carbon text-carbon-text;
+  }
+
+  /* On carbon the base orange is 4.46:1, just under AA for small text; the
+     bright orange is 5.5:1. The eyebrow's bold word follows. */
+  .carbon .text-accent,
+  .carbon .eyebrow b,
+  .carbon .hover\:text-accent-dim:hover,
+  .carbon .group:hover .group-hover\:text-accent-dim {
+    color: theme('colors.accent.bright');
+  }
+
+  .carbon .eyebrow {
+    @apply text-carbon-muted;
+  }
+
+  .carbon .display {
+    @apply text-carbon-text;
   }
 
   /* ------------------------------------------------------------ Tabs */
@@ -173,13 +359,15 @@
     @apply text-bone;
   }
 
+  /* The underline sits inside the tab, on its bottom edge: hanging it below
+     made the scrolling tab bar scroll vertically by a pixel. */
   .tab[aria-selected='true']::after {
     content: '';
-    @apply absolute left-0 right-0 -bottom-px h-px bg-accent;
+    @apply absolute left-0 right-0 bottom-0 h-0.5 bg-accent;
   }
 
   .tab .count {
-    @apply ml-1.5 text-accent;
+    @apply ml-1.5 text-accent-dim;
   }
 }
 
@@ -200,15 +388,15 @@
   }
 
   .card {
-    @apply panel p-6 transition-colors duration-200;
+    @apply border border-line rounded-2xl p-6 transition-colors duration-200;
   }
 
   .card:hover {
-    @apply bg-ink-100;
+    @apply bg-ink-50;
   }
 
   .pill {
-    @apply chip normal-case tracking-normal text-xs text-bone-dim;
+    @apply inline-flex items-center px-3.5 py-1.5 rounded-full border border-line-strong/60 text-sm text-bone-dim;
   }
 
   .link-hover {
