@@ -73,9 +73,13 @@ const description =
   {interest.slug === 'homelab' && (
     <>
       <section class="section pt-0 md:pt-0">
-        <dl class="grid grid-cols-2 lg:grid-cols-5 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        <div class="carbon rounded-2xl p-8 md:p-12 grid md:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] gap-6 md:gap-12 items-end">
+          <p class="display text-display-md !text-carbon-text">{homelab.why.replace(/\.$/, '')}<span class="text-accent">.</span></p>
+          <p class="text-carbon-muted leading-relaxed">{homelab.whyDetail}</p>
+        </div>
+        <dl class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-line border border-line rounded-2xl overflow-hidden">
           {homelab.readouts.map((r) => (
-            <div class="bg-ink p-5 flex flex-col-reverse justify-end last:col-span-2 lg:last:col-span-1"><dt class="eyebrow mt-3">{r.label}</dt><dd class="readout">{r.value}</dd></div>
+            <div class="bg-ink p-5 flex flex-col-reverse justify-end"><dt class="eyebrow mt-3">{r.label}</dt><dd class="readout">{r.value}</dd></div>
           ))}
         </dl>
       </section>
@@ -93,7 +97,19 @@ const description =
                 <span class="display text-xl md:text-2xl block">{m.role}</span>
                 <span class="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted mt-1 block">{m.hardware}</span>
               </span>
-              <p class="text-sm text-bone-dim leading-relaxed col-start-2 md:col-start-auto">{m.does}</p>
+              <div class="col-start-2 md:col-start-auto">
+                <p class="text-sm text-bone-dim leading-relaxed">{m.does}</p>
+                {m.themes && (
+                  <dl class="mt-5 grid sm:grid-cols-2 gap-x-6 gap-y-4">
+                    {m.themes.map((t) => (
+                      <div class="border-t border-line pt-3">
+                        <dt class="eyebrow"><b>{t.name}</b></dt>
+                        <dd class="text-sm text-bone-dim leading-relaxed mt-1">{t.detail}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </div>
             </li>
           ))}
         </ol>

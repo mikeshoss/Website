@@ -1480,7 +1480,7 @@ export const interests: Interest[] = [
   {
     slug: "homelab",
     name: "Homelab",
-    summary: "Five servers, over a hundred containers and a 122-billion-parameter model running at home. Run like production, because some of it is.",
+    summary: "I should be able to do any work, anywhere, on any device. Five servers, over a hundred containers and a bench of local AI models make that true. Run like production, because some of it is.",
     status: "Running",
     keywords: [
       "Self-hosted infrastructure",
@@ -1583,23 +1583,45 @@ export const magic: { format: string; decks: CommanderDeck[] } = {
  * inventory of 2026-10-31.
  */
 export const homelab = {
+  why: "Any work, anywhere, on any device.",
+  whyDetail:
+    "Nothing important lives on the device in my hand. It lives here, so a phone, a borrowed laptop or the one in my bag can pick up exactly where I left off. That's the whole reason this exists.",
   readouts: [
     { value: "5", label: "Servers" },
     { value: "100+", label: "Containers" },
     { value: "50 TB", label: "Storage" },
-    { value: "122B", label: "Largest local model" },
+    { value: "5", label: "Local LLMs" },
+    { value: "122B", label: "Largest model" },
     { value: "20", label: "Domains" },
   ],
   machines: [
     {
       role: "The server",
       hardware: "Mac mini M4 · 32 GB",
-      does: "Around 60 containers: the photo library, monitoring with alerts to my phone, automation, an MCP gateway with about 20 tools for AI agents, and a staging copy of every public app with its own data.",
+      does: "Around 60 containers. The always-on heart of it: if a service matters, it runs here, watched, backed up and with a staging twin.",
+      themes: [
+        { name: "Media", detail: "The household photo library, with face and place search, and a media server for the house." },
+        { name: "Monitoring", detail: "Metrics, logs and uptime checks for every machine, with alerts to my phone." },
+        { name: "Automation", detail: "Workflows and scheduled jobs, each one logged and on a switchboard I can turn off from anywhere." },
+        { name: "AI tooling", detail: "An MCP gateway with about 20 tools any agent can use, and one chat interface for every model." },
+        { name: "Staging", detail: "A copy of every public app with its own data and its outbound switched off." },
+        { name: "Data pipelines", detail: "The crawlers and publishers behind two public data sites." },
+        { name: "Workbench", detail: "Spin up an experiment, share it with an end date, and it cleans itself up." },
+      ],
     },
     {
       role: "The AI box",
       hardware: "Apple M3 Max · 128 GB",
-      does: "Local models up to 122 billion parameters behind one OpenAI-compatible router, plus speech-to-text, text-to-speech, image generation and a vector store. Nothing leaves the house unless I send it.",
+      does: "A private AI lab. Several models on one machine, the right size for each job, behind one OpenAI-compatible router, so any app or agent can use them without knowing which is which. Nothing leaves the house unless I send it.",
+      themes: [
+        { name: "Language", detail: "Gemma 3 12B, gpt-oss 20B, Qwen 3.5 9B and 122B, Qwen 3.8 27B." },
+        { name: "Router", detail: "One OpenAI-compatible endpoint in front of every model." },
+        { name: "Speech", detail: "Whisper large-v3-turbo transcribing on the GPU." },
+        { name: "Voice", detail: "Kokoro text-to-speech." },
+        { name: "Images", detail: "ComfyUI for image generation." },
+        { name: "Memory", detail: "Embedding models and a vector store for search and recall." },
+        { name: "Agents", detail: "A local agent with its own MCP server." },
+      ],
     },
     {
       role: "The public box",
@@ -1620,6 +1642,11 @@ export const homelab = {
       role: "The house",
       hardware: "Home Assistant",
       does: "Home automation, on the same network and the same alerts as everything else.",
+    },
+    {
+      role: "The laptop",
+      hardware: "MacBook Neo · disposable by design",
+      does: "Not because I don't care about it: because nothing mission-critical lives on it. Lose it, wipe it, pick up any other device and keep working. That's the test the rest of the lab has to pass.",
     },
   ],
   /** How it is run. Each one is a rule the lab actually enforces. */
