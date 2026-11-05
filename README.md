@@ -413,3 +413,12 @@ After a clean run, update `checked` in `src/pages/accessibility.astro`.
 Colour rule of thumb: small orange text is `accent-dim` on paper and panels,
 `accent-bright` on carbon (`.carbon` does this automatically); text on orange
 is `accent-ink`.
+
+## Command menu (⌘K)
+
+`src/components/CommandPalette.astro`, on every page: ⌘K / Ctrl+K or `/`
+opens it, the `⌘K` key cap in the nav and "Search everything" in the mobile
+menu too. Its index is `/palette.json`, built from `content.ts`, the glossary
+and the API catalogue (`src/pages/palette.json.ts`), and fetched on first
+open. Cheat codes live unlisted in the component; the footer counts how many a
+browser has found (localStorage `ms-codes`).

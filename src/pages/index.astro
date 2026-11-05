@@ -66,7 +66,7 @@ const givingBack = [
   </section>
 
   <!-- ============================================================ Now -->
-  <section class="section pt-0 md:pt-0">
+  <section class="section pt-0 md:pt-0" id="now">
     <p class="eyebrow rule pt-6">01 — Now</p>
     <div class="mt-8 grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {hero.now.map(item => (
@@ -81,7 +81,7 @@ const givingBack = [
   </section>
 
   <!-- ============================================================ Credits -->
-  <section class="section pt-0 md:pt-0">
+  <section class="section pt-0 md:pt-0" id="credits">
     <div class="rule pt-6 flex items-baseline justify-between">
       <p class="eyebrow">02 — Selected credits</p>
       <a href="/credits" class="arrow-link text-xs">All credits →</a>
@@ -100,7 +100,7 @@ const givingBack = [
   </section>
 
   <!-- ============================================================ Machine room -->
-  <section class="carbon">
+  <section class="carbon" id="machine-room">
     <div class="section">
       <div class="flex items-center justify-between">
         <p class="eyebrow">03 — The machine room</p>
@@ -131,7 +131,7 @@ const givingBack = [
   </section>
 
   <!-- ============================================================ Calls -->
-  <section class="section">
+  <section class="section" id="calls">
     <p class="eyebrow rule pt-6">04 — Where it's going</p>
     <div class="mt-8 grid md:grid-cols-12 gap-8">
       <div class="md:col-span-5">
@@ -160,7 +160,7 @@ const givingBack = [
   </section>
 
   <!-- ============================================================ Who I am -->
-  <section class="section pt-0 md:pt-0">
+  <section class="section pt-0 md:pt-0" id="who-i-am">
     <p class="eyebrow rule pt-6">05 — Who I am</p>
     <div class="mt-8 grid md:grid-cols-12 gap-8">
       <div class="md:col-span-5">
@@ -197,7 +197,7 @@ const givingBack = [
 
   <!-- ============================================================ Where I give -->
   {causes.length > 0 && (
-    <section class="section pt-0 md:pt-0">
+    <section class="section pt-0 md:pt-0" id="give">
       <p class="eyebrow rule pt-6">06 — Where I give</p>
       <div class="mt-8 grid md:grid-cols-12 gap-8">
         <h2 class="display text-display-lg md:col-span-5 max-w-[14ch]">Worth more than a mention.</h2>
@@ -226,7 +226,7 @@ const givingBack = [
   )}
 
   <!-- ============================================================ Contact -->
-  <section class="section pt-0 md:pt-0">
+  <section class="section pt-0 md:pt-0" id="contact">
     <div class="rounded-[1.75rem] border border-line p-8 md:p-12 grid md:grid-cols-12 gap-8 items-end">
       <div class="md:col-span-8">
         <div class="flex items-center gap-4">

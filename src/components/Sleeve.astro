@@ -272,7 +272,12 @@ const tracks = ['First one in', 'Further out than is comfortable', 'Take care of
 </style>
 
 <script>
+  // The FLIP code in the command menu lands here with the B-side requested.
+  let flipRequested = false;
+  try { flipRequested = sessionStorage.getItem('ms-flip') === '1'; sessionStorage.removeItem('ms-flip'); } catch { /* no storage */ }
+
   document.querySelectorAll<HTMLButtonElement>('[data-sleeve]').forEach((btn) => {
+    if (flipRequested) window.setTimeout(() => btn.click(), 600);
     btn.addEventListener('click', () => {
       const flipped = btn.getAttribute('aria-pressed') === 'true';
       btn.setAttribute('aria-pressed', String(!flipped));

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 import Analytics from '../components/Analytics.astro';
 import { existsSync } from 'node:fs';
 import { companies, education, experience, site, skills } from '../data/content';
@@ -262,5 +263,6 @@ const jsonLd = {
       <slot />
     </main>
     <Footer />
+    <CommandPalette />
   </body>
 </html>

@@ -39,6 +39,10 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
           {link.label}
         </a>
       ))}
+      <!-- The command menu. The key label is set to ⌘K or Ctrl K by the menu's script. -->
+      <button type="button" data-cmdk-open class="cmdk-cap" aria-label="Open the command menu" title="Command menu">
+        <kbd data-cmdk-key>⌘K</kbd>
+      </button>
     </div>
 
     <!-- Mobile toggle -->
@@ -70,9 +74,33 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
           {link.label}
         </a>
       ))}
+      <button type="button" data-cmdk-open class="w-full flex items-center justify-between py-4 font-display text-2xl text-bone">
+        Search everything <span class="font-mono text-xs uppercase tracking-[0.16em] text-muted">Command menu</span>
+      </button>
     </div>
   </nav>
 </header>
+
+<style>
+  .cmdk-cap kbd {
+    display: inline-grid;
+    place-items: center;
+    height: 1.5rem;
+    padding: 0 0.45rem;
+    border-radius: 0.4rem;
+    border: 1px solid theme('colors.line.strong');
+    border-bottom-width: 2px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    color: theme('colors.muted');
+    transition: color 0.2s, border-color 0.2s, transform 0.1s;
+  }
+  .cmdk-cap:hover kbd { color: theme('colors.bone.DEFAULT'); border-color: theme('colors.bone.DEFAULT'); }
+  .cmdk-cap:active kbd { transform: translateY(1px); border-bottom-width: 1px; }
+  .cmdk-cap:focus-visible { outline: none; }
+  .cmdk-cap:focus-visible kbd { outline: 2px solid theme('colors.accent.DEFAULT'); outline-offset: 2px; }
+</style>
 
 <script>
   const btn = document.getElementById('mobile-menu-btn');
@@ -81,7 +109,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
     const isOpen = menu?.classList.toggle('hidden') === false;
     btn.setAttribute('aria-expanded', String(isOpen));
   });
-  menu?.querySelectorAll('a').forEach(link => {
+  menu?.querySelectorAll('a, [data-cmdk-open]').forEach(link => {
     link.addEventListener('click', () => {
       menu.classList.add('hidden');
       btn?.setAttribute('aria-expanded', 'false');
