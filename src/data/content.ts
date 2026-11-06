@@ -514,6 +514,7 @@ const companiesData: Company[] = [
     body: [
       "Most AI work stalls in the gap between a promising demo and something a business will actually run on. Epilogue exists to close that gap. The consulting arm decides what is worth building, how it should be priced, and how it goes to market. The studio arm builds it, validates it with real users, and then either spins it out or hands it to the partner organization to operate.",
       "The two arms feed each other. Client work surfaces problems common enough to productize, and the studio's products give the consulting practice working systems to point at instead of slideware.",
+      "The studio builds its own AI products, and has sold two. Of Record, AI Edge Briefing and SignalPrep are live; Parleh is coming back invite-only; TrustFlow and Travel With RX were built and sold.",
     ],
     start: "2023-11",
     url: "https://epiloguelabs.com",
@@ -541,35 +542,77 @@ const companiesData: Company[] = [
         ],
       },
     ],
+    // Mirrors epiloguelabs.com/ventures (checked 2026-11-06), in its order:
+    // live, coming back, paused, sold, wound down. Status words are the ones
+    // that page uses. Parleh differs on purpose: Epilogue still says paused,
+    // but it is coming back invite-only (Mike, 2026-11-06).
     products: [
+      {
+        name: "Of Record",
+        tagline: "See what your council decided.",
+        description:
+          "Every motion, who moved it, how each councillor voted and who showed up, read from each Ontario council's own minutes, checked against them and linked back to the source. Free to read, with no account and no ads; businesses that watch councils pay for a plan. Launched October 2026.",
+        status: "Live",
+        url: "https://ofrecord.ca",
+      },
+      {
+        name: "AI Edge Briefing",
+        tagline: "Daily, fact-first frontier AI, in writing and as a podcast.",
+        description:
+          "A daily digest of frontier AI: the capabilities, the research, and how it is being used for good and for harm. Every claim checked against its primary source, every number quoted exactly, caveats stated plainly. Free, no ads, CC BY 4.0.",
+        status: "Live",
+        url: "https://aiedgebriefing.com",
+      },
+      {
+        name: "SignalPrep",
+        tagline: "Canada's amateur radio exam practice, in English and French.",
+        description:
+          "Free practice tests for the Canadian Basic and Advanced amateur radio exams, drawn from the question banks ISED publishes. Every one of the 1,533 questions carries a plain-language explanation. Used by radio clubs across the country.",
+        status: "Live",
+        url: "https://signalprep.ca",
+      },
       {
         name: "Parleh",
         tagline: "Meetings that do the work.",
         description:
-          "An AI meeting companion built through a structured human + autonomous agent collaboration model. Turns notes into live action, workflows, and agent-triggered execution.",
-        status: "Active",
+          "Type // in any meeting and Parleh does the work while you keep talking: it files the ticket, answers the question, books the follow-up and drafts every next step for one-tap approval. Coming back as an invite-only build.",
+        status: "Invite only",
+        url: "https://parleh.ai",
       },
       {
-        name: "Fractal",
-        tagline: "One source of truth for product.",
+        name: "Cria",
+        tagline: "Share GPU compute.",
         description:
-          "An AI-agent-driven product-truth platform that unifies code, design, and product artefacts into a single living source of truth, generating role-specific views and reducing documentation drift.",
-        status: "Active — Closed Beta",
-      },
-      {
-        name: "Of Record Media",
-        tagline: "An independent civic record.",
-        description:
-          "Municipalities and police services publish constantly — agendas, minutes, budgets, development files — and almost none of it is read. Of Record turns those published sources into a standing public record that can be checked against the document it came from.",
-        status: "Active",
-        url: "https://ofrecord.ca",
+          "Powerful AI hardware sits idle in homes and labs while people rent the same capacity from a cloud. Cria lets providers share their local AI servers behind an OpenAI-compatible API. Built, shipped to real users, and paused while the live products get the time.",
+        status: "Paused",
       },
       {
         name: "TrustFlow",
         tagline: "Automate admin, embed compliance.",
         description:
-          "An AI-powered platform that automates administrative workflows for professional services teams, streamlining approvals, documentation, and record-keeping while embedding safeguards to reduce errors and support audit readiness.",
-        status: "Active — Invite Only",
+          "Administrative workflow automation for professional services teams: approvals, documentation and record-keeping, with audit safeguards built into the flow. December 2024 to June 2026, then sold; the acquirer is under NDA.",
+        status: "Sold",
+      },
+      {
+        name: "Travel With RX",
+        tagline: "A global prescription guide for travellers.",
+        description:
+          "A SaaS closed beta from August 2024 to May 2025, then an invite-only MCP server until December 2025, when it was sold; the acquirer is under NDA.",
+        status: "Sold",
+      },
+      {
+        name: "Fractal",
+        tagline: "One source of truth for product.",
+        description:
+          "A product-truth platform: code, design and product artefacts in one living source, with role-specific views generated from it, so documentation stopped drifting from what was built. January 2025 to June 2026.",
+        status: "Wound down",
+      },
+      {
+        name: "Liteworker",
+        tagline: "A curated directory of AI tools.",
+        description:
+          "AI tools aggregated and curated, so people could find out what a new capability actually did without reading every launch post. 2023 to 2025.",
+        status: "No longer maintained",
       },
     ],
     clients: [
@@ -891,7 +934,7 @@ const projectsData: Project[] = [
     description:
       "Share GPU compute, access any AI model. A distributed marketplace where providers share their local AI servers and developers reach models through an OpenAI-compatible API — Ollama, LM Studio, LocalAI, vLLM, llama.cpp, or any OpenAI-compatible server, with no code changes.",
     start: "2026-06",
-    status: "Active",
+    status: "Paused",
     association: "Epilogue",
     url: "https://usecria.ai",
     // repo: "https://github.com/EpilogueLabs/Cria",
@@ -910,10 +953,10 @@ const projectsData: Project[] = [
   {
     name: "Travel With RX",
     description:
-      "Your Global Prescription Guide. Included MCP Server implementation and SaaS implementation.",
+      "A global prescription guide for travellers. A SaaS closed beta from August 2024 to May 2025, then an invite-only MCP server until it was sold in December 2025.",
     start: "2024-08",
     end: "2025-12",
-    status: "Exited",
+    status: "Sold",
     association: "Epilogue",
     // url: "https://",
     // repo: "https://github.com/mikeshoss/TravelWithRX",
