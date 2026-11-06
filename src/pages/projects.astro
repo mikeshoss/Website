@@ -21,7 +21,8 @@ const ventureNames = new Set(companies.map(c => c.name));
 const orphans = projects.filter(p => p.association !== 'Personal' && !ventureNames.has(p.association ?? ''));
 
 const epilogue = companies.find(c => c.slug === 'epilogue');
-const epilogueProducts = epilogue?.products?.map(p => p.name) ?? [];
+// Only what is in market or about to be; sold and paused products live on the Epilogue page.
+const epilogueProducts = epilogue?.products?.filter(p => p.status === 'Live' || p.status === 'Invite only').map(p => p.name) ?? [];
 const epilogueUrl = withCampaign(epilogue?.url, 'projects-page');
 
 const listed = [...personal.active, ...personal.past, ...orphans];
