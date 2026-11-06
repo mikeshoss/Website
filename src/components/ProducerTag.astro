@@ -81,10 +81,18 @@ const { size = 'inline', dark = false, animate = false } = Astro.props;
     el.classList.add(cls);
   }
 
+  // When the typing finishes, release the fixed width (see .tag-typed in global.css).
+  document.querySelectorAll<HTMLElement>('[data-tag="animate"]').forEach(tag => {
+    tag.addEventListener('animationend', e => {
+      if (e.animationName === 'tag-type') tag.classList.add('tag-typed');
+    });
+  });
+
   document.querySelectorAll<HTMLElement>('[data-tag-play]').forEach(btn => {
     btn.addEventListener('click', () => {
       playSound();
       document.querySelectorAll('[data-tag="animate"]').forEach(tag => {
+        tag.classList.remove('tag-typed');
         restart(tag, 'tag-type');
         tag.querySelectorAll('.tag-mark').forEach(m => restart(m, 'tag-draw'));
       });

@@ -257,6 +257,14 @@
     to { width: calc(22 * (1ch + 0.18em)); }
   }
 
+  /* Once typed, drop the width: the keyframe's ch can be stale (WebKit keeps
+     the fallback font's ch if the web font arrives after the animation starts),
+     which clipped the last letter on iPhone. The finished line is never clipped. */
+  .js .tag-type.tag-typed .tag-text {
+    width: auto;
+    animation: none;
+  }
+
   /* The cursor: a hard on/off blink, like a terminal. */
   .tag-cursor {
     animation: tag-blink 1.06s steps(1, end) infinite;
