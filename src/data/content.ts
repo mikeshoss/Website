@@ -1364,9 +1364,8 @@ export interface Education {
 export const education: Education[] = [
   {
     institution: "Sheridan College",
-    credential: "Ontario College Advanced Diploma, Computer Systems Technology",
-    detail:
-      "Software Development and Network Engineering Co-op — Mobile Stream",
+    credential: "Ontario College Advanced Diploma, Computer Systems Technology — Software Development & Network Engineering — Mobile",
+    detail: "Co-op program",
   },
   {
     institution: "Product School",
