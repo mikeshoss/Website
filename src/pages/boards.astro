@@ -10,7 +10,6 @@ import { site } from '../data/content';
  * and advisory roles are kept apart: only MCRC and PSCC 910 are board seats;
  * DMZ and The Forge are advisory and never go under "Board experience".
  */
-const email = 'mike.shoss@gmail.com';
 // Two versions, printed from /boards/resume/<variant>/ by `npm run resumes`.
 const resumes = {
   company: '/files/mike-shoss-board-resume-company.pdf',
@@ -146,7 +145,7 @@ const personId = `${site.url}/#person`;
         <a href={resumes.nonprofit} class="btn-quiet" type="application/pdf"><span class="sr-only">Download board resume for </span>Nonprofit boards (PDF)</a>
       </div>
     </div>
-    <p class="mt-5 text-bone-dim">Or email me at <a href={`mailto:${email}`} class="link">{email}</a>.</p>
+    <p class="mt-5 text-bone-dim">Or <a href="/contact" class="link">get in touch through my contact page</a>.</p>
   </section>
 
   <!-- 2. What I bring -->
@@ -296,8 +295,7 @@ const personId = `${site.url}/#person`;
   <section class="page pb-20" aria-labelledby="boards-contact">
     <h2 id="boards-contact" class="sr-only">Contact</h2>
     <p class="rule pt-6 text-lg text-bone-dim leading-relaxed">
-      Email me at <a href={`mailto:${email}`} class="link">{email}</a>, or
-      download my board resume for <a href={resumes.company} class="link" type="application/pdf">company boards (PDF)</a>
+      <a href="/contact" class="link">Get in touch through my contact page</a>, or download my board resume for <a href={resumes.company} class="link" type="application/pdf">company boards (PDF)</a>
       or <a href={resumes.nonprofit} class="link" type="application/pdf">nonprofit boards (PDF)</a>.
     </p>
   </section>

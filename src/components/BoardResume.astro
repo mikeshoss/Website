@@ -15,7 +15,6 @@ interface Props { variant: 'company' | 'nonprofit' }
 const { variant } = Astro.props;
 const company = variant === 'company';
 
-const email = 'mike.shoss@gmail.com';
 
 const profile = company
   ? "Technology executive and board director in Milton, Ontario. I set AI strategy and governance in regulated industries, took a 60-person product organization through a US$150 million Series B, and served as a condominium corporation's Treasurer. I'm looking for an independent director seat on a growth-stage technology company."
@@ -124,7 +123,7 @@ const title = `Mike Shoss — Board resume (${company ? 'company' : 'nonprofit'}
         <h1 class="display text-[26pt] leading-none">Mike Shoss</h1>
         <p class="mt-2 text-[10.5pt]">Board Director · Milton, Ontario</p>
         <p class="mt-1 text-[9.5pt] text-[#4a4741]">
-          <a href={`mailto:${email}`}>{email}</a> · <a href="https://mikeshoss.com/boards">mikeshoss.com/boards</a> · <a href="https://www.linkedin.com/in/mikeshoss">linkedin.com/in/mikeshoss</a>
+          <a href="https://mikeshoss.com/contact">mikeshoss.com/contact</a> · <a href="https://mikeshoss.com/boards">mikeshoss.com/boards</a> · <a href="https://www.linkedin.com/in/mikeshoss">linkedin.com/in/mikeshoss</a>
         </p>
       </header>
 
