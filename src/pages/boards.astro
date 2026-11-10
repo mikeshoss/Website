@@ -9,7 +9,6 @@ import { site } from '../data/content';
  * Accuracy rules (Mike, 2026-11-10): only the facts he supplied. Board seats
  * and advisory roles are kept apart: only MCRC and PSCC 910 are board seats;
  * DMZ and The Forge are advisory and never go under "Board experience".
- * Items marked as placeholders stay visibly marked until he fills them in.
  */
 const email = 'mike.shoss@gmail.com';
 const resume = '/files/mike-shoss-board-resume.pdf';
@@ -89,6 +88,7 @@ const personId = `${site.url}/#person`;
         {
           '@type': 'OrganizationRole',
           roleName: 'Director; Chair, Business Development Committee',
+          startDate: '2024-11',
           memberOf: { '@type': 'NGO', name: 'Milton Community Resource Centre' },
         },
         {
@@ -142,7 +142,7 @@ const personId = `${site.url}/#person`;
           <h3 class="display text-display-sm">Milton Community Resource Centre</h3>
           <p class="mt-2 text-bone">Director; Chair, Business Development Committee</p>
           <p class="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">
-            <span class="placeholder">[placeholder: start year]</span> – present
+            <time datetime="2024-11">Nov 2024</time> – present
           </p>
         </div>
         <ul class="md:col-span-7 space-y-3 text-bone-dim leading-relaxed list-disc pl-5 marker:text-muted">
@@ -252,10 +252,3 @@ const personId = `${site.url}/#person`;
     </p>
   </section>
 </Layout>
-
-<style>
-  /* A visible, unmistakable "not filled in yet". */
-  .placeholder {
-    @apply inline-block px-1.5 rounded border border-dashed border-accent-dim text-bone normal-case tracking-normal;
-  }
-</style>

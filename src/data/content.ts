@@ -1243,16 +1243,16 @@ const volunteeringData: VolunteerRole[] = [
     category: "mentoring",
   },
   {
-    title: "Board Member & Chair, Business Development Committee",
+    title: "Director & Chair, Business Development Committee",
     organization: "Milton Community Resource Centre (MCRC)",
     start: "2024-11",
     description:
-      "MCRC is a not-for-profit, multi-service and multi-site organization serving children and families in Milton and the surrounding communities, alongside professionals working in Early Childhood Education. Advising on funding strategy, government partnerships, and operational improvements for a nonprofit serving 1,000+ families; supporting financial planning and grant applications for long-term sustainability; helping the organization navigate technology and AI adoption; and engaging policymakers and community leaders to expand impact across the Milton region.",
+      "MCRC is a not-for-profit, multi-service and multi-site organization serving children and families in Milton and the surrounding communities, alongside professionals working in Early Childhood Education. On the board of directors and the lead for business development: funding strategy, government partnerships, and operational improvements for a nonprofit serving 1,000+ families; supporting financial planning and grant applications for long-term sustainability; helping the organization navigate technology and AI adoption; and engaging policymakers and community leaders to expand impact across the Milton region.",
     category: "governance",
     timeline: [
-      { role: "Chair, Business Development Committee", start: "2026-08" },
+      { role: "Director; Chair, Business Development Committee", start: "2026-08" },
       {
-        role: "Member, Business Development Committee",
+        role: "Director; Member, Business Development Committee",
         start: "2024-11",
         end: "2026-08",
       },
@@ -1269,7 +1269,8 @@ const volunteeringData: VolunteerRole[] = [
   {
     title: "Lead Mentor — Artificial Intelligence & Product Management",
     organization: "The Forge McMaster",
-    start: "2025-04",
+    // Mike, 2026-11-10: "should be Jan 2024", he's double-checking.
+    start: "2024-01",
     description:
       "Mentoring early-stage founders at McMaster University's business incubator in Hamilton, ON on AI productization, business model optimization, GTM execution, and fundraising strategy.",
     category: "mentoring",
