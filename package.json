@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "dev:full": "astro build && wrangler dev",
     "images": "node scripts/generate-images.mjs",
-    "a11y": "node scripts/a11y-audit.mjs"
+    "a11y": "node scripts/a11y-audit.mjs",
+    "resumes": "node scripts/board-resumes.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",

@@ -23,6 +23,7 @@ const pages: Item[] = [
   { t: "Ventures", u: "/companies/", k: "companies businesses" },
   { t: "Projects", u: "/projects/", k: "builds products" },
   { t: "Experience", u: "/experience/", k: "career resume cv jobs" },
+  { t: "Boards", u: "/boards/", k: "board director governance nonprofit treasurer mcrc nominations" },
   { t: "Contact", u: "/contact/", k: "email reach hire talk" },
   { t: "Off the clock", u: "/off-the-clock/", k: "hobbies interests side b" },
   { t: "Glossary", u: "/glossary/", k: "ai terms definitions" },
@@ -94,6 +95,7 @@ const menu: Node[] = [
   { t: "Ventures", h: "Companies", c: [open("Ventures", "/companies/"), ...ventures.map(strip)] },
   { ...strip(page("Projects")) },
   { t: "Experience", h: "Tabs", c: [open("Experience", "/experience/"), ...sectionsOf("Experience")] },
+  { ...strip(page("Boards")) },
   {
     t: "Off the clock",
     h: "Channels",

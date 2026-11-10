@@ -45,6 +45,13 @@ const tabs = [
   { id: 'education', label: 'Education' },
   { id: 'outside', label: 'Outside work' },
 ];
+
+// Board outcomes for the governance CTA. Same facts as /boards (PSCC 910 as Treasurer).
+const boardOutcomes = [
+  { figure: '11%', label: 'average saved on six-figure contracts I negotiated' },
+  { figure: '$2M', label: 'operating budget I prepared, presented and managed' },
+  { figure: '1,000+', label: 'residents in the community that budget served' },
+];
 ---
 
 <Layout
@@ -159,9 +166,29 @@ const tabs = [
           <div class="rule pt-5 mb-6">
             <p class="eyebrow">{group.label} <b>{group.roles.length}</b></p>
           </div>
-          <div class="grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+          <!-- A lone last card spans the row, so no group shows an empty grey cell. -->
+          <div class="grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden md:[&>*:last-child:nth-child(odd)]:col-span-2">
             {group.roles.map(role => <RoleCard role={role} />)}
           </div>
+          {group.key === 'governance' && (
+            // For nominations committees: outcomes from board work, then the way
+            // to the full board profile. Only figures from /boards, nothing new.
+            <div class="carbon mt-6 rounded-2xl p-7 md:p-10 grid md:grid-cols-12 gap-8 items-center">
+              <div class="md:col-span-5">
+                <p class="eyebrow">For nominations committees</p>
+                <p class="display text-display-sm mt-4">Bring these <em>results</em> to your board.</p>
+                <a href="/boards" class="btn-primary mt-7">See my board profile <span aria-hidden="true">→</span></a>
+              </div>
+              <dl class="md:col-span-7 grid sm:grid-cols-3 gap-6 sm:gap-8">
+                {boardOutcomes.map(o => (
+                  <div class="flex flex-col-reverse gap-2 border-t border-carbon-line pt-4">
+                    <dt class="text-sm text-carbon-muted leading-snug">{o.label}</dt>
+                    <dd class="display text-display-md text-carbon-text">{o.figure}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
         </div>
       ))}
     </div>

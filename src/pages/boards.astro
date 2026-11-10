@@ -1,0 +1,313 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/content';
+
+/**
+ * Board profile, for nominations committees, board chairs and search firms.
+ * A calmer register than the rest of the site: no record-label language.
+ *
+ * Accuracy rules (Mike, 2026-11-10): only the facts he supplied. Board seats
+ * and advisory roles are kept apart: only MCRC and PSCC 910 are board seats;
+ * DMZ and The Forge are advisory and never go under "Board experience".
+ */
+// Two versions, printed from /boards/resume/<variant>/ by `npm run resumes`.
+const resumes = {
+  company: '/files/mike-shoss-board-resume-company.pdf',
+  nonprofit: '/files/mike-shoss-board-resume-nonprofit.pdf',
+};
+
+const resumeVersions = [
+  { title: 'For company boards', note: 'AI governance, regulated industries, growth and capital first.', href: resumes.company },
+  { title: 'For nonprofit boards', note: 'Fundraising, community and financial oversight first.', href: resumes.nonprofit },
+];
+
+// The skills matrix nominations committees score candidates on, with evidence.
+// Every line is a fact from the board brief or the Experience data.
+const matrix = [
+  { area: 'AI and technology governance', evidence: "Defined Caseware's company-wide AI strategy and governance model with the CPO and CTO. Implemented an ISO/IEC 42001-aligned AI management system. Nine AI patent filings, two granted." },
+  { area: 'Financial oversight', evidence: 'As Treasurer, prepared, presented and managed a $2 million operating budget, oversaw reserve-funded capital projects, and negotiated six-figure contracts at an average 11% saving.' },
+  { area: 'Capital raising and growth', evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through CedarPeak, Angel One, Sand Hill Angels and N49P." },
+  { area: 'Risk, regulation and compliance', evidence: 'AI products in regulated industries: audit at Caseware, legal at Clio. Led AODA and WCAG compliance work at several companies.' },
+  { area: 'Building companies', evidence: 'Founded Epilogue, which builds its own AI products; two have been built and sold. Advised SalesBop through its acquisition.' },
+  { area: 'People and change', evidence: 'Built and led a 60-person global product team across five product lines. Mentor to founders at DMZ and The Forge.' },
+  { area: 'Fundraising and community', evidence: "Built the plan, goals and budget for MCRC's fundraising campaign. Founded Milton Innovation." },
+];
+
+const strengths = [
+  {
+    title: 'Capital projects and financial oversight',
+    detail: 'As a condominium Treasurer, I oversaw a reserve-funded parking garage rebuild and a $2 million operating budget.',
+  },
+  {
+    title: 'Fundraising and community',
+    detail: "I built the plan, goals and budget for a nonprofit fundraising campaign. I cultivate donors and open doors across Milton and Halton.",
+  },
+  {
+    title: 'Technology and AI governance',
+    detail: "I've set company-wide AI strategy and governance with executive leadership, and implemented an AI management system aligned with ISO/IEC 42001.",
+  },
+  {
+    title: 'Accessibility',
+    detail: "I've led AODA and WCAG compliance work at several companies.",
+  },
+  {
+    title: 'Change management',
+    detail: "I've led product organizations through rapid growth. That included taking a 60-person team through a US$150 million Series B.",
+  },
+  {
+    title: 'Regulated industries',
+    detail: "I've built AI products for industries with strict rules: audit software at Caseware and legal software at Clio.",
+  },
+];
+
+const advisory = [
+  {
+    org: 'DMZ',
+    role: 'Expert-in-Residence, Artificial Intelligence',
+    dates: { from: 'Jan 2025', fromIso: '2025-01' },
+    detail: 'I advise startup founders on AI systems and strategy.',
+  },
+  {
+    org: 'The Forge, McMaster University',
+    role: 'Lead Mentor',
+    dates: { from: 'Jan 2024', fromIso: '2024-01' },
+    detail: "I mentor early-stage founders. Portfolio companies have raised more than $20 million.",
+  },
+];
+
+const community = [
+  'Founder of Milton Innovation, a community that has brought together technology people from across Halton.',
+  "Animal welfare: I'm a donor to Happy's Place (a senior dog rescue), Yamnuska Wolfdog Sanctuary and OVC Pet Trust.",
+  "For more than fifteen years, I've asked family and friends to donate to charity instead of buying me gifts, including SickKids and local charities.",
+  'I organize a trading-card giveaway for kids in Milton.',
+  'Member of the Milton Chamber of Commerce, through Epilogue.',
+];
+
+const affiliations = [
+  { name: 'Clio', what: 'Staff Product Manager' },
+  { name: 'Epilogue', what: 'Founder & Principal, an AI consulting and product studio' },
+  { name: 'CedarPeak Ventures', what: 'angel investing' },
+  { name: 'Of Record', what: 'an Epilogue venture that publishes Ontario municipal council decisions from public records' },
+];
+
+const personId = `${site.url}/#person`;
+---
+
+<Layout
+  card="boards"
+  title="Mike Shoss — Board Director"
+  description="Mike Shoss is a board director and technology executive in Milton, Ontario: Treasurer experience with budgets and capital projects, nonprofit fundraising, and AI governance in regulated industries."
+  breadcrumbs={[{ name: 'Boards', href: '/boards' }]}
+  schema={[
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: site.name,
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: 'Board Director',
+        occupationLocation: { '@type': 'City', name: 'Milton, Ontario' },
+      },
+      memberOf: [
+        {
+          '@type': 'OrganizationRole',
+          roleName: 'Director; Chair, Business Development Committee',
+          startDate: '2024-11',
+          memberOf: { '@type': 'NGO', name: 'Milton Community Resource Centre' },
+        },
+        {
+          '@type': 'OrganizationRole',
+          roleName: 'Director and Treasurer',
+          startDate: '2015-04',
+          endDate: '2019-07',
+          memberOf: { '@type': 'Organization', name: 'Peel Standard Condominium Corporation 910' },
+        },
+      ],
+    },
+  ]}
+>
+  <!-- 1. Intro -->
+  <section class="page pt-14 md:pt-20 pb-12 md:pb-16" aria-labelledby="boards-title">
+    <p class="eyebrow">Board profile · <b>Milton, Ontario</b></p>
+    <h1 id="boards-title" class="display text-display-lg md:text-display-xl mt-10 max-w-[18ch]">Mike Shoss, board <em>director</em>.</h1>
+    <div class="mt-8 max-w-prose space-y-4 text-lg text-bone-dim leading-relaxed">
+      <p>I'm a board director and technology executive based in Milton, Ontario.</p>
+      <p>
+        As a Treasurer, I've worked through budgets and building projects, and I've done the hands-on side of
+        fundraising. My career has been about guiding software companies through growth and change, including AI
+        strategy and governance in regulated industries.
+      </p>
+    </div>
+    <div class="mt-12 grid md:grid-cols-12 gap-6 md:gap-8 items-stretch">
+      <div class="md:col-span-4">
+        <h2 class="eyebrow">Board bio</h2>
+        <p class="mt-4 text-bone-dim leading-relaxed">
+          The same record in two versions, each two pages, as PDF. Or
+          <a href="/contact" class="link">get in touch through my contact page</a>.
+        </p>
+      </div>
+      <ul class="md:col-span-8 grid sm:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        {resumeVersions.map((r) => (
+          <li class="flex">
+            <a href={r.href} type="application/pdf" download class="group bg-ink hover:bg-ink-50 transition-colors p-6 md:p-7 flex flex-col w-full">
+              <span class="display text-xl group-hover:text-accent-dim transition-colors">{r.title}<span class="sr-only">: download the board bio (PDF)</span></span>
+              <span class="mt-2 text-sm text-bone-dim leading-relaxed">{r.note}</span>
+              <span class="mt-auto pt-6 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted group-hover:text-bone transition-colors" aria-hidden="true">Download ↓</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. What I bring -->
+  <section class="section pt-0 md:pt-0" aria-labelledby="bring">
+    <div class="rule pt-6"><p class="eyebrow"><b>01</b> · What I bring</p><h2 id="bring" class="display text-display-md mt-4">What I can bring to your board.</h2></div>
+    <ul class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+      {strengths.map((s) => (
+        <li class="bg-ink p-6 md:p-7">
+          <h3 class="display text-xl">{s.title}</h3>
+          <p class="text-bone-dim leading-relaxed mt-3">{s.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- 3. Board experience (board seats only) -->
+  <section class="section pt-0 md:pt-0" aria-labelledby="board-experience">
+    <div class="rule pt-6"><p class="eyebrow"><b>02</b> · Board experience</p><h2 id="board-experience" class="display text-display-md mt-4">Where I've served as a director.</h2></div>
+    <div class="mt-8 ruled">
+      <article class="py-8 grid md:grid-cols-12 gap-x-8 gap-y-4">
+        <div class="md:col-span-5">
+          <h3 class="display text-display-sm">Milton Community Resource Centre</h3>
+          <p class="mt-2 text-bone">Director; Chair, Business Development Committee</p>
+          <p class="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+            <time datetime="2024-11">Nov 2024</time> – present
+          </p>
+        </div>
+        <ul class="md:col-span-7 space-y-3 text-bone-dim leading-relaxed list-disc pl-5 marker:text-muted">
+          <li>I put together the plan, goals and budget for MCRC's upcoming fundraising campaign.</li>
+          <li>I cultivate and collect donations, and introduce community and business supporters from my network.</li>
+        </ul>
+      </article>
+
+      <article class="py-8 grid md:grid-cols-12 gap-x-8 gap-y-4">
+        <div class="md:col-span-5">
+          <h3 class="display text-display-sm">Peel Standard Condominium Corporation 910</h3>
+          <p class="mt-2 text-bone">Director and Treasurer</p>
+          <p class="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+            <time datetime="2015-04">Apr 2015</time> – <time datetime="2019-07">Jul 2019</time>
+          </p>
+        </div>
+        <ul class="md:col-span-7 space-y-3 text-bone-dim leading-relaxed list-disc pl-5 marker:text-muted">
+          <li>
+            Oversaw a parking garage rebuild. I got the original builder to cover part of the cost, funded the rest
+            from the reserve fund, and managed the work on the owners' side.
+          </li>
+          <li>Oversaw further reserve-funded upgrades: exterior improvements, flooring and interiors, and an LED lighting retrofit.</li>
+          <li>Prepared, presented and managed a $2 million operating budget for a community of more than 1,000 residents.</li>
+          <li>Negotiated six-figure contracts, saving an average of 11%.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. Advisory and mentoring (not board seats) -->
+  <section class="section pt-0 md:pt-0" aria-labelledby="advisory">
+    <div class="rule pt-6"><p class="eyebrow"><b>03</b> · Advisory and mentoring</p><h2 id="advisory" class="display text-display-md mt-4">Where I advise and mentor.</h2></div>
+    <ul class="mt-6 ruled">
+      {advisory.map((a) => (
+        <li class="py-6 grid md:grid-cols-12 gap-x-8 gap-y-2">
+          <div class="md:col-span-5">
+            <h3 class="display text-xl">{a.org}</h3>
+            <p class="mt-1 text-bone">{a.role}</p>
+            <p class="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+              <time datetime={a.dates.fromIso}>{a.dates.from}</time> – present
+            </p>
+          </div>
+          <p class="md:col-span-7 text-bone-dim leading-relaxed">{a.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Skills matrix -->
+  <section class="section pt-0 md:pt-0" aria-labelledby="skills">
+    <div class="rule pt-6"><p class="eyebrow"><b>04</b> · Skills matrix</p><h2 id="skills" class="display text-display-md mt-4">Board skills, with evidence.</h2></div>
+    <table class="mt-8 w-full text-left border-t border-line">
+      <caption class="sr-only">Board skills matrix: each skill area and the evidence for it</caption>
+      <thead class="sr-only">
+        <tr><th scope="col">Skill area</th><th scope="col">Evidence</th></tr>
+      </thead>
+      <tbody>
+        {matrix.map((m) => (
+          <tr class="border-b border-line block md:table-row py-5 md:py-0">
+            <th scope="row" class="block md:table-cell md:w-[32%] md:py-5 md:pr-8 align-top font-medium text-bone">{m.area}</th>
+            <td class="block md:table-cell md:py-5 mt-2 md:mt-0 align-top text-bone-dim leading-relaxed">{m.evidence}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. Community -->
+  <section class="section pt-0 md:pt-0" aria-labelledby="community">
+    <div class="grid md:grid-cols-12 gap-8 rule pt-6">
+      <div class="md:col-span-5"><p class="eyebrow"><b>05</b> · Community</p><h2 id="community" class="display text-display-md mt-4">Where I give my time.</h2></div>
+      <ul class="md:col-span-7 ruled">
+        {community.map((c) => (
+          <li class="py-4 text-bone-dim leading-relaxed">{c}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 and 7. How I work, what I'm looking for -->
+  <section class="section pt-0 md:pt-0">
+    <div class="grid md:grid-cols-2 gap-x-8 gap-y-14">
+      <div class="rule pt-6">
+        <div><p class="eyebrow"><b>06</b> · Approach</p><h2 id="how-i-work" class="display text-display-md mt-4">How I work on a board.</h2></div>
+        <p class="mt-5 text-lg text-bone-dim leading-relaxed">
+          I try to ask the hard question early, and kindly. Once the board makes its decision, I'm fully behind it.
+          On projects, my job is to make sure everyone at the table sees the honest status, not the hopeful one.
+        </p>
+      </div>
+      <div class="rule pt-6">
+        <div><p class="eyebrow"><b>07</b> · Next</p><h2 id="looking-for" class="display text-display-md mt-4">What I'm looking for.</h2></div>
+        <p class="mt-5 text-lg text-bone-dim leading-relaxed">
+          My next step is an independent director seat on a growth-stage technology company, especially one
+          building with AI or working in a regulated industry. I'll keep serving nonprofits too, in community services
+          and animal welfare. I'm based in Milton and serve Halton and the GTA. I don't take on anything I can't go all
+          in on, so I keep my board count small.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Affiliations and interests -->
+  <section class="section pt-0 md:pt-0" aria-labelledby="affiliations">
+    <div class="grid md:grid-cols-12 gap-8 rule pt-6">
+      <div class="md:col-span-5">
+        <div><p class="eyebrow"><b>08</b> · Affiliations</p><h2 id="affiliations" class="display text-display-md mt-4">Declared up front.</h2></div>
+        <p class="mt-5 text-bone-dim leading-relaxed">In the interest of transparency, my current affiliations:</p>
+      </div>
+      <div class="md:col-span-7">
+        <ul class="ruled">
+          {affiliations.map((a) => (
+            <li class="py-4 leading-relaxed"><span class="text-bone font-medium">{a.name}</span> <span class="text-bone-dim">— {a.what}</span></li>
+          ))}
+        </ul>
+        <p class="mt-6 text-bone-dim leading-relaxed">I declare these to any board I serve on and recuse myself where appropriate.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Contact -->
+  <section class="page pb-20" aria-labelledby="boards-contact">
+    <h2 id="boards-contact" class="sr-only">Contact</h2>
+    <p class="rule pt-6 text-lg text-bone-dim leading-relaxed">
+      <a href="/contact" class="link">Get in touch through my contact page</a>, or download my board bio for <a href={resumes.company} class="link" type="application/pdf">company boards<span class="sr-only"> (PDF)</span></a>
+      or <a href={resumes.nonprofit} class="link" type="application/pdf">nonprofit boards<span class="sr-only"> (PDF)</span></a>.
+    </p>
+  </section>
+</Layout>

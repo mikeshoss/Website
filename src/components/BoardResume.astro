@@ -1,0 +1,235 @@
+---
+/**
+ * The board resume, in two versions from one set of facts:
+ *   nonprofit: Mike's own nonprofit board resume (2026-11-10), refined and made
+ *              general (it was written for one application)
+ *   company:   the same facts reordered for independent director seats
+ *
+ * Rendered at /boards/resume/<variant>/ and printed to
+ * public/files/mike-shoss-board-resume-<variant>.pdf by `npm run resumes`.
+ * No phone number or personal email: contact goes through mikeshoss.com/contact.
+ * Board seats and advisory roles are kept apart, as on /boards.
+ */
+import '../styles/global.css';
+
+interface Props { variant: 'company' | 'nonprofit' }
+const { variant } = Astro.props;
+const company = variant === 'company';
+
+type Entry = { org: string; role: string; dates: string; points: string[] };
+
+const profile = company
+  ? "Technology executive and board director in Milton. I've set company-wide AI strategy and governance in regulated industries, helped take a company through a US$150 million Series B, and served as a Treasurer responsible for budgets, reserve funds and capital projects. I'm looking for an independent director seat on a growth-stage technology company."
+  : "Board director and technology executive in Milton. I pair a Treasurer's experience with budgets and building projects with a career spent guiding software companies through rapid growth and change.";
+
+const skills = company
+  ? ['technology and AI governance', 'financial oversight', 'capital raising and growth', 'risk and regulated industries', 'capital projects and reserve funds', 'change management', 'accessibility (AODA and WCAG)']
+  : ['capital projects and reserve funds', 'fundraising and campaign planning', 'financial oversight', 'technology and AI governance', 'accessibility (AODA)', 'change management', 'community relations across Milton and Halton'];
+
+const boards: Entry[] = [
+  {
+    org: 'Milton Community Resource Centre',
+    role: 'Director; Chair, Business Development Committee',
+    dates: 'Nov 2024 – Present',
+    points: [
+      "Put together the plan, goals and budget for MCRC's upcoming fundraising campaign.",
+      'Cultivate and collect donations, and introduce community and business supporters from my network.',
+    ],
+  },
+  {
+    org: 'Peel Standard Condominium Corporation 910',
+    role: 'Director and Treasurer',
+    dates: 'Apr 2015 – Jul 2019',
+    points: [
+      'Oversaw a parking garage rebuild: got the original builder to cover part of the cost, funded the rest from the reserve fund, and managed the work on the owners’ side.',
+      'Oversaw further reserve-funded upgrades, including exterior improvements, flooring and interiors, and an LED lighting retrofit.',
+      'Prepared, presented and managed a $2 million operating budget for a community of more than 1,000 residents.',
+      'Negotiated six-figure contracts, saving an average of 11%, and advised the board on strategic and operational planning.',
+    ],
+  },
+];
+
+const community = [
+  ['Founder, Milton Innovation', 'a community that has brought together technology people from across Halton.'],
+  ['Animal welfare', 'donor to Happy’s Place (senior dog rescue), Yamnuska Wolfdog Sanctuary and OVC Pet Trust.'],
+  ['Giving', 'for more than fifteen years, I’ve asked family and friends to donate to charity instead of buying me gifts, including SickKids and local charities.'],
+  ['Organizer', 'Milton trading-card giveaway for local kids.'],
+  ['Member', 'Milton Chamber of Commerce, through Epilogue.'],
+];
+
+const advisory: Entry[] = [
+  { org: 'DMZ', role: 'Expert-in-Residence, Artificial Intelligence', dates: 'Jan 2025 – Present', points: ['Advise startup founders on AI systems and strategy.'] },
+  { org: 'The Forge, McMaster University', role: 'Lead Mentor', dates: 'Jan 2024 – Present', points: ['Mentor early-stage founders; portfolio companies have raised more than $20 million.'] },
+  ...(company
+    ? [{ org: 'Angel investing', role: 'Angel investor', dates: 'Feb 2021 – Present', points: ['Early-stage Canadian AI, science and technology companies, through CedarPeak, Angel One, Sand Hill Angels and N49P.'] }]
+    : []),
+];
+
+const caseware: Entry = {
+  org: 'Caseware',
+  role: 'Head of Studio & Principal Product Manager, AI · audit and accounting software',
+  dates: 'Jun 2025 – Jul 2026',
+  points: [
+    'Worked with the heads of product and technology to set company-wide AI strategy and governance, securing multi-year funding and executive support.',
+    'Implemented an ISO/IEC 42001-aligned AI management system, with controls built into how products are released.',
+    'Founded Caseware Studio and led a company-wide AI rollout that cut the time teams needed to ship work by 80%.',
+    ...(company ? ['Built and launched the Document Intelligence Agent (Verity Docs): 75% time savings against a 50% target, 97% extraction accuracy.'] : []),
+  ],
+};
+const firework: Entry = {
+  org: 'Firework',
+  role: 'Senior Product Manager, then Director of Product Management (Feb 2022 – Sep 2023) · video commerce',
+  dates: 'Feb 2021 – Sep 2023',
+  points: company
+    ? [
+        'Shaped the product strategy and investment case behind a US$150 million Series B led by SoftBank, and briefed executives and the board regularly.',
+        'Grew and led a 60-person global team across five product lines.',
+      ]
+    : [
+        'Grew and led a 60-person global team across five product lines.',
+        'Shaped the product strategy and investment case behind a US$150 million Series B led by SoftBank, and briefed executives and the board regularly.',
+      ],
+};
+const epilogue: Entry = {
+  org: 'Epilogue',
+  role: 'Founder & Principal · AI consulting and product studio',
+  dates: 'Nov 2023 – Present',
+  points: company
+    ? [
+        "Advise executive teams on AI and product strategy; supported one client's leadership through a seven-figure acquisition.",
+        'The studio builds its own AI products; two have been built and sold.',
+      ]
+    : ["Advise executive teams on AI and product strategy; supported one client's leadership through a seven-figure acquisition."],
+};
+const clio: Entry = {
+  org: 'Clio',
+  role: 'Staff Product Manager · legal technology',
+  dates: 'Aug 2026 – Present',
+  points: ['Product strategy for Vincent, Clio’s enterprise legal AI platform.'],
+};
+const facilityos: Entry = {
+  org: 'FacilityOS',
+  role: 'Senior Product Manager, New Ventures · facility management software',
+  dates: 'Apr 2024 – May 2025',
+  points: ['Took ContractorOS, a new compliance marketplace, from idea to launch; 90% customer retention.'],
+};
+// Nonprofit keeps Mike's order (newest first); company leads with the governance and capital stories.
+const career = company ? [caseware, firework, epilogue, clio, facilityos] : [clio, caseware, epilogue, facilityos, firework];
+const earlier = 'product roles at VerticalScope, GryphTech and Rogers Communications.';
+
+const recognition = [
+  'Named inventor on nine US patent filings; two granted (US 12,393,975 and US 12,184,947).',
+  'Ontario College Advanced Diploma, Computer Systems Technology (Software Development & Network Engineering, Mobile) — Sheridan College',
+  'Certificate, Software Product Management — Product School',
+];
+
+const affiliations = 'Clio · Epilogue (founder) · CedarPeak Ventures (angel investing) · Of Record (an Epilogue venture). I declare these to any board I serve on and recuse myself where appropriate.';
+
+const title = `Mike Shoss — Board bio (${company ? 'company boards' : 'nonprofit boards'})`;
+---
+
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="resume bg-white text-[#1b1a18]">
+    <main class="mx-auto max-w-[7.5in] px-6 py-10 print:p-0">
+      <header class="border-b border-[#1b1a18] pb-3">
+        <h1 class="display text-[26pt] leading-none">Mike Shoss</h1>
+        <p class="mt-2 text-[10.5pt]">Board director · Milton, Ontario</p>
+        <p class="mt-1 text-[9.5pt] text-[#4a4741]">
+          <a href="https://mikeshoss.com/contact">mikeshoss.com/contact</a> · <a href="https://mikeshoss.com/boards">mikeshoss.com/boards</a> · <a href="https://www.linkedin.com/in/mikeshoss">linkedin.com/in/mikeshoss</a>
+        </p>
+      </header>
+
+      <h2>Profile</h2>
+      <p class="mt-2">{profile}</p>
+      <p class="mt-2"><b>Board skills:</b> {skills.join(' · ')}</p>
+
+      <h2>Board experience</h2>
+      {boards.map((e) => (
+        <section class="entry">
+          <div class="entry-head"><h3>{e.org}</h3><span>{e.dates}</span></div>
+          <p class="role">{e.role}</p>
+          <ul class="bullets">{e.points.map((p) => <li>{p}</li>)}</ul>
+        </section>
+      ))}
+
+      {!company && (
+        <>
+          <h2>Community and giving</h2>
+          <ul class="bullets">{community.map(([k, v]) => <li><b>{k}:</b> {v}</li>)}</ul>
+        </>
+      )}
+
+      {company && (
+        <>
+          <h2>Professional experience</h2>
+          {career.map((e) => (
+            <section class="entry">
+              <div class="entry-head"><h3>{e.org}</h3><span>{e.dates}</span></div>
+              <p class="role">{e.role}</p>
+              <ul class="bullets">{e.points.map((p) => <li>{p}</li>)}</ul>
+            </section>
+          ))}
+          <p class="mt-2"><b>Earlier:</b> {earlier}</p>
+        </>
+      )}
+
+      <h2>{company ? 'Advisory, mentoring and investing' : 'Advisory and mentoring'}</h2>
+      {advisory.map((e) => (
+        <section class="entry">
+          <div class="entry-head"><h3>{e.org}</h3><span>{e.dates}</span></div>
+          <p class="role">{e.role}</p>
+          <ul class="bullets">{e.points.map((p) => <li>{p}</li>)}</ul>
+        </section>
+      ))}
+
+      {!company && (
+        <>
+          <h2>Professional experience</h2>
+          {career.map((e) => (
+            <section class="entry">
+              <div class="entry-head"><h3>{e.org}</h3><span>{e.dates}</span></div>
+              <p class="role">{e.role}</p>
+              <ul class="bullets">{e.points.map((p) => <li>{p}</li>)}</ul>
+            </section>
+          ))}
+          <p class="mt-2"><b>Earlier:</b> {earlier}</p>
+        </>
+      )}
+
+      <h2>Recognition and education</h2>
+      <ul class="bullets">{recognition.map((r) => <li>{r}</li>)}</ul>
+
+      <h2>Affiliations</h2>
+      <p class="mt-2">{affiliations}</p>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  .resume { font-size: 10pt; line-height: 1.45; }
+  .resume a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  .resume h2 {
+    margin-top: 1.05rem; padding-bottom: 0.2rem; border-bottom: 1px solid #c9c4ba;
+    font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 8.5pt;
+    text-transform: uppercase; letter-spacing: 0.14em; color: #1b1a18;
+    break-after: avoid;
+  }
+  .resume h3 { font-weight: 600; font-size: 10.5pt; }
+  .resume .entry { margin-top: 0.55rem; break-inside: avoid; }
+  .resume .entry-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 1rem; align-items: baseline; }
+  .resume .entry-head span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 8.5pt; color: #4a4741; }
+  .resume .role { color: #4a4741; }
+  .resume .bullets { margin-top: 0.3rem; padding-left: 1.1rem; list-style: disc; }
+  .resume .bullets li { margin-top: 0.18rem; }
+  .resume .bullets li::marker { color: #8a857c; }
+  @page { size: Letter; margin: 0.55in 0.6in; }
+  @media print { .resume { font-size: 9.5pt; } }
+</style>

@@ -437,7 +437,7 @@ export const machineRoom = [
 /** Who Mike is, in his own words (from the 2026-11 brief). */
 export const about = [
   "I'm the first one in. I work hard, I look further out than is comfortable, and I care about the work and the people doing it.",
-  "That's why I sit on boards and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
+  "That's why I serve on the board of the Milton Community Resource Centre and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
   "People who've worked with me will tell you I'm a pain in the ass. They'll also tell you they'd follow me to the next thing, because they trust my judgment.",
 ];
 
@@ -1243,16 +1243,16 @@ const volunteeringData: VolunteerRole[] = [
     category: "mentoring",
   },
   {
-    title: "Board Member & Chair, Business Development Committee",
+    title: "Director & Chair, Business Development Committee",
     organization: "Milton Community Resource Centre (MCRC)",
     start: "2024-11",
     description:
-      "MCRC is a not-for-profit, multi-service and multi-site organization serving children and families in Milton and the surrounding communities, alongside professionals working in Early Childhood Education. Advising on funding strategy, government partnerships, and operational improvements for a nonprofit serving 1,000+ families; supporting financial planning and grant applications for long-term sustainability; helping the organization navigate technology and AI adoption; and engaging policymakers and community leaders to expand impact across the Milton region.",
+      "MCRC is a not-for-profit, multi-service and multi-site organization serving children and families in Milton and the surrounding communities, alongside professionals working in Early Childhood Education. On the board of directors and the lead for business development: funding strategy, government partnerships, and operational improvements for a nonprofit serving 1,000+ families; supporting financial planning and grant applications for long-term sustainability; helping the organization navigate technology and AI adoption; and engaging policymakers and community leaders to expand impact across the Milton region.",
     category: "governance",
     timeline: [
-      { role: "Chair, Business Development Committee", start: "2026-08" },
+      { role: "Director; Chair, Business Development Committee", start: "2026-08" },
       {
-        role: "Member, Business Development Committee",
+        role: "Director; Member, Business Development Committee",
         start: "2024-11",
         end: "2026-08",
       },
@@ -1269,7 +1269,8 @@ const volunteeringData: VolunteerRole[] = [
   {
     title: "Lead Mentor — Artificial Intelligence & Product Management",
     organization: "The Forge McMaster",
-    start: "2025-04",
+    // Mike, 2026-11-10: "should be Jan 2024", he's double-checking.
+    start: "2024-01",
     description:
       "Mentoring early-stage founders at McMaster University's business incubator in Hamilton, ON on AI productization, business model optimization, GTM execution, and fundraising strategy.",
     category: "mentoring",
@@ -1363,9 +1364,8 @@ export interface Education {
 export const education: Education[] = [
   {
     institution: "Sheridan College",
-    credential: "Ontario College Advanced Diploma, Computer Systems Technology",
-    detail:
-      "Software Development and Network Engineering Co-op — Mobile Stream",
+    credential: "Ontario College Advanced Diploma, Computer Systems Technology — Software Development & Network Engineering — Mobile",
+    detail: "Co-op program",
   },
   {
     institution: "Product School",

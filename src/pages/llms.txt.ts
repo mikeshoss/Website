@@ -67,6 +67,7 @@ This site publishes its content as JSON and over MCP.
 - MCP server: ${site.url}/mcp
 - Brand guidelines and press kit: ${site.url}/brand/
 - Accessibility statement (WCAG 2.2 AA): ${site.url}/accessibility/
+- Board profile (board seats, advisory roles, affiliations): ${site.url}/boards/
 
 ## Ventures
 ${companies

@@ -142,6 +142,12 @@ const TARGETS = [
     sub: 'What is measured, what is not yet, and how to tell me.',
     path: '/accessibility',
   }),
+  card('public/og/boards.png', {
+    eyebrow: 'Board profile · Milton, Ontario',
+    title: 'Mike Shoss, board *director*.',
+    sub: 'What I bring to a board, what I have governed, and how to reach me.',
+    path: '/boards',
+  }),
   card('public/og/contact.png', {
     eyebrow: 'Contact',
     title: "Let's make a *hit*.",
