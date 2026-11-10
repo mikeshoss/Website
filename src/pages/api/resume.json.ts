@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import {
   awards,
+  board,
   causes,
   cardSets,
   magic,
@@ -49,6 +50,7 @@ export const GET: APIRoute = () =>
       awards,
       publications,
       volunteering,
+      board: { ...board, bio: board.bio.map((b) => ({ ...b, url: `${site.url}${b.url}` })) },
       organizations,
       recommendations,
       languages,

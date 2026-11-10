@@ -1259,6 +1259,15 @@ const volunteeringData: VolunteerRole[] = [
     ],
   },
   {
+    title: "Director and Treasurer",
+    organization: "Peel Standard Condominium Corporation 910",
+    start: "2015-04",
+    end: "2019-07",
+    description:
+      "On the board of a condominium community of more than 1,000 residents, as Treasurer. Oversaw a parking garage rebuild: got the original builder to cover part of the cost, funded the rest from the reserve fund, and managed the work on the owners' side. Oversaw further reserve-funded upgrades, including exterior improvements, flooring and interiors, and an LED lighting retrofit. Prepared, presented and managed a $2 million operating budget, and negotiated six-figure contracts at an average saving of 11%.",
+    category: "governance",
+  },
+  {
     title: "Member & Lead, Meshtastic / LoRa Mesh Working Group",
     organization: "Burlington Amateur Radio Club (BARC)",
     start: "2025-09",
@@ -1832,3 +1841,104 @@ export const slabs: Slab[] = [
 ];
 
 export const organizations = withPeriod(organizationsData);
+
+/* -------------------------------------------------------------------------- *
+ * Board profile
+ *
+ * The one source for /boards, /api/board.json, the MCP get_board_profile tool,
+ * llms.txt and the ⌘K menu. For nominations committees, board chairs and
+ * search firms.
+ *
+ * Accuracy rules (Mike, 2026-11-10): only the facts he supplied. Board seats
+ * and advisory roles are kept apart: only MCRC and PSCC 910 are board seats;
+ * DMZ and The Forge are advisory and never go under board seats. No personal
+ * email: contact goes through /contact. Never publish how many boards he has
+ * applied to.
+ * -------------------------------------------------------------------------- */
+
+export interface BoardSeat {
+  organization: string;
+  role: string;
+  start: string;
+  end?: string;
+  /** Short display dates, e.g. "Nov 2024". */
+  from: string;
+  to?: string;
+  points: string[];
+}
+
+export const board = {
+  url: `${site.url}/boards/`,
+  summary:
+    "Board director and technology executive in Milton, Ontario. Treasurer experience with budgets and capital projects, hands-on nonprofit fundraising, and AI strategy and governance in regulated industries.",
+  bio: [
+    { audience: "company", title: "For company boards", note: "AI governance, regulated industries, growth and capital first.", url: "/files/mike-shoss-board-resume-company.pdf" },
+    { audience: "nonprofit", title: "For nonprofit boards", note: "Fundraising, community and financial oversight first.", url: "/files/mike-shoss-board-resume-nonprofit.pdf" },
+  ],
+  strengths: [
+    { title: "Capital projects and financial oversight", detail: "As a condominium Treasurer, I oversaw a reserve-funded parking garage rebuild and a $2 million operating budget." },
+    { title: "Fundraising and community", detail: "I built the plan, goals and budget for a nonprofit fundraising campaign. I cultivate donors and open doors across Milton and Halton." },
+    { title: "Technology and AI governance", detail: "I've set company-wide AI strategy and governance with executive leadership, and implemented an AI management system aligned with ISO/IEC 42001." },
+    { title: "Accessibility", detail: "I've led AODA and WCAG compliance work at several companies." },
+    { title: "Change management", detail: "I've led product organizations through rapid growth. That included taking a 60-person team through a US$150 million Series B." },
+    { title: "Regulated industries", detail: "I've built AI products for industries with strict rules: audit software at Caseware and legal software at Clio." },
+  ],
+  seats: [
+    {
+      organization: "Milton Community Resource Centre",
+      role: "Director; Chair, Business Development Committee",
+      start: "2024-11",
+      from: "Nov 2024",
+      points: [
+        "I put together the plan, goals and budget for MCRC's upcoming fundraising campaign.",
+        "I cultivate and collect donations, and introduce community and business supporters from my network.",
+      ],
+    },
+    {
+      organization: "Peel Standard Condominium Corporation 910",
+      role: "Director and Treasurer",
+      start: "2015-04",
+      end: "2019-07",
+      from: "Apr 2015",
+      to: "Jul 2019",
+      points: [
+        "Oversaw a parking garage rebuild. I got the original builder to cover part of the cost, funded the rest from the reserve fund, and managed the work on the owners' side.",
+        "Oversaw further reserve-funded upgrades: exterior improvements, flooring and interiors, and an LED lighting retrofit.",
+        "Prepared, presented and managed a $2 million operating budget for a community of more than 1,000 residents.",
+        "Negotiated six-figure contracts, saving an average of 11%.",
+      ],
+    },
+  ] as BoardSeat[],
+  advisory: [
+    { organization: "DMZ", role: "Expert-in-Residence, Artificial Intelligence", start: "2025-01", from: "Jan 2025", detail: "I advise startup founders on AI systems and strategy." },
+    { organization: "The Forge, McMaster University", role: "Lead Mentor", start: "2024-01", from: "Jan 2024", detail: "I mentor early-stage founders. Portfolio companies have raised more than $20 million." },
+  ],
+  skillsMatrix: [
+    { area: "AI and technology governance", evidence: "Defined Caseware's company-wide AI strategy and governance model with the CPO and CTO. Implemented an ISO/IEC 42001-aligned AI management system. Nine AI patent filings, two granted." },
+    { area: "Financial oversight", evidence: "As Treasurer, prepared, presented and managed a $2 million operating budget, oversaw reserve-funded capital projects, and negotiated six-figure contracts at an average 11% saving." },
+    { area: "Capital raising and growth", evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through CedarPeak, Angel One, Sand Hill Angels and N49P." },
+    { area: "Risk, regulation and compliance", evidence: "AI products in regulated industries: audit at Caseware, legal at Clio. Led AODA and WCAG compliance work at several companies." },
+    { area: "Building companies", evidence: "Founded Epilogue, which builds its own AI products; two have been built and sold. Advised SalesBop through its acquisition." },
+    { area: "People and change", evidence: "Built and led a 60-person global product team across five product lines. Mentor to founders at DMZ and The Forge." },
+    { area: "Fundraising and community", evidence: "Built the plan, goals and budget for MCRC's fundraising campaign. Founded Milton Innovation." },
+  ],
+  community: [
+    "Founder of Milton Innovation, a community that has brought together technology people from across Halton.",
+    "Animal welfare: I'm a donor to Happy's Place (a senior dog rescue), Yamnuska Wolfdog Sanctuary and OVC Pet Trust.",
+    "For more than fifteen years, I've asked family and friends to donate to charity instead of buying me gifts, including SickKids and local charities.",
+    "I organize a trading-card giveaway for kids in Milton.",
+    "Member of the Milton Chamber of Commerce, through Epilogue.",
+  ],
+  approach:
+    "I try to ask the hard question early, and kindly. Once the board makes its decision, I'm fully behind it. On projects, my job is to make sure everyone at the table sees the honest status, not the hopeful one.",
+  lookingFor:
+    "My next step is an independent director seat on a growth-stage technology company, especially one building with AI or working in a regulated industry. I'll keep serving nonprofits too, in community services and animal welfare. I'm based in Milton and serve Halton and the GTA. I don't take on anything I can't go all in on, so I keep my board count small.",
+  affiliations: [
+    { name: "Clio", what: "Staff Product Manager" },
+    { name: "Epilogue", what: "Founder & Principal, an AI consulting and product studio" },
+    { name: "CedarPeak Ventures", what: "angel investing" },
+    { name: "Of Record", what: "an Epilogue venture that publishes Ontario municipal council decisions from public records" },
+  ],
+  declaration: "I declare these to any board I serve on and recuse myself where appropriate.",
+  contact: `${site.url}/contact/`,
+};

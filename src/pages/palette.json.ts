@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { companies, interests, site } from "../data/content";
+import { board, companies, interests, site } from "../data/content";
 import { glossary } from "../data/glossary";
 import { endpoints } from "../lib/apiDocs";
 
@@ -23,7 +23,7 @@ const pages: Item[] = [
   { t: "Ventures", u: "/companies/", k: "companies businesses" },
   { t: "Projects", u: "/projects/", k: "builds products" },
   { t: "Experience", u: "/experience/", k: "career resume cv jobs" },
-  { t: "Boards", u: "/boards/", k: "board director governance nonprofit treasurer mcrc nominations" },
+  { t: "Boards", u: "/boards/", k: "board director governance nonprofit treasurer mcrc pscc condo nominations independent director search firm bio" },
   { t: "Contact", u: "/contact/", k: "email reach hire talk" },
   { t: "Off the clock", u: "/off-the-clock/", k: "hobbies interests side b" },
   { t: "Glossary", u: "/glossary/", k: "ai terms definitions" },
@@ -59,6 +59,16 @@ const sections: Item[] = [
     ["Layout", "layout"], ["In use", "in-use"], ["Press kit", "downloads"],
   ].map(([t, id]) => ({ t, h: "Brand", u: `/brand/#${id}`, k: "brand" })),
   { t: "MCP server", h: "API", u: "/api/#mcp", k: "agents claude tools" },
+  ...[
+    ["What I bring", "bring", "strengths board"],
+    ["Board seats", "board-experience", "director mcrc milton community resource centre peel condominium pscc 910 treasurer"],
+    ["Advisory and mentoring", "advisory", "dmz forge mcmaster mentor"],
+    ["Board skills matrix", "skills", "evidence governance financial oversight risk"],
+    ["Community", "community", "giving milton innovation"],
+    ["How I work on a board", "how-i-work", "approach"],
+    ["What I'm looking for", "looking-for", "independent director seat next"],
+    ["Affiliations", "affiliations", "conflicts declared clio epilogue"],
+  ].map(([t, id, k]) => ({ t, h: "Boards", u: `/boards/#${id}`, k: `board ${k}` })),
 ].map((s) => ({ ...s, g: "Sections" }) as Item);
 
 const ventures: Item[] = companies.map((c) => ({ t: c.name, h: c.role ?? "Venture", g: "Ventures", u: `/companies/${c.slug}/`, k: c.tagline }));
@@ -69,6 +79,7 @@ const api: Item[] = [
   ...endpoints.map((e) => ({ t: e.title, h: e.path, g: "API", u: e.path, k: `endpoint json ${e.id}` })),
 ];
 const actions: Item[] = [
+  ...board.bio.map((b) => ({ t: `Board bio: ${b.title.toLowerCase()}`, h: "PDF", g: "Actions", u: b.url, k: `board resume cv download pdf ${b.audience}` })),
   { t: "Copy my email", h: site.email, g: "Actions", a: "copy", v: site.email, k: "mail contact" },
   { t: "Open LinkedIn", h: "↗", g: "Actions", u: site.linkedin, x: true, k: "message dm" },
   { t: "Open GitHub", h: "↗", g: "Actions", u: site.github, x: true, k: "code" },
@@ -95,7 +106,11 @@ const menu: Node[] = [
   { t: "Ventures", h: "Companies", c: [open("Ventures", "/companies/"), ...ventures.map(strip)] },
   { ...strip(page("Projects")) },
   { t: "Experience", h: "Tabs", c: [open("Experience", "/experience/"), ...sectionsOf("Experience")] },
-  { ...strip(page("Boards")) },
+  {
+    t: "Boards",
+    h: "Board profile",
+    c: [open("Boards", "/boards/"), ...sectionsOf("Boards"), ...actions.filter((a) => a.t.startsWith("Board bio")).map(strip)],
+  },
   {
     t: "Off the clock",
     h: "Channels",

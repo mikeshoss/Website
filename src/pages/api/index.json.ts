@@ -15,6 +15,7 @@ const SECTIONS = [
   "credits",
   "companies",
   "experience",
+  "board",
   "education",
   "projects",
   "patents",

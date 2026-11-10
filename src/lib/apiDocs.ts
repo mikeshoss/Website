@@ -54,6 +54,7 @@ export const endpoints: Endpoint[] = [
   e("glossary", "AI glossary", "Writing and reference", "collection", "Straight definitions of the AI terms people misuse, each with what it means in practice and a test for telling the difference."),
   e("publications", "Publications", "Writing and reference", "collection", "Articles and papers."),
   e("recommendations", "Recommendations", "Writing and reference", "collection", "What people Mike has worked with say about him."),
+  e("board", "Board profile", "Career", "object", "Board seats, advisory roles, a skills matrix with evidence, what Mike is looking for, declared affiliations and the two board bio PDFs. The data behind /boards."),
   e("volunteering", "Volunteering", "Personal", "collection", "Boards, mentoring and community roles."),
   e("organizations", "Organizations", "Personal", "collection", "Memberships and affiliations."),
   e("causes", "Where I give", "Personal", "collection", "The charities Mike gives to, with a link to donate."),

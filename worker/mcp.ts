@@ -80,6 +80,7 @@ const SECTION_NAMES = [
   "awards",
   "publications",
   "volunteering",
+  "board",
   "organizations",
   "recommendations",
   "languages",
@@ -217,6 +218,16 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
 
+  get_board_profile: {
+    description:
+      "Get Mike Shoss's board profile, for nominations committees, board chairs and search firms: his board seats (Milton Community Resource Centre; Peel Standard Condominium Corporation 910 as Treasurer), advisory roles (kept separate from board seats), a board skills matrix with evidence, what he brings, how he works on a board, the seat he's looking for next, declared affiliations, and links to his two board bio PDFs (company boards and nonprofit boards).",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    handler: (_args, resume) => {
+      if (!resume.board) throw new Error("Board profile not available.");
+      return resume.board;
+    },
+  },
+
   get_contact: {
     description:
       "Get Mike Shoss's contact details and public profile links (email, website, LinkedIn, GitHub, location). Use this when someone asks how to reach him.",
@@ -317,7 +328,7 @@ async function handle(
         capabilities: { tools: { listChanged: false } },
         serverInfo: SERVER_INFO,
         instructions:
-          "Structured resume and portfolio data for Mike Shoss. Start with get_resume for background questions, or search_experience to find specific roles and accomplishments.",
+          "Structured resume and portfolio data for Mike Shoss. Start with get_resume for background questions, search_experience to find specific roles and accomplishments, or get_board_profile for board and governance questions.",
       });
     }
 
