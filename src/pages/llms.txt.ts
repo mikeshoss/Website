@@ -3,6 +3,7 @@ import { glossary } from "../data/glossary";
 import { isActive } from "../lib/projects";
 import {
   site,
+  board,
   hero,
   yearsExperience,
   skills,
@@ -57,6 +58,24 @@ ${list([
   ...companies.map((company) => `${company.role} at ${company.name} (${company.period})`),
 ])}
 
+## Board profile
+${board.summary} Full profile: ${board.url}
+
+Board seats:
+${list(board.seats.map((s) => `${s.role}, ${s.organization} (${s.from} – ${s.to ?? "present"}). ${s.points.join(" ")}`))}
+
+Advisory and mentoring (not board seats):
+${list(board.advisory.map((a) => `${a.role}, ${a.organization} (${a.from} – present). ${a.detail}`))}
+
+Board skills, with evidence:
+${list(board.skillsMatrix.map((m) => `${m.area}: ${m.evidence}`))}
+
+Looking for: ${board.lookingFor}
+
+Declared affiliations: ${board.affiliations.map((a) => `${a.name} (${a.what})`).join("; ")}. ${board.declaration}
+
+Board bio (PDF): ${board.bio.map((b) => `${b.title.toLowerCase()} ${site.url}${b.url}`).join("; ")}. Contact: ${board.contact}
+
 ## Structured data
 This site publishes its content as JSON and over MCP.
 - JSON API docs: ${site.url}/api/
@@ -68,6 +87,7 @@ This site publishes its content as JSON and over MCP.
 - Brand guidelines and press kit: ${site.url}/brand/
 - Accessibility statement (WCAG 2.2 AA): ${site.url}/accessibility/
 - Board profile (board seats, advisory roles, affiliations): ${site.url}/boards/
+- Board profile as JSON: ${site.url}/api/board.json
 
 ## Ventures
 ${companies
