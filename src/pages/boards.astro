@@ -50,6 +50,10 @@ const strengths = [
     title: 'Change management',
     detail: "I've led product organizations through rapid growth. That included taking a 60-person team through a US$150 million Series B.",
   },
+  {
+    title: 'Regulated industries',
+    detail: "I've built AI products for industries with strict rules: audit software at Caseware and legal software at Clio.",
+  },
 ];
 
 const advisory = [
@@ -130,19 +134,27 @@ const personId = `${site.url}/#person`;
         strategy and governance in regulated industries.
       </p>
     </div>
-    <div class="mt-10 flex flex-wrap gap-3">
-      <a href={resumes.company} class="btn-primary" type="application/pdf">Download board resume, company boards (PDF)</a>
-      <a href={resumes.nonprofit} class="btn-quiet" type="application/pdf">Download board resume, nonprofit boards (PDF)</a>
-      <a href={`mailto:${email}`} class="btn-quiet">Email me<span class="sr-only"> at {email}</span></a>
+    <div class="mt-10 rounded-2xl border border-line p-6 md:p-8 grid md:grid-cols-12 gap-6 items-center">
+      <div class="md:col-span-6">
+        <h2 class="display text-xl">Board resume</h2>
+        <p class="mt-2 text-bone-dim leading-relaxed">
+          Two versions of the same record, one for company boards and one for nonprofit boards. Two pages each.
+        </p>
+      </div>
+      <div class="md:col-span-6 flex flex-wrap gap-3 md:justify-end">
+        <a href={resumes.company} class="btn-primary" type="application/pdf"><span class="sr-only">Download board resume for </span>Company boards (PDF)</a>
+        <a href={resumes.nonprofit} class="btn-quiet" type="application/pdf"><span class="sr-only">Download board resume for </span>Nonprofit boards (PDF)</a>
+      </div>
     </div>
+    <p class="mt-5 text-bone-dim">Or email me at <a href={`mailto:${email}`} class="link">{email}</a>.</p>
   </section>
 
   <!-- 2. What I bring -->
   <section class="section pt-0 md:pt-0" aria-labelledby="bring">
-    <h2 id="bring" class="display text-display-sm rule pt-6"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">01</span>What I bring to a board</h2>
+    <h2 id="bring" class="display text-display-sm rule pt-6"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">01</span>What I can bring to your board</h2>
     <ul class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {strengths.map((s) => (
-        <li class="bg-ink p-6 md:p-7 sm:last:odd:col-span-2 lg:last:odd:col-span-2">
+        <li class="bg-ink p-6 md:p-7">
           <h3 class="display text-xl">{s.title}</h3>
           <p class="text-bone-dim leading-relaxed mt-3">{s.detail}</p>
         </li>
