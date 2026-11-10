@@ -16,6 +16,11 @@ const resumes = {
   nonprofit: '/files/mike-shoss-board-resume-nonprofit.pdf',
 };
 
+const resumeVersions = [
+  { title: 'For company boards', note: 'AI governance, regulated industries, growth and capital first.', href: resumes.company },
+  { title: 'For nonprofit boards', note: 'Fundraising, community and financial oversight first.', href: resumes.nonprofit },
+];
+
 // The skills matrix nominations committees score candidates on, with evidence.
 // Every line is a fact from the board brief or the Experience data.
 const matrix = [
@@ -133,19 +138,26 @@ const personId = `${site.url}/#person`;
         strategy and governance in regulated industries.
       </p>
     </div>
-    <div class="mt-10 rounded-2xl border border-line p-6 md:p-8 grid md:grid-cols-12 gap-6 items-center">
-      <div class="md:col-span-6">
-        <h2 class="display text-xl">Board resume</h2>
-        <p class="mt-2 text-bone-dim leading-relaxed">
-          Two versions of the same record, one for company boards and one for nonprofit boards. Two pages each.
+    <div class="mt-12 grid md:grid-cols-12 gap-6 md:gap-8 items-stretch">
+      <div class="md:col-span-4">
+        <h2 class="eyebrow">Board resume</h2>
+        <p class="mt-4 text-bone-dim leading-relaxed">
+          The same record in two versions, each two pages, as PDF. Or
+          <a href="/contact" class="link">get in touch through my contact page</a>.
         </p>
       </div>
-      <div class="md:col-span-6 flex flex-wrap gap-3 md:justify-end">
-        <a href={resumes.company} class="btn-primary" type="application/pdf"><span class="sr-only">Download board resume for </span>Company boards (PDF)</a>
-        <a href={resumes.nonprofit} class="btn-quiet" type="application/pdf"><span class="sr-only">Download board resume for </span>Nonprofit boards (PDF)</a>
-      </div>
+      <ul class="md:col-span-8 grid sm:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        {resumeVersions.map((r) => (
+          <li class="flex">
+            <a href={r.href} type="application/pdf" download class="group bg-ink hover:bg-ink-50 transition-colors p-6 md:p-7 flex flex-col w-full">
+              <span class="display text-xl group-hover:text-accent-dim transition-colors">{r.title}<span class="sr-only">: download the board resume (PDF)</span></span>
+              <span class="mt-2 text-sm text-bone-dim leading-relaxed">{r.note}</span>
+              <span class="mt-auto pt-6 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted group-hover:text-bone transition-colors" aria-hidden="true">Download ↓</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
-    <p class="mt-5 text-bone-dim">Or <a href="/contact" class="link">get in touch through my contact page</a>.</p>
   </section>
 
   <!-- 2. What I bring -->
@@ -295,8 +307,8 @@ const personId = `${site.url}/#person`;
   <section class="page pb-20" aria-labelledby="boards-contact">
     <h2 id="boards-contact" class="sr-only">Contact</h2>
     <p class="rule pt-6 text-lg text-bone-dim leading-relaxed">
-      <a href="/contact" class="link">Get in touch through my contact page</a>, or download my board resume for <a href={resumes.company} class="link" type="application/pdf">company boards (PDF)</a>
-      or <a href={resumes.nonprofit} class="link" type="application/pdf">nonprofit boards (PDF)</a>.
+      <a href="/contact" class="link">Get in touch through my contact page</a>, or download my board resume for <a href={resumes.company} class="link" type="application/pdf">company boards<span class="sr-only"> (PDF)</span></a>
+      or <a href={resumes.nonprofit} class="link" type="application/pdf">nonprofit boards<span class="sr-only"> (PDF)</span></a>.
     </p>
   </section>
 </Layout>
