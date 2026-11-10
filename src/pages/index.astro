@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import ProducerTag from '../components/ProducerTag.astro';
 import Key from '../components/Key.astro';
+// The board line in `about` links to the board profile.
+const boardPhrase = 'the board of the Milton Community Resource Centre';
 import { site, hero, highlights, credits, calls, machineRoom, about, volunteering, interests, causes, studio } from '../data/content';
 import { formatDate } from '../lib/dates';
 import { withCampaign } from '../lib/links';
@@ -169,7 +171,14 @@ const givingBack = [
         <Sleeve class="w-[78%] sm:w-[60%] md:w-[88%]" />
       </div>
       <div class="md:col-span-6 md:col-start-7 space-y-5">
-        {about.map(paragraph => <p class="text-lg text-bone-dim leading-relaxed">{paragraph}</p>)}
+        {about.map(paragraph => {
+          const [before, after] = paragraph.split(boardPhrase);
+          return (
+            <p class="text-lg text-bone-dim leading-relaxed">
+              {after === undefined ? paragraph : <>{before}<a href="/boards" class="link">{boardPhrase}</a>{after}</>}
+            </p>
+          );
+        })}
 
         <div class="pt-6">
           <p class="eyebrow mb-3">Giving back</p>

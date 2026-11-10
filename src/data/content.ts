@@ -437,7 +437,7 @@ export const machineRoom = [
 /** Who Mike is, in his own words (from the 2026-11 brief). */
 export const about = [
   "I'm the first one in. I work hard, I look further out than is comfortable, and I care about the work and the people doing it.",
-  "That's why I sit on boards and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
+  "That's why I serve on the board of the Milton Community Resource Centre and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
   "People who've worked with me will tell you I'm a pain in the ass. They'll also tell you they'd follow me to the next thing, because they trust my judgment.",
 ];
 
