@@ -15,7 +15,8 @@ export default defineConfig({
     // produced it. Priority is a hint about relative importance within this
     // site only — the home page first, then the pages that carry the substance.
     sitemap({
-      filter: (page) => !page.includes('/blog'),
+      // The board resume pages exist to be printed to PDF; the PDFs are what get shared.
+      filter: (page) => !page.includes('/blog') && !page.includes('/boards/resume'),
       serialize(item) {
         // Slash-stripped only to classify the page; the emitted URL keeps its.
         const path = new URL(item.url).pathname.replace(/\/+$/, '') || '/';

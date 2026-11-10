@@ -1,0 +1,202 @@
+---
+/**
+ * The board resume, in two versions from one set of facts:
+ *   company:   independent director seats (AI governance, scale, money first)
+ *   nonprofit: community boards (fundraising, community, money first)
+ *
+ * Rendered at /boards/resume/<variant>/ and printed to
+ * public/files/mike-shoss-board-resume-<variant>.pdf by `npm run resumes`.
+ * Facts only from Mike's board brief (2026-11-10) and the Experience data.
+ * Board seats and advisory roles are kept apart, as on /boards.
+ */
+import '../styles/global.css';
+
+interface Props { variant: 'company' | 'nonprofit' }
+const { variant } = Astro.props;
+const company = variant === 'company';
+
+const email = 'mike.shoss@gmail.com';
+
+const profile = company
+  ? "Technology executive and board director in Milton, Ontario. I set AI strategy and governance in regulated industries, took a 60-person product organization through a US$150 million Series B, and served as a condominium corporation's Treasurer. I'm looking for an independent director seat on a growth-stage technology company."
+  : "Board director and technology executive in Milton, Ontario. I bring a Treasurer's experience with budgets and building projects, hands-on fundraising work, and a career guiding software companies through growth and change. I serve on the board of the Milton Community Resource Centre.";
+
+const boards = [
+  {
+    org: 'Milton Community Resource Centre',
+    role: 'Director; Chair, Business Development Committee',
+    dates: 'Nov 2024 – present',
+    points: [
+      "Put together the plan, goals and budget for MCRC's upcoming fundraising campaign.",
+      'Cultivate and collect donations, and introduce community and business supporters from my network.',
+    ],
+  },
+  {
+    org: 'Peel Standard Condominium Corporation 910',
+    role: 'Director and Treasurer',
+    dates: 'Apr 2015 – Jul 2019',
+    points: [
+      'Oversaw a parking garage rebuild: got the original builder to cover part of the cost, funded the rest from the reserve fund, and managed the work on the owners’ side.',
+      'Oversaw further reserve-funded upgrades: exterior improvements, flooring and interiors, and an LED lighting retrofit.',
+      'Prepared, presented and managed a $2 million operating budget for a community of more than 1,000 residents.',
+      'Negotiated six-figure contracts, saving an average of 11%.',
+    ],
+  },
+];
+
+const career = [
+  {
+    org: 'Clio',
+    role: 'Staff Product Manager',
+    dates: 'Aug 2026 – present',
+    points: ['AI research and matter management for enterprise law firms.'],
+  },
+  {
+    org: 'Caseware',
+    role: 'Principal Product Manager, AI',
+    dates: 'Jun 2025 – Jul 2026',
+    points: [
+      'Hired to build the AI function. Defined and operationalized the company-wide AI strategy and governance model with the CPO and CTO, securing multi-year funding across all product lines.',
+      ...(company ? ['Headed Caseware Studio, the enterprise AI and ecosystem mandate for audit technology.'] : []),
+    ],
+  },
+  {
+    org: 'Firework',
+    role: 'Director of Product Management, Experience Platform & AI',
+    dates: 'Feb 2022 – Sep 2023',
+    points: [
+      'Drove the product strategy behind a US$150 million Series B led by SoftBank, and regularly briefed the executives and board.',
+      'Built and led a 60-person global team across five product lines.',
+    ],
+  },
+  {
+    org: 'Epilogue',
+    role: 'Founder & Principal, AI consulting and product studio',
+    dates: 'Nov 2023 – present',
+    points: ['Builds its own AI products; two have been built and sold.'],
+  },
+];
+
+const advisory = [
+  { org: 'DMZ', role: 'Expert-in-Residence, Artificial Intelligence', dates: 'Jan 2025 – present', note: 'Advise startup founders on AI systems and strategy.' },
+  { org: 'The Forge, McMaster University', role: 'Lead Mentor', dates: 'Jan 2024 – present', note: 'Mentor early-stage founders; portfolio companies have raised more than $20 million.' },
+  ...(company ? [{ org: 'Angel investing', role: 'Angel investor', dates: 'Feb 2021 – present', note: 'Early-stage Canadian AI, science and technology companies, through CedarPeak, Angel One, Sand Hill Angels and N49P.' }] : []),
+];
+
+const strengths = company
+  ? [
+      'AI governance: company-wide AI strategy and governance with executive leadership; an ISO/IEC 42001-aligned AI management system.',
+      'Regulated industries: AI products for audit (Caseware) and legal (Clio); AODA and WCAG compliance at several companies.',
+      'Financial oversight: $2 million operating budget and reserve-funded capital projects as Treasurer.',
+      'Scale and capital: product strategy through a US$150 million Series B; nine AI patent filings, two granted.',
+    ]
+  : [
+      'Fundraising: built the plan, goals and budget for a nonprofit campaign; cultivate donors across Milton and Halton.',
+      'Financial oversight: $2 million operating budget and reserve-funded capital projects as Treasurer.',
+      'Accessibility: led AODA and WCAG compliance work at several companies.',
+      'Technology and AI governance for organizations adopting new tools responsibly.',
+    ];
+
+const community = [
+  'Founder, Milton Innovation, bringing together technology people from across Halton.',
+  'Donor to Happy’s Place (senior dog rescue), Yamnuska Wolfdog Sanctuary and OVC Pet Trust.',
+  'For more than fifteen years, I’ve asked family and friends to give to charity instead of buying me gifts, including SickKids and local charities.',
+  'Organizer of a Milton trading-card giveaway for local kids. Member, Milton Chamber of Commerce, through Epilogue.',
+];
+
+const affiliations = 'Clio (employer) · Epilogue (founder) · CedarPeak Ventures (angel investing) · Of Record Media (an Epilogue venture). Declared to any board I serve on; I recuse myself where appropriate.';
+
+const title = `Mike Shoss — Board resume (${company ? 'company' : 'nonprofit'})`;
+---
+
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="resume bg-white text-[#1b1a18]">
+    <main class="mx-auto max-w-[7.5in] px-6 py-10 print:p-0">
+      <header class="border-b border-[#1b1a18] pb-3">
+        <h1 class="display text-[26pt] leading-none">Mike Shoss</h1>
+        <p class="mt-2 text-[10.5pt]">Board Director · Milton, Ontario</p>
+        <p class="mt-1 text-[9.5pt] text-[#4a4741]">
+          <a href={`mailto:${email}`}>{email}</a> · <a href="https://mikeshoss.com/boards">mikeshoss.com/boards</a> · <a href="https://www.linkedin.com/in/mikeshoss">linkedin.com/in/mikeshoss</a>
+        </p>
+      </header>
+
+      <p class="mt-4">{profile}</p>
+
+      <h2>What I bring</h2>
+      <ul class="bullets">{strengths.map((s) => <li>{s}</li>)}</ul>
+
+      <h2>Board experience</h2>
+      {boards.map((b) => (
+        <section class="entry">
+          <div class="entry-head"><h3>{b.org}</h3><span>{b.dates}</span></div>
+          <p class="role">{b.role}</p>
+          <ul class="bullets">{b.points.map((p) => <li>{p}</li>)}</ul>
+        </section>
+      ))}
+
+      {company ? (
+        <>
+          <h2>Executive experience</h2>
+          {career.map((c) => (
+            <section class="entry">
+              <div class="entry-head"><h3>{c.org}</h3><span>{c.dates}</span></div>
+              <p class="role">{c.role}</p>
+              <ul class="bullets">{c.points.map((p) => <li>{p}</li>)}</ul>
+            </section>
+          ))}
+          <h2>Advisory, mentoring and investing</h2>
+          <ul class="bullets">{advisory.map((a) => <li><b>{a.org}</b>, {a.role} ({a.dates}). {a.note}</li>)}</ul>
+        </>
+      ) : (
+        <>
+          <h2>Community</h2>
+          <ul class="bullets">{community.map((c) => <li>{c}</li>)}</ul>
+          <h2>Advisory and mentoring</h2>
+          <ul class="bullets">{advisory.map((a) => <li><b>{a.org}</b>, {a.role} ({a.dates}). {a.note}</li>)}</ul>
+          <h2>Career</h2>
+          {career.map((c) => (
+            <section class="entry">
+              <div class="entry-head"><h3>{c.org}</h3><span>{c.dates}</span></div>
+              <p class="role">{c.role}</p>
+              <ul class="bullets">{c.points.map((p) => <li>{p}</li>)}</ul>
+            </section>
+          ))}
+        </>
+      )}
+
+      <h2>Education</h2>
+      <p>Sheridan College, Ontario College Advanced Diploma, Computer Systems Technology · Product School, Software Product Management (2018)</p>
+
+      <h2>Affiliations</h2>
+      <p>{affiliations}</p>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  .resume { font-size: 10pt; line-height: 1.45; }
+  .resume a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  .resume h2 {
+    margin-top: 1.1rem; padding-bottom: 0.2rem; border-bottom: 1px solid #c9c4ba;
+    font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 8.5pt;
+    text-transform: uppercase; letter-spacing: 0.14em; color: #1b1a18;
+  }
+  .resume h3 { font-weight: 600; font-size: 10.5pt; }
+  .resume .entry { margin-top: 0.6rem; break-inside: avoid; }
+  .resume .entry-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 1rem; align-items: baseline; }
+  .resume .entry-head span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 8.5pt; color: #4a4741; }
+  .resume .role { color: #4a4741; }
+  .resume .bullets { margin-top: 0.35rem; padding-left: 1.1rem; list-style: disc; }
+  .resume .bullets li { margin-top: 0.2rem; }
+  .resume .bullets li::marker { color: #8a857c; }
+  @page { size: Letter; margin: 0.55in 0.6in; }
+  @media print { .resume { font-size: 9.5pt; } }
+</style>
