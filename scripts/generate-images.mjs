@@ -144,7 +144,7 @@ const TARGETS = [
   }),
   card('public/og/boards.png', {
     eyebrow: 'Board profile · Milton, Ontario',
-    title: 'Mike Shoss, Board *Director*.',
+    title: 'Mike Shoss, board *director*.',
     sub: 'What I bring to a board, what I have governed, and how to reach me.',
     path: '/boards',
   }),

@@ -129,7 +129,7 @@ const personId = `${site.url}/#person`;
   <!-- 1. Intro -->
   <section class="page pt-14 md:pt-20 pb-12 md:pb-16" aria-labelledby="boards-title">
     <p class="eyebrow">Board profile · <b>Milton, Ontario</b></p>
-    <h1 id="boards-title" class="display text-display-lg md:text-display-xl mt-10 max-w-[18ch]">Mike Shoss, Board Director</h1>
+    <h1 id="boards-title" class="display text-display-lg md:text-display-xl mt-10 max-w-[18ch]">Mike Shoss, board <em>director</em>.</h1>
     <div class="mt-8 max-w-prose space-y-4 text-lg text-bone-dim leading-relaxed">
       <p>I'm a board director and technology executive based in Milton, Ontario.</p>
       <p>
@@ -140,7 +140,7 @@ const personId = `${site.url}/#person`;
     </div>
     <div class="mt-12 grid md:grid-cols-12 gap-6 md:gap-8 items-stretch">
       <div class="md:col-span-4">
-        <h2 class="eyebrow">Board resume</h2>
+        <h2 class="eyebrow">Board bio</h2>
         <p class="mt-4 text-bone-dim leading-relaxed">
           The same record in two versions, each two pages, as PDF. Or
           <a href="/contact" class="link">get in touch through my contact page</a>.
@@ -150,7 +150,7 @@ const personId = `${site.url}/#person`;
         {resumeVersions.map((r) => (
           <li class="flex">
             <a href={r.href} type="application/pdf" download class="group bg-ink hover:bg-ink-50 transition-colors p-6 md:p-7 flex flex-col w-full">
-              <span class="display text-xl group-hover:text-accent-dim transition-colors">{r.title}<span class="sr-only">: download the board resume (PDF)</span></span>
+              <span class="display text-xl group-hover:text-accent-dim transition-colors">{r.title}<span class="sr-only">: download the board bio (PDF)</span></span>
               <span class="mt-2 text-sm text-bone-dim leading-relaxed">{r.note}</span>
               <span class="mt-auto pt-6 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted group-hover:text-bone transition-colors" aria-hidden="true">Download ↓</span>
             </a>
@@ -162,7 +162,7 @@ const personId = `${site.url}/#person`;
 
   <!-- 2. What I bring -->
   <section class="section pt-0 md:pt-0" aria-labelledby="bring">
-    <h2 id="bring" class="display text-display-sm rule pt-6"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">01</span>What I can bring to your board</h2>
+    <div class="rule pt-6"><p class="eyebrow"><b>01</b> · What I bring</p><h2 id="bring" class="display text-display-md mt-4">What I can bring to your board.</h2></div>
     <ul class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden">
       {strengths.map((s) => (
         <li class="bg-ink p-6 md:p-7">
@@ -175,7 +175,7 @@ const personId = `${site.url}/#person`;
 
   <!-- 3. Board experience (board seats only) -->
   <section class="section pt-0 md:pt-0" aria-labelledby="board-experience">
-    <h2 id="board-experience" class="display text-display-sm rule pt-6"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">02</span>Board experience</h2>
+    <div class="rule pt-6"><p class="eyebrow"><b>02</b> · Board experience</p><h2 id="board-experience" class="display text-display-md mt-4">Where I've served as a director.</h2></div>
     <div class="mt-8 ruled">
       <article class="py-8 grid md:grid-cols-12 gap-x-8 gap-y-4">
         <div class="md:col-span-5">
@@ -214,8 +214,7 @@ const personId = `${site.url}/#person`;
 
   <!-- 4. Advisory and mentoring (not board seats) -->
   <section class="section pt-0 md:pt-0" aria-labelledby="advisory">
-    <h2 id="advisory" class="display text-display-sm rule pt-6"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">03</span>Advisory and mentoring</h2>
-    <p class="mt-6 text-muted max-w-prose">These are advisory roles, not board seats.</p>
+    <div class="rule pt-6"><p class="eyebrow"><b>03</b> · Advisory and mentoring</p><h2 id="advisory" class="display text-display-md mt-4">Advisory roles, not board seats.</h2></div>
     <ul class="mt-6 ruled">
       {advisory.map((a) => (
         <li class="py-6 grid md:grid-cols-12 gap-x-8 gap-y-2">
@@ -234,7 +233,7 @@ const personId = `${site.url}/#person`;
 
   <!-- Skills matrix -->
   <section class="section pt-0 md:pt-0" aria-labelledby="skills">
-    <h2 id="skills" class="display text-display-sm rule pt-6"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">04</span>Board skills, with evidence</h2>
+    <div class="rule pt-6"><p class="eyebrow"><b>04</b> · Skills matrix</p><h2 id="skills" class="display text-display-md mt-4">Board skills, with evidence.</h2></div>
     <table class="mt-8 w-full text-left border-t border-line">
       <caption class="sr-only">Board skills matrix: each skill area and the evidence for it</caption>
       <thead class="sr-only">
@@ -254,7 +253,7 @@ const personId = `${site.url}/#person`;
   <!-- 5. Community -->
   <section class="section pt-0 md:pt-0" aria-labelledby="community">
     <div class="grid md:grid-cols-12 gap-8 rule pt-6">
-      <h2 id="community" class="display text-display-sm md:col-span-5"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">05</span>Community</h2>
+      <div class="md:col-span-5"><p class="eyebrow"><b>05</b> · Community</p><h2 id="community" class="display text-display-md mt-4">Where I give my time.</h2></div>
       <ul class="md:col-span-7 ruled">
         {community.map((c) => (
           <li class="py-4 text-bone-dim leading-relaxed">{c}</li>
@@ -265,16 +264,16 @@ const personId = `${site.url}/#person`;
 
   <!-- 6 and 7. How I work, what I'm looking for -->
   <section class="section pt-0 md:pt-0">
-    <div class="grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
-      <div class="bg-ink p-7 md:p-10">
-        <h2 id="how-i-work" class="display text-display-sm"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">06</span>How I work on a board</h2>
+    <div class="grid md:grid-cols-2 gap-x-8 gap-y-14">
+      <div class="rule pt-6">
+        <div><p class="eyebrow"><b>06</b> · Approach</p><h2 id="how-i-work" class="display text-display-md mt-4">How I work on a board.</h2></div>
         <p class="mt-5 text-lg text-bone-dim leading-relaxed">
           I try to ask the hard question early, and kindly. Once the board makes its decision, I'm fully behind it.
           On projects, my job is to make sure everyone at the table sees the honest status, not the hopeful one.
         </p>
       </div>
-      <div class="bg-ink p-7 md:p-10">
-        <h2 id="looking-for" class="display text-display-sm"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">07</span>What I'm looking for</h2>
+      <div class="rule pt-6">
+        <div><p class="eyebrow"><b>07</b> · Next</p><h2 id="looking-for" class="display text-display-md mt-4">What I'm looking for.</h2></div>
         <p class="mt-5 text-lg text-bone-dim leading-relaxed">
           My next step is an independent director seat on a growth-stage technology company, especially one
           building with AI or working in a regulated industry. I'll keep serving nonprofits too, in community services
@@ -289,7 +288,7 @@ const personId = `${site.url}/#person`;
   <section class="section pt-0 md:pt-0" aria-labelledby="affiliations">
     <div class="grid md:grid-cols-12 gap-8 rule pt-6">
       <div class="md:col-span-5">
-        <h2 id="affiliations" class="display text-display-sm"><span class="font-mono text-xs text-accent-dim align-middle mr-3" aria-hidden="true">08</span>Affiliations and interests</h2>
+        <div><p class="eyebrow"><b>08</b> · Affiliations</p><h2 id="affiliations" class="display text-display-md mt-4">Declared up front.</h2></div>
         <p class="mt-5 text-bone-dim leading-relaxed">In the interest of transparency, my current affiliations:</p>
       </div>
       <div class="md:col-span-7">
@@ -307,7 +306,7 @@ const personId = `${site.url}/#person`;
   <section class="page pb-20" aria-labelledby="boards-contact">
     <h2 id="boards-contact" class="sr-only">Contact</h2>
     <p class="rule pt-6 text-lg text-bone-dim leading-relaxed">
-      <a href="/contact" class="link">Get in touch through my contact page</a>, or download my board resume for <a href={resumes.company} class="link" type="application/pdf">company boards<span class="sr-only"> (PDF)</span></a>
+      <a href="/contact" class="link">Get in touch through my contact page</a>, or download my board bio for <a href={resumes.company} class="link" type="application/pdf">company boards<span class="sr-only"> (PDF)</span></a>
       or <a href={resumes.nonprofit} class="link" type="application/pdf">nonprofit boards<span class="sr-only"> (PDF)</span></a>.
     </p>
   </section>
