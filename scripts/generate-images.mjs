@@ -67,7 +67,7 @@ const TARGETS = [
   card('public/og/companies.png', {
     eyebrow: 'The companies',
     title: '*Ventures*.',
-    sub: 'Epilogue, ShossX, Milton Innovation and Prologue Capital.',
+    sub: 'Epilogue, ShossX, Milton Innovation and Prologue North.',
     path: '/companies',
   }),
   card('public/og/companies-epilogue.png', {
@@ -78,14 +78,14 @@ const TARGETS = [
   }),
   card('public/og/companies-investing.png', {
     eyebrow: 'Ventures · Angel investor',
-    title: 'Prologue *Capital*',
+    title: 'Prologue *North*',
     sub: 'Backing early-stage Canadian AI, science and technology companies.',
     path: '/companies/investing',
   }),
   card('public/og/companies-shossx.png', {
     eyebrow: 'Ventures · Founder',
     title: 'Shoss*X*',
-    sub: 'The holding company behind Epilogue, Milton Innovation and Prologue Capital.',
+    sub: 'The holding company behind Epilogue, Milton Innovation and Prologue North.',
     path: '/companies/shossx',
   }),
   card('public/og/companies-milton-innovation.png', {

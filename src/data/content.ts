@@ -183,7 +183,7 @@ export const hero = {
     },
     {
       label: "Backing",
-      title: "Prologue Capital",
+      title: "Prologue North",
       role: "Angel Investor",
       blurb:
         "Early-stage Canadian AI, science and technology companies, through syndicates and funds so more capital reaches a founder faster.",
@@ -627,10 +627,12 @@ const companiesData: Company[] = [
     ],
   },
   {
-    // Named Prologue Capital on 2026-11-12 (was the placeholder "Angel
-    // investing"). Keep the slug: it is the indexed URL.
+    // Named Prologue North on 2026-11-13 (was the placeholder "Angel
+    // investing", briefly "Prologue Capital", and before that CedarPeak
+    // Ventures). Keep the slug: it is the indexed URL.
     slug: "investing",
-    name: "Prologue Capital",
+    name: "Prologue North",
+    url: "https://prologue.shossx.com",
     role: "Angel Investor",
     tagline: "Backing early-stage Canadian AI, science and technology companies.",
     description:
@@ -646,9 +648,9 @@ const companiesData: Company[] = [
     slug: "shossx",
     name: "ShossX",
     role: "Founder",
-    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue Capital.",
+    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue North.",
     description:
-      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue Capital, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
+      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue North, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
     body: [
       "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
     ],
@@ -1114,7 +1116,7 @@ const experienceData: ExperienceRole[] = [
   },
   {
     title: "Angel Investor",
-    company: "Prologue Capital",
+    company: "Prologue North",
     start: "2021-02",
     location: "Canada",
     highlights: [
@@ -1913,7 +1915,7 @@ export const board = {
   skillsMatrix: [
     { area: "AI and technology governance", evidence: "Defined Caseware's company-wide AI strategy and governance model with the CPO and CTO. Implemented an ISO/IEC 42001-aligned AI management system. Nine AI patent filings, two granted." },
     { area: "Financial oversight", evidence: "As Treasurer, prepared, presented and managed a $2 million operating budget, oversaw reserve-funded capital projects, and negotiated six-figure contracts at an average 11% saving." },
-    { area: "Capital raising and growth", evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through Prologue Capital, with Angel One, Sand Hill Angels and N49P." },
+    { area: "Capital raising and growth", evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through Prologue North, with Angel One, Sand Hill Angels and N49P." },
     { area: "Risk, regulation and compliance", evidence: "AI products in regulated industries: audit at Caseware, legal at Clio. Led AODA and WCAG compliance work at several companies." },
     { area: "Building companies", evidence: "Founded Epilogue, which builds its own AI products; two have been built and sold. Advised SalesBop through its acquisition." },
     { area: "People and change", evidence: "Built and led a 60-person global product team across five product lines. Mentor to founders at DMZ and The Forge." },
@@ -1933,7 +1935,7 @@ export const board = {
   affiliations: [
     { name: "Clio", what: "Staff Product Manager" },
     { name: "Epilogue", what: "Founder & Principal, an AI consulting and product studio" },
-    { name: "Prologue Capital", what: "my angel investing company" },
+    { name: "Prologue North", what: "my angel investing company" },
     { name: "Of Record", what: "an Epilogue venture that publishes Ontario municipal council decisions from public records" },
   ],
   declaration: "I declare these to any board I serve on and recuse myself where appropriate.",
