@@ -54,8 +54,11 @@ ${list(credits.map((c) => `${c.work} (${c.label}, ${c.year}) — ${c.credit}. ${
 
 ## Current Roles
 ${list([
-  ...current.map((role) => `${role.title} at ${role.company} (${role.period})`),
-  ...companies.map((company) => `${company.role} at ${company.name} (${company.period})`),
+  // A Set, because a venture can also be a current role (Prologue Capital is both).
+  ...new Set([
+    ...current.map((role) => `${role.title} at ${role.company} (${role.period})`),
+    ...companies.map((company) => `${company.role} at ${company.name} (${company.period})`),
+  ]),
 ])}
 
 ## Board profile
