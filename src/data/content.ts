@@ -640,7 +640,7 @@ const companiesData: Company[] = [
       "I invest through syndicates, angel networks and funds rather than alone. That gets more capital to a founder faster than any single cheque would, and it puts operators around the table alongside the money.",
     ],
     start: "2021-02",
-    networks: ["CedarPeak", "Angel One", "Sand Hill Angels", "N49P"],
+    networks: ["Angel One", "Sand Hill Angels", "N49P"],
   },
   {
     slug: "shossx",
@@ -1913,7 +1913,7 @@ export const board = {
   skillsMatrix: [
     { area: "AI and technology governance", evidence: "Defined Caseware's company-wide AI strategy and governance model with the CPO and CTO. Implemented an ISO/IEC 42001-aligned AI management system. Nine AI patent filings, two granted." },
     { area: "Financial oversight", evidence: "As Treasurer, prepared, presented and managed a $2 million operating budget, oversaw reserve-funded capital projects, and negotiated six-figure contracts at an average 11% saving." },
-    { area: "Capital raising and growth", evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through CedarPeak, Angel One, Sand Hill Angels and N49P." },
+    { area: "Capital raising and growth", evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through Prologue Capital, with Angel One, Sand Hill Angels and N49P." },
     { area: "Risk, regulation and compliance", evidence: "AI products in regulated industries: audit at Caseware, legal at Clio. Led AODA and WCAG compliance work at several companies." },
     { area: "Building companies", evidence: "Founded Epilogue, which builds its own AI products; two have been built and sold. Advised SalesBop through its acquisition." },
     { area: "People and change", evidence: "Built and led a 60-person global product team across five product lines. Mentor to founders at DMZ and The Forge." },
@@ -1934,7 +1934,6 @@ export const board = {
     { name: "Clio", what: "Staff Product Manager" },
     { name: "Epilogue", what: "Founder & Principal, an AI consulting and product studio" },
     { name: "Prologue Capital", what: "my angel investing company" },
-    { name: "CedarPeak Ventures", what: "angel investing" },
     { name: "Of Record", what: "an Epilogue venture that publishes Ontario municipal council decisions from public records" },
   ],
   declaration: "I declare these to any board I serve on and recuse myself where appropriate.",
