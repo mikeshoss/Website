@@ -183,7 +183,7 @@ export const hero = {
     },
     {
       label: "Backing",
-      title: "Angel investing",
+      title: "Prologue Capital",
       role: "Angel Investor",
       blurb:
         "Early-stage Canadian AI, science and technology companies, through syndicates and funds so more capital reaches a founder faster.",
@@ -627,11 +627,10 @@ const companiesData: Company[] = [
     ],
   },
   {
-    // Placeholder name. The investing is done through a numbered company that
-    // does not have a trading name yet. When it gets one, change `name` (and
-    // `role` if needed) but keep the slug: it is the indexed URL.
+    // Named Prologue Capital on 2026-11-12 (was the placeholder "Angel
+    // investing"). Keep the slug: it is the indexed URL.
     slug: "investing",
-    name: "Angel investing",
+    name: "Prologue Capital",
     role: "Angel Investor",
     tagline: "Backing early-stage Canadian AI, science and technology companies.",
     description:
@@ -647,9 +646,9 @@ const companiesData: Company[] = [
     slug: "shossx",
     name: "ShossX",
     role: "Founder",
-    tagline: "The holding company behind Epilogue, Milton Innovation and the angel investing.",
+    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue Capital.",
     description:
-      "The holding company. ShossX owns Epilogue, Milton Innovation and the investment company through which the angel investing is done — one structure, so each can be run on its own terms.",
+      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue Capital, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
     body: [
       "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
     ],
@@ -1115,9 +1114,7 @@ const experienceData: ExperienceRole[] = [
   },
   {
     title: "Angel Investor",
-    // A numbered company with no trading name yet. Replace this with the
-    // name when it has one; see the `investing` venture entry.
-    company: "Private investment company",
+    company: "Prologue Capital",
     start: "2021-02",
     location: "Canada",
     highlights: [
@@ -1936,6 +1933,7 @@ export const board = {
   affiliations: [
     { name: "Clio", what: "Staff Product Manager" },
     { name: "Epilogue", what: "Founder & Principal, an AI consulting and product studio" },
+    { name: "Prologue Capital", what: "my angel investing company" },
     { name: "CedarPeak Ventures", what: "angel investing" },
     { name: "Of Record", what: "an Epilogue venture that publishes Ontario municipal council decisions from public records" },
   ],
