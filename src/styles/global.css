@@ -7,6 +7,29 @@
 @import '@fontsource/jetbrains-mono/latin-400.css';
 @import '@fontsource/jetbrains-mono/latin-500.css';
 
+/* Geist's stand-in while it loads: Arial, scaled to Geist's measurements, so
+   nothing moves when Geist swaps in. Without it the headline shifted (CLS 0.11
+   on desktop) once the page started painting before the font arrived.
+   Numbers from the font files via @capsizecss/unpack, per weight. */
+@font-face {
+  font-family: 'Geist Fallback';
+  src: local('Arial'), local('ArialMT');
+  font-weight: 400;
+  size-adjust: 104.76%;
+  ascent-override: 95.94%;
+  descent-override: 28.16%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Geist Fallback';
+  src: local('Arial'), local('ArialMT');
+  font-weight: 500 600;
+  size-adjust: 107.22%;
+  ascent-override: 93.73%;
+  descent-override: 27.51%;
+  line-gap-override: 0%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
