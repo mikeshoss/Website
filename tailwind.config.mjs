@@ -46,8 +46,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Geist', '"Geist Fallback"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Geist', '"Geist Fallback"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       fontSize: {
