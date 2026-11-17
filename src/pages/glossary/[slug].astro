@@ -48,7 +48,7 @@ const related = (term.related ?? [])
       <a href="/glossary" class="hover:text-bone transition-colors">← Glossary</a>
       <span>{GLOSSARY_CATEGORIES[term.category]}</span>
     </div>
-    <h1 class="display text-display-xl mt-12 max-w-[16ch]">{term.term}</h1>
+    <h1 class="display text-display-xl mt-12 max-w-[10.768em]">{term.term}</h1>
     <p class="lede mt-8 max-w-prose">{term.short}</p>
     {term.aliases && term.aliases.length > 0 && (
       <div class="mt-6 flex flex-wrap items-center gap-2">
