@@ -187,11 +187,12 @@
 
   /* ------------------------------------------------------------ Braun details */
 
-  /* The green "on" light. Pulses slowly unless motion is reduced. */
+  /* The green "on" light. Pulses three times, then stays on (an endless
+     animation keeps the page from ever looking finished to Speed Index). */
   .led {
     @apply inline-block w-2 h-2 rounded-full bg-signal;
     box-shadow: 0 0 0 3px rgb(63 154 70 / 0.18);
-    animation: led-pulse 2.8s ease-in-out infinite;
+    animation: led-pulse 2.8s ease-in-out 3;
   }
 
   .led-off {
@@ -265,9 +266,11 @@
     animation: none;
   }
 
-  /* The cursor: a hard on/off blink, like a terminal. */
+  /* The cursor: a hard on/off blink, like a terminal. It blinks while the
+     line types and a few times after, then stays solid: an endless blink kept
+     Speed Index from settling (PageSpeed, 2026-11-16). */
   .tag-cursor {
-    animation: tag-blink 1.06s steps(1, end) infinite;
+    animation: tag-blink 1.06s steps(1, end) 4;
   }
 
   .tag-cursor.tag-still {

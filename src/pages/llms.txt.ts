@@ -49,7 +49,7 @@ ${list(hero.whatIDo)}
 ${list(selectedResults.map((r) => `${r.value} — ${r.label}. ${r.detail}`))}
 
 ## Credits
-The work he is known for, as liner notes: the work, who it was for, his credit on it, and the result. Full list: ${site.url}/credits/
+The work he is known for, as liner notes: the work, who it was for, his credit on it, and the result. Full list: [Credits](${site.url}/credits/)
 ${list(credits.map((c) => `${c.work} (${c.label}, ${c.year}) — ${c.credit}. ${c.result}`))}
 
 ## Current Roles
@@ -62,7 +62,7 @@ ${list([
 ])}
 
 ## Board profile
-${board.summary} Full profile: ${board.url}
+${board.summary} Full profile: [Board profile](${board.url})
 
 Board seats:
 ${list(board.seats.map((s) => `${s.role}, ${s.organization} (${s.from} – ${s.to ?? "present"}). ${s.points.join(" ")}`))}
@@ -77,27 +77,27 @@ Looking for: ${board.lookingFor}
 
 Declared affiliations: ${board.affiliations.map((a) => `${a.name} (${a.what})`).join("; ")}. ${board.declaration}
 
-Board bio (PDF): ${board.bio.map((b) => `${b.title.toLowerCase()} ${site.url}${b.url}`).join("; ")}. Contact: ${board.contact}
+Board bio (PDF): ${board.bio.map((b) => `[${b.title.toLowerCase()}](${site.url}${b.url})`).join("; ")}. Contact: [contact page](${board.contact})
 
 ## Structured data
 This site publishes its content as JSON and over MCP.
-- JSON API docs: ${site.url}/api/
-- OpenAPI 3.1 spec: ${site.url}/api/openapi.json
-- JSON API index: ${site.url}/api/index.json
-- Full resume: ${site.url}/api/resume.json
-- JSON Resume (jsonresume.org schema): ${site.url}/api/jsonresume.json
-- MCP server: ${site.url}/mcp
-- Brand guidelines and press kit: ${site.url}/brand/
-- Accessibility statement (WCAG 2.2 AA): ${site.url}/accessibility/
-- Board profile (board seats, advisory roles, affiliations): ${site.url}/boards/
-- Board profile as JSON: ${site.url}/api/board.json
+- [JSON API docs](${site.url}/api/)
+- [OpenAPI 3.1 spec](${site.url}/api/openapi.json)
+- [JSON API index](${site.url}/api/index.json)
+- [Full resume](${site.url}/api/resume.json)
+- [JSON Resume (jsonresume.org schema)](${site.url}/api/jsonresume.json)
+- [MCP server](${site.url}/mcp)
+- [Brand guidelines and press kit](${site.url}/brand/)
+- [Accessibility statement (WCAG 2.2 AA)](${site.url}/accessibility/)
+- [Board profile (board seats, advisory roles, affiliations)](${site.url}/boards/)
+- [Board profile as JSON](${site.url}/api/board.json)
 
 ## Ventures
 ${companies
   .map((company) => {
     const sections = [
-      `Page: ${site.url}/companies/${company.slug}/`,
-      ...(company.url ? [`Website: ${company.url}`] : []),
+      `Page: [${company.name}](${site.url}/companies/${company.slug}/)`,
+      ...(company.url ? [`Website: [${company.url.replace(/^https?:\/\//, "")}](${company.url})`] : []),
       company.description,
       ...(company.arms?.length
         ? [
@@ -136,8 +136,8 @@ ${skills.map((s) => `- ${s}`).join("\n")}
 ${list(
   activeProjects.map((p) => {
     const links = [
-      ...(p.url ? [`site: ${p.url}`] : []),
-      ...(p.repo ? [`source: ${p.repo}`] : []),
+      ...(p.url ? [`[site](${p.url})`] : []),
+      ...(p.repo ? [`[source](${p.repo})`] : []),
     ];
     return `${p.name}: ${p.description}${links.length ? ` (${links.join(", ")})` : ""}`;
   }),
@@ -174,13 +174,13 @@ ${list(causes.map((c) => `${c.name}: ${c.description ?? ""}${c.donate ? ` Donate
 ${list(
   interests.map((interest) =>
     interest.keywords?.length
-      ? `${interest.name}: ${interest.keywords.join(", ")} (${site.url}/off-the-clock/${interest.slug}/)`
-      : `${interest.name} (${site.url}/off-the-clock/${interest.slug}/)`,
+      ? `${interest.name}: ${interest.keywords.join(", ")} ([page](${site.url}/off-the-clock/${interest.slug}/))`
+      : `${interest.name} ([page](${site.url}/off-the-clock/${interest.slug}/))`,
   ),
 )}
 
 ## Card collection
-Vintage Pokémon TCG, Wizards of the Coast era, and Magic Commander decks. Completion only: ${site.url}/off-the-clock/cards/
+Vintage Pokémon TCG, Wizards of the Coast era, and Magic Commander decks. Completion only: [cards](${site.url}/off-the-clock/cards/)
 ${list(cardSets.map((s) => `${s.name} (${s.year}): ${s.owned === undefined ? "being counted" : `${s.owned} of ${s.total}`}`))}
 Porygon English master set: ${porygon.eras.reduce((n, e) => n + e.owned, 0)} of ${porygon.eras.reduce((n, e) => n + e.total, 0)} versions.
 Magic: The Gathering, ${magic.format}: ${magic.decks.map((d) => `${d.commander} (${d.build}, bracket ${d.bracket})`).join("; ")}.
@@ -190,15 +190,16 @@ Definitions of the vocabulary around AI products, each with what the term means
 and what it turns out to mean in practice. Full entry at the URL given.
 ${list(
   glossary.map(
-    (t) => `${t.term}: ${t.short} — ${site.url}/glossary/${t.slug}/`,
+    (t) => `[${t.term}](${site.url}/glossary/${t.slug}/): ${t.short}`,
   ),
 )}
 
 ## Contact
-- Website: ${site.url}
-- LinkedIn: ${site.linkedin}
-- GitHub: ${site.github}
-- Epilogue: https://epiloguelabs.com
+- [Website](${site.url})
+- [LinkedIn](${site.linkedin})
+- [GitHub](${site.github})
+- [Epilogue](https://epiloguelabs.com)
+- [Contact page](${site.url}/contact/)
 - Email: ${site.email}
 
 ## Philosophy

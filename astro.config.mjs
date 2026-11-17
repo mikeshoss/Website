@@ -5,8 +5,13 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   site: 'https://mikeshoss.com',
   server: { port: 4321 },
+  // Stylesheets inline into each page: four small render-blocking CSS files
+  // were most of the mobile LCP delay (PageSpeed, 2026-11-16).
+  build: { inlineStylesheets: 'always' },
   integrations: [
-    tailwind(),
+    // global.css already has the @tailwind directives; the integration's own
+    // base styles shipped a second copy of all of Tailwind (55 KB) on every page.
+    tailwind({ applyBaseStyles: false }),
     // Blog is temporarily removed from the site (see public/_redirects), so its
     // pages must not be advertised in the sitemap while they redirect away.
     //

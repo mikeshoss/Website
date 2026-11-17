@@ -4,6 +4,10 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import Analytics from '../components/Analytics.astro';
+// The two Geist weights the first screen uses, preloaded so the headline and
+// lede don't wait for the CSS to discover them. Same hashed files the CSS uses.
+import geist400 from '@fontsource/geist/files/geist-latin-400-normal.woff2?url';
+import geist500 from '@fontsource/geist/files/geist-latin-500-normal.woff2?url';
 import { existsSync } from 'node:fs';
 import { companies, education, experience, site, skills } from '../data/content';
 
@@ -249,6 +253,8 @@ const jsonLd = {
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Fonts loaded via @fontsource (self-hosted, no external requests) -->
+    <link rel="preload" href={geist400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geist500} as="font" type="font/woff2" crossorigin />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
