@@ -10,26 +10,26 @@
 /* Geist's stand-in while it loads: Arial, scaled to Geist's measurements, so
    nothing moves when Geist swaps in. Without it the headline shifted (CLS 0.11
    on desktop) once the page started painting before the font arrived.
-   size-adjust is the measured width ratio of the site's own text in Geist vs
-   Arial; the overrides are Geist's ascent (1005) and descent (295) per 1000,
+   size-adjust was tuned on the homepage so the fallback wraps the headline and
+   lede exactly as Geist does at 375–1350 px (2026-11-16); the overrides are Geist's ascent (1005) and descent (295) per 1000,
    divided by it. Headline max-widths are in em, not ch: Geist's "0" is far
    wider than Arial's, so a ch-based width changed with the font. */
 @font-face {
   font-family: 'Geist Fallback';
   src: local('Arial'), local('ArialMT');
   font-weight: 400;
-  size-adjust: 101.8%;
-  ascent-override: 98.72%;
-  descent-override: 28.98%;
+  size-adjust: 101.4%;
+  ascent-override: 99.11%;
+  descent-override: 29.09%;
   line-gap-override: 0%;
 }
 @font-face {
   font-family: 'Geist Fallback';
   src: local('Arial'), local('ArialMT');
   font-weight: 500 600;
-  size-adjust: 104.6%;
-  ascent-override: 96.08%;
-  descent-override: 28.2%;
+  size-adjust: 105.4%;
+  ascent-override: 95.35%;
+  descent-override: 27.99%;
   line-gap-override: 0%;
 }
 
