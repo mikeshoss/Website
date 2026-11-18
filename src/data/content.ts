@@ -621,6 +621,7 @@ const companiesData: Company[] = [
       "TakeCare",
       "CorLibra",
       "SalesBop",
+      "SharpReach",
       "ZheroTax",
       "Protagonist Health",
       "UniversoleFit",
@@ -1076,6 +1077,20 @@ const experienceData: ExperienceRole[] = [
     highlights: [
       "Advised SalesBop on AI product strategy and scaling initiatives leading up to acquisition.",
       "SalesBop was acquired by FliteHouse.com in 2025.",
+    ],
+  },
+  {
+    // Advising ended Jan 2025 when the SaaS product shut down; the shareholding
+    // continues, so the role stays open. Never publish the share count or %.
+    title: "Strategic Advisor & Shareholder",
+    company: "SharpReach",
+    start: "2023-11",
+    location: "Remote (Sweden)",
+    highlights: [
+      "Equity-based strategic advisor to SharpReach AB, a Swedish AI sales-intelligence startup, engaged through Epilogue at the startup stage.",
+      "Ran regular strategy sessions with the founders on product direction, packaging, positioning and storytelling.",
+      "Supported the founders on company structure and the shareholders' agreement.",
+      "Shareholder since March 2024.",
     ],
   },
   {
@@ -1936,6 +1951,7 @@ export const board = {
     { name: "Clio", what: "Staff Product Manager" },
     { name: "Epilogue", what: "Founder & Principal, an AI consulting and product studio" },
     { name: "Prologue North", what: "my angel investing company" },
+    { name: "SharpReach AB", what: "shareholder, and former strategic advisor" },
     { name: "Of Record", what: "an Epilogue venture that publishes Ontario municipal council decisions from public records" },
   ],
   declaration: "I declare these to any board I serve on and recuse myself where appropriate.",
