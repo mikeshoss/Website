@@ -60,8 +60,8 @@ const TARGETS = [
   card('public/og/home.png', HOME),
   card('public/og/credits.png', {
     eyebrow: 'Credits · Selected works',
-    title: "If my name's on it, it's a *hit*.",
-    sub: 'The work, who it was for, what I did on it, and what it did.',
+    title: 'Selected *credits*.',
+    sub: 'The work, who it was for, what I did on it, and what happened.',
     path: '/credits',
   }),
   card('public/og/companies.png', {
@@ -150,8 +150,8 @@ const TARGETS = [
   }),
   card('public/og/contact.png', {
     eyebrow: 'Contact',
-    title: "Let's make a *hit*.",
-    sub: "Book the studio, or talk to the producer.",
+    title: "Let's *talk*.",
+    sub: "Work with me through Epilogue, or just say hello.",
     path: '/contact',
   }),
 
