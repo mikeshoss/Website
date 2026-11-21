@@ -139,7 +139,7 @@ export const site = {
    * twitter:description and the JSON-LD Person description. Keep it under 160.
    */
   description:
-    `Mike Shoss ships AI products in industries where being wrong is expensive. Founder of Epilogue. ${patentCount} patents in AI. If his name's on it, it's a hit.`,
+    `Mike Shoss ships AI products in industries where being wrong is expensive. Founder of Epilogue. ${patentCount} patents in AI.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -257,7 +257,7 @@ export interface Credit {
   label: string;
   year: string;
   /** What Mike did on it, in one or two words. */
-  credit: "Produced" | "Founded" | "Built" | "Engineered" | "Inventor" | "Advised" | "Strategy";
+  credit: "Led product" | "Led" | "Built the team" | "Founded" | "Built" | "Inventor" | "Advised" | "Strategy";
   /** The result, with the number first where there is one. */
   result: string;
   href?: string;
@@ -268,28 +268,28 @@ export const credits: Credit[] = [
     work: "Verity Docs",
     label: "Caseware",
     year: "2026",
-    credit: "Produced",
+    credit: "Led product",
     result: "75% less document work against a 50% target. 97% extraction accuracy. 100% weekly active use.",
   },
   {
     work: "Caseware Studio",
     label: "Caseware",
     year: "2025",
-    credit: "Founded",
+    credit: "Built the team",
     result: "A 43-person product org shipping validated prototypes in 24 hours and production features in a week. Cycle times down 80%.",
   },
   {
     work: "ISO/IEC 42001 AI management system",
     label: "Caseware",
     year: "2025",
-    credit: "Engineered",
+    credit: "Led",
     result: "Governance built into the release pipeline. Compliance turned from a blocker into a sales accelerant.",
   },
   {
     work: "ContractorOS",
     label: "FacilityOS",
     year: "2024",
-    credit: "Produced",
+    credit: "Led product",
     result: "0 to 1 in six months. 37% faster compliance, +20 NPS, 90% retention.",
   },
   {
@@ -303,7 +303,7 @@ export const credits: Credit[] = [
     work: "AI across the player",
     label: "Firework",
     year: "2022",
-    credit: "Produced",
+    credit: "Led product",
     result: "Engagement up 400%, conversions doubled. A 60-person team across five product lines.",
   },
   {
@@ -318,14 +318,14 @@ export const credits: Credit[] = [
     work: "Self-serve SaaS",
     label: "Firework",
     year: "2021",
-    credit: "Produced",
+    credit: "Led product",
     result: "ARR up 10x.",
   },
   {
     work: "From ads to SaaS",
     label: "VerticalScope",
     year: "2020",
-    credit: "Produced",
+    credit: "Led product",
     result: "1,500+ sites unified on one platform. 17% month-over-month growth.",
   },
   {
@@ -384,7 +384,7 @@ export interface Call {
 
 /**
  * The studio: where the work is booked. This site is the producer; Epilogue
- * is the studio. "Book the studio" buttons point here, tagged with
+ * is the studio. "Work with me" buttons point here, tagged with
  * withCampaign at each placement.
  */
 export const studio = { name: "Epilogue", url: "https://epiloguelabs.com" };

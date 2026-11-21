@@ -13,8 +13,8 @@ import { withCampaign } from '../lib/links';
  * too. Static and sound stop for reduced motion; sound only after a press.
  */
 const stations = [
-  { f: 88.7, name: 'Credits', line: "If my name's on it, it's a hit.", url: '/credits/' },
-  { f: 91.3, name: 'Book the studio', line: 'Projects and engagements, through Epilogue.', url: withCampaign(studio.url, '404-tuner')!, ext: true },
+  { f: 88.7, name: 'Credits', line: "Some of the work I'm proud of.", url: '/credits/' },
+  { f: 91.3, name: 'Work with me', line: 'Projects and engagements, through Epilogue.', url: withCampaign(studio.url, '404-tuner')!, ext: true },
   { f: 94.7, name: 'Off the clock', line: 'Steel bikes, radio, cards and a homelab.', url: '/off-the-clock/' },
   { f: 97.1, name: 'Bikes', line: 'Three frames in 8-bit. One hangs on the wall.', url: '/off-the-clock/bicycles/' },
   { f: 99.9, name: 'Porygon', line: '49 of 117. Still hunting.', url: '/off-the-clock/cards/#porygon' },
@@ -77,7 +77,7 @@ const stations = [
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="/" class="btn-primary">Home</a>
       <a href="/credits/" class="btn-quiet">Credits</a>
-      <a href={withCampaign(studio.url, '404-links')} target="_blank" rel="noopener noreferrer" class="btn-quiet">Book the studio <span aria-hidden="true">↗</span></a>
+      <a href={withCampaign(studio.url, '404-links')} target="_blank" rel="noopener noreferrer" class="btn-quiet">Work with me <span aria-hidden="true">↗</span></a>
       <button type="button" data-cmdk-open class="btn-quiet">Search everything <kbd class="font-mono text-[0.625rem] text-muted ml-1" data-cmdk-key>⌘K</kbd></button>
     </div>
   </section>

@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ProducerTag from '../components/ProducerTag.astro';
 import { credits, site } from '../data/content';
 import { placement, withCampaign } from '../lib/links';
 
@@ -38,10 +37,8 @@ const isExternal = (href: string) => href.startsWith('http');
     </div>
     <h1 class="display text-display-xl mt-12 max-w-[9.422em]">Credits.</h1>
     <p class="lede mt-8 max-w-prose">
-      Producers are known by what they made, not by their job titles. This is the work: what it
-      was, who it was for, what I did on it, and what it did.
+      The work, who it was for, what I did on it, and what happened.
     </p>
-    <div class="mt-8"><ProducerTag size="hero" animate /></div>
   </section>
 
   <section class="section pt-0 md:pt-0">
@@ -60,9 +57,9 @@ const isExternal = (href: string) => href.startsWith('http');
                 : c.work}
             </p>
             <span class="font-mono text-[0.6875rem] uppercase tracking-wider text-muted hidden md:block">{c.label}</span>
-            <span class="font-mono text-[0.6875rem] uppercase tracking-wider text-accent-dim hidden md:block">{c.credit}</span>
+            <span class="font-mono text-[0.6875rem] uppercase tracking-wider text-accent-dim hidden md:block whitespace-nowrap">{c.credit}</span>
             <p class="text-sm text-bone-dim leading-relaxed col-start-2 col-span-2 md:col-auto md:col-span-1">
-              <span class="md:hidden block mb-1.5 font-mono text-[0.6875rem] uppercase tracking-wider text-muted">{c.label} · <span class="text-accent-dim">{c.credit}</span></span>
+              <span class="md:hidden block mb-1.5 font-mono text-[0.6875rem] uppercase tracking-wider text-muted">{c.label} · <span class="text-accent-dim whitespace-nowrap">{c.credit}</span></span>
               {c.result}
             </p>
             <span class="font-mono text-xs text-muted text-right row-start-1 col-start-3 md:row-auto md:col-auto">{c.year}</span>
