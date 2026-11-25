@@ -358,14 +358,6 @@ export const credits: Credit[] = [
     result: "A scheduled monument rebuilt in 3D, where every wall carries its source and how sure we are of it.",
     href: "/projects",
   },
-  {
-    work: "Readback",
-    label: "Independent",
-    year: "2026",
-    credit: "Built",
-    result: "A map of every known licence-plate reader in Canada, each one carrying how it is known.",
-    href: "https://readback.ofrecord.ca",
-  },
 ];
 
 /**
