@@ -1,7 +1,7 @@
 ---
 import Title from '../components/Title.astro';
 import Layout from '../layouts/Layout.astro';
-import { projects, site, companies } from '../data/content';
+import { projects, site, companies, projectGroups } from '../data/content';
 import { placement, withCampaign } from '../lib/links';
 import { byAssociation, splitByStatus } from '../lib/projects';
 
@@ -25,7 +25,15 @@ const epilogue = companies.find(c => c.slug === 'epilogue');
 const epilogueProducts = epilogue?.products?.filter(p => p.status === 'Live' || p.status === 'Invite only').map(p => p.name) ?? [];
 const epilogueUrl = withCampaign(epilogue?.url, 'projects-page');
 
-const listed = [...personal.active, ...personal.past, ...orphans];
+// Active work by theme, in projectGroups order; anything ungrouped trails as "Other".
+const themes = [...projectGroups, 'Other']
+  .map(name => ({
+    name,
+    items: personal.active.filter(p => (p.group && (projectGroups as readonly string[]).includes(p.group) ? p.group : 'Other') === name),
+  }))
+  .filter(t => t.items.length > 0);
+
+const listed = [...themes.flatMap(t => t.items), ...personal.past, ...orphans];
 ---
 
 <Layout
@@ -61,31 +69,33 @@ const listed = [...personal.active, ...personal.past, ...orphans];
     </p>
   </section>
 
-  <!-- ============================================================ Active -->
-  <section class="section pt-0 md:pt-0">
-    <p class="eyebrow rule pt-6">Active <b>{personal.active.length}</b></p>
-    <div class="mt-8 grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
-      {personal.active.map(project => (
-        <article class="bg-ink p-7 md:p-8 flex flex-col md:last:odd:col-span-2">
-          <div class="flex items-baseline justify-between gap-4">
-            <h2 class="display text-display-sm"><Title text={project.name} /></h2>
-            <span class="text-xs font-mono text-muted whitespace-nowrap">{project.start.slice(0, 4)}</span>
-          </div>
-          <p class="text-sm text-bone-dim leading-relaxed mt-4">{project.description}</p>
-          {(project.url || project.repo) && (
-            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-auto pt-6">
-              {project.url && (
-                <a href={withCampaign(project.url, placement('project', project.name))} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">Site ↗</a>
-              )}
-              {project.repo && (
-                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">Source ↗</a>
-              )}
+  <!-- ============================================================ Active, by theme -->
+  {themes.map(theme => (
+    <section class="section pt-0 md:pt-0">
+      <p class="eyebrow rule pt-6">{theme.name} <b>{theme.items.length}</b></p>
+      <div class="mt-8 grid md:grid-cols-2 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        {theme.items.map(project => (
+          <article class="bg-ink p-7 md:p-8 flex flex-col md:last:odd:col-span-2">
+            <div class="flex items-baseline justify-between gap-4">
+              <h2 class="display text-display-sm"><Title text={project.name} /></h2>
+              <span class="text-xs font-mono text-muted whitespace-nowrap">{project.start.slice(0, 4)}</span>
             </div>
-          )}
-        </article>
-      ))}
-    </div>
-  </section>
+            <p class="text-sm text-bone-dim leading-relaxed mt-4">{project.description}</p>
+            {(project.url || project.repo) && (
+              <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-auto pt-6">
+                {project.url && (
+                  <a href={withCampaign(project.url, placement('project', project.name))} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">Site ↗</a>
+                )}
+                {project.repo && (
+                  <a href={project.repo} target="_blank" rel="noopener noreferrer" class="arrow-link text-xs">Source ↗</a>
+                )}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
 
   <!-- ============================================================ Epilogue -->
   <section class="section pt-0 md:pt-0">
