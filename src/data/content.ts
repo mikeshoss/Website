@@ -358,14 +358,6 @@ export const credits: Credit[] = [
     result: "A scheduled monument rebuilt in 3D, where every wall carries its source and how sure we are of it.",
     href: "/projects",
   },
-  {
-    work: "Readback",
-    label: "Independent",
-    year: "2026",
-    credit: "Built",
-    result: "A map of every known licence-plate reader in Canada, each one carrying how it is known.",
-    href: "https://readback.ofrecord.ca",
-  },
 ];
 
 /**
@@ -459,6 +451,11 @@ export interface CompanyProduct {
   description: string;
   status: string;
   url?: string;
+  /**
+   * Heading the venture page groups products under, in first-seen order.
+   * Leave it off every product and the list renders ungrouped.
+   */
+  group?: string;
 }
 
 /**
@@ -502,8 +499,21 @@ export interface Company {
 }
 
 // Display order, not chronology: the ventures index and the home page both read
-// this array top-down, so the flagship leads.
+// this array top-down: the holding company, then what it owns (Mike, 2026-11-25).
 const companiesData: Company[] = [
+  {
+    slug: "shossx",
+    name: "ShossX",
+    role: "Founder",
+    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue North.",
+    description:
+      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue North, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
+    body: [
+      "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
+    ],
+    start: "2021-02",
+    holdings: ["epilogue", "milton-innovation", "investing"],
+  },
   {
     slug: "epilogue",
     name: "Epilogue",
@@ -543,8 +553,9 @@ const companiesData: Company[] = [
       },
     ],
     // Mirrors epiloguelabs.com/ventures (checked 2026-11-06), in its order:
-    // live, coming back, paused, sold, wound down. Status words are the ones
-    // that page uses. Parleh differs on purpose: Epilogue still says paused,
+    // live, coming back, paused, exited, wound down. Status words follow that
+    // page, except Exited (was Sold) and Wound down for both Fractal and
+    // Liteworker (Mike, 2026-11-25). Parleh differs on purpose: Epilogue still says paused,
     // but it is coming back invite-only (Mike, 2026-11-06).
     products: [
       {
@@ -553,6 +564,7 @@ const companiesData: Company[] = [
         description:
           "Every motion, who moved it, how each councillor voted and who showed up, read from each Ontario council's own minutes, checked against them and linked back to the source. Free to read, with no account and no ads; businesses that watch councils pay for a plan. Launched October 2026.",
         status: "Live",
+        group: "In market",
         url: "https://ofrecord.ca",
       },
       {
@@ -561,6 +573,7 @@ const companiesData: Company[] = [
         description:
           "A daily digest of frontier AI: the capabilities, the research, and how it is being used for good and for harm. Every claim checked against its primary source, every number quoted exactly, caveats stated plainly. Free, no ads, CC BY 4.0.",
         status: "Live",
+        group: "In market",
         url: "https://aiedgebriefing.com",
       },
       {
@@ -569,6 +582,7 @@ const companiesData: Company[] = [
         description:
           "Free practice tests for the Canadian Basic and Advanced amateur radio exams, drawn from the question banks ISED publishes. Every one of the 1,533 questions carries a plain-language explanation. Used by radio clubs across the country.",
         status: "Live",
+        group: "In market",
         url: "https://signalprep.ca",
       },
       {
@@ -577,6 +591,7 @@ const companiesData: Company[] = [
         description:
           "Type // in any meeting and Parleh does the work while you keep talking: it files the ticket, answers the question, books the follow-up and drafts every next step for one-tap approval. Coming back as an invite-only build.",
         status: "Invite only",
+        group: "In market",
         url: "https://parleh.ai",
       },
       {
@@ -585,20 +600,23 @@ const companiesData: Company[] = [
         description:
           "Powerful AI hardware sits idle in homes and labs while people rent the same capacity from a cloud. Cria lets providers share their local AI servers behind an OpenAI-compatible API. Built, shipped to real users, and paused while the live products get the time.",
         status: "Paused",
+        group: "Paused",
       },
       {
         name: "TrustFlow",
         tagline: "Automate admin, embed compliance.",
         description:
           "Administrative workflow automation for professional services teams: approvals, documentation and record-keeping, with audit safeguards built into the flow. December 2024 to June 2026, then sold; the acquirer is under NDA.",
-        status: "Sold",
+        status: "Exited",
+        group: "Exited",
       },
       {
         name: "Travel With RX",
         tagline: "A global prescription guide for travellers.",
         description:
           "A SaaS closed beta from August 2024 to May 2025, then an invite-only MCP server until December 2025, when it was sold; the acquirer is under NDA.",
-        status: "Sold",
+        status: "Exited",
+        group: "Exited",
       },
       {
         name: "Fractal",
@@ -606,13 +624,15 @@ const companiesData: Company[] = [
         description:
           "A product-truth platform: code, design and product artefacts in one living source, with role-specific views generated from it, so documentation stopped drifting from what was built. January 2025 to June 2026.",
         status: "Wound down",
+        group: "Wound down",
       },
       {
         name: "Liteworker",
         tagline: "A curated directory of AI tools.",
         description:
           "AI tools aggregated and curated, so people could find out what a new capability actually did without reading every launch post. 2023 to 2025.",
-        status: "No longer maintained",
+        status: "Wound down",
+        group: "Wound down",
       },
     ],
     clients: [
@@ -625,6 +645,46 @@ const companiesData: Company[] = [
       "ZheroTax",
       "Protagonist Health",
       "UniversoleFit",
+    ],
+  },
+  {
+    slug: "milton-innovation",
+    name: "Milton Innovation",
+    url: "https://miltoninnovation.com",
+    role: "Founder",
+    tagline: "One community for the people building in Halton.",
+    description:
+      "A community for the technologists, founders and makers of Milton and Halton. It began as meetups in Milton in November 2023; today it is one community with three parts — the Milton Innovation Community, Halton Built and MilTastic — under one name, one look and one mailing list.",
+    body: [
+      "Halton's tech community only gets heard if it speaks together. Milton Innovation started as meetups in Milton, and it is growing Halton-wide: the people we want to connect don't stop at town lines, so neither do we.",
+      "Everything here is part of the same community. The Community keeps meeting in Milton, Halton Built maps who is building across the four towns, and MilTastic runs the town's mesh radio network. Each has its own name and site; they share the family's look, one sign-up and the same people.",
+    ],
+    start: "2023-11",
+    products: [
+      {
+        name: "Milton Innovation Community",
+        tagline: "Where it started: the people, and the meetups.",
+        description:
+          "The meetups and the mailing list for technologists, innovators and creators in Milton. Milton-only things stay Milton-only; everything else now reaches all of Halton.",
+        status: "Active",
+        url: "https://miltoninnovation.com",
+      },
+      {
+        name: "Halton Built",
+        tagline: "Halton's tech community, mapped and connected.",
+        description:
+          "The companies, people, projects, events and funding across Milton, Oakville, Burlington and Halton Hills, in one place: who is building, who is open to talking, which projects are asking for help, and every event. Open now as a coming-soon list.",
+        status: "Coming soon",
+        url: "https://haltonbuilt.com",
+      },
+      {
+        name: "MilTastic",
+        tagline: "Milton's community mesh network.",
+        description:
+          "Off-grid Meshtastic and MeshCore radio for Milton: what the network is, a map of node coverage, the hardware that works with it, and a way for residents to ask for a node near them.",
+        status: "Live",
+        url: "https://miltastic.com",
+      },
     ],
   },
   {
@@ -645,28 +705,6 @@ const companiesData: Company[] = [
     start: "2021-02",
     networks: ["Angel One", "Sand Hill Angels", "N49P"],
   },
-  {
-    slug: "shossx",
-    name: "ShossX",
-    role: "Founder",
-    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue North.",
-    description:
-      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue North, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
-    body: [
-      "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
-    ],
-    start: "2021-02",
-    holdings: ["epilogue", "milton-innovation", "investing"],
-  },
-  {
-    slug: "milton-innovation",
-    name: "Milton Innovation",
-    role: "Founder",
-    tagline: "A community hub for technologists, innovators and creators in Milton.",
-    description:
-      "A thriving hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.",
-    start: "2023-11",
-  },
 ];
 
 export interface Project {
@@ -676,6 +714,12 @@ export interface Project {
   end?: string;
   status: string;
   association?: string;
+  /**
+   * Theme on /projects, for active personal work. The order of
+   * `projectGroups` is the display order; an active project without one
+   * lands in a trailing "Other" group.
+   */
+  group?: string;
   /** The project's own site, where it has one. */
   url?: string;
   /**
@@ -693,12 +737,42 @@ export interface Project {
 //   url:  the project's own site
 //   repo: public source only — a link to a private repo is a 404 for everyone
 //         but the author
+export const projectGroups = [
+  "For people",
+  "Sky, radio and transit",
+  "Agents and AI tools",
+  "The home lab",
+] as const;
+
 const projectsData: Project[] = [
   /* ---------------------------------------------------------------- Personal */
   {
+    name: "Ensemble",
+    description:
+      "One person speaks, one signs, and both follow the same conversation. A website, and a native iPhone and iPad app that does its work on the device itself, so the conversation never has to leave the phone to be understood.",
+    group: "For people",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // url: not public yet — the website is on staging only.
+    // repo: "https://github.com/mikeshoss/ensemble",
+  },
+  {
+    name: "Table Talk",
+    description:
+      "Learn the in-laws' language, one dinner at a time. A small website for one family practising Malayalam and Polish: short daily rounds of spoken cards, a streak, and a phrase a day to say to a real person. Family who speak it review every lesson.",
+    group: "For people",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // url: family only, behind a login.
+    // repo: "https://github.com/mikeshoss/table-talk",
+  },
+  {
     name: "Mugdock Castle 3D Reconstruction",
     description:
-      "An evidence-based digital reconstruction of Mugdock Castle, a Scottish scheduled monument, as it stood in 1640. Government LiDAR, a 1963 national survey plan, archive photographs, historic maps and excavation reports, lined up to within about a metre and placed on real-world coordinates. Every wall and tower carries its source and a confidence level — surviving, documented, inferred or speculative — so anyone can check any part of it. One data file drives everything: an interactive web viewer, phone AR and print-ready 3D models, built to WCAG 2.2 AA with a tactile print planned for blind and low-vision visitors. Licensed archive material stays private until permission is granted; outreach is under way with Historic Environment Scotland, the country park and the Clan Graham Society.",
+      "An evidence-based reconstruction of Mugdock Castle, a Scottish scheduled monument, as it stood in 1640. LiDAR, survey plans, archive photos and excavation reports lined up to about a metre, and every wall carries its source and a confidence level.",
+    group: "For people",
     start: "2026",
     status: "Active",
     association: "Personal",
@@ -706,39 +780,10 @@ const projectsData: Project[] = [
     // repo: "https://github.com/mikeshoss/",
   },
   {
-    name: "Hangar",
-    description:
-      "Start Claude Code sessions on your own machines, from your phone. Pick a machine, pick a project, tap start — or just ask Claude to do it.",
-    start: "2026-09",
-    status: "Active",
-    association: "Personal",
-    // url: "https://",
-    // repo: "https://github.com/mikeshoss/",
-  },
-  {
-    name: "Readback",
-    description:
-      "Who's scanning your plate? Every dot is a mapped automated licence plate reader in Canada — 58 published by the operating force itself, 162 operator-tagged, 116 unverified — and most scanning is not dots at all, but police fleets, which get their own layer. Each camera carries how it is known, so a claim can be checked rather than taken.",
-    start: "2026-09",
-    status: "Active",
-    association: "Personal",
-    url: "https://readback.ofrecord.ca",
-    repo: "https://github.com/mikeshoss/Readback",
-  },
-  {
-    name: "YTZ-Tracker",
-    description:
-      "ytzboard — a macOS menu-bar board for live movements at Billy Bishop Toronto City Airport (CYTZ/YTZ). The title shows the latest movement, holds it for two minutes, then goes quiet. Clicking gives the runway in use, the last ten movements with timestamps, and — behind Details — wind, visibility, ceiling and RVR. The dropdown is ordered by what changes a decision: the runway, and when it applies why nothing is moving, sit at the top; the instrumentation goes under Details, because knowing that the last poll was three seconds ago answers a question about the code, not about the airport.",
-    start: "2026-08",
-    status: "Active",
-    association: "Personal",
-    // url: "https://",
-    // repo: "https://github.com/mikeshoss/YTZ-Tracker",
-  },
-  {
     name: "Earshot",
     description:
-      "An ADS-B display for one specific window, and for your ears. Most plane-spotting displays answer what is flying near me. Earshot answers two more useful questions. Can I actually see it from here — not \"is it within 2 km\", but is it above the roofline in the direction this window faces, and is there cloud in the way. And is that what I can hear — it estimates loudness at your ear, ranks by it, and tells you how many seconds behind the aircraft the sound is. It runs entirely against a local ADS-B receiver; routes and weather are the only things that ever touch the network, and both are optional.",
+      "An ADS-B display for one window, and for your ears. Not what is flying near me, but whether I can actually see it from here, above the roofline and below the cloud, and whether that is what I can hear, and how many seconds behind it the sound is.",
+    group: "Sky, radio and transit",
     start: "2026-08",
     status: "Active",
     association: "Personal",
@@ -746,29 +791,21 @@ const projectsData: Project[] = [
     // repo: "https://github.com/mikeshoss/Earshot",
   },
   {
-    name: "Skopos",
+    name: "YTZ-Tracker",
     description:
-      "On-demand camera and microphone access to your own Macs, from your phone, over Tailscale. One menu bar agent per machine. No hub, no cloud, no app to install.",
+      "A macOS menu-bar board for live movements at Billy Bishop Toronto City Airport. The title shows the latest movement; one click gives the runway in use, the last ten movements and, behind Details, wind, visibility, ceiling and RVR.",
+    group: "Sky, radio and transit",
     start: "2026-08",
     status: "Active",
     association: "Personal",
     // url: "https://",
-    // repo: "https://github.com/mikeshoss/Skopos",
-  },
-  {
-    name: "GoTransit",
-    description:
-      "A small FastAPI service over the GO Transit / Metrolinx Open Data API. It hides the upstream's rough edges and exposes a clean, cached JSON API: departure boards, service alerts, stops, and live vehicles. The quirks it absorbs are the point — errors arrive as HTTP 200 with the real status buried in Metadata.ErrorCode, so a bad key returns 200 OK with a body saying 401. It caches everything, because Metrolinx disables keys that generate excessive traffic.",
-    start: "2026-09",
-    status: "Active",
-    association: "Personal",
-    // url: "https://",
-    // repo: "https://github.com/mikeshoss/Go-Transit",
+    // repo: "https://github.com/mikeshoss/YTZ-Tracker",
   },
   {
     name: "Open-Weatheradio",
     description:
-      "Weatheradio Canada's transmitters were shut down in the early hours of 31 March 2026. Around 230 VHF sites, reaching over 90 percent of the Canadian population, went off the air. The data that fed them did not go anywhere: every input Weatheradio consumed is still published, free, in machine-readable form — ECCC Datamart for weather products, NAADS for public alerting. What was cut was the last mile, a few hundred watts into an antenna. CAPCAST reassembles those streams into subscriber feeds, on amateur spectrum, for licensed operators.",
+      "Weatheradio Canada's 230 transmitters went off the air on 31 March 2026, but every feed they broadcast is still published free. CAPCAST reassembles the weather products and public alerts into subscriber feeds on amateur spectrum, for licensed operators.",
+    group: "Sky, radio and transit",
     start: "2026-04",
     status: "Active",
     association: "Personal",
@@ -776,9 +813,53 @@ const projectsData: Project[] = [
     // repo: "https://github.com/mikeshoss/Open-Weatheradio",
   },
   {
+    name: "GoTransit",
+    description:
+      "A small, cached API over GO Transit's open data: departure boards, service alerts, stops and live vehicles. It absorbs the upstream's quirks, like errors that arrive as 200 OK, and caches everything, because Metrolinx disables keys that call too often.",
+    group: "Sky, radio and transit",
+    start: "2026-09",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Go-Transit",
+  },
+  {
+    name: "Personal AI Assistant",
+    description:
+      "The assistant I actually want, rebuilt each time the ceiling moved. Disciples was a multi-user agent platform; Ultron, a self-hosted team of one orchestrator and five specialists on a Mac mini. Noesis, the third, is being built as something larger.",
+    group: "Agents and AI tools",
+    start: "2025-03",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Noesis",
+  },
+  {
+    name: "Hangar",
+    description:
+      "Start Claude Code sessions on my own machines from my phone. Pick a machine, pick a project, tap start, or just ask Claude to do it. Sessions keep running on the machine, and any of them can be opened again later from the phone.",
+    group: "Agents and AI tools",
+    start: "2026-09",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/",
+  },
+  {
+    name: "Shipyard",
+    description:
+      "Ships my iPhone, iPad and Mac apps to TestFlight by itself whenever their staging branch changes. A merged pull request becomes a build in testers' hands, with nobody sitting at Xcode. It runs on a Mac on the home network.",
+    group: "Agents and AI tools",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // repo: "https://github.com/mikeshoss/shipyard",
+  },
+  {
     name: "Overlord MCP",
     description:
-      "AI-controlled infrastructure: provision, command, destroy. An MCP server wrapping the Proxmox VE API, giving AI agents full control over virtual machine and container infrastructure — 83 tools covering the complete Proxmox surface across VMs, containers, networking, firewall, storage, backup, HA and monitoring, plus automated provisioning with 13 built-in recipes. Overlord is the orchestration layer that lets an agent provision its own infrastructure on demand, and it pairs with specialised servers like Reaper MCP: Overlord provisions the environment, Reaper operates inside it.",
+      "AI-controlled infrastructure: provision, command, destroy. An MCP server over the Proxmox VE API, with 83 tools across VMs, containers, networking, storage, backup and HA, plus 13 provisioning recipes. Overlord builds the environment; Reaper works inside it.",
+    group: "Agents and AI tools",
     start: "2026-03",
     status: "Active",
     association: "Personal",
@@ -788,7 +869,8 @@ const projectsData: Project[] = [
   {
     name: "Reaper MCP",
     description:
-      "Kali Linux security tools, summoned by AI. An MCP server that wraps Kali security testing tools so AI agents — Claude Desktop, Cursor, OpenClaw — can invoke them directly. Kali Linux, all 24 tools and the MCP server are packaged into a single Docker container, so there is no separate Kali install to maintain: docker build pulls the official kalilinux/kali-rolling image and installs everything automatically.",
+      "Kali Linux security tools, summoned by AI. An MCP server that lets agents such as Claude Desktop and Cursor run 24 Kali tools directly, packaged with Kali itself into one Docker container, so there is no separate install to maintain.",
+    group: "Agents and AI tools",
     start: "2026-03",
     status: "Active",
     association: "Personal",
@@ -796,34 +878,59 @@ const projectsData: Project[] = [
     // url: "https://",
   },
   {
-    name: "ReelMind",
+    name: "Command",
     description:
-      "A self-hosted recommendation engine for Plex. It learns what you like, finds more of it, downloads it, organizes it, and adds it to your library — all while staying out of the way when you're watching something. Powered by a local model via Ollama: no cloud services, no subscriptions, no data leaving your network. Six recommendation sources, from \"more like what you love\" to news headlines mapped to culturally relevant media, each with an optional auto-download mode; filling franchise gaps stays manual, because a model can hallucinate a sequel that does not exist. A playback guard pauses the whole pipeline while anyone is streaming.",
-    start: "2026-03",
+      "One place to see and run the house: every service, backup, drive, deploy and download on the home network, and one switch to turn any of them off and on that records who and why. Its iPhone app adds widgets, a Control Center button and Face ID.",
+    group: "The home lab",
+    start: "2026-11",
     status: "Active",
     association: "Personal",
-    repo: "https://github.com/mikeshoss/reelmind",
-    // url: "https://",
-  },
-  {
-    name: "Personal AI Assistant",
-    description:
-      "The assistant I actually want, rebuilt each time the ceiling moved. Disciples came first: a modular, multi-user agent platform coordinating tasks and workflows over plain text. Ultron replaced it — a fully autonomous agent team on a single Mac Mini, one orchestrator and five specialists working across Telegram, Slack, Gmail and a custom kanban board, entirely self-hosted with no cloud infrastructure; its multi-agent routing, role-based delegation and orchestration framework came straight out of Disciples. Noesis is the third, and is being built as something larger than either.",
-    start: "2025-03",
-    status: "Active",
-    association: "Personal",
-    // url: "https://",
-    // repo: "https://github.com/mikeshoss/Noesis",
+    // url: private — runs on the home network only.
+    // repo: "https://github.com/mikeshoss/command",
   },
   {
     name: "Self-Hosted AI & Infrastructure Lab",
     description:
-      "Built and operated a self-hosted lab environment to assess AI tools, automation workflows, and infrastructure patterns. Deployed containerised services across multiple machines using Docker and Portainer, evaluating local-first AI workflows and dedicated compute setups.",
+      "A lab across several machines for testing AI tools, automation and infrastructure before trusting them: containerised services under Docker and Portainer, local models on dedicated hardware, and monitoring that pages my phone when something breaks.",
+    group: "The home lab",
     start: "2020-01",
     status: "Active",
     association: "Personal",
     // url: "https://",
     // repo: "https://github.com/mikeshoss/",
+  },
+
+  {
+    name: "Skopos",
+    description:
+      "On-demand camera and microphone access to my own Macs, from my phone, over Tailscale. One small menu bar agent per machine, and nothing else: no hub in the middle, no cloud service, and no app to install on the phone.",
+    group: "The home lab",
+    start: "2026-08",
+    status: "Active",
+    association: "Personal",
+    // url: "https://",
+    // repo: "https://github.com/mikeshoss/Skopos",
+  },
+  {
+    name: "Muninn",
+    description:
+      "A self-hosted companion for a wearable recording pendant. It syncs over Bluetooth from a Mac, sets the clock, pulls every recording down verified, transcribes with my own models and keeps every word on my own machines. Named for Odin's raven of memory.",
+    group: "The home lab",
+    start: "2026-09",
+    status: "Active",
+    association: "Personal",
+    // repo: "https://github.com/mikeshoss/limitless-local",
+  },
+  {
+    name: "ReelMind",
+    description:
+      "A self-hosted recommendation engine for Plex: it learns what you like, finds more, downloads and files it, and stays out of the way while anyone is watching. Runs on a local model through Ollama, with no cloud, no subscription and no data leaving the house.",
+    group: "The home lab",
+    start: "2026-03",
+    status: "Active",
+    association: "Personal",
+    repo: "https://github.com/mikeshoss/reelmind",
+    // url: "https://",
   },
 
   // Earlier work, newest first. Most predate the site and were sunsetted years
@@ -958,7 +1065,7 @@ const projectsData: Project[] = [
       "A global prescription guide for travellers. A SaaS closed beta from August 2024 to May 2025, then an invite-only MCP server until it was sold in December 2025.",
     start: "2024-08",
     end: "2025-12",
-    status: "Sold",
+    status: "Exited",
     association: "Epilogue",
     // url: "https://",
     // repo: "https://github.com/mikeshoss/TravelWithRX",
@@ -969,7 +1076,7 @@ const projectsData: Project[] = [
       "A discovery platform that aggregates and curates AI tools, helping users explore new capabilities and stay current with emerging technologies.",
     start: "2023",
     end: "2025",
-    status: "No Longer Maintained",
+    status: "Wound down",
     association: "Epilogue",
     // url: "https://",
     // repo: "https://github.com/mikeshoss/",
