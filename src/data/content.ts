@@ -502,8 +502,21 @@ export interface Company {
 }
 
 // Display order, not chronology: the ventures index and the home page both read
-// this array top-down, so the flagship leads.
+// this array top-down: the holding company, then what it owns (Mike, 2026-11-25).
 const companiesData: Company[] = [
+  {
+    slug: "shossx",
+    name: "ShossX",
+    role: "Founder",
+    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue North.",
+    description:
+      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue North, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
+    body: [
+      "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
+    ],
+    start: "2021-02",
+    holdings: ["epilogue", "milton-innovation", "investing"],
+  },
   {
     slug: "epilogue",
     name: "Epilogue",
@@ -628,6 +641,46 @@ const companiesData: Company[] = [
     ],
   },
   {
+    slug: "milton-innovation",
+    name: "Milton Innovation",
+    url: "https://miltoninnovation.com",
+    role: "Founder",
+    tagline: "One community for the people building in Halton.",
+    description:
+      "A community for the technologists, founders and makers of Milton and Halton. It began as meetups in Milton in November 2023; today it is one community with three parts — the Milton Innovation Community, Halton Built and MilTastic — under one name, one look and one mailing list.",
+    body: [
+      "Halton's tech community only gets heard if it speaks together. Milton Innovation started as meetups in Milton, and it is growing Halton-wide: the people we want to connect don't stop at town lines, so neither do we.",
+      "Everything here is part of the same community. The Community keeps meeting in Milton, Halton Built maps who is building across the four towns, and MilTastic runs the town's mesh radio network. Each has its own name and site; they share the family's look, one sign-up and the same people.",
+    ],
+    start: "2023-11",
+    products: [
+      {
+        name: "Milton Innovation Community",
+        tagline: "Where it started: the people, and the meetups.",
+        description:
+          "The meetups and the mailing list for technologists, innovators and creators in Milton. Milton-only things stay Milton-only; everything else now reaches all of Halton.",
+        status: "Active",
+        url: "https://miltoninnovation.com",
+      },
+      {
+        name: "Halton Built",
+        tagline: "Halton's tech community, mapped and connected.",
+        description:
+          "The companies, people, projects, events and funding across Milton, Oakville, Burlington and Halton Hills, in one place: who is building, who is open to talking, which projects are asking for help, and every event. Open now as a coming-soon list.",
+        status: "Coming soon",
+        url: "https://haltonbuilt.com",
+      },
+      {
+        name: "MilTastic",
+        tagline: "Milton's community mesh network.",
+        description:
+          "Off-grid Meshtastic and MeshCore radio for Milton: what the network is, a map of node coverage, the hardware that works with it, and a way for residents to ask for a node near them.",
+        status: "Live",
+        url: "https://miltastic.com",
+      },
+    ],
+  },
+  {
     // Named Prologue North on 2026-11-13 (was the placeholder "Angel
     // investing", briefly "Prologue Capital", and before that CedarPeak
     // Ventures). Keep the slug: it is the indexed URL.
@@ -644,28 +697,6 @@ const companiesData: Company[] = [
     ],
     start: "2021-02",
     networks: ["Angel One", "Sand Hill Angels", "N49P"],
-  },
-  {
-    slug: "shossx",
-    name: "ShossX",
-    role: "Founder",
-    tagline: "The holding company behind Epilogue, Milton Innovation and Prologue North.",
-    description:
-      "The holding company. ShossX owns Epilogue, Milton Innovation and Prologue North, the company through which the angel investing is done — one structure, so each can be run on its own terms.",
-    body: [
-      "ShossX is the entity that owns the others. Epilogue is where the consulting and product work happens, Milton Innovation is the community, and the investing runs through its own company. Keeping them under one holding company means each can have the structure it needs — a studio, a non-profit-shaped community, an investment vehicle — without any of them having to be all three.",
-    ],
-    start: "2021-02",
-    holdings: ["epilogue", "milton-innovation", "investing"],
-  },
-  {
-    slug: "milton-innovation",
-    name: "Milton Innovation",
-    role: "Founder",
-    tagline: "A community hub for technologists, innovators and creators in Milton.",
-    description:
-      "A thriving hub where tech enthusiasts, innovators, and creators converge to share ideas, learn, and network.",
-    start: "2023-11",
   },
 ];
 
@@ -714,6 +745,54 @@ const projectsData: Project[] = [
     association: "Personal",
     // url: "https://",
     // repo: "https://github.com/mikeshoss/",
+  },
+  {
+    name: "Ensemble",
+    description:
+      "One person speaks, one signs, and both follow the same conversation. A website, and a native iPhone and iPad app that does its work on the device itself.",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // url: not public yet — the website is on staging only.
+    // repo: "https://github.com/mikeshoss/ensemble",
+  },
+  {
+    name: "Command",
+    description:
+      "One place to see and run the house: every service, backup, drive, deploy and download on the home network, with a single switch to turn any of them off and on that records who did it and why. An iPhone app sits on top, with Home Screen and Lock Screen widgets, a Control Center button and Face ID. It replaced the older dashboards.",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // url: private — runs on the home network only.
+    // repo: "https://github.com/mikeshoss/command",
+  },
+  {
+    name: "Table Talk",
+    description:
+      "Learn the in-laws' language, one dinner at a time. A small website for one family, practising Malayalam and Polish: short daily rounds of spoken cards, a streak, a phrase a day to say to a real person, and an optional tutor. Family members who speak a language review the lessons and record their own voices, and nothing reaches anyone else until it is approved.",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // url: family only, behind a login.
+    // repo: "https://github.com/mikeshoss/table-talk",
+  },
+  {
+    name: "Shipyard",
+    description:
+      "Ships my iPhone, iPad and Mac apps to TestFlight on its own whenever their staging branch changes. A merge is a build in testers' hands, with no one at Xcode.",
+    start: "2026-11",
+    status: "Active",
+    association: "Personal",
+    // repo: "https://github.com/mikeshoss/shipyard",
+  },
+  {
+    name: "Muninn",
+    description:
+      "A self-hosted companion for a wearable recording pendant: sync it over Bluetooth from a Mac, transcribe with your own models, and keep every word on your own machines. It sets the device's clock, pulls every recording down verified, re-dates the ones made before the clock was set, and serves days, transcripts, search and audio. Named for Odin's raven of memory, which flies out and brings back what it heard.",
+    start: "2026-09",
+    status: "Active",
+    association: "Personal",
+    // repo: "https://github.com/mikeshoss/limitless-local",
   },
   {
     name: "Readback",
