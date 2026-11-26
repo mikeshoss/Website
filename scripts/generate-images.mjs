@@ -49,7 +49,7 @@ const card = (output, params) => ({
 
 const HOME = {
   eyebrow: 'MS–01 · Milton, Ontario',
-  title: 'I ship AI products in industries where being wrong is *expensive*.',
+  title: 'I build AI products for work where mistakes are *costly*.',
 };
 
 const icon = (output, size) => ({ source: 'scripts/apple-touch-icon.html', query: '', output, width: size, height: size });

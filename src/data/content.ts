@@ -139,7 +139,7 @@ export const site = {
    * twitter:description and the JSON-LD Person description. Keep it under 160.
    */
   description:
-    `Mike Shoss ships AI products in industries where being wrong is expensive. Founder of Epilogue. ${patentCount} patents in AI.`,
+    `Mike Shoss builds AI products for work where mistakes are costly. Founder of Epilogue. ${patentCount} patents in AI.`,
   url: "https://mikeshoss.com",
   linkedin: "https://www.linkedin.com/in/mikeshoss",
   github: "https://github.com/mikeshoss",
@@ -149,15 +149,15 @@ export const site = {
 };
 
 export const hero = {
-  headline: "I ship AI products in industries where being wrong is expensive.",
+  headline: "I build AI products for work where mistakes are costly.",
   /**
    * The one word the home page sets in italic amber. Must appear in the
    * headline verbatim; every other consumer (llms.txt, the API) ignores it.
    */
-  headlineEmphasis: "expensive",
+  headlineEmphasis: "costly",
   /** Who, before what. The current employer is one clause, not the lead. */
   subheadline:
-    `Founder, product leader and builder, ${yearsExperience}+ years in. I've led product at Caseware, Firework and VerticalScope, hold ${patentCount} patents in AI, and run Epilogue. I look at where business and AI are going, then build what works now.`,
+    `Founder, product leader and builder, ${yearsExperience}+ years in. I've led product at Caseware, Firework and VerticalScope, hold ${patentCount} patents in AI, and run Epilogue.`,
   credibility:
     `The last stretch was audit — building and launching the Document Intelligence Agent at Caseware, which shipped as Verity Docs and cut document work by 75% against a 50% target, at 97% extraction accuracy and 100% weekly active use. Now it's legal. Before that, scaling product orgs at Firework (Softbank-backed, $150M Series B) and VerticalScope. ${patentCount} patents, ${grantedPatentCount} granted.`,
   /**
@@ -193,7 +193,7 @@ export const hero = {
   /** The argument behind the headline. Rendered as prose on the home page. */
   thesis: [
     "High-consequence work is document-dense, precedent-driven, and reviewed by people whose licence is on the line. You can't ship a confident guess into that. What you can ship is a system that knows what it knows, shows its work, and fails visibly instead of quietly — and that's a product problem long before it's a model problem.",
-    "I build the governance alongside the product rather than after it. At Caseware that meant standing up an ISO/IEC 42001-aligned AI management system inside the release pipeline, which turned compliance from a blocker into a sales accelerant.",
+    "I build the governance alongside the product rather than after it. At Caseware that meant standing up an ISO/IEC 42001-aligned AI management system inside the release pipeline, so compliance was checked with every release instead of after it.",
   ],
   whatIDo: [
     "Take a persistent, expensive, document-heavy workflow and turn it into a product people use every week",
@@ -283,7 +283,7 @@ export const credits: Credit[] = [
     label: "Caseware",
     year: "2025",
     credit: "Led",
-    result: "Governance built into the release pipeline. Compliance turned from a blocker into a sales accelerant.",
+    result: "Governance built into the release pipeline, so compliance was checked with every release.",
   },
   {
     work: "ContractorOS",
@@ -426,11 +426,10 @@ export const machineRoom = [
   },
 ];
 
-/** Who Mike is, in his own words (from the 2026-11 brief). */
+/** Who Mike is, in his own words. Plain on purpose (Mike, 2026-11-26): what he does, not what others think of him. */
 export const about = [
-  "I'm the first one in. I work hard, I look further out than is comfortable, and I care about the work and the people doing it.",
-  "That's why I serve on the board of the Milton Community Resource Centre and mentor founders. Getting good at something is only half the job; the other half is making sure the people around you are taken care of.",
-  "People who've worked with me will tell you I'm a pain in the ass. They'll also tell you they'd follow me to the next thing, because they trust my judgment.",
+  "I work hard on the things I take on, and I care about the people doing the work with me.",
+  "Outside work, I serve on the board of the Milton Community Resource Centre and mentor founders.",
 ];
 
 export const skills = [
@@ -1140,7 +1139,7 @@ const experienceData: ExperienceRole[] = [
     highlights: [
       "Hired to build Caseware's AI function from the ground up.",
       "Partnered with the CPO and CTO to define and operationalize the company-wide AI strategy and governance model, securing multi-year funding and executive buy-in across all product lines.",
-      "Founded and scaled Caseware Studio, transforming R&D velocity by enabling a 43-person product org to ship validated prototypes within 24h and production-ready AI features within one week.",
+      "Founded and scaled Caseware Studio, helping a 43-person product org ship validated prototypes within 24h and production-ready AI features within one week.",
       "Led rollout of a company-wide AI enablement stack (custom GPTs, Copilot, Replit) and internal training program; adoption reduced cycle times by 80% and freed 15+ hours per contributor weekly.",
       "Directed cross-platform product foundations—SDKs, design systems, and telemetry pipelines—to standardize delivery, experimentation, and measurable customer impact.",
       "Implemented ISO/IEC 42001-aligned AI Management System, integrating governance, risk assessment, and ethical AI practices into release pipelines; accelerated enterprise compliance and contract velocity.",
@@ -1207,7 +1206,7 @@ const experienceData: ExperienceRole[] = [
     end: "2023-09",
     location: "Toronto / San Francisco",
     highlights: [
-      "Drove product strategy and investment instrumental in securing $150M Series B funding round led by Softbank; regularly briefed executives and board.",
+      "Worked on the product strategy and investment case behind the $150M Series B led by SoftBank; regularly briefed executives and the board.",
       "Led AI integration initiatives, increasing user engagement 400% and doubling conversions.",
       "Built and scaled 60-member global team across five product lines.",
       "Increased informed purchase decisions by 108% and user engagement by 167% via OKRs.",
@@ -1222,7 +1221,7 @@ const experienceData: ExperienceRole[] = [
     location: "Toronto / San Francisco",
     highlights: [
       "Scaled content initiatives, growing DAUs 500x; expanded Fortune 500 partnerships.",
-      "Pioneered live-shopping experience, boosting conversions 21% and setting the industry standard.",
+      "Launched a live-shopping experience that lifted conversions 21%.",
     ],
   },
   {
@@ -1635,7 +1634,7 @@ export const interests: Interest[] = [
     slug: "amateur-radio",
     search: "ham radio aprs meshtastic adsb",
     name: "Amateur radio",
-    summary: "Repeaters and digipeaters running at my house for APRS, LoRa APRS, Meshtastic and MeshCore, plus an ADS-B receiver tracking the aircraft overhead. Infrastructure other people's radios lean on.",
+    summary: "Repeaters and digipeaters running at my house for APRS, LoRa APRS, Meshtastic and MeshCore, plus an ADS-B receiver tracking the aircraft overhead. The repeaters are there for other operators to use too.",
     status: "On air",
     keywords: [
       "APRS",
@@ -1658,7 +1657,7 @@ export const interests: Interest[] = [
     search: "pokemon magic tcg collection slabs",
     name: "Trading cards",
     aka: "TCG · Pokémon and Magic: The Gathering",
-    summary: "Vintage Pokémon, done properly: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
+    summary: "Vintage Pokémon: Wizards of the Coast-era sets, one card at a time, until the binder is full. And Commander decks, because building the deck is the fun part.",
     status: "Collecting",
     keywords: ["Wizards-era Pokémon", "Set completion", "Porygon master set", "Graded slabs", "Magic: The Gathering", "Commander"],
   },
@@ -1666,7 +1665,7 @@ export const interests: Interest[] = [
     slug: "homelab",
     search: "servers infrastructure lab",
     name: "Homelab",
-    summary: "I should be able to do any work, anywhere, on any device. Five servers, over a hundred containers and a bench of local AI models make that true. Run like production, because some of it is.",
+    summary: "I wanted to be able to do any work, anywhere, on any device. Five servers, over a hundred containers and some local AI models make that work.",
     status: "Running",
     keywords: [
       "Self-hosted infrastructure",

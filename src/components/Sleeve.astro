@@ -22,7 +22,7 @@ interface Props {
 const { class: className = '', variant = 'sticker' } = Astro.props;
 const sticker = variant === 'sticker';
 
-const tracks = ['First one in', 'Further out than is comfortable', 'Take care of the people', 'Pain in the ass (radio edit)', 'Follow me to the next thing'];
+const tracks = ['Product', 'AI systems', 'Boards and mentoring', 'Radio', 'Old bikes'];
 ---
 
 <div class:list={['sleeve-wrap relative', className]}>
@@ -52,13 +52,13 @@ const tracks = ['First one in', 'Further out than is comfortable', 'Take care of
         />
         {sticker && (
           <span class="spine" aria-hidden="true">
-            <span class="spine-text">Mike Shoss <span class="text-accent">·</span> The producer <span class="text-accent">·</span> MS–01</span>
+            <span class="spine-text">Mike Shoss <span class="text-accent">·</span> Product &amp; AI <span class="text-accent">·</span> MS–01</span>
           </span>
         )}
         {sticker && (
           <span class="hype" aria-hidden="true">
-            <span class="hype-top">The hit</span>
-            <span class="hype-main">"If my name's on it"</span>
+            <span class="hype-top">Side B</span>
+            <span class="hype-main">On the back</span>
             <span class="hype-bottom">Flip ↻</span>
           </span>
         )}
@@ -68,7 +68,7 @@ const tracks = ['First one in', 'Further out than is comfortable', 'Take care of
         <span class:list={['absolute bottom-0 inset-x-0 flex items-end justify-between gap-3 p-[5%] bg-gradient-to-t from-black/55 to-transparent pt-[18%]', sticker && 'pl-[13%]']}>
           <span>
             <span class="block font-medium text-white text-lg leading-none tracking-tight">Mike Shoss</span>
-            <span class="block font-mono text-[0.625rem] uppercase tracking-[0.18em] text-white/70 mt-1.5">The producer</span>
+            <span class="block font-mono text-[0.625rem] uppercase tracking-[0.18em] text-white/70 mt-1.5">Product &amp; AI</span>
           </span>
           {!sticker && <span class="flip-hint font-mono text-[0.625rem] uppercase tracking-[0.16em] text-white/80 flex items-center gap-1.5">Flip <span aria-hidden="true">↻</span></span>}
         </span>

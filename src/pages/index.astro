@@ -111,8 +111,7 @@ const givingBack = [
         <div class="md:col-span-5">
           <h2 class="display text-display-lg max-w-[9.422em]">The tools behind the work.</h2>
           <p class="mt-6 text-carbon-muted leading-relaxed max-w-prose">
-            Shipping fast in high-stakes work isn't heroics. It's infrastructure: agents, pipelines and
-            checks that make the right thing the easy thing. Most of mine run in my house.
+            Some of the tools I use to build and run things. Most of them run at home.
           </p>
           <div class="mt-10 h-28 rounded-2xl grille-dark hidden md:block" aria-hidden="true"></div>
         </div>
@@ -133,13 +132,13 @@ const givingBack = [
 
   <!-- ============================================================ Calls -->
   <section class="section" id="calls">
-    <p class="eyebrow rule pt-6">04 — Where it's going</p>
+    <p class="eyebrow rule pt-6">04 — What I think</p>
     <div class="mt-8 grid md:grid-cols-12 gap-8">
       <div class="md:col-span-5">
-        <h2 class="display text-display-lg max-w-[9.422em]">Looking ahead. Building for now.</h2>
+        <h2 class="display text-display-lg max-w-[9.422em]">A few things I think.</h2>
         <p class="mt-6 text-muted leading-relaxed text-sm max-w-prose">
-          Calls on where business and AI are going, dated when I made them and marked right or wrong
-          when the time comes. Opinions are cheap. A record isn't.
+          Guesses about where business and AI are going, dated when I wrote them so I can check back
+          later. Some of them will be wrong.
         </p>
       </div>
       <ol class="md:col-span-7 ruled">
@@ -147,7 +146,7 @@ const givingBack = [
           <li class="py-6">
             <p class="text-lg text-bone leading-snug">{c.call}</p>
             <p class="mt-3 flex items-center gap-4 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted">
-              <span>Called {formatDate(c.made)}</span>
+              <span>Written {formatDate(c.made)}</span>
               <span class="flex items-center gap-1.5">
                 <span class={c.status === 'Open' ? 'led-off' : c.status === 'Right' ? 'led' : 'inline-block w-2 h-2 rounded-full bg-accent'} aria-hidden="true"></span>
                 {c.status}
@@ -241,8 +240,8 @@ const givingBack = [
           <Key class="w-14 h-14" />
           <span class="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">Press it</span>
         </div>
-        <h2 class="display text-display-md sm:text-display-lg mt-8"><span class="block">No decks. No theatre.</span><span class="block">Bring the problem.</span></h2>
-        <p class="mt-5 text-muted max-w-prose">If it's real and it's expensive to get wrong, I want to hear about it.</p>
+        <h2 class="display text-display-md sm:text-display-lg mt-8">Let's talk.</h2>
+        <p class="mt-5 text-muted max-w-prose">If you're working on something where mistakes are costly, I'd like to hear about it.</p>
       </div>
       <div class="md:col-span-4 flex flex-col items-start md:items-end gap-4">
         <a href={withCampaign(studio.url, 'home-contact-book-the-studio')} target="_blank" rel="noopener noreferrer" class="btn-primary">Work with me <span aria-hidden="true">↗</span></a>
