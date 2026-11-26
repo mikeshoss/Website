@@ -3,7 +3,7 @@
  * The producer tag. A record producer's tag is the few seconds you hear before
  * the first beat — it says who made this before anything else does.
  *
- * With `animate` (the hero), the mark draws itself and "Produced by Mike Shoss"
+ * With `animate` (the hero), the mark draws itself and "Mike Shoss"
  * types out behind an orange cursor that keeps blinking. Everything is CSS
  * and starts in its "before" state from the first paint (the `js` class set
  * in Layout's head), so nothing appears and then resets. The line's full
@@ -24,7 +24,7 @@ const { size = 'inline', dark = false, animate = false } = Astro.props;
 ---
 
 <div class:list={['producer-tag flex items-center', size === 'hero' ? 'gap-3.5' : 'gap-2.5', animate && 'tag-type']} data-tag={animate ? 'animate' : 'still'}>
-  <button type="button" data-tag-play class="shrink-0 rounded-full -m-1 p-1" aria-label="Play the producer tag" title="Play the tag">
+  <button type="button" data-tag-play class="shrink-0 rounded-full -m-1 p-1" aria-label="Play the chime" title="Play the chime">
     <Mark class={size === 'hero' ? 'h-10' : 'h-[1.125rem]'} dark={dark} cursor={false} animate={animate} />
   </button>
   <p
@@ -35,7 +35,7 @@ const { size = 'inline', dark = false, animate = false } = Astro.props;
     ]}
   >
     <span class="tag-line">
-      <span class="tag-text">Produced by <span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span></span><span
+      <span class="tag-text"><span class={dark ? 'text-carbon-text' : 'text-bone'}>Mike Shoss</span></span><span
         class:list={['tag-cursor inline-block bg-accent align-middle', animate ? '' : 'tag-still', size === 'hero' ? 'w-[0.5em] h-[1.25em] ml-[0.15em]' : 'w-[0.45em] h-[1.2em] ml-[0.1em]']}
         aria-hidden="true"
       ></span>

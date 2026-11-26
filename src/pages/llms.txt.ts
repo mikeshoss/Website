@@ -48,8 +48,8 @@ ${list(hero.whatIDo)}
 ## Selected results
 ${list(selectedResults.map((r) => `${r.value} — ${r.label}. ${r.detail}`))}
 
-## Credits
-The work he is known for, as liner notes: the work, who it was for, his credit on it, and the result. Full list: [Credits](${site.url}/credits/)
+## Selected work
+The work, who it was for, what he did on it, and the result. Full list: [Selected work](${site.url}/credits/)
 ${list(credits.map((c) => `${c.work} (${c.label}, ${c.year}) — ${c.credit}. ${c.result}`))}
 
 ## Current Roles

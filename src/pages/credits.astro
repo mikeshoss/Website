@@ -13,14 +13,14 @@ const isExternal = (href: string) => href.startsWith('http');
 
 <Layout
   card="credits"
-  title="Credits — Mike Shoss"
+  title="Selected work — Mike Shoss"
   description="What Mike Shoss has produced, founded, built and backed — the work, who it was for, and what it did."
-  breadcrumbs={[{ name: 'Credits', href: '/credits' }]}
+  breadcrumbs={[{ name: 'Selected work', href: '/credits' }]}
   schema={[
     {
       '@type': 'ItemList',
       '@id': `${site.url}/credits/#credits`,
-      name: 'Credits — Mike Shoss',
+      name: 'Selected work — Mike Shoss',
       numberOfItems: credits.length,
       itemListElement: credits.map((c, index) => ({
         '@type': 'ListItem',
@@ -32,10 +32,10 @@ const isExternal = (href: string) => href.startsWith('http');
 >
   <section class="page pt-14 md:pt-20 pb-12 md:pb-16">
     <div class="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
-      <span>Side A · Selected works</span>
-      <span>{credits.length} tracks</span>
+      <span>Selected work</span>
+      <span>{credits.length} entries</span>
     </div>
-    <h1 class="display text-display-xl mt-12 max-w-[9.422em]">Credits.</h1>
+    <h1 class="display text-display-xl mt-12 max-w-[9.422em]">Selected work.</h1>
     <p class="lede mt-8 max-w-prose">
       The work, who it was for, what I did on it, and what happened.
     </p>

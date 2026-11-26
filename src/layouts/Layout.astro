@@ -69,7 +69,7 @@ const canonicalUrl = canonical ?? absolute(Astro.url.pathname);
 // once per page, not per request.
 const cardFile = existsSync(`public/og/${card}.png`) ? card : 'home';
 const ogImage = `${site.url}/og/${cardFile}.png`;
-const ogImageAlt = `${title} — social card in the site's design, produced by ${site.name}`;
+const ogImageAlt = `${title} — share card for ${site.name}'s site`;
 // A real photo for the Person node: what Google and AI tools show for "Mike Shoss".
 const portrait = `${site.url}/brand/mike-shoss-portrait.jpg`;
 

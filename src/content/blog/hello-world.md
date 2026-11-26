@@ -18,6 +18,6 @@ I'll be writing about:
 - **Projects and experiments** — behind-the-scenes on what I'm building
 - **Lessons from the field** — patterns, mistakes, and things I'd do differently
 
-No fluff. No thought leadership for its own sake. Just useful observations from someone who ships.
+I'll try to be useful, including about what didn't work.
 
 More soon.

@@ -340,7 +340,7 @@ export const credits: Credit[] = [
     label: "Government of Canada",
     year: "2024",
     credit: "Advised",
-    result: "Contributed to the strategy guiding Canada's AI infrastructure.",
+    result: "Contributed to the federal strategy for Canada's AI compute.",
   },
   {
     work: "Epilogue",
@@ -383,17 +383,17 @@ export const studio = { name: "Epilogue", url: "https://epiloguelabs.com" };
 
 export const calls: Call[] = [
   {
-    call: "Governance stops being a document and becomes part of the build. The AI teams that win regulated buyers will ship their audit trail with every release.",
+    call: "I think AI governance will move out of documents and into the build, and teams selling to regulated buyers will ship an audit trail with every release.",
     made: "2026-11",
     status: "Open",
   },
   {
-    call: "The scarce skill isn't prompting or picking a model. It's knowing which expensive, document-heavy workflow to point the machine at.",
+    call: "I think the scarce skill won't be prompting or picking a model, but knowing which costly, document-heavy job is worth pointing AI at.",
     made: "2026-11",
     status: "Open",
   },
   {
-    call: "In high-stakes work, the AI products that win will advertise what they don't know. Visible failure becomes a feature buyers ask for.",
+    call: "I think the AI products that do well in high-stakes work will be upfront about what they don't know, and buyers will start asking for it.",
     made: "2026-11",
     status: "Open",
   },
@@ -519,7 +519,7 @@ const companiesData: Company[] = [
     role: "Founder & Principal — AI Consulting & Product Studio",
     tagline: "Turning complex business problems into practical AI systems.",
     description:
-      "An AI company that turns complex business problems into practical, high-impact solutions. Epilogue runs two tightly integrated arms: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
+      "An AI company that turns hard business problems into practical AI systems. Epilogue runs two tightly integrated arms: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
     body: [
       "Most AI work stalls in the gap between a promising demo and something a business will actually run on. Epilogue exists to close that gap. The consulting arm decides what is worth building, how it should be priced, and how it goes to market. The studio arm builds it, validates it with real users, and then either spins it out or hands it to the partner organization to operate.",
       "The two arms feed each other. Client work surfaces problems common enough to productize, and the studio's products give the consulting practice working systems to point at instead of slideware.",
@@ -696,10 +696,10 @@ const companiesData: Company[] = [
     role: "Angel Investor",
     tagline: "Backing early-stage Canadian AI, science and technology companies.",
     description:
-      "Investing in early-stage Canadian science and technology companies, with a focus on AI. Canada builds world-class startups and then outsources their scale — the gap is in speed, risk appetite, and cheque size, not talent.",
+      "Investing in early-stage Canadian science and technology companies, mostly AI, through syndicates, angel networks and funds.",
     body: [
-      "Canada builds world-class startups and then outsources their scale. I would like that to stop. The constraint has never been talent; it is speed, risk appetite, and cheque size at exactly the stage where those three decide whether a company stays here.",
-      "I invest through syndicates, angel networks and funds rather than alone. That gets more capital to a founder faster than any single cheque would, and it puts operators around the table alongside the money.",
+      "Canada builds good startups, and too many of them go elsewhere to grow. I'd like to help more of them stay. From what I've seen, the gap isn't talent; it's speed, appetite for risk and cheque size at the stage where those decide where a company grows.",
+      "I invest through syndicates, angel networks and funds rather than alone. My cheques are small; pooled, they get more money to a founder faster, with experienced people around the table.",
     ],
     start: "2021-02",
     networks: ["Angel One", "Sand Hill Angels", "N49P"],
@@ -1109,7 +1109,7 @@ const experienceData: ExperienceRole[] = [
     start: "2023-11",
     location: "Toronto, Ontario, Canada",
     highlights: [
-      "An AI company that turns complex business problems into practical, high-impact solutions: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
+      "An AI company that turns hard business problems into practical AI systems: a consulting practice that sets AI strategy and product direction, and a product studio that builds and validates AI-native products end to end.",
     ],
   },
   {
@@ -1119,15 +1119,15 @@ const experienceData: ExperienceRole[] = [
     end: "2026-07",
     location: "Toronto, ON",
     highlights: [
-      "Head of Caseware Studio, leading the enterprise AI and ecosystem mandate — AI strategy, platform extensibility, and the developer ecosystem across products, partners, and the broader audit-tech landscape.",
-      "Built and launched the Document Intelligence Agent (shipped as Verity Docs): 75% time savings against a 50% target, 97% extraction accuracy, and 100% weekly active use.",
+      "Ran Caseware Studio and the enterprise AI and ecosystem work: AI strategy, platform extensibility and the developer ecosystem across products and partners.",
+      "Led product on the Document Intelligence Agent (shipped as Verity Docs). It cut document time by 75% against a 50% target, with 97% extraction accuracy and 100% weekly active use.",
       "Contributed to the Verity platform launch and the MNP Agentic Pioneer Program founding partnership.",
-      "Defined the company-wide ecosystem strategy across integrations, APIs, shared services, and marketplace readiness.",
-      "Led platform foundations — SDKs, developer experience, and cross-product standards — to enable third-party and AI innovation at scale.",
-      "Partnered with Business Development, Engineering, and Product on build/partner/co-develop decisions tied to growth metrics.",
-      "Scaled Studio's delivery model across the org: validated prototypes in 24 hours, production-ready features in one week.",
-      "Maintained the ISO/IEC 42001-aligned AI Management System as governance moved from rollout into steady-state release operations.",
-      "Owned AI quality and impact metrics used for portfolio prioritization and investment decisions.",
+      "Wrote the ecosystem strategy: integrations, APIs, shared services and getting ready for a marketplace.",
+      "Led the platform work underneath it: SDKs, developer experience and standards shared across products.",
+      "Worked with Business Development, Engineering and Product on what to build, partner on or build together.",
+      "Took Studio's way of working across the org: tested prototypes in 24 hours, production features in a week.",
+      "Kept the ISO/IEC 42001-aligned AI management system running as part of normal releases.",
+      "Owned the AI quality and impact measures used to decide what to fund next.",
     ],
   },
   {
@@ -1138,13 +1138,13 @@ const experienceData: ExperienceRole[] = [
     location: "Toronto, ON",
     highlights: [
       "Hired to build Caseware's AI function from the ground up.",
-      "Partnered with the CPO and CTO to define and operationalize the company-wide AI strategy and governance model, securing multi-year funding and executive buy-in across all product lines.",
-      "Founded and scaled Caseware Studio, helping a 43-person product org ship validated prototypes within 24h and production-ready AI features within one week.",
-      "Led rollout of a company-wide AI enablement stack (custom GPTs, Copilot, Replit) and internal training program; adoption reduced cycle times by 80% and freed 15+ hours per contributor weekly.",
-      "Directed cross-platform product foundations—SDKs, design systems, and telemetry pipelines—to standardize delivery, experimentation, and measurable customer impact.",
-      "Implemented ISO/IEC 42001-aligned AI Management System, integrating governance, risk assessment, and ethical AI practices into release pipelines; accelerated enterprise compliance and contract velocity.",
-      "Instituted AI quality and impact metrics to guide prioritization, improve retention, and inform strategic investment decisions across the product portfolio.",
-      "Sponsored cross-functional working groups to align Legal, Compliance, and Product under a unified AI governance framework.",
+      "Worked with the CPO and CTO on the company's AI strategy and governance, and got multi-year funding for it across the product lines.",
+      "Started Caseware Studio. With it, a 43-person product org shipped tested prototypes in 24 hours and production AI features in a week.",
+      "Rolled out AI tools across the company (custom GPTs, Copilot, Replit) with training. Cycle times fell 80% and people got back 15+ hours a week.",
+      "Led the shared foundations: SDKs, design systems and telemetry, so teams shipped and measured the same way.",
+      "Set up an ISO/IEC 42001-aligned AI management system inside the release process, which made enterprise compliance reviews faster.",
+      "Set up AI quality and impact measures to help decide priorities and investment.",
+      "Ran working groups that got Legal, Compliance and Product on one AI governance framework.",
     ],
   },
   {
@@ -1160,13 +1160,13 @@ const experienceData: ExperienceRole[] = [
     end: "2025-05",
     location: "Toronto, Ontario, Canada",
     highlights: [
-      "Led 0-to-1 launch of ContractorOS, expanding FacilityOS into a multi-sided compliance marketplace.",
-      "Established beta-testing, Customer Advisory Board, and validated market through 100+ interviews.",
-      "Accelerated time-to-market by 50%; achieved beta in 6 months using Agile and Design Sprints.",
-      "Delivered 37% faster compliance, 23% task reduction, +20 NPS, and 90% retention.",
-      "Projected to surpass $1M ARR in the first year, driving strategic growth.",
-      "Defined AI features for FacilityOS, cutting support tickets 15% and lifting user satisfaction 20%.",
-      "Partnered with executives to launch 3 cross-product features, boosting retention 40% in 6 months.",
+      "Led the launch of ContractorOS, a new product that took FacilityOS into a compliance marketplace.",
+      "Set up the beta and a customer advisory board, and tested the market in 100+ interviews.",
+      "Got to beta in six months, about half the usual time.",
+      "Results: compliance 37% faster, 23% fewer tasks, NPS up 20 and 90% retention.",
+      "Projected to pass $1M ARR in its first year.",
+      "Defined AI features for FacilityOS. Support tickets fell 15% and satisfaction rose 20%.",
+      "Launched three cross-product features with the executive team. Retention rose 40% in six months.",
     ],
   },
   {
@@ -1181,7 +1181,7 @@ const experienceData: ExperienceRole[] = [
     start: "2024-01",
     end: "2025-02",
     highlights: [
-      "Advised SalesBop on AI product strategy and scaling initiatives leading up to acquisition.",
+      "Advised SalesBop on AI product strategy and growth in the run-up to its acquisition.",
       "SalesBop was acquired by FliteHouse.com in 2025.",
     ],
   },
@@ -1193,7 +1193,7 @@ const experienceData: ExperienceRole[] = [
     start: "2023-11",
     location: "Remote (Sweden)",
     highlights: [
-      "Equity-based strategic advisor to SharpReach AB, a Swedish AI sales-intelligence startup, engaged through Epilogue at the startup stage.",
+      "Advisor, paid in equity, to SharpReach AB, a Swedish AI sales-intelligence startup, through Epilogue.",
       "Ran regular strategy sessions with the founders on product direction, packaging, positioning and storytelling.",
       "Supported the founders on company structure and the shareholders' agreement.",
       "Shareholder since March 2024.",
@@ -1207,10 +1207,10 @@ const experienceData: ExperienceRole[] = [
     location: "Toronto / San Francisco",
     highlights: [
       "Worked on the product strategy and investment case behind the $150M Series B led by SoftBank; regularly briefed executives and the board.",
-      "Led AI integration initiatives, increasing user engagement 400% and doubling conversions.",
-      "Built and scaled 60-member global team across five product lines.",
-      "Increased informed purchase decisions by 108% and user engagement by 167% via OKRs.",
-      "Additionally, served on the Social Committee.",
+      "Led the AI work across the product. Engagement rose 400% and conversions doubled.",
+      "Built a 60-person team across five product lines.",
+      "Set OKRs that raised informed purchase decisions 108% and engagement 167%.",
+      "Also on the Social Committee.",
     ],
   },
   {
@@ -1220,7 +1220,7 @@ const experienceData: ExperienceRole[] = [
     end: "2022-01",
     location: "Toronto / San Francisco",
     highlights: [
-      "Scaled content initiatives, growing DAUs 500x; expanded Fortune 500 partnerships.",
+      "Grew daily active users 500x through content work, and added Fortune 500 partners.",
       "Launched a live-shopping experience that lifted conversions 21%.",
     ],
   },
@@ -1231,8 +1231,8 @@ const experienceData: ExperienceRole[] = [
     end: "2021-07",
     location: "Toronto / San Francisco",
     highlights: [
-      "Transitioned platform to self-serve SaaS, growing ARR 10x and enhancing customer acquisition.",
-      "Implemented AI playlist optimization, reducing churn 11.4%, enhancing accessibility by 275%.",
+      "Moved the platform to self-serve SaaS. ARR grew 10x.",
+      "Added AI playlist optimization. Churn fell 11.4%.",
     ],
   },
   {
@@ -1251,8 +1251,8 @@ const experienceData: ExperienceRole[] = [
     end: "2021-02",
     location: "Toronto, Ontario, Canada",
     highlights: [
-      "Transformed platform from ad-based to SaaS, unifying 1500+ sites; achieved 17% MoM growth.",
-      "Launched ML-driven recommendation engine, increasing user engagement by 50% CTR.",
+      "Moved the platform from ads to SaaS and brought 1,500+ sites onto it. 17% month-over-month growth.",
+      "Launched a machine-learning recommendation engine. Click-through rose 50%.",
     ],
   },
   {
@@ -2036,7 +2036,7 @@ export const board = {
   skillsMatrix: [
     { area: "AI and technology governance", evidence: "Defined Caseware's company-wide AI strategy and governance model with the CPO and CTO. Implemented an ISO/IEC 42001-aligned AI management system. Nine AI patent filings, two granted." },
     { area: "Financial oversight", evidence: "As Treasurer, prepared, presented and managed a $2 million operating budget, oversaw reserve-funded capital projects, and negotiated six-figure contracts at an average 11% saving." },
-    { area: "Capital raising and growth", evidence: "Drove the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through Prologue North, with Angel One, Sand Hill Angels and N49P." },
+    { area: "Capital raising and growth", evidence: "Worked on the product strategy behind Firework's US$150 million Series B, and regularly briefed its executives and board. Angel investor through Prologue North, with Angel One, Sand Hill Angels and N49P." },
     { area: "Risk, regulation and compliance", evidence: "AI products in regulated industries: audit at Caseware, legal at Clio. Led AODA and WCAG compliance work at several companies." },
     { area: "Building companies", evidence: "Founded Epilogue, which builds its own AI products; two have been built and sold. Advised SalesBop through its acquisition." },
     { area: "People and change", evidence: "Built and led a 60-person global product team across five product lines. Mentor to founders at DMZ and The Forge." },

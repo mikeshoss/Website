@@ -19,7 +19,7 @@ type Item = { t: string; h?: string; g: string; u?: string; k?: string; x?: true
 
 const pages: Item[] = [
   { t: "Home", u: "/", k: "start index" },
-  { t: "Credits", u: "/credits/", k: "work discography shipped hits" },
+  { t: "Selected work", u: "/credits/", k: "work credits shipped results" },
   { t: "Ventures", u: "/companies/", k: "companies businesses" },
   { t: "Projects", u: "/projects/", k: "builds products" },
   { t: "Experience", u: "/experience/", k: "career resume cv jobs" },
@@ -54,7 +54,7 @@ const sections: Item[] = [
   { t: "The fleet", h: "Homelab", u: "/off-the-clock/homelab/#fleet", k: "servers machines ai box" },
   { t: "House rules", h: "Homelab", u: "/off-the-clock/homelab/#rules", k: "ops deploy" },
   ...[
-    ["The idea", "the-idea"], ["The mark", "the-mark"], ["Producer tag", "producer-tag"], ["Misuse", "misuse"],
+    ["The idea", "the-idea"], ["The mark", "the-mark"], ["The signature", "producer-tag"], ["Misuse", "misuse"],
     ["Colour", "colour"], ["Type and case", "type-and-case"], ["Panel parts", "panel-parts"], ["Voice", "voice"],
     ["Layout", "layout"], ["In use", "in-use"], ["Press kit", "downloads"],
   ].map(([t, id]) => ({ t, h: "Brand", u: `/brand/#${id}`, k: "brand" })),
@@ -84,7 +84,7 @@ const actions: Item[] = [
   { t: "Open LinkedIn", h: "↗", g: "Actions", u: site.linkedin, x: true, k: "message dm" },
   { t: "Open GitHub", h: "↗", g: "Actions", u: site.github, x: true, k: "code" },
   { t: "Work with me", h: "Epilogue ↗", g: "Actions", u: "https://epiloguelabs.com/?utm_source=mikeshoss&utm_medium=referral&utm_content=command-menu", x: true, k: "epilogue book work consulting hire studio" },
-  { t: "Play the producer tag", h: "Sound", g: "Actions", a: "tag", k: "sound music hit" },
+  { t: "Play the chime", h: "Sound", g: "Actions", a: "tag", k: "sound music chime" },
   { t: "Copy an API curl", h: "curl", g: "Actions", a: "copy", v: `curl ${site.url}/api/index.json`, k: "developer json" },
   { t: "Copy the MCP server URL", h: "MCP", g: "Actions", a: "copy", v: `${site.url}/mcp`, k: "agents claude" },
 ];
@@ -102,7 +102,7 @@ const sectionsOf = (hint: string) => sections.filter((s) => s.h === hint).map(st
 
 const menu: Node[] = [
   { t: "Home", h: "Sections", c: [open("Home", "/"), ...sectionsOf("Home")] },
-  { ...strip(page("Credits")) },
+  { ...strip(page("Selected work")) },
   { t: "Ventures", h: "Companies", c: [open("Ventures", "/companies/"), ...ventures.map(strip)] },
   { ...strip(page("Projects")) },
   { t: "Experience", h: "Tabs", c: [open("Experience", "/experience/"), ...sectionsOf("Experience")] },
